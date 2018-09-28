@@ -2231,9 +2231,6 @@ ul.carousel-1-pagination {
     -ms-flex-direction: row;
     flex-direction: row;
     width: 350px;
-    width: 90%;
-    padding-bottom: 20px;
-    padding-top: 20px;
 }
 
 .gb-text-input {
@@ -2242,7 +2239,7 @@ ul.carousel-1-pagination {
 
 .gb-text-input-trans-background {
     max-width: 350px;
-    width: 90%;
+    width: 350px;
     height: 55px;
     border:none;
     padding: 0 20px 0 60px;
@@ -2383,8 +2380,8 @@ ul.carousel-1-pagination {
 .gb-input-icon-left {
     stroke: rgba(255,255,255,0.5);
     fill: none;
-    top: 0;
-    left: 45px;
+    top: 40px;
+    left: 20px;
     width: 30px;
     height: 25px;
     position: relative;

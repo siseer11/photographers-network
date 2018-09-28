@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import fire from '../config/Fire';
-import {Link} from 'react-router-dom';
+import {Link, withRouter} from 'react-router-dom';
 import {EmailSVG} from '../components/svg/EmailSVG';
 import {PasswordSVG} from "../components/svg/PasswordSVG";
-import {Button} from "../components/Button";
+import {NameInputSVG} from "../components/svg/NameInputSVG";
+import {InputField} from "../components/InputField";
+import {Select} from "../components/Select";
 
-class Login extends Component {
+class Register extends Component {
     state = {
+        name: '',
         email: '',
         password: '',
         password2: '',
@@ -19,7 +22,7 @@ class Login extends Component {
      * @param e
      */
     handleChange = (e) => {
-        this.setState({[e.target.name]: e.target.value}, () => console.log(this.state));
+        this.setState({[e.target.name]: e.target.value});
     };
 
     /**
@@ -29,16 +32,20 @@ class Login extends Component {
      */
     signup = (e) => {
         e.preventDefault();
-        const {email, password, password2, type} = this.state;
+        const {name, email, password, password2, type} = this.state;
         console.log(type);
 
         if (password === password2) {
-            fire.auth().createUserWithEmailAndPassword(email, password).then(() => {
-            }).then(() => {
-                let user = fire.auth().currentUser;
-                console.log("type: " + type + "user:" + user.uid);
-                this.addUserToDatabase(user, type);
-            })
+            fire.auth().createUserWithEmailAndPassword(email, password)
+                .then((snap) => {
+                    let user = snap.user;
+                    user.updateProfile({
+                        displayName: name,
+                        photoURL: ''
+                    });
+                    this.addUserToDatabase(user, type);
+                    this.props.history.push('/dashboard');
+                })
                 .catch((error) => {
                     console.log(error);
                 })
@@ -61,39 +68,28 @@ class Login extends Component {
     render() {
         return (
             <div className="section-content">
-                <form>
+                <form onSubmit={this.signup}>
                     <h1>Register</h1>
-                    <div className="gb-input-wrapper">
-                        <EmailSVG classes="gb-input-icon-left"/>
-                        <label htmlFor="exampleInputEmail1"/>
-                        <input value={this.state.email} onChange={this.handleChange} type="email" name="email"
-                               className="gb-text-input gb-text-input-trans-background" id="exampleInputEmail1"
-                               aria-describedby="emailHelp"
-                               placeholder="Enter email"/>
-                    </div>
-                    <div className="gb-input-wrapper">
-                        <PasswordSVG classes="gb-input-icon-left"/>
-                        <label htmlFor="exampleInputPassword1"/>
-                        <input value={this.state.password} onChange={this.handleChange} type="password"
-                               name="password"
-                               className="gb-text-input gb-text-input-trans-background" id="exampleInputPassword1"
-                               placeholder="Password"/>
-                    </div>
-                    <div className="gb-input-wrapper">
-                        <PasswordSVG classes="gb-input-icon-left"/>
-                        <label htmlFor="exampleInputPassword2"/>
-                        <input value={this.state.password2} onChange={this.handleChange} type="password"
-                               name="password2"
-                               className="gb-text-input gb-text-input-trans-background" id="exampleInputPassword2"
-                               placeholder="Repeat Password"/>
-                    </div>
-                    <select name="type" defaultValue="photographer" onChange={this.handleChange}>
-                        <option value="photographer">Photographer</option>
-                        <option value="company">Company</option>
-                    </select>
+                    <InputField wrapperClass="gb-input-wrapper" svg={<NameInputSVG classes="gb-input-icon-left"/>}
+                                value={this.state.name} changeHandler={this.handleChange} type="text" name="name"
+                                placeholder="Enter your name"/>
+                    <InputField wrapperClass="gb-input-wrapper" svg={<EmailSVG classes="gb-input-icon-left"/>}
+                                value={this.state.email} changeHandler={this.handleChange} type="email" name="email"
+                                placeholder="Enter email"/>
+                    <InputField wrapperClass="gb-input-wrapper" svg={<PasswordSVG classes="gb-input-icon-left"/>}
+                                value={this.state.password} changeHandler={this.handleChange} type="password"
+                                name="password"
+                                placeholder="Password"/>
+                    <InputField wrapperClass="gb-input-wrapper" svg={<PasswordSVG classes="gb-input-icon-left"/>}
+                                value={this.state.password2} changeHandler={this.handleChange} type="password"
+                                name="password2"
+                                placeholder="Repeat password"/>
+                    <Select name="type" defaultVal="photographer" changeHandler={this.handleChange} options={[
+                        {val: "photographer", label: "Photographer"}, {val: "company", label: "Company"}
+                    ]}/>
+
                     <div className="btn-container">
-                        <Button clickHandler={this.signup}
-                                classes="gb-btn gb-btn-medium gb-btn-primary">Register</Button>
+                        <input type="submit" value="Register" className="gb-btn gb-btn-medium gb-btn-primary"/>
                         <Link to="/login" className="gb-btn gb-btn-medium gb-btn-primary">Go to login</Link>
                     </div>
                 </form>
@@ -102,4 +98,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export const RegisterWithRouter = withRouter(Register);
