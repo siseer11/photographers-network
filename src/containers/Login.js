@@ -14,7 +14,6 @@ class Login extends Component {
         errorMessage: '',
         error: false
     };
-    database = fire.database().ref();
 
     /**
      * Updates state to the current value of a certain target.
@@ -34,25 +33,9 @@ class Login extends Component {
         fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
             .then(() => {
                 this.props.history.push('/dashboard');
-                /*
-                let user = result.user;
-                let userIsType = false;
-                this.database.child(this.state.type).once('value', snapshot => {
-                    snapshot.forEach(childSnapshot => {
-                        // checks, if user exists in the node of the certain type e.g. photographer
-                        if (childSnapshot.key === user.uid) userIsType = true;
-                    });
-                }).then(() => {
-                    if (!userIsType) {
-                        fire.auth().signOut();
-                        this.setState({error: true, errorMessage: `You are not registered as ${this.state.type}!`});
-                    } else {
-                        this.props.history.push('/dashboard');
-                    }
-                });*/
             })
             .catch((error) => {
-                console.log(error);
+                this.setState({error: true, errorMessage: error.message});
             });
     };
 

@@ -5,32 +5,6 @@ import {Button} from '../components/Button';
 import LoadingPage from "../components/LoadingPage";
 
 class Dashboard extends Component {
-    state = {
-        user: null,
-        loadedResponse: false
-    };
-
-    /**
-     * Checks user state, each time a component did mount.
-     */
-    componentDidMount() {
-        this.authListener();
-    }
-
-    /**
-     * Checks, if user is logged in and updates state.
-     */
-    authListener = () => {
-        fire.auth().onAuthStateChanged((user) => {
-            console.log(user);
-            if (user) {
-                this.setState({user}, () => this.setState({loadedResponse: true}));
-            } else {
-                this.setState({user: null}, () => this.setState({loadedResponse: true}));
-            }
-        });
-    };
-
     /**
      * Logs out the user and redirects him to home.
      */
@@ -40,18 +14,21 @@ class Dashboard extends Component {
     };
 
     render() {
-        // avoids that user just types in the path to dashboard, without being logged in
-        let currUser = fire.auth().currentUser;
-        console.log(currUser);
-        if (this.state.loadedResponse) {
-            return (this.state.user ?
-                (<div className="section-content">
-                    <h1>Dashboard</h1>
-                    <Button clickHandler={this.logout} classes="gb-btn gb-btn-small gb-btn-primary">Logout</Button>
-                </div>) : (<Redirect to="/"/>))
-        } else {
-            return (<LoadingPage/>);
-        }
+        const {user, type, loadedResponse} = this.props;
+        // checks, if there is already a response of the database
+        // if not, shows the loading page
+        // if yes, checks, if there is actually a user (to avoid to get to the dashboard
+        // by just typing dashboard into the url), if there's none, redirects to home
+        return (
+            loadedResponse ?
+                (user ?
+                    (<div className="section-content">
+                        <h1>Dashboard for {type}</h1>
+                        <h3>Welcome to the photographer's network, {user.displayName}!</h3>
+                        <Button clickHandler={this.logout} classes="gb-btn gb-btn-small gb-btn-primary">Logout</Button>
+                    </div>) :
+                    (<Redirect to="/"/>)) : (<LoadingPage/>)
+        );
     }
 }
 
