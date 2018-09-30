@@ -3,8 +3,8 @@ import fire from '../config/Fire';
 import {Link, withRouter} from 'react-router-dom';
 import {EmailSVG} from '../components/svg/EmailSVG';
 import {PasswordSVG} from "../components/svg/PasswordSVG";
-import {Button} from "../components/Button";
 import {Error} from "../components/Error";
+import {InputField} from "../components/InputField";
 
 class Login extends Component {
     state = {
@@ -14,7 +14,6 @@ class Login extends Component {
         errorMessage: '',
         error: false
     };
-    database = fire.database().ref();
 
     /**
      * Updates state to the current value of a certain target.
@@ -32,25 +31,11 @@ class Login extends Component {
     login = (e) => {
         e.preventDefault();
         fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-            .then(result => {
-                let user = result.user;
-                let userIsType = false;
-                this.database.child(this.state.type).once('value', snapshot => {
-                    snapshot.forEach(childSnapshot => {
-                        // checks, if user exists in the node of the certain type e.g. photographer
-                        if (childSnapshot.key === user.uid) userIsType = true;
-                    });
-                }).then(() => {
-                    if (!userIsType) {
-                        fire.auth().signOut();
-                        this.setState({error: true, errorMessage: `You are not registered as ${this.state.type}!`});
-                    } else {
-                        this.props.history.push('/dashboard');
-                    }
-                });
+            .then(() => {
+                this.props.history.push('/dashboard');
             })
             .catch((error) => {
-                console.log(error);
+                this.setState({error: true, errorMessage: error.message});
             });
     };
 
@@ -58,32 +43,17 @@ class Login extends Component {
         return (
             <div>
                 <div className="section-content">
-                    <form>
+                    <form onSubmit={this.login}>
                         <h1>Login</h1>
-                        <div className="gb-input-wrapper">
-                            <EmailSVG classes="gb-input-icon-left"/>
-                            <label htmlFor="exampleInputEmail1"/>
-                            <input value={this.state.email} onChange={this.handleChange} type="email" name="email"
-                                   className="gb-text-input gb-text-input-trans-background" id="exampleInputEmail1"
-                                   aria-describedby="emailHelp"
-                                   placeholder="Enter email"/>
-                        </div>
-                        <div className="gb-input-wrapper">
-                            <PasswordSVG classes="gb-input-icon-left"/>
-                            <label htmlFor="exampleInputPassword1"/>
-                            <input value={this.state.password} onChange={this.handleChange} type="password"
-                                   name="password"
-                                   className="gb-text-input gb-text-input-trans-background"
-                                   id="exampleInputPassword1"
-                                   placeholder="Password"/>
-                        </div>
-                        <select name="type" defaultValue="photographer" onChange={this.handleChange}>
-                            <option value="photographer">Photographer</option>
-                            <option value="company">Company</option>
-                        </select>
+                        <InputField wrapperClass="gb-input-wrapper" svg={<EmailSVG classes="gb-input-icon-left"/>}
+                                    value={this.state.email} changeHandler={this.handleChange} type="email" name="email"
+                                    placeholder="Enter email"/>
+                        <InputField wrapperClass="gb-input-wrapper" svg={<PasswordSVG classes="gb-input-icon-left"/>}
+                                    value={this.state.password} changeHandler={this.handleChange} type="password"
+                                    name="password"
+                                    placeholder="Password"/>
                         <div className="btn-container">
-                            <Button clickHandler={this.login}
-                                    classes="gb-btn gb-btn-medium gb-btn-primary">Login</Button>
+                            <input type="submit" className="gb-btn gb-btn-medium gb-btn-primary" value="Login"/>
                             <Link to="/register" className="gb-btn gb-btn-medium gb-btn-primary">Register...</Link>
                         </div>
                         {this.state.error && <Error message={this.state.errorMessage}/>}
@@ -94,4 +64,4 @@ class Login extends Component {
     }
 }
 
-export const LogInWithRoute = withRouter(Login);
+export const LogInWithRouter = withRouter(Login);

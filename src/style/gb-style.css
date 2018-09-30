@@ -1235,7 +1235,7 @@ input.gb-swithcer-checkbox:checked+.gb-switcher-slider:before {
 
 .gb-navbar {
     width: 100%;
-    padding: 20px 10px;
+    padding: 25px 16px;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
     display: -webkit-box;
@@ -1247,14 +1247,28 @@ input.gb-swithcer-checkbox:checked+.gb-switcher-slider:before {
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between;
-    position: relative;
-    -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
+    position: fixed;
+    top: 0;
+    left: 0;
+    -webkit-transition: 0.2s linear all;
+    -o-transition: 0.2s linear all;
+    transition: 0.2s linear all;
+      z-index: 10;
+      -webkit-transition: 0.3s ease-in-out all;
+      -o-transition: 0.3s ease-in-out all;
+      transition: 0.3s ease-in-out all;
+  }
 
 .gb-navbar a {
     display: block;
 }
+
+.gb-navbar.sticky {
+    /* -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); */
+      padding: 15px 10px;
+      background-color: red;
+  }
 
 .gb-navbar .center-content {
     position: absolute;
@@ -1570,6 +1584,130 @@ input.gb-swithcer-checkbox:checked+.gb-switcher-slider:before {
 }
 
 /* Gb-card-10 end */
+
+/* Gb-card-50-skewed start */
+
+.gb-card-50-skewed {
+	height: 50vh;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	background-size: cover;
+	background-position: center;
+	max-height: 300px;
+	transition: .2s linear all;
+}
+
+.gb-card-50-skewed.extended{
+	height: 60vh;
+	max-height: 400px;
+}
+
+.gb-card-50-skewed .arrow-down{
+	position: absolute;
+	bottom: 0;
+}
+
+.gb-card-50-skewed .modal {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	top: 0;
+	left: 0;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-ms-flex-align: center;
+	align-items: center;
+	background-color: rgba(103, 54, 3, 0.8);
+	color: white;
+	flex-direction: column;
+}
+
+.gb-card-50-skewed .modal-list  {
+	flex-grow: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+}
+
+.gb-card-50-skewed .modal-list-item {
+	display: flex;
+	max-width: 300px;
+	text-align: left;
+	align-items: center;
+	justify-content: center;
+	margin: 10px 0;
+}
+
+.gb-card-50-skewed .modal-list-item .modal-icon{
+	width: 20%;
+}
+
+.gb-card-50-skewed .modal-list-item-description {
+	width: 80%;
+}
+
+.gb-card-50-skewed .modal-list-item *:nth-child(1){
+	margin-right: 20px;
+}
+
+.gb-card-50-skewed .modal .modal-button{
+	position: absolute;
+	bottom: 20px;
+}
+
+.gb-card-50-skewed .blackoverlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,.5);
+	z-index: 1;
+}
+
+.gb-card-50-skewed .about-type{
+	max-width: 300px;
+}
+
+.gb-card-50-skewed .card-for{
+	margin-bottom: 10px;
+}
+
+.gb-card-50-skewed .inner-content {
+	z-index: 2;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+
+.gb-card-50-skewed .inner-content{
+	z-index: 2;
+}
+
+.gb-card-50-skewed .card-50-skewed-arrow{
+	position: absolute;
+	cursor: pointer;
+	bottom: 0;
+}
+
+
+
+/* Gb-card-50-skewed end */
 
 /* Gb-card-11 end */
 
@@ -2231,9 +2369,6 @@ ul.carousel-1-pagination {
     -ms-flex-direction: row;
     flex-direction: row;
     width: 350px;
-    width: 90%;
-    padding-bottom: 20px;
-    padding-top: 20px;
 }
 
 .gb-text-input {
@@ -2242,7 +2377,7 @@ ul.carousel-1-pagination {
 
 .gb-text-input-trans-background {
     max-width: 350px;
-    width: 90%;
+    width: 350px;
     height: 55px;
     border:none;
     padding: 0 20px 0 60px;
@@ -2383,8 +2518,8 @@ ul.carousel-1-pagination {
 .gb-input-icon-left {
     stroke: rgba(255,255,255,0.5);
     fill: none;
-    top: 0;
-    left: 45px;
+    top: 40px;
+    left: 20px;
     width: 30px;
     height: 25px;
     position: relative;

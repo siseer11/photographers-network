@@ -1,18 +1,20 @@
 import React from "react";
 import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import {DashboardWithRouter} from "../containers/Dashboard";
-import {LogInWithRoute} from '../containers/Login';
+import {LogInWithRouter} from '../containers/Login';
 import Home from '../containers/Home';
-import Register from '../containers/Register';
+import {RegisterWithRouter} from '../containers/Register';
 
-export default ({userState}) =>
+export default ({user, loadedResponse, type}) =>
     <BrowserRouter>
         <div>
             <Switch>
-                <Route exact path="/" component={Home}/>
-                <Route exact path="/login" component={LogInWithRoute}/>
-                <Route exact path="/register" component={Register}/>
-                <Route exact path="/dashboard" component={() => <DashboardWithRouter userState={userState}/>}/>
+                <Route exact path="/" render={() => <Home user={user} loadedResponse={loadedResponse} type={type}/>}/>
+                <Route exact path="/login" component={LogInWithRouter}/>
+                <Route exact path="/register" component={RegisterWithRouter}/>
+                <Route exact path="/register/:type" component={RegisterWithRouter}/>
+                <Route exact path="/dashboard"
+                       render={() => <DashboardWithRouter user={user} loadedResponse={loadedResponse} type={type}/>}/>
                 <Redirect to='/'/>
             </Switch>
         </div>
