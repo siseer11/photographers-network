@@ -1512,7 +1512,7 @@ input.gb-swithcer-checkbox:checked+.gb-switcher-slider:before {
 
 /* Gb-card-10 start */
 
-.gb-card-10 {
+.gb-card-10, .profile-card {
     width: 100%;
     height: 50vh;
     min-height: 300px;
@@ -1530,6 +1530,10 @@ input.gb-swithcer-checkbox:checked+.gb-switcher-slider:before {
     -webkit-box-align: end;
     -ms-flex-align: end;
     align-items: flex-end;
+}
+
+.profile-card {
+    justify-content: center;
 }
 
 @media screen and (min-width: 440px) {

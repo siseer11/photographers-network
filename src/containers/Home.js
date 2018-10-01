@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { InstagramSVG } from '../components/svg/InstagramSVG';
 import { FacebookSVG } from '../components/svg/FacebookSVG';
 import { TwitterSVG } from '../components/svg/TwitterSVG';
-import GbNavBar from '../components/gbNav'
+import GbNavBar from './gbNav'
 import { GbCard50Skewed } from '../components/gbCard50Skewed';
 import { GbFooter } from '../components/Footer';
 import {SearchSVG} from '../components/svg/SearchSVG';
@@ -68,7 +68,7 @@ class Home extends Component {
 						type='Companies'
 						aboutType='Find the photographer that suits you and get the job done'
 						modalHandler={this.showThisModal}
-						showModal={this.state.showModal=='companies'}
+						showModal={this.state.showModal==='companies'}
 						modalLink='register/company'
 						modalButtonValue='Get Started'
 						modalList={[{
@@ -86,8 +86,8 @@ class Home extends Component {
 				<GbFooter
 						links={[
 							{ 'txt': 'About us', 'link': '#' }, 
-							{ 'txt': 'Forum', 'link': '#' }, , 
-							{ 'txt': 'Cotanct us', 'link': '#' }]}
+							{ 'txt': 'Forum', 'link': '#' },
+							{ 'txt': 'Contact us', 'link': '#' }]}
 						socialMedias={[
 							{ icon: <InstagramSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' },
 							{ icon: <TwitterSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' },

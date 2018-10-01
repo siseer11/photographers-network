@@ -43,7 +43,7 @@ class Login extends Component {
         return (
             <div>
                 <div className="section-content">
-                    <form onSubmit={this.login}>
+                    <form className="sign-in-up-form" onSubmit={this.login}>
                         <h1>Login</h1>
                         <InputField wrapperClass="gb-input-wrapper" svg={<EmailSVG classes="gb-input-icon-left"/>}
                                     value={this.state.email} changeHandler={this.handleChange} type="email" name="email"
