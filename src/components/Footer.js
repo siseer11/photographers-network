@@ -7,14 +7,19 @@ export const GbFooter = ({ links, socialMedias }) => (
   <div className="gb-footer gb-background-black-opacity-5">
     <div className="footer-wrapper">
       <ul className="footer-nav">
-        <LinkLists
-          links={links}
-          txtClasses="gb-text-black-opacity-30 gb-subtitle-medium"
-          liClasses="footer-nav-item"
-        />
+        {
+          links &&
+          <LinkLists
+            links={links}
+            txtClasses="gb-text-black-opacity-30 gb-subtitle-medium"
+            liClasses="footer-nav-item"
+          />
+        }
       </ul>
       <ul className="footer-social-media-list">
-        <LinkLists links={socialMedias} liClasses="footer-social-media-item" />
+        {
+          socialMedias && <LinkLists links={socialMedias} liClasses="footer-social-media-item" />
+        }
       </ul>
       <div className="footer-rights-reserved">
         <p className="gb-label gb-text-black-opacity-30">
@@ -26,5 +31,5 @@ export const GbFooter = ({ links, socialMedias }) => (
 );
 
 GbFooter.propTypes = {
-  links: PropTypes.arrayOf(PropTypes.object).isRequired
+  links: PropTypes.arrayOf(PropTypes.object)
 };

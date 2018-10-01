@@ -1,9 +1,8 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { BurgerMenuSVG } from "./svg/BurgerMenuSVG";
 import { SmallLogoSVG } from "./svg/SmallLogoSVG";
-import { Avatar } from "../components/Avatar";
-import { LinkLists } from "../components/LinkLists";
+import { Avatar } from "./Avatar";
+import { LinkLists } from "./LinkLists";
 import {Link} from 'react-router-dom';
 
 /* rightLinks = [{txt : 'home' , link : '#'}] loggedIn={true/false} userImageUrl='link' profileLink='#'*/
@@ -30,12 +29,7 @@ export default class GbNavBar extends React.Component {
     const { righLinks, loggedIn, userImageUrl, profileLink } = this.props;
     return (
       <div className={`gb-navbar ${this.state.sticky?'sticky':''}`}>
-        <div className="left-content">
-          <a href="#" className="gb-icon-medium gb-icon-white">
-            <BurgerMenuSVG />
-          </a>
-        </div>
-        <Link to='/' className="center-content">
+        <Link to='/' className="left-content">
           <SmallLogoSVG classes="gb-icon-medium gb-icon-fill-white" />
         </Link>
         <ul className="right-content">
@@ -52,12 +46,12 @@ export default class GbNavBar extends React.Component {
               />
             </React.Fragment>
           ) : (
-              <React.Fragment>
-                <LinkLists
-                  links={righLinks}
-                  txtClasses="gb-text-white gb-paragraph-medium"
-                />
-              </React.Fragment>
+            <React.Fragment>
+              <LinkLists
+                links={righLinks}
+                txtClasses="gb-text-white gb-paragraph-medium"
+              />
+            </React.Fragment>
             )}
         </ul>
       </div>
