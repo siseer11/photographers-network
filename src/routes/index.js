@@ -1,21 +1,36 @@
 import React from "react";
-import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
-import {DashboardWithRouter} from "../containers/Dashboard";
-import {LogInWithRouter} from '../containers/Login';
-import Home from '../containers/Home';
-import {RegisterWithRouter} from '../containers/Register';
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import Dashboard from "../containers/Dashboard";
+import SignIn from "../containers/SignIn";
+import Home from "../containers/Home";
+import SignUp from "../containers/SignUp";
 
-export default ({user, loadedResponse, type}) =>
-    <BrowserRouter>
-        <div>
-            <Switch>
-                <Route exact path="/" render={() => <Home user={user} loadedResponse={loadedResponse} type={type}/>}/>
-                <Route exact path="/login" component={LogInWithRouter}/>
-                <Route exact path="/register" component={RegisterWithRouter}/>
-                <Route exact path="/register/:type" component={RegisterWithRouter}/>
-                <Route exact path="/dashboard"
-                       render={() => <DashboardWithRouter user={user} loadedResponse={loadedResponse} type={type}/>}/>
-                <Redirect to='/'/>
-            </Switch>
-        </div>
-    </BrowserRouter>
+export default ({ user, loadedResponse, type }) => (
+  <BrowserRouter>
+    <Switch>
+      <Route
+        exact
+        path="/"
+        render={props => (
+          <Home {...props} user={user} loadedResponse={loadedResponse} type={type} />
+        )}
+      />
+      <Route exact path="/signIn" render={props => <SignIn {...props} />} />
+      <Route exact path="/signUp" render={props => <SignUp {...props} />} />
+      <Route exact path="/signUp/:type" render={props => <SignUp {...props} />} />
+      <Route
+        exact
+        path="/dashboard"
+        render={props => (
+          <Dashboard
+            {...props}
+            user={user}
+            loadedResponse={loadedResponse}
+            type={type}
+          />
+        )}
+      />
+      <Redirect to="/" />
+    </Switch>
+  </BrowserRouter>
+);

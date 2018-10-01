@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { InstagramSVG } from '../components/svg/InstagramSVG';
 import { FacebookSVG } from '../components/svg/FacebookSVG';
 import { TwitterSVG } from '../components/svg/TwitterSVG';
@@ -9,7 +8,6 @@ import { GbFooter } from '../components/Footer';
 import {SearchSVG} from '../components/svg/SearchSVG';
 import {DoneSVG} from '../components/svg/DoneSVG';
 import {CardSVG} from '../components/svg/CardSVG';
-import fire from '../config/Fire';
 
 /* rightLinks = [{txt : 'home' , link : '#'}] loggedIn={true/false} userImageUrl='link' profileLink='#' */
 class Home extends Component {
@@ -37,7 +35,7 @@ class Home extends Component {
 					):(
 						<GbNavBar
 						righLinks={
-							[{ txt: 'Log in', link: 'login' }]
+							[{ txt: 'Sign in', link: 'signIn' }]
 						}
 						loggedIn={false}
 					/>
@@ -50,7 +48,7 @@ class Home extends Component {
 						aboutType='Find the job that suits you and get the job done.'
 						modalHandler={this.showThisModal}
 						showModal={this.state.showModal=='photographers'}
-						modalLink='register/photographer'
+						modalLink='signUp/photographer'
 						modalButtonValue='Join Now'
 						modalList={[{
 							'description' : 'Search for the best jobs oportunities in your area of interests.',
@@ -69,7 +67,7 @@ class Home extends Component {
 						aboutType='Find the photographer that suits you and get the job done'
 						modalHandler={this.showThisModal}
 						showModal={this.state.showModal=='companies'}
-						modalLink='register/company'
+						modalLink='signUp/company'
 						modalButtonValue='Get Started'
 						modalList={[{
 							'description' : 'Search for the best photographer in your area, or post a public job.',
@@ -84,10 +82,6 @@ class Home extends Component {
 					/>
 				</div>
 				<GbFooter
-						links={[
-							{ 'txt': 'About us', 'link': '#' }, 
-							{ 'txt': 'Forum', 'link': '#' }, , 
-							{ 'txt': 'Cotanct us', 'link': '#' }]}
 						socialMedias={[
 							{ icon: <InstagramSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' },
 							{ icon: <TwitterSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' },
