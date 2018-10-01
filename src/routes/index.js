@@ -9,9 +9,10 @@ export default ({user, loadedResponse, type}) =>
     <BrowserRouter>
         <div>
             <Switch>
-                <Route exact path="/" component={Home}/>
+                <Route exact path="/" render={() => <Home user={user} loadedResponse={loadedResponse} type={type}/>}/>
                 <Route exact path="/login" component={LogInWithRouter}/>
                 <Route exact path="/register" component={RegisterWithRouter}/>
+                <Route exact path="/register/:type" component={RegisterWithRouter}/>
                 <Route exact path="/dashboard"
                        render={() => <DashboardWithRouter user={user} loadedResponse={loadedResponse} type={type}/>}/>
                 <Redirect to='/'/>

@@ -32,9 +32,11 @@ class App extends Component {
                     uid: user.uid,
                     photoURL: user.photoURL
                 };
+                console.log(this.state);
                 this.setState({user: currUser}, () => {
                     this.getUserType();
                 });
+                console.log(this.state);
             } else {
                 this.setState({user: null}, () => this.setState({loadedResponse: true}));
             }
