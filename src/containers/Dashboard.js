@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {withRouter, Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import LoadingPage from "../components/LoadingPage";
 import GbNavBar from './gbNav';
 import {ProfileCard} from "../components/ProfileCard";
@@ -12,7 +12,7 @@ import PhotographerContent from "./PhotographerContent";
 import CompanyContent from "./CompanyContent";
 import fire from '../config/Fire';
 
-class Dashboard extends Component {
+export default class Dashboard extends Component {
     state = {
         pageLinks: [
             {txt: "Facebook", link: "www.facebook.com"},
@@ -44,7 +44,7 @@ class Dashboard extends Component {
                                 <div className='dashboard'>
                                     <GbNavBar
                                         righLinks={
-                                            [{txt: 'Logout', clickHandler: this.logout}]
+                                            [{txt: 'Sign out', clickHandler: this.logout}]
                                         }
                                         loggedIn={false}
                                     />
@@ -55,19 +55,31 @@ class Dashboard extends Component {
                                         Welcome {user.displayName}!
                                     </ProfileCard>
                                     <div className="profile-content">
-                                        <LinkLists links={this.state.pageLinks} txtClasses="gb-text-black-opacity-30 gb-subtitle-medium"
+                                        <LinkLists links={this.state.pageLinks}
+                                                   txtClasses="gb-text-black-opacity-30 gb-subtitle-medium"
                                                    liClasses="footer-nav-item"/>
                                     </div>
                                     {type === "photographer" ? (<PhotographerContent/>) : (<CompanyContent/>)}
                                     <GbFooter
                                         links={[
-                                            { 'txt': 'About us', 'link': '#' },
-                                            { 'txt': 'Forum', 'link': '#' },
-                                            { 'txt': 'Contact us', 'link': '#' }]}
+                                            {'txt': 'About us', 'link': '#'},
+                                            {'txt': 'Forum', 'link': '#'},
+                                            {'txt': 'Contact us', 'link': '#'}]}
                                         socialMedias={[
-                                            { icon: <InstagramSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' },
-                                            { icon: <TwitterSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' },
-                                            { icon: <FacebookSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' }]}
+                                            {
+                                                icon: <InstagramSVG
+                                                    classes='gb-icon-fill-black-opacity-30 gb-icon-small'/>, link: '#'
+                                            },
+                                            {
+                                                icon: <TwitterSVG
+                                                    classes='gb-icon-fill-black-opacity-30 gb-icon-small'/>,
+                                                link: '#'
+                                            },
+                                            {
+                                                icon: <FacebookSVG
+                                                    classes='gb-icon-fill-black-opacity-30 gb-icon-small'/>,
+                                                link: '#'
+                                            }]}
                                     />
                                 </div>) :
                             (<Redirect to="/"/>)) : (<LoadingPage/>)
@@ -76,6 +88,3 @@ class Dashboard extends Component {
         );
     }
 }
-
-
-export const DashboardWithRouter = withRouter(Dashboard);
