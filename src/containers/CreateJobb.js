@@ -95,7 +95,7 @@ export default class CreateJobb extends React.Component {
 		const {jobbTitle , jobbLocation , jobbType , jobbBudget , jobbDate , jobbDescription} = this.state;
 		const jobbId = fire.database().ref('requests').push().key;
 		if(this.inputChecker()===true){
-			console.log('uploading of the job started');
+			console.log(this.props.user.displayName);
 			fire.database()
 			.ref('requests')
 			.child(jobbId)

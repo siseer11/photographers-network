@@ -7,6 +7,7 @@ import SignUp from "../containers/SignUp";
 import MyJobs from "../containers/MyJobs";
 import CreateJobb from "../containers/CreateJobb";
 import MyJobOffers from "../containers/MyJobOffers";
+import Jobs from "../containers/Jobs";
 
 export default ({ user, loadedResponse, type }) => (
   <BrowserRouter>
@@ -67,6 +68,7 @@ export default ({ user, loadedResponse, type }) => (
           />
         )}
       />
+      <Route exact path='/jobs' component={Jobs}/>
       <Redirect to="/" />
     </Switch>
   </BrowserRouter>

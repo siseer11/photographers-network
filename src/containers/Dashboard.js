@@ -10,7 +10,7 @@ import { TwitterSVG } from "../components/svg/TwitterSVG";
 import { FacebookSVG } from "../components/svg/FacebookSVG";
 import PhotographerContent from "./PhotographerContent";
 import CompanyContent from "./CompanyContent";
-import fire from "../config/Fire";
+import fire from '../config/Fire'
 
 export default class Dashboard extends Component {
   state = {
