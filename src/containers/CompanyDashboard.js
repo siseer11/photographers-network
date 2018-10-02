@@ -2,8 +2,16 @@ import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
 import LoadingPage from "../components/LoadingPage";
 import GbNavBar from './gbNav';
+import {PhotographerPortfolioList} from '../components/gb-card-photographer-portfolio-list';
+import {CompanyPortfolioList} from '../components/gb-card-company-portfolio-list';
 import {DashboardHeader} from "../components/dashboardHeader";
-import {CompanyDashboardHeader} from "../components/comapnyDashboardHeader";
+import {LinkLists} from "../components/LinkLists";
+import {GbFooter} from '../components/Footer';
+import {InstagramSVG} from "../components/svg/InstagramSVG";
+import {TwitterSVG} from "../components/svg/TwitterSVG";
+import {FacebookSVG} from "../components/svg/FacebookSVG";
+import PhotographerContent from "./PhotographerContent";
+import CompanyContent from "./CompanyContent";
 import fire from '../config/Fire';
 
 export default class Dashboard extends Component {
@@ -44,16 +52,29 @@ export default class Dashboard extends Component {
                                     >
                                     Welcome {user.displayName}!
                                     </GbNavBar>
+                                    
 
-                                    {type === "photographer" ? (
-                                        <DashboardHeader>
-                                            Welcome {user.displayName}!
-                                    </DashboardHeader >)
-                                        : (
-                                            <CompanyDashboardHeader>
-                                                Welcome {user.displayName}!
-                                    </CompanyDashboardHeader >
-                                        )}
+                                    <DashboardHeader
+                                     button={
+                                     [{
+                                         buttonValue: "My Jobs",
+                                         buttonLink: '#'
+                                     },
+                                     {
+                                        buttonValue: "My work",
+                                        buttonLink: '#'
+                                    },
+                                    {
+                                        buttonValue: "Profile",
+                                        buttonLink: '#'
+                                    },
+                                     
+                                     ]
+                                    }>
+                                    Welcome {user.displayName}!
+                                    </DashboardHeader > 
+    
+                              
 
                                 </div>) :
                             (<Redirect to="/"/>)) : (<LoadingPage/>)
