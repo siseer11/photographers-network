@@ -49,7 +49,7 @@ export default class SignUp extends Component {
 						this.props.history.replace('/dashboard');
 					})
 					.catch((err)=>console.log(err));
-					
+
 				})
 				.catch((error) => {
 					console.log(error);
