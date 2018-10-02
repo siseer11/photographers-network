@@ -8,7 +8,7 @@ class App extends Component {
   state = {
     user: null,
     loadedResponse: false,
-    type: ""
+    type: "",
   };
   database = fire.database().ref();
 
@@ -34,7 +34,9 @@ class App extends Component {
         this.setState({ user: currUser }, () => {
           this.getUserType();
         });
+        console.log('user on')
       } else {
+        console.log('no user on')
         this.setState({ user: null , loadedResponse : false });
       }
     });
