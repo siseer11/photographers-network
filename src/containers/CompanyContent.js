@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
+import {SearchInput} from "../components/SearchInput";
 
 class CompanyContent extends Component {
     render() {
@@ -8,10 +9,7 @@ class CompanyContent extends Component {
                 <h3>Create job offer</h3>
                 <p>Here you can create your job offer</p>
                 <h3>Search photographers</h3>
-                <form className="gb-search-form">
-                    <input type="text" className="search-input" placeholder="Type in a city/location..."/>
-                    <input type="submit" value="Search" className="search-btn gb-background-green"/>
-                </form>
+                <SearchInput placeholder="Type in a city/location..."/>
                 <p>Here are photographers near your location</p>
             </div>
         )
