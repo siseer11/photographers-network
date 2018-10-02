@@ -9,8 +9,7 @@ class CompanyContent extends Component {
                 <h3>Create job offer</h3>
                 <p>Here you can create your job offer</p>
                 <h3>Search photographers</h3>
-                <SearchInput placeholder="Type in a city/location..."/>
-                <p>Here are photographers near your location</p>
+                <Link to="/search-photographers" className="gb-btn gb-btn-medium gb-btn-primary">Search now...</Link>
             </div>
         )
     }
