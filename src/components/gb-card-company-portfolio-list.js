@@ -6,6 +6,7 @@ import '../style/gb-style.css';
 export const CompanyPortfolioList = ({ card }) => {
 
   return (
+<div>
     <div className="gb-card-one-wrapper">
       <ul className="gb-card-one">
         {
@@ -22,7 +23,7 @@ export const CompanyPortfolioList = ({ card }) => {
         }
       </ul>
     </div>
-
+</div>
   );
 };
 

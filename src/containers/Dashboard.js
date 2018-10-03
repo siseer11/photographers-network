@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
 import LoadingPage from "../components/LoadingPage";
 import GbNavBar from './gbNav';
-import {DashboardHeader} from "../components/dashboardHeader";
+import {PhotographerDashboardHeader} from "../components/photographerDashboardHeader";
 import {CompanyDashboardHeader} from "../components/comapnyDashboardHeader";
 import fire from '../config/Fire';
 
@@ -46,9 +46,9 @@ export default class Dashboard extends Component {
                                     </GbNavBar>
 
                                     {type === "photographer" ? (
-                                        <DashboardHeader>
+                                        <PhotographerDashboardHeader>
                                             Welcome {user.displayName}!
-                                    </DashboardHeader >)
+                                    </PhotographerDashboardHeader >)
                                         : (
                                             <CompanyDashboardHeader>
                                                 Welcome {user.displayName}!
