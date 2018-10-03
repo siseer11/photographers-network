@@ -50,22 +50,20 @@ export default class Profile extends Component {
                     email: data.email,
                     photoURL: data.photoURL,
                 };
-                //TODO: check, if it's your own profile
-                //if(snap.key !== this.props.user.uid) {
                 this.setState({userData: userData, fetchedUserData: true}, () => {
                     console.log("loaded:" + this.state.fetchedUserData);
                 });
-                //}
             });
     };
 
     render() {
-        const {user, type, loadedResponse, authenticated} = this.props;
+        const {user, type, loadedResponse} = this.props;
         const {fetchedUserData, userData, uid} = this.state;
-        console.log(user);
+
         let otherUser = true;
         let loaded = false;
         let currUser = null;
+
         if (loadedResponse && fetchedUserData) {
             if (user.uid === uid || uid === '') {
                 otherUser = false;
@@ -75,7 +73,6 @@ export default class Profile extends Component {
             }
             loaded = true;
             console.log("loaded everything!");
-            console.log(currUser);
         }
 
         return (
