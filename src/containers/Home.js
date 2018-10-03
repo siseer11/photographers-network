@@ -14,17 +14,17 @@ import fire from '../config/Fire';
 class Home extends Component {
     state = {
         showModal: false
+    };
+
+    componentDidMount() {
+        fire.database().ref('requests').once('value', (snap) => console.log(snap.val()))
     }
 
-	componentDidMount(){
-		fire.database().ref('requests').once('value',(snap)=>console.log(snap.val()))
-	}
-
-	showThisModal = (modalName) => {
-		this.setState({
-			showModal : modalName
-		})
-	}
+    showThisModal = (modalName) => {
+        this.setState({
+            showModal: modalName
+        })
+    };
 
     render() {
         return (
