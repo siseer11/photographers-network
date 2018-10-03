@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import React, {Component} from "react";
+import {Redirect} from "react-router-dom";
 import LoadingPage from "../components/LoadingPage";
 import GbNavBar from '../components/gbNav';
 import fire from '../config/Fire';
 
 export default class Dashboard extends Component {
-  state = {
-    pageLinks: [
-      { txt: "Facebook", link: "www.facebook.com" },
-      { txt: "Twitter", link: "www.twitter.com" }
-    ]
-  };
+    state = {
+        pageLinks: [
+            {txt: "Facebook", link: "www.facebook.com"},
+            {txt: "Twitter", link: "www.twitter.com"}
+        ]
+    };
 
-  /**
-   * Logs out the user and redirects him to home.
-   */
-  logout = () => {
-    fire.auth().signOut();
-    this.props.history.push("/");
-  };
+    /**
+     * Logs out the user and redirects him to home.
+     */
+    logout = () => {
+        fire.auth().signOut();
+        this.props.history.push("/");
+    };
 
     render() {
         const {user, type, loadedResponse} = this.props;
