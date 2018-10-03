@@ -5,6 +5,8 @@ import SignIn from "../containers/SignIn";
 import Home from "../containers/Home";
 import SignUp from "../containers/SignUp";
 import MyJobs from "../containers/MyJobs";
+import Profile from "../containers/Profile";
+import SearchPhotographer from "../containers/SearchPhotographer";
 import CreateJobb from "../containers/CreateJobb";
 import MyJobOffers from "../containers/MyJobOffers";
 import Jobs from "../containers/Jobs";
@@ -44,6 +46,16 @@ export default ({ user, loadedResponse, type }) => (
           />
         )}
       />
+<Route exact path="/profile"
+                   render={props => (
+                       <Profile
+                           {...props}
+                           user={user}
+                           loadedResponse={loadedResponse}
+                           type={type}
+                       />)}/>
+            <Route exact path="/profile/:uid" component={Profile}/>
+            <Route exact path="/search-photographers" render={props => <SearchPhotographer {...props} user={user}/>}/>
       <Route
         exact
         path="/createJob"
@@ -72,4 +84,5 @@ export default ({ user, loadedResponse, type }) => (
       <Redirect to="/" />
     </Switch>
   </BrowserRouter>
-);
+
+

@@ -5,7 +5,8 @@ import {Avatar} from "./Avatar";
 export const ProfileCard = ({
                                 backgroundImg,
                                 children,
-                                profileImg
+                                profileImg,
+                                type
                             }) => {
     return (
         <div className="gb-card-10-wrapper">
@@ -16,6 +17,7 @@ export const ProfileCard = ({
                 <div className="card-10-shadow-overlay"/>
                 <div className="card-10-content">
                     <h1 className="gb-title-xx-large gb-text-white">{children}</h1>
+                    <h3 className="gb-title-small gb-text-white">{type === "photographer" ? "Photographer" : "Company"}</h3>
                     <Avatar
                         userImageUrl={profileImg}
                         classes="profile-avatar gb-avatar-x-large"/>
