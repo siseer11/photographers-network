@@ -18,9 +18,15 @@ export default class Profile extends Component {
             {txt: "Facebook", link: "www.facebook.com"},
             {txt: "Twitter", link: "www.twitter.com"}
         ],
-        uid: this.props.match.params.uid
+        uid: this.props.match.params.uid || '',
+        fetchedUserData: false,
+        userData: null,
     };
     database = fire.database().ref();
+
+    componentDidMount() {
+        this.fetchUserInformation();
+    }
 
     /**
      * Logs out the user and redirects him to home.
@@ -30,21 +36,52 @@ export default class Profile extends Component {
         this.props.history.push('/');
     };
 
+    /**
+     * Fetches user information from the database with the uid-param.
+     */
     fetchUserInformation = () => {
-
+        const {uid} = this.state;
+        let userData = {};
+        this.database.child('users').child(uid).once('value')
+            .then(snap => {
+                let data = snap.val();
+                userData = {
+                    displayName: data.displayName,
+                    email: data.email,
+                    photoURL: data.photoURL,
+                };
+                //TODO: check, if it's your own profile
+                //if(snap.key !== this.props.user.uid) {
+                this.setState({userData: userData, fetchedUserData: true}, () => {
+                    console.log("loaded:" + this.state.fetchedUserData);
+                });
+                //}
+            });
     };
 
     render() {
-        const {user, type, loadedResponse} = this.props;
-        console.log(type);
-        // checks, if there is already a response of the database
-        // if not, shows the loading page
-        // if yes, checks, if there is actually a user (to avoid to get to the dashboard
-        // by just typing dashboard into the url), if there's none, redirects to home
+        const {user, type, loadedResponse, authenticated} = this.props;
+        const {fetchedUserData, userData, uid} = this.state;
+        console.log(user);
+        let otherUser = true;
+        let loaded = false;
+        let currUser = null;
+        if (loadedResponse && fetchedUserData) {
+            if (user.uid === uid || uid === '') {
+                otherUser = false;
+                currUser = user;
+            } else {
+                currUser = userData;
+            }
+            loaded = true;
+            console.log("loaded everything!");
+            console.log(currUser);
+        }
+
         return (
             <React.Fragment>
                 {
-                    loadedResponse ?
+                    loaded ?
                         (user ?
                             (
                                 <div className='profile'>
@@ -59,14 +96,14 @@ export default class Profile extends Component {
                                         profileImg="https://images.unsplash.com/photo-1520466809213-7b9a56adcd45?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ&s=6dd9dc582c677370d110940fda65b992"
                                         type={type}
                                     >
-                                        {user.displayName}
+                                        {currUser.displayName}
                                     </ProfileCard>
                                     <div className="profile-content">
                                         <LinkLists links={this.state.pageLinks}
                                                    txtClasses="gb-text-black-opacity-30 gb-subtitle-medium"
                                                    liClasses="footer-nav-item"/>
                                     </div>
-                                    {this.state.uid ? (<div>Not your own profile</div>) : (
+                                    {otherUser ? (<div>Not your own profile</div>) : (
                                         type === "photographer" ? (<PhotographerContent/>) : (<CompanyContent/>)
                                     )}
 
@@ -88,9 +125,10 @@ export default class Profile extends Component {
                                             }]}
                                     />
                                 </div>) :
-                            (<Redirect to="/"/>)) : (<LoadingPage/>)
+                            (<div>bla</div>)) : (<LoadingPage/>)
                 }
             </React.Fragment>
+            //<Redirect to="/"/>
         );
     }
 }

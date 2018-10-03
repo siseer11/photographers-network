@@ -11,7 +11,7 @@ import CreateJobb from "../containers/CreateJobb";
 import MyJobOffers from "../containers/MyJobOffers";
 import Jobs from "../containers/Jobs";
 
-export default ({user, loadedResponse, type}) => (
+export default ({user, loadedResponse, authenticated, type}) => (
     <BrowserRouter>
         <Switch>
             <Route
@@ -46,15 +46,15 @@ export default ({user, loadedResponse, type}) => (
                     />
                 )}
             />
-            <Route exact path="/profile"
+            <Route exact path="/profile/:uid"
                    render={props => (
                        <Profile
                            {...props}
                            user={user}
                            loadedResponse={loadedResponse}
                            type={type}
+                           authenticated={authenticated}
                        />)}/>
-            <Route exact path="/profile/:uid" component={Profile}/>
             <Route exact path="/search-photographers" render={props => <SearchPhotographer {...props} user={user}/>}/>
             <Route
                 exact
