@@ -4,7 +4,7 @@ export const LocationSVG = ({ classes }) => {
     return (
         <svg
             className={classes}
-            id="clock"
+            id="location"
             viewBox="0 0 41 32"
             width="100%"
             height="100%"

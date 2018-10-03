@@ -8,6 +8,7 @@ import {GbFooter} from '../components/Footer';
 import {SearchSVG} from '../components/svg/SearchSVG';
 import {DoneSVG} from '../components/svg/DoneSVG';
 import {CardSVG} from '../components/svg/CardSVG';
+import fire from '../config/Fire';
 
 /* rightLinks = [{txt : 'home' , link : '#'}] loggedIn={true/false} userImageUrl='link' profileLink='#' */
 class Home extends Component {
@@ -15,11 +16,15 @@ class Home extends Component {
         showModal: false
     }
 
-    showThisModal = (modalName) => {
-        this.setState({
-            showModal: modalName
-        })
-    }
+	componentDidMount(){
+		fire.database().ref('requests').once('value',(snap)=>console.log(snap.val()))
+	}
+
+	showThisModal = (modalName) => {
+		this.setState({
+			showModal : modalName
+		})
+	}
 
     render() {
         return (

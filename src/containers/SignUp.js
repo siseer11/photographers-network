@@ -10,24 +10,23 @@ import {CameraSVG} from '../components/svg/CameraSVG';
 import {LocationSVG} from "../components/svg/LocationSVG";
 
 export default class SignUp extends Component {
-    state = {
-        name: '',
-        email: '',
-        password: '',
-        password2: '',
-        location: '',
-        type: this.props.match.params.type || 'photographer'
-    };
-    database = fire.database().ref();
-    /**
-     * Updates state to the current value of a certain target.
-     * @param e
-     */
-    handleChange = (e) => {
-        this.setState({[e.target.name]: e.target.value});
-    };
+  state = {
+    name: "",
+    email: "",
+    password: "",
+    password2: "",
+    type: this.props.match.params.type || "photographer"
+  };
+  database = fire.database().ref();
+  /**
+   * Updates state to the current value of a certain target.
+   * @param e
+   */
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-    /**
+/**
      * Registers the user as photographer or company.
      *
      * @param e
@@ -74,44 +73,105 @@ export default class SignUp extends Component {
         }
     };
 
-    render() {
-        return (
-            <div className="section-content">
-                <form onSubmit={this.signup}>
-                    <h1>Sign Up</h1>
-                    <InputField svg={<NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>}
-                                value={this.state.name} changeHandler={this.handleChange} type="text" name="name"
-                                placeholder="Enter your name"/>
-                    <InputField svg={<EmailSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>}
-                                value={this.state.email} changeHandler={this.handleChange} type="email" name="email"
-                                placeholder="Enter email"/>
-                    <InputField svg={<PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>}
-                                value={this.state.password} changeHandler={this.handleChange} type="password"
-                                name="password"
-                                placeholder="Password"/>
-                    <InputField svg={<PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>}
-                                value={this.state.password2} changeHandler={this.handleChange} type="password"
-                                name="password2"
-                                placeholder="Repeat password"/>
-                    <InputField svg={<LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>}
+	optionSelectHandler = (type) => {
+		this.setState({
+			type : type,
+		})
+	}
+
+  showCustomSelectHandler = () => {
+    this.setState(
+      prevState => ({
+        showCustomSelect: !prevState.showCustomSelect
+      }),
+      () => {
+        if (this.state.showCustomSelect == true) {
+          window.addEventListener("click", e => {
+            if (!e.target.classList.contains("custom-select")) {
+              this.setState({
+                showCustomSelect: false
+              });
+            }
+          });
+        }
+      }
+    );
+  };
+
+  render() {
+    return (
+      <div className="section-content">
+        <form onSubmit={this.signup}>
+          <h1>Sign Up</h1>
+          <InputField
+            svg={
+              <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+            }
+            value={this.state.name}
+            changeHandler={this.handleChange}
+            type="text"
+            name="name"
+            placeholder="Enter your name"
+          />
+          <InputField
+            svg={
+              <EmailSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+            }
+            value={this.state.email}
+            changeHandler={this.handleChange}
+            type="email"
+            name="email"
+            placeholder="Enter email"
+          />
+          <InputField
+            svg={
+              <PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+            }
+            value={this.state.password}
+            changeHandler={this.handleChange}
+            type="password"
+            name="password"
+            placeholder="Password"
+          />
+          <InputField
+            svg={
+              <PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+            }
+            value={this.state.password2}
+            changeHandler={this.handleChange}
+            type="password"
+            name="password2"
+            placeholder="Repeat password"
+          />
+      <InputField svg={<LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>}
                                 value={this.state.location} changeHandler={this.handleChange} type="text"
                                 name="location"
                                 placeholder="Enter your location"/>
-                    <Select name="type" value={this.state.type} changeHandler={this.handleChange} options={[
-                        {val: "photographer", label: "Photographer"}, {val: "company", label: "Company"}
-                    ]} icon={
-                        this.state.type === 'photographer' ? (
-                            <CameraSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon"/>
-                        ) : (
-                            <BusinessCardSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon"/>
-                        )
-                    }/>
-                    <div className="btn-container">
-                        <input type="submit" value="Sign Up" className="gb-btn gb-btn-large gb-btn-primary"/>
-                    </div>
-                </form>
-            </div>
-        );
-    }
+          <div
+            className="custom-select gb-text-input gb-text-input-trans-background"
+            onClick={this.showCustomSelectHandler}
+          >
+            {this.state.type == "photographer" ? (
+              <CameraSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
+            ) : (
+              <BusinessCardSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
+            )}
+            {this.state.type}
+            <CustomSelect
+              showCustomSelect={this.state.showCustomSelect}
+              optionsList={["photographer", "company"]}
+              optionSelectHandler={this.optionSelectHandler}
+            />
+          </div>
+          <div className="btn-container">
+            <input
+              type="submit"
+              value="Sign Up"
+              className="gb-btn gb-btn-large gb-btn-primary"
+            />
+          </div>
+        </form>
+      </div>
+    );
+  }
 }
-
