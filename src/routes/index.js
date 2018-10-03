@@ -11,7 +11,7 @@ import CreateJobb from "../containers/CreateJobb";
 import MyJobOffers from "../containers/MyJobOffers";
 import Jobs from "../containers/Jobs";
 
-export default ({ user, loading, type , authentificated , setLoading }) => (
+export default ({ user, loading, type , authentificated , setLoading, loadedResponse }) => (
 	<BrowserRouter>
 		<Switch>
 			<Route
@@ -47,20 +47,11 @@ export default ({ user, loading, type , authentificated , setLoading }) => (
 					/>
 				)}
 			/>
-			<Route exact path="/profile"
-				render={props => (
-					<Profile
-						{...props}
-						user={user}
-						loading={loading}
-						type={type}
-						authentificated={authentificated}
-					/>)} />
 			<Route exact path="/profile/:uid" render={props => (
 					<Profile
 						{...props}
 						user={user}
-						loading={loading}
+						loading={loadedResponse}
 						type={type}
 						authentificated={authentificated}
 					/>)} />
@@ -95,6 +86,3 @@ export default ({ user, loading, type , authentificated , setLoading }) => (
 			<Redirect to="/" />
 		</Switch>
 	</BrowserRouter>
-);
-
-
