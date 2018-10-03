@@ -5,60 +5,74 @@ import "./style/photographer-style.css";
 import Routes from "./routes";
 
 class App extends Component {
-  state = {
-    user: null,
-    loadedResponse: false,
-    type: "",
-  };
-  database = fire.database().ref();
+	state = {
+		user: null,
+		loadedResponse: false,
+		type: "",
+		authentificated: false,
+		currentUsser: null,
+		loading: true,
+	};
+	database = fire.database().ref();
 
-  /**
-   * Checks user state, each time a component did mount.
-   */
-  componentDidMount() {
-    this.authListener();
-  }
+	/**
+		* Checks user state, each time a component did mount.
+		*/
+	componentDidMount() {
+		this.authListener();
+	}
 
-  /**
-   * Checks, if user is logged in and updates state.
-   */
-  authListener = () => {
-    fire.auth().onAuthStateChanged(user => {
-      if (user) {
-        let currUser = {
-          displayName: user.displayName,
-          email: user.email,
-          uid: user.uid,
-          photoURL: user.photoURL
-        };
-        this.setState({ user: currUser }, () => {
-          this.getUserType();
-        });
-        console.log('user on')
-      } else {
-        console.log('no user on')
-        this.setState({ user: null , loadedResponse : false });
-      }
-    });
-  };
+	/**
+		* Checks, if user is logged in and updates state.
+		*/
+	authListener = () => {
+		fire.auth().onAuthStateChanged(user => {
+			if (user) {
+				console.log('there is an user on')
+				this.getUserInfos(user.uid);
 
-  /**
-   * Checks, if current user is a photographer or a company.
-   */
-  getUserType = () => {
-    const { user } = this.state;
-    this.database.child(`photographer/${user.uid}`).once("value", snap => {
-      this.setState({
-        type: snap.exists() ? "photographer" : "company",
-        loadedResponse: true
-      });
-    });
-  };
+			} else {
+				this.setState({
+					loading: false,
+					currentUsser: null,
+					authentificated: false,
+					type: '',
+				});
+				console.log('no user')
+			}
+		});
+	};
 
-  render() {
-    const { user, loadedResponse, type } = this.state;
-    return <Routes user={user} loadedResponse={loadedResponse} type={type} />;
-  }
+	/**
+		* Checks, if current user is a photographer or a company.
+		*/
+	getUserInfos = (userId) => {
+
+		this.database
+			.child("users")
+			.child(userId)
+			.once('value',(snap)=>{
+				console.log(snap.val());
+				const userInfos = snap.val();
+				this.setState(()=>({
+					currentUsser : {...userInfos , userId : userId},
+					loading : false,
+					authentificated : true,
+				}))
+			}).catch((err)=>console.log(err))
+
+	};
+
+	setLoading = (to) => {
+		this.setState(() => ({
+			loading: to,
+		}))
+	}
+
+	render() {
+		const { currentUsser, loading, type, authentificated } = this.state;
+		return <Routes setLoading={this.setLoading} user={currentUsser} loading={loading} type={type} authentificated={authentificated} />;
+	}
 }
 
 export default App;
