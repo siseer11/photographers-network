@@ -10,6 +10,7 @@ import SearchPhotographer from "../containers/SearchPhotographer";
 import CreateJobb from "../containers/CreateJobb";
 import MyJobOffers from "../containers/MyJobOffers";
 import Jobs from "../containers/Jobs";
+import SingleJob from '../containers/SingleJob'
 
 export default ({ user, loading, type , authentificated , setLoading }) => (
 	<BrowserRouter>
@@ -91,6 +92,20 @@ export default ({ user, loading, type , authentificated , setLoading }) => (
 					/>
 				)}
 			/>
+			<Route 
+				exact
+				path='/job/:jobid'
+				render={
+					props=>(
+						<SingleJob
+						{...props}
+						user={user}
+						loading={loading}
+						type={type}
+						authentificated={authentificated}
+						/>
+					)
+				}/>
 			<Route exact path='/jobs' component={Jobs} />
 			<Redirect to="/" />
 		</Switch>

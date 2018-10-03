@@ -16,10 +16,6 @@ class Home extends Component {
 		showModal: false
 	};
 
-	componentDidMount() {
-		fire.database().ref('requests').once('value', (snap) => console.log(snap.val()))
-	}
-
 	showThisModal = (modalName) => {
 		this.setState({
 			showModal: modalName

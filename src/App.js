@@ -6,9 +6,7 @@ import Routes from "./routes";
 
 class App extends Component {
 	state = {
-		user: null,
 		loadedResponse: false,
-		type: "",
 		authentificated: false,
 		currentUsser: null,
 		loading: true,
