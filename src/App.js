@@ -9,6 +9,9 @@ class App extends Component {
         user: null,
         loadedResponse: false,
         type: "",
+        authentificated: false,
+        currentUsser: null,
+        loading: true,
     };
     database = fire.database().ref();
 
@@ -31,13 +34,23 @@ class App extends Component {
                     uid: user.uid,
                     photoURL: user.photoURL
                 };
-                this.setState({user: currUser}, () => {
+                this.setState({
+                    user: currUser,
+                    loading : false,
+                    authentificated : true,
+                }, () => {
                     this.getUserType();
                 });
-                console.log('user on')
+                console.log('user on');
             } else {
-                console.log('no user on')
-                this.setState({user: null, loadedResponse: false});
+                console.log('no user on');
+                this.setState({
+                    loading: false,
+                    user: null,
+                    authentificated: false,
+                    type: '',
+                    loadedResponse: false,
+                });
             }
         });
     };
@@ -55,9 +68,15 @@ class App extends Component {
         });
     };
 
+    setLoading = (to) => {
+        this.setState(() => ({
+            loading: to,
+        }))
+    };
+
     render() {
-        const {user, loadedResponse, type} = this.state;
-        return <Routes user={user} loadedResponse={loadedResponse} type={type}/>;
+        const {currentUsser, user, loadedResponse, type, authentificated} = this.state;
+        return <Routes loadedResponse={loadedResponse} setLoading={this.setLoading} user={user} loading={loading} type={type} authentificated={authentificated} />;
     }
 }
 
