@@ -4326,6 +4326,7 @@ ul.carousel-1-pagination {
 
 .gb-card-7-wrapper .card-7-content {
     z-index: 2;
+    margin: 0 auto;
 }
 
 @media screen and (min-width: 768px) {
@@ -4376,3 +4377,56 @@ ul.carousel-1-pagination {
 }
 
   /* Gb-card-7 ends */
+
+  /**gb card-8 start**/
+
+.gb-card-8-wrapper {
+    min-height: 100vh;
+    padding-top: 60px;
+    background-color: #fff;
+}
+.gb-card-8-sub-card {
+    position: relative;
+}
+
+.gb-card-8-sub-card .gb-card-8-sub-card-image {
+    display: none;
+}
+
+.gb-card-8-sub-card .gb-card-8-sub-card-info {
+    position: relative;
+    padding: 20px 15px 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.gb-card-8-sub-card .posted-info {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    margin: 10px 0;
+}
+
+.gb-card-8-sub-card .posted-info li {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    margin-right: 20px;
+    font-size: 13px;
+}
+.gb-card-8-sub-card .posted-info svg {
+    margin-right: 2px;
+}
+
+/**gb card-8 ends**/
