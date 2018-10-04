@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {Redirect, Link} from "react-router-dom";
 import LoadingPage from "../components/LoadingPage";
+import {PhotographerDashboardHeader} from "../components/photographerDashboardHeader";
+import {CompanyDashboardHeader} from "../components/comapnyDashboardHeader";
 import GbNavBar from '../components/gbNav';
 import fire from '../config/Fire';
 
@@ -21,7 +23,8 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    const {authentificated, type, loading} = this.props;
+    const {user, type, loadedResponse} = this.props;
+    console.log(type);
     // checks, if there is already a response of the database
     // if not, shows the loading page
     // if yes, checks, if there is actually a user (to avoid to get to the dashboard
@@ -29,21 +32,38 @@ export default class Dashboard extends Component {
     return (
       <React.Fragment>
         {
-          loading ? (
-            <LoadingPage/>
-          ) : (
-            authentificated ? (
-              <DashboardView {...this.props} logoutHandler={this.logout}/>
-            ) : (
-              <Redirect to="/signIn"/>
-            )
-          )
+          loadedResponse ?
+            (user ?
+              (
+                <div className='dashboard'>
+                  <GbNavBar
+                    righLinks={
+                      [{txt: 'Sign out', clickHandler: this.logout}]
+                    }
+                    loggedIn={false}
+                  >
+                    Welcome {user.displayName}!
+                  </GbNavBar>
+
+                  {type === "photographer" ? (
+                      <PhotographerDashboardHeader>
+                        Welcome {user.displayName}!
+                      </PhotographerDashboardHeader>)
+                    : (
+                      <CompanyDashboardHeader>
+                        Welcome {user.displayName}!
+                      </CompanyDashboardHeader>
+                    )}
+
+                </div>) :
+              (<Redirect to="/"/>)) : (<LoadingPage/>)
         }
       </React.Fragment>
     );
   }
 }
 
+/*
 const DashboardView = ({type, user, logoutHandler}) => (
   <div className='dashboard' style={{backgroundColor: 'rgba(0,0,0,.5)', width: '100vw', height: '100vh'}}>
     <GbNavBar
@@ -56,4 +76,4 @@ const DashboardView = ({type, user, logoutHandler}) => (
     <Link to={profilePath} className="gb-btn gb-btn-small gb-btn-primary">Userprofile</Link>
     <Link to='/search-photographers' className="gb-btn gb-btn-small gb-btn-primary">Search photographers</Link>
   </div>
-)
+)*/
