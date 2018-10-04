@@ -77,11 +77,12 @@ export default class Dashboard extends Component {
     return (
       <React.Fragment>
         {
-         loading?<LoadingPage/>:user?<DashboardView type={user.type} user={user} logoutHandler={this.logout}
-         linkHandler={this.setComponentToShow} headerLinks={activeType.headerLinks}
-         activeComponent={activeType.headerLinks.map((link) => {
-           if (link.active) return (link.component);
-         })}/>:<Redirect to='/'/>
+          loading ? <LoadingPage/> : user ?
+            <DashboardViewWithNav {...this.props} type={user.type} user={user} logoutHandler={this.logout}
+                                  linkHandler={this.setComponentToShow} headerLinks={activeType.headerLinks}
+                                  activeComponent={activeType.headerLinks.map((link) => {
+                                    if (link.active) return (link.component);
+                                  })}/> : <Redirect to='/'/>
         }
       </React.Fragment>
     );

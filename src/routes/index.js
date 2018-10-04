@@ -11,7 +11,7 @@ import MyJobOffers from "../containers/MyJobOffers";
 import {JobsWithFooter} from "../containers/Jobs";
 import SingleJob from '../containers/SingleJob'
 
-export default ({user, loading, type, authenticated}) => (
+export default ({user, loading}) => (
   <BrowserRouter>
     <Switch>
       <Route
@@ -40,7 +40,6 @@ export default ({user, loading, type, authenticated}) => (
             {...props}
             user={user}
             loading={loading}
-            authenticated={authenticated}
           />
         )}
       />

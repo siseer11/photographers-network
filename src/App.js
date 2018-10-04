@@ -28,7 +28,7 @@ class App extends Component {
         this.getUserInfos(user.uid);
       } else {
         this.setState({
-          loading: false,
+          loading: true,
           user: null,
           authenticated: false
         });
