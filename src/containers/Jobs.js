@@ -2,8 +2,9 @@ import React from 'react';
 import fire from '../config/Fire';
 import queryString from 'query-string';
 import {JobsView} from '../components/JobsView';
+import {WithNavFooter} from '../components/WithNavFooter';
 
-export default class Jobs extends React.Component {
+class Jobs extends React.Component {
 	state = {
 		loading: true,
 		jobs: [],
@@ -115,3 +116,5 @@ export default class Jobs extends React.Component {
 		)
 	}
 }
+
+export const JobsWithFooter = WithNavFooter(Jobs);

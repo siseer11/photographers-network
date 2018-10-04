@@ -26,9 +26,7 @@ class App extends Component {
     fire.auth().onAuthStateChanged(user => {
       if (user) {
         this.getUserInfos(user.uid);
-        console.log('user on');
       } else {
-        console.log('no user on');
         this.setState({
           loading: false,
           user: null,

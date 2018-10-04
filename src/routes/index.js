@@ -8,7 +8,7 @@ import {ProfileWithNav} from "../containers/Profile";
 import SearchPhotographer from "../containers/SearchPhotographer";
 import CreateJobb from "../containers/CreateJobb";
 import MyJobOffers from "../containers/MyJobOffers";
-import Jobs from "../containers/Jobs";
+import {JobsWithFooter} from "../containers/Jobs";
 import SingleJob from '../containers/SingleJob'
 
 export default ({user, loading, type, authenticated}) => (
@@ -73,19 +73,19 @@ export default ({user, loading, type, authenticated}) => (
           />
         )}
       />
-      <Route
-        exact
-        path='/job/:jobid'
-        render={
-          props => (
-            <SingleJob
-              {...props}
-              user={user}
-              loading={loading}
-            />
-          )
-        }/>
-      <Route exact path='/jobs' component={Jobs}/>
+      <Route 
+				exact
+				path='/job/:jobid'
+				render={
+					props=>(
+						<SingleJob
+						{...props}
+						user={user}
+						loading={loading}
+						/>
+					)
+				}/>
+      <Route exact path='/jobs' component={JobsWithFooter}/>
       <Redirect to="/"/>
     </Switch>
   </BrowserRouter>
