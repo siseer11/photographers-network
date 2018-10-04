@@ -65,7 +65,7 @@ export default class Dashboard extends Component {
   render() {
     const {user, loading} = this.props;
     let activeType = '';
-    if (!loading) {
+    if (!loading && user) {
       activeType = this.state[user.type];
     } // either company or photographer
 
@@ -76,16 +76,11 @@ export default class Dashboard extends Component {
     return (
       <React.Fragment>
         {
-          !loading ?
-            (user ?
-              (
-                <DashboardView type={user.type} user={user} logoutHandler={this.logout}
-                               linkHandler={this.setComponentToShow} headerLinks={activeType.headerLinks}
-                               activeComponent={activeType.headerLinks.map((link) => {
-                                 if (link.active) return (link.component);
-                               })}/>
-              ) :
-              (<Redirect to="/"/>)) : (<LoadingPage/>)
+         loading?<LoadingPage/>:user?<DashboardView type={user.type} user={user} logoutHandler={this.logout}
+         linkHandler={this.setComponentToShow} headerLinks={activeType.headerLinks}
+         activeComponent={activeType.headerLinks.map((link) => {
+           if (link.active) return (link.component);
+         })}/>:<Redirect to='/'/>
         }
       </React.Fragment>
     );

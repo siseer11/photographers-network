@@ -9,7 +9,7 @@ import Profile from "../containers/Profile";
 import SearchPhotographer from "../containers/SearchPhotographer";
 import CreateJobb from "../containers/CreateJobb";
 import MyJobOffers from "../containers/MyJobOffers";
-import Jobs from "../containers/Jobs";
+import {JobsWithFooter} from "../containers/Jobs";
 import SingleJob from '../containers/SingleJob'
 
 export default ({user, loading, type}) => (
@@ -83,11 +83,10 @@ export default ({user, loading, type}) => (
 						{...props}
 						user={user}
 						loading={loading}
-						authenticated={authenticated}
 						/>
 					)
 				}/>
-      <Route exact path='/jobs' component={Jobs}/>
+      <Route exact path='/jobs' component={JobsWithFooter}/>
       <Redirect to="/"/>
     </Switch>
   </BrowserRouter>
