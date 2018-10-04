@@ -5,7 +5,7 @@ import LoadingPage from "../components/LoadingPage";
 import fire from '../config/Fire';
 
 // components
-import {DashboardView} from "../components/dashboardComponents/DashboardView";
+import {DashboardViewWithNav} from "../components/dashboardComponents/DashboardView";
 import {MyJobsPhotographerList} from "../components/dashboardComponents/gb-card-myjobs-photographer-list";
 import {PhotographerPortfolioList} from "../components/dashboardComponents/gb-card-photographer-portfolio-list";
 import {CompanyPortfolioList} from "../components/dashboardComponents/gb-card-company-portfolio-list";
@@ -39,6 +39,7 @@ export default class Dashboard extends Component {
   };
   database = fire.database().ref();
 
+
   /**
    * Logs out the user and redirects him to home.
    */
@@ -63,9 +64,9 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    const {user, loading} = this.props;
+    const {user, loading, authenticated} = this.props;
     let activeType = '';
-    if (!loading) {
+    if (!loading && user) {
       activeType = this.state[user.type];
     } // either company or photographer
 
@@ -76,16 +77,27 @@ export default class Dashboard extends Component {
     return (
       <React.Fragment>
         {
+          loading ? (<LoadingPage/>) : (
+            user ?
+              (<DashboardViewWithNav {...this.props} type={user.type} user={user} logoutHandler={this.logout}
+                                     linkHandler={this.setComponentToShow} headerLinks={activeType.headerLinks}
+                                     activeComponent={activeType.headerLinks.map((link) => {
+                                       if (link.active) return (link.component);
+                                     })}/>) :
+              (<Redirect to="/"/>)
+          )
+          /*
           !loading ?
             (user ?
               (
-                <DashboardView type={user.type} user={user} logoutHandler={this.logout}
-                               linkHandler={this.setComponentToShow} headerLinks={activeType.headerLinks}
-                               activeComponent={activeType.headerLinks.map((link) => {
-                                 if (link.active) return (link.component);
-                               })}/>
+                <DashboardViewWithNav {...this.props} type={user.type} user={user} logoutHandler={this.logout}
+                                      linkHandler={this.setComponentToShow} headerLinks={activeType.headerLinks}
+                                      activeComponent={activeType.headerLinks.map((link) => {
+                                        if (link.active) return (link.component);
+                                      })}/>
               ) :
               (<Redirect to="/"/>)) : (<LoadingPage/>)
+              */
         }
       </React.Fragment>
     );

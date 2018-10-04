@@ -8,6 +8,7 @@ class App extends Component {
   state = {
     user: null,
     loading: true,
+    authenticated: false
   };
   database = fire.database().ref();
 
@@ -29,8 +30,9 @@ class App extends Component {
       } else {
         console.log('no user on');
         this.setState({
-          loading: true,
+          loading: false,
           user: null,
+          authenticated: false
         });
       }
     });
@@ -50,14 +52,15 @@ class App extends Component {
 				this.setState(()=>({
 					user : {...userInfos , uid : userId},
 					loading : false,
+          authenticated: true
 				}))
 			}).catch((err)=>console.log(err))
 
 	};
 
 	render() {
-		const { user, loading } = this.state;
-		return <Routes user={user} loading={loading} />;
+		const { user, loading, authenticated } = this.state;
+		return <Routes user={user} loading={loading} authenticated={authenticated} />;
 	}
 }
 
