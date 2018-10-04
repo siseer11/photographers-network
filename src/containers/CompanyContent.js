@@ -6,11 +6,10 @@ class CompanyContent extends Component {
     render() {
         return (
             <div className="section-content normalized">
-                <h3>Create job offer</h3>
+                <Link to='../createJob'>Create job offer</Link>
                 <p>Here you can create your job offer</p>
                 <h3>Search photographers</h3>
-                <SearchInput placeholder="Type in a city/location..."/>
-                <p>Here are photographers near your location</p>
+                <Link to="/search-photographers" className="gb-btn gb-btn-medium gb-btn-primary">Search now...</Link>
             </div>
         )
     }
