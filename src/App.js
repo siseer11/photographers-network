@@ -1,46 +1,46 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import fire from "./config/Fire";
 import "./style/gb-style.css";
 import "./style/photographer-style.css";
 import Routes from "./routes";
 
 class App extends Component {
-	state = {
-		user: null,
-		loading: true,
-	};
-	database = fire.database().ref();
+  state = {
+    user: null,
+    loading: true,
+  };
+  database = fire.database().ref();
 
-	/**
-		* Checks user state, each time a component did mount.
-		*/
-	componentDidMount() {
-		this.authListener();
-	}
+  /**
+   * Checks user state, each time a component did mount.
+   */
+  componentDidMount() {
+    this.authListener();
+  }
 
-	/**
-		* Checks, if user is logged in and updates state.
-		*/
-	authListener = () => {
-		fire.auth().onAuthStateChanged(user => {
-			if (user) {
-				console.log('there is an user on')
-				this.getUserInfos(user.uid);
-			} else {
-				this.setState({
-					loading: false,
-					user: null,
-				});
-				console.log('no user')
-			}
-		});
-	};
+  /**
+   * Checks, if user is logged in and updates state.
+   */
+  authListener = () => {
+    fire.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.getUserInfos(user.uid);
+        console.log('user on');
+      } else {
+        console.log('no user on');
+        this.setState({
+          loading: true,
+          user: null,
+        });
+      }
+    });
+  };
 
-	/**
-		* Checks, if current user is a photographer or a company.
-		*/
-	getUserInfos = (userId) => {
-
+  /**
+   *
+   * @param userId
+   */
+  getUserInfos = (userId) => {
 		this.database
 			.child("users")
 			.child(userId)

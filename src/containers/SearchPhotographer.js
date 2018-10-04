@@ -32,11 +32,7 @@ export default class SearchPhotographer extends Component {
   search = (e, location) => {
     e.preventDefault();
     let photographers = [];
-    this.database
-      .child("locations")
-      .child(location)
-      .child("photographer")
-      .once("value")
+    this.database.child("locations").child(location).child("photographer").once("value")
       .then(snapshots => {
         snapshots.forEach(snap => {
           let data = snap.val();
@@ -64,51 +60,32 @@ export default class SearchPhotographer extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="search-photographer section-content normalized">
+        <div className='search-photographer section-content normalized'>
           <GbNavBar
-            righLinks={
-              this.props.user
-                ? [{ txt: "Sign out", clickHandler: this.logout }]
-                : [
-                    {
-                      txt: "Sign in",
-                      link: "signIn"
-                    }
-                  ]
+            righLinks={this.props.user ? [{txt: 'Sign out', clickHandler: this.logout}] : ([{
+              txt: 'Sign in',
+              link: 'signIn'
+            }])
             }
             loggedIn={false}
           />
           <h1 className="gb-title-medium">Search for a photographer in</h1>
-          <SearchInput
-            name="searchValue"
-            value={this.state.searchValue}
-            placeholder="Type in a city/location..."
-            changeHandler={this.handleChange}
-            searchHandler={this.search}
-          />
-          <PhotographerResults photographers={this.state.photographerResults} />
+          <SearchInput name="searchValue" value={this.state.searchValue}
+                       placeholder="Type in a city/location..." changeHandler={this.handleChange}
+                       searchHandler={this.search}/>
+          <PhotographerResults photographers={this.state.photographerResults}/>
         </div>
         <GbFooter
           socialMedias={[
             {
-              icon: (
-                <InstagramSVG classes="gb-icon-fill-black-opacity-30 gb-icon-small" />
-              ),
-              link: "#"
+              icon: <InstagramSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small'/>,
+              link: '#'
             },
+            {icon: <TwitterSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small'/>, link: '#'},
             {
-              icon: (
-                <TwitterSVG classes="gb-icon-fill-black-opacity-30 gb-icon-small" />
-              ),
-              link: "#"
-            },
-            {
-              icon: (
-                <FacebookSVG classes="gb-icon-fill-black-opacity-30 gb-icon-small" />
-              ),
-              link: "#"
-            }
-          ]}
+              icon: <FacebookSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small'/>,
+              link: '#'
+            }]}
         />
       </React.Fragment>
     );
