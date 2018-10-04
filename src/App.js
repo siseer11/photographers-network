@@ -7,7 +7,7 @@ import Routes from "./routes";
 class App extends Component {
   state = {
     user: null,
-    loading: true,
+    loading: null,
   };
   database = fire.database().ref();
 
@@ -24,15 +24,22 @@ class App extends Component {
   authListener = () => {
     fire.auth().onAuthStateChanged(user => {
       if (user) {
-        this.getUserInfos(user.uid);
+       this.getUserInfos(user.uid);
       } else {
-        this.setState({
-          loading: false,
+        this.setState((prevState)=>({
+          loading: (prevState.loading!==null),
           user: null,
-        });
+        }));
       }
     });
   };
+
+  setLoadingTrue = () => {
+   console.log("HHHHHHHERERE")
+   this.setState({
+    loading : true,
+   })
+  }
 
   /**
    *
@@ -55,7 +62,7 @@ class App extends Component {
 
 	render() {
 		const { user, loading } = this.state;
-		return <Routes user={user} loading={loading} />;
+		return <Routes user={user} loading={loading} setLoadingTrue={this.setLoadingTrue}/>;
 	}
 }
 
