@@ -115,14 +115,14 @@ const ProfileView = ({isOtherUser, user, logoutHandler, pageLinks}) => (
     </ProfileCard>
 
     <div className="profile-content">
-      <LinkLists links={this.state.pageLinks}
+      <LinkLists links={pageLinks}
                  txtClasses="gb-text-black-opacity-30 gb-subtitle-medium"
                  liClasses="footer-nav-item"/>
     </div>
 
     {isOtherUser ?
       (<div>Not your own profile</div>) :
-      (type === "photographer" ?
+      (user.type === "photographer" ?
           (<PhotographerContent/>) :
           (<CompanyContent/>)
       )

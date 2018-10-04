@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SourceSVG } from './svg/SourceSVG';
+import { SourceSVG } from '../svg/SourceSVG';
 
 export const MyJobsPhotographer = ({ heading, paragraph, source, date, link }) => {
 
@@ -23,8 +23,7 @@ export const MyJobsPhotographer = ({ heading, paragraph, source, date, link }) =
       </div>
     </li>
   );
-
-}
+};
 
 MyJobsPhotographer.propTypes = {
   heading: PropTypes.string.isRequired,
@@ -32,4 +31,4 @@ MyJobsPhotographer.propTypes = {
   date: PropTypes.string.isRequired,
   time: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
-}
+};

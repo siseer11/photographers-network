@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { PhotographerPortfolio } from './gb-card-photographer-portfolio';
-import '../style/gb-style.css';
+import '../../style/gb-style.css';
 
 export const PhotographerPortfolioList = ({ card }) => {
 
@@ -9,16 +9,15 @@ export const PhotographerPortfolioList = ({ card }) => {
     <div className="gb-card-one-wrapper">
       <ul className="gb-card-one">
         {
-          card.map((cardlist) => (
+          card.map((cardList, key) => (
             <PhotographerPortfolio
-              
-              
-              follower={cardlist.follower}
-              category={cardlist.category}
-              background={cardlist.background}
-              buttonLink= {cardlist.buttonLink}
-              buttonValue= {cardlist.buttonValue}
-              buttonClass= {cardlist.buttonClass}
+              key={key}
+              follower={cardList.follower}
+              category={cardList.category}
+              background={cardList.background}
+              buttonLink= {cardList.buttonLink}
+              buttonValue= {cardList.buttonValue}
+              buttonClass= {cardList.buttonClass}
             />
           ))
         }

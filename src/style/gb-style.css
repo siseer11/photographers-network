@@ -4351,6 +4351,13 @@ ul.carousel-1-pagination {
     }
 }
 
+@media screen and (max-width: 320px) {
+    .gb-btn-small {
+        width: 85px;
+        font-size: 10px;
+    }
+}
+
 .gb-card-7-wrapper .card-7-shadow-overlay {
     position: absolute;
     bottom: 0;
@@ -4426,11 +4433,6 @@ ul.carousel-1-pagination {
 }
 .gb-card-8-sub-card .posted-info svg {
     margin-right: 2px;
-}
-
-/**gb card-8 ends**/
-=======
-  justify-content: center;
 }
 
 /* Custom-select start */

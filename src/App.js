@@ -75,7 +75,7 @@ class App extends Component {
     };
 
     render() {
-        const {currentUsser, user, loadedResponse, type, authentificated} = this.state;
+        const {currentUsser, user, loadedResponse, type, authentificated, loading} = this.state;
         return <Routes loadedResponse={loadedResponse} setLoading={this.setLoading} user={user} loading={loading} type={type} authentificated={authentificated} />;
     }
 }

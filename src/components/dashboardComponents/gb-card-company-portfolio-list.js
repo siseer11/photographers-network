@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CompanyPortfolio } from './gb-card-company-portfolio';
-import '../style/gb-style.css';
+import '../../style/gb-style.css';
 
 export const CompanyPortfolioList = ({ card }) => {
 

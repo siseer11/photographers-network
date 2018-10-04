@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../style/gb-style.css';
-import { Button } from './Button';
+import '../../style/gb-style.css';
+import { Button } from '../Button';
 
-export const CompanyPortfolio = ({ follower, category, background, buttonLink, buttonClass, buttonValue }) => {
+export const PhotographerPortfolio = ({ follower, category, background, buttonLink, buttonClass, buttonValue }) => {
 
   return (
 
@@ -37,7 +37,7 @@ export const CompanyPortfolio = ({ follower, category, background, buttonLink, b
   );
 }
 
-CompanyPortfolio.propTypes = {
+PhotographerPortfolio.propTypes = {
   follower: PropTypes.arrayOf(PropTypes.array).isRequired,
   category: PropTypes.string.isRequired,
   background: PropTypes.object.isRequired,
