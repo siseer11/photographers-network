@@ -1,18 +1,21 @@
 import React from 'react';
 import fire from '../config/Fire';
-import { GbCard50 } from '../components/gbCard50';
-import { Link } from 'react-router-dom';
 import queryString from 'query-string';
+import {JobsView} from '../components/JobsView';
 
 export default class Jobs extends React.Component {
 	state = {
 		loading: true,
 		jobs: [],
 		searchValue: '',
-		locationsFiter: [],
+		locationsFilter: [],
 		typesFilter: [],
 	}
-
+ /** 
+ * When the component mounts, check to see if there are some parameters to filter in the link
+ * if there are , fetch from the DB just that data, if not fetch all the jobs data
+ * Populate types/locations with data from our jobs, to make the filter panel later
+ * */
 	componentDidMount() {
 		const searchQuerry = queryString.parse(this.props.location.search);
 		const requests = fire.database().ref('requests');
@@ -29,9 +32,7 @@ export default class Jobs extends React.Component {
 				})
 		} else {
 			requests.once('value', (snap) => {
-
 				let response = Object.values(snap.val());
-
 				let locations = [];
 				let types = [];
 
@@ -41,14 +42,12 @@ export default class Jobs extends React.Component {
 				})
 
 				this.setState({
-					locations,
-					types
-				})
-
-				this.setState({
-					jobs: Object.values(snap.val() || {}),
-					loading: false
-				})
+					locations : locations,
+     types : types,
+     jobs: Object.values(snap.val() || {}),
+					loading: false,
+    })
+   
 			}).then(() => console.log(this.state.jobs))
 		}
 	}
@@ -58,8 +57,12 @@ export default class Jobs extends React.Component {
 		this.setState({
 			[e.target.name]: e.target.value
 		})
-	}
-
+ }
+ 
+ /** 
+ * When a checkbox is clicked depending if it is true or not , 
+ * it either take the value out of the speicifc array or adds it, in the state.
+ * */
 	checkboxChangeHandler = (e) => {
 		const el = e.target;
 		const boxFor = el.dataset.for;
@@ -76,20 +79,21 @@ export default class Jobs extends React.Component {
 		}
 	}
 
+ filterJobs(jobsArr , searchValue , locationsFilter = false , typesFilter = false){
+  return jobsArr.filter((el)=>{
+   if(el.title.toLowerCase().indexOf(searchValue.toLowerCase()) < 0) return false;
+   if(locationsFilter && !locationsFilter.includes(el.location)) return false;
+   if(typesFilter && !typesFilter.includes(el.type)) return false;
+   return true;
+  })
+ }
+
 	render() {
-		let { loading, jobs: jobsList, searchValue, locations, types, locationsFiter, typesFilter } = this.state;
+		let { loading, jobs: jobsList, searchValue, locations, types, locationsFilter, typesFilter } = this.state;
 
-		if (searchValue) {
-			jobsList = jobsList.filter(el => el.title.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0);
-		}
 
-		if (locationsFiter.length > 0) {
-			jobsList = jobsList.filter(el => locationsFiter.includes(el.location))
-		}
+  jobsList = this.filterJobs(jobsList , searchValue , locationsFilter.length > 0 && locationsFilter , typesFilter.length > 0 && typesFilter)
 
-		if (typesFilter.length > 0) {
-			jobsList = jobsList.filter(el => typesFilter.includes(el.type))
-		}
 
 		return (
 			<div className='jobs-page'>
@@ -111,69 +115,3 @@ export default class Jobs extends React.Component {
 		)
 	}
 }
-
-
-const JobsView = ({ jobsList, searchValue, changeHandler, locations, types, checkboxChangeHandler }) => (
-	<div className='job-page-inner'>
-		<input
-			style={{ width: '100vw', height: 50, border: '2px solid black', borderRadius: 5, padding: '0 15px', boxSizing: 'border-box', margin: '10px 0' }}
-			type='text'
-			value={searchValue}
-			onChange={changeHandler}
-			name='searchValue'
-			placeholder='Search for a job..'
-		/>
-		{ locations && <h2>Filter By City</h2> }
-		{
-			locations && locations.map(el => (
-				<label key={el}>
-					{el}
-					<input type='checkbox' data-value={el} data-for='locationsFiter' onChange={checkboxChangeHandler} />
-				</label>
-			))
-		}
-		{ types && <h2>Filter By Type</h2> }
-		{
-			types && types.map(el => (
-				<label key={el}>
-					{el}
-					<input type='checkbox' data-value={el} data-for='typesFilter' onChange={checkboxChangeHandler} />
-				</label>
-			))
-		}
-		{
-			jobsList.length > 0 ? (
-				<React.Fragment>
-					<JobsList jobsList={jobsList} />
-				</React.Fragment>
-			) : (
-					<h2> NO JOB FOR YoU MAN! </h2>
-				)
-		}
-
-	</div>
-)
-
-
-
-const JobsList = ({ jobsList }) => (
-	<ul>
-		{
-			jobsList.map(el => (
-				<Link to={`job/${el.jobbId}`} key={el.jobbId}>
-					<GbCard50
-						type='half-left'
-						source={{
-							txt: el.companyName,
-							link: `/profile/${el.companyId}`
-						}}
-						postedTime={el.date}
-						category={el.type}
-					>
-						{el.title}
-					</GbCard50>
-				</Link>
-			))
-		}
-	</ul>
-)

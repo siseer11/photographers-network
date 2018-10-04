@@ -12,7 +12,7 @@ import MyJobOffers from "../containers/MyJobOffers";
 import Jobs from "../containers/Jobs";
 import SingleJob from '../containers/SingleJob'
 
-export default ({ user, loading, type , authentificated , setLoading }) => (
+export default ({ user, loading, authenticated }) => (
 	<BrowserRouter>
 		<Switch>
 			<Route
@@ -23,7 +23,6 @@ export default ({ user, loading, type , authentificated , setLoading }) => (
 						{...props}
 						user={user}
 						loading={loading}
-						type={type}
 					/>
 				)}
 			/>
@@ -32,7 +31,7 @@ export default ({ user, loading, type , authentificated , setLoading }) => (
 			<Route
 				exact
 				path="/signUp/:type"
-				render={props => <SignUp {...props} setLoading={setLoading}/>}
+				render={props => <SignUp {...props}/>}
 			/>
 			<Route exact path="/my-jobs" component={MyJobs} />
 			<Route
@@ -43,8 +42,7 @@ export default ({ user, loading, type , authentificated , setLoading }) => (
 						{...props}
 						user={user}
 						loading={loading}
-						type={type}
-						authentificated={authentificated}
+						authenticated={authenticated}
 					/>
 				)}
 			/>
@@ -54,16 +52,14 @@ export default ({ user, loading, type , authentificated , setLoading }) => (
 						{...props}
 						user={user}
 						loading={loading}
-						type={type}
-						authentificated={authentificated}
+						authenticated={authenticated}
 					/>)} />
 			<Route exact path="/profile/:uid" render={props => (
 					<Profile
 						{...props}
 						user={user}
 						loading={loading}
-						type={type}
-						authentificated={authentificated}
+						authenticated={authenticated}
 					/>)} />
 			<Route exact path="/search-photographers" render={props => <SearchPhotographer {...props} user={user} />} />
 			<Route
@@ -74,8 +70,7 @@ export default ({ user, loading, type , authentificated , setLoading }) => (
 						{...props}
 						user={user}
 						loading={loading}
-						type={type}
-						authentificated={authentificated}
+						authenticated={authenticated}
 					/>
 				)}
 			/>
@@ -87,8 +82,7 @@ export default ({ user, loading, type , authentificated , setLoading }) => (
 						{...props}
 						user={user}
 						loading={loading}
-						type={type}
-						authentificated={authentificated}
+						authenticated={authenticated}
 					/>
 				)}
 			/>
@@ -101,8 +95,7 @@ export default ({ user, loading, type , authentificated , setLoading }) => (
 						{...props}
 						user={user}
 						loading={loading}
-						type={type}
-						authentificated={authentificated}
+						authenticated={authenticated}
 						/>
 					)
 				}/>

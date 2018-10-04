@@ -36,7 +36,6 @@ export const GbCardLabel = ({
 GbCardLabel.propTypes = {
  iconColor: PropTypes.string.isRequired,
  txtColor: PropTypes.string.isRequired,
- source: PropTypes.string,
  time: PropTypes.string,
  category: PropTypes.string
 };

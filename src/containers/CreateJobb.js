@@ -40,8 +40,6 @@ componentDidMount() {
  })
 }
 
-
-
 /**
 * Function that deal with the custom select
 **/
@@ -50,6 +48,7 @@ componentDidMount() {
    jobbType: type,
   })
  }
+ 
  showCustomSelectHandler = () => {
   this.setState(
    prevState => ({

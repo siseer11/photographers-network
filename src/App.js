@@ -6,9 +6,7 @@ import Routes from "./routes";
 
 class App extends Component {
 	state = {
-		loadedResponse: false,
-		authentificated: false,
-		currentUsser: null,
+		user: null,
 		loading: true,
 	};
 	database = fire.database().ref();
@@ -28,13 +26,10 @@ class App extends Component {
 			if (user) {
 				console.log('there is an user on')
 				this.getUserInfos(user.uid);
-
 			} else {
 				this.setState({
 					loading: false,
-					currentUsser: null,
-					authentificated: false,
-					type: '',
+					user: null,
 				});
 				console.log('no user')
 			}
@@ -53,23 +48,16 @@ class App extends Component {
 				console.log(snap.val());
 				const userInfos = snap.val();
 				this.setState(()=>({
-					currentUsser : {...userInfos , userId : userId},
+					user : {...userInfos , uid : userId},
 					loading : false,
-					authentificated : true,
 				}))
 			}).catch((err)=>console.log(err))
 
 	};
 
-	setLoading = (to) => {
-		this.setState(() => ({
-			loading: to,
-		}))
-	}
-
 	render() {
-		const { currentUsser, loading, type, authentificated } = this.state;
-		return <Routes setLoading={this.setLoading} user={currentUsser} loading={loading} type={type} authentificated={authentificated} />;
+		const { user, loading } = this.state;
+		return <Routes user={user} loading={loading} />;
 	}
 }
 

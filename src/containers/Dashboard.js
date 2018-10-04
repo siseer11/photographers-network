@@ -21,7 +21,7 @@ export default class Dashboard extends Component {
 	};
 
 	render() {
-		const { authentificated, type, loading } = this.props;
+		const { loading , user } = this.props;
 		// checks, if there is already a response of the database
 		// if not, shows the loading page
 		// if yes, checks, if there is actually a user (to avoid to get to the dashboard
@@ -32,10 +32,10 @@ export default class Dashboard extends Component {
 					loading ? (
 						<LoadingPage />
 					):(
-						authentificated ?(
+						user ?(
 							<DashboardView {...this.props} logoutHandler={this.logout}/>
 						):(
-							<Redirect to="/signIn" />
+							<Redirect to="/" />
 						)
 					)
 				}

@@ -1,6 +1,6 @@
 import React from 'react';
 import fire from '../config/Fire';
-import {Link} from 'react-router-dom';
+import {SingleJobView} from '../components/SingleJobView';
 import LoadingPage from '../components/LoadingPage';
 
 export default class SingleJob extends React.Component {
@@ -40,16 +40,3 @@ export default class SingleJob extends React.Component {
   )
  }
 }
-
-const SingleJobView = ({companyId,companyName,date,description,location,status,price,title,type}) => (
- <React.Fragment>
-  <h2 style={{marginBottom:50}}>Single Job Page</h2>
-  <p>Job Title: {title}</p><hr/>
-  <p>Job Descrition: {description}</p><hr/>
-  <p>Job for the date of : {date}</p><hr/>
-  <p>Job in : <Link to={`../jobs?location=${location}`}>{location}</Link></p><hr/>
-  <p>Bugdget of : {price} SEK</p><hr/>
-  <p>Type of job : <Link to={`../jobs?type=${type}`}>{type}</Link> </p><hr/>
-  <p>Posted by: <Link to={`../profile/${companyId}`}>{companyName}</Link></p><hr/>
- </React.Fragment>
-)

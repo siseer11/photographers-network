@@ -7,7 +7,7 @@ import { MoneySVG } from './svg/MoneySVG';
 import { CameraSVG } from "./svg/CameraSVG";
 import { CalendarSVG } from "./svg/CalendarSVG";
 import { TextArea } from './TextArea';
-const types = ["nature", "portrait", "o3", "o4"];
+const types = ["nature", "portrait", "dogs", "cats"];
 
 export const CreateJobbForm = ({ 
  today,
