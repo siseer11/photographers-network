@@ -5,7 +5,7 @@ import LoadingPage from "../components/LoadingPage";
 import fire from '../config/Fire';
 
 // components
-import {DashboardView} from "../components/dashboardComponents/DashboardView";
+import {DashboardViewWithNav} from "../components/dashboardComponents/DashboardView";
 import {MyJobsPhotographerList} from "../components/dashboardComponents/gb-card-myjobs-photographer-list";
 import {PhotographerPortfolioList} from "../components/dashboardComponents/gb-card-photographer-portfolio-list";
 import {CompanyPortfolioList} from "../components/dashboardComponents/gb-card-company-portfolio-list";
@@ -39,6 +39,7 @@ export default class Dashboard extends Component {
   };
   database = fire.database().ref();
 
+
   /**
    * Logs out the user and redirects him to home.
    */
@@ -63,7 +64,7 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    const {user, loading} = this.props;
+    const {user, loading, authenticated} = this.props;
     let activeType = '';
     if (!loading && user) {
       activeType = this.state[user.type];
