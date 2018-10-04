@@ -10,8 +10,7 @@ import SearchPhotographer from "../containers/SearchPhotographer";
 import CreateJobb from "../containers/CreateJobb";
 import MyJobOffers from "../containers/MyJobOffers";
 import Jobs from "../containers/Jobs";
-import {PhotographerPortfolioList} from "../components/dashboardComponents/gb-card-photographer-portfolio-list";
-import {MyJobsPhotographerList} from "../components/dashboardComponents/gb-card-myjobs-photographer-list";
+import SingleJob from '../containers/SingleJob'
 
 export default ({user, loading, type}) => (
   <BrowserRouter>
@@ -75,6 +74,19 @@ export default ({user, loading, type}) => (
           />
         )}
       />
+      <Route 
+				exact
+				path='/job/:jobid'
+				render={
+					props=>(
+						<SingleJob
+						{...props}
+						user={user}
+						loading={loading}
+						authenticated={authenticated}
+						/>
+					)
+				}/>
       <Route exact path='/jobs' component={Jobs}/>
       <Redirect to="/"/>
     </Switch>

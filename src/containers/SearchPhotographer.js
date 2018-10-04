@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
-import GbNavBar from '../components/gbNav';
-import {SearchInput} from "../components/SearchInput";
-import {GbFooter} from '../components/Footer';
-import {InstagramSVG} from "../components/svg/InstagramSVG";
-import {TwitterSVG} from "../components/svg/TwitterSVG";
-import {FacebookSVG} from "../components/svg/FacebookSVG";
-import fire from '../config/Fire';
-import {PhotographerResults} from "../components/PhotographerResults";
+import React, { Component } from "react";
+import GbNavBar from "../components/gbNav";
+import { SearchInput } from "../components/SearchInput";
+import { GbFooter } from "../components/Footer";
+import { InstagramSVG } from "../components/svg/InstagramSVG";
+import { TwitterSVG } from "../components/svg/TwitterSVG";
+import { FacebookSVG } from "../components/svg/FacebookSVG";
+import fire from "../config/Fire";
+import { PhotographerResults } from "../components/PhotographerResults";
 
 export default class SearchPhotographer extends Component {
   state = {
-    searchValue: '',
+    searchValue: "",
     photographerResults: []
   };
   database = fire.database().ref();
@@ -19,8 +19,8 @@ export default class SearchPhotographer extends Component {
    * Updates state to the current value of a certain target.
    * @param e
    */
-  handleChange = (e) => {
-    this.setState({[e.target.name]: e.target.value});
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   /**
@@ -45,7 +45,7 @@ export default class SearchPhotographer extends Component {
         });
       })
       .then(() => {
-        this.setState({photographerResults: photographers});
+        this.setState({ photographerResults: photographers });
       });
   };
 
@@ -54,7 +54,7 @@ export default class SearchPhotographer extends Component {
    */
   logout = () => {
     fire.auth().signOut();
-    this.props.history.push('/');
+    this.props.history.push("/");
   };
 
   render() {

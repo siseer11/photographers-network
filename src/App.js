@@ -41,24 +41,24 @@ class App extends Component {
    * @param userId
    */
   getUserInfos = (userId) => {
-    this.database
-      .child("users")
-      .child(userId)
-      .once('value', (snap) => {
-        console.log(snap.val());
-        const userInfos = snap.val();
-        this.setState(() => ({
-          user: {...userInfos, uid: userId},
-          loading: false,
-        }))
-      }).catch((err) => console.log(err))
+		this.database
+			.child("users")
+			.child(userId)
+			.once('value',(snap)=>{
+				console.log(snap.val());
+				const userInfos = snap.val();
+				this.setState(()=>({
+					user : {...userInfos , uid : userId},
+					loading : false,
+				}))
+			}).catch((err)=>console.log(err))
 
-  };
+	};
 
-  render() {
-    const {user, loading} = this.state;
-    return <Routes user={user} loading={loading}/>;
-  }
+	render() {
+		const { user, loading } = this.state;
+		return <Routes user={user} loading={loading} />;
+	}
 }
 
 export default App;
