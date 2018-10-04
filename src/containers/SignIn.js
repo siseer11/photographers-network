@@ -13,7 +13,9 @@ export default class SignIn extends Component {
     errorMessage: "",
     error: false
   };
-
+  componentDidMount(){
+   this.props.setLoadingTrue();
+  }
   /**
    * Updates state to the current value of a certain target.
    * @param e
@@ -33,7 +35,6 @@ export default class SignIn extends Component {
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then((signInData) => {
-        
         this.props.history.push("/dashboard");
       })
       .catch(error => {

@@ -11,7 +11,13 @@ import MyJobOffers from "../containers/MyJobOffers";
 import {JobsWithFooter} from "../containers/Jobs";
 import SingleJob from '../containers/SingleJob'
 
+<<<<<<< HEAD
+export default ({user, loading, type , setLoadingTrue}) => (
+||||||| merged common ancestors
+export default ({user, loading, type}) => (
+=======
 export default ({user, loading, type, authenticated}) => (
+>>>>>>> 563339a3beada91d55d592de0e5302a977265961
   <BrowserRouter>
     <Switch>
       <Route
@@ -25,7 +31,7 @@ export default ({user, loading, type, authenticated}) => (
           />
         )}
       />
-      <Route exact path="/signIn" render={props => <SignIn {...props} />}/>
+      <Route exact path="/signIn" render={props => <SignIn {...props} setLoadingTrue={setLoadingTrue} loading={loading}/>}/>
       <Route exact path="/signUp" render={props => <SignUp {...props} />}/>
       <Route
         exact
