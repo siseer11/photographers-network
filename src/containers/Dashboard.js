@@ -63,9 +63,11 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    const {user, type, loadedResponse} = this.props;
+    const {user, loading} = this.props;
     let activeType = '';
-    if (loadedResponse) activeType = this.state[type]; // either company or photographer
+    if (!loading) {
+      activeType = this.state[user.type];
+    } // either company or photographer
 
     // checks, if there is already a response of the database
     // if not, shows the loading page
@@ -74,11 +76,11 @@ export default class Dashboard extends Component {
     return (
       <React.Fragment>
         {
-          loadedResponse ?
+          !loading ?
             (user ?
               (
-                <DashboardView type={type} user={user} linkHandler={this.setComponentToShow}
-                               headerLinks={activeType.headerLinks}
+                <DashboardView type={user.type} user={user} logoutHandler={this.logout}
+                               linkHandler={this.setComponentToShow} headerLinks={activeType.headerLinks}
                                activeComponent={activeType.headerLinks.map((link) => {
                                  if (link.active) return (link.component);
                                })}/>

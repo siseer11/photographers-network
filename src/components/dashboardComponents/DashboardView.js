@@ -12,12 +12,12 @@ import {TwitterSVG} from "../svg/TwitterSVG";
 import {FacebookSVG} from "../svg/FacebookSVG";
 
 
-export const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks}) => {
+export const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, logoutHandler}) => {
     return (
       <div>
         <GbNavBar
           righLinks={
-            [{txt: 'Sign out', clickHandler: this.logout}]
+            [{txt: 'Sign out', clickHandler: logoutHandler}]
           }
           loggedIn={false}
         />

@@ -46,6 +46,7 @@ export default class Profile extends Component {
    * Fetches user information from the database with the uid-param.
    */
   fetchUserInformation = () => {
+    //TODO: Error handling, if wrong uid in url
     const {uid} = this.state;
     this.database.child('users').child(uid).once('value')
       .then(snap => {
@@ -61,7 +62,7 @@ export default class Profile extends Component {
   };
 
   render() {
-    const {user, loadedResponse} = this.props;
+    const {user, loading} = this.props;
     const {fetchedUserData, userData, uid, pageLinks} = this.state;
 
     let otherUser = true;
@@ -70,8 +71,10 @@ export default class Profile extends Component {
 
     // looks if there is response from the current user
     // and the user data has been already fetched
-    if (loadedResponse && fetchedUserData) {
-      otherUser = user.uid !== uid;
+    if (!loading && fetchedUserData) {
+      if (user) {
+        otherUser = user.uid !== uid;
+      }
       currUser = userData;
       loaded = true;
       console.log("loaded everything!");
