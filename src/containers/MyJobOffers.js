@@ -41,7 +41,7 @@ class MyJobOffersFetch extends React.Component {
 				.child(this.props.user.uid)
 				.once('value', (snap) => {
 					/*After having the keys of the jobs go ahead and get the data about them */
-					let jobsIds = Object.keys(snap.val().postedJobs);
+					let jobsIds = Object.keys(snap.val().postedJobs || {});
 
 					if (jobsIds.length === 0) {
 						this.setState({
@@ -75,7 +75,10 @@ class MyJobOffersFetch extends React.Component {
 					loadingDb ? (
 						<h2>Loading db... stage {stage}/2</h2>
 					) : (
-							<ul>
+							jobsList.length===0?(
+								<h2>You have no jobs posted yet, create your first <Link to='/createJob'>here</Link></h2>
+							):(
+								<ul>
 								{
 									jobsList.map(el => (
 										<GbCard50
@@ -94,6 +97,8 @@ class MyJobOffersFetch extends React.Component {
 									))
 								}
 							</ul>
+							)
+							
 						)
 				}
 			</React.Fragment>
