@@ -73,22 +73,3 @@ class Homse extends Component {
 
 const Home = NavFooterWrapper(Homse);
 export default Home;
-
-/*
-
-				<GbNavBar
-					righLinks={this.props.user ? [{ txt: 'Dashboard', link: 'dashboard' }] : ([{
-						txt: 'Sign in',
-						link: 'signIn'
-					}])
-					}
-					loggedIn={false}
-				/>
-
-								<GbFooter
-					socialMedias={[
-						{ icon: <InstagramSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' },
-						{ icon: <TwitterSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' },
-						{ icon: <FacebookSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' }]}
-				/>
-				*/

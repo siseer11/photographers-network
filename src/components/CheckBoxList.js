@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export const CheckBoxList = ({list , checkboxChangeHandler , filterName}) => (
  <React.Fragment>
@@ -10,3 +11,9 @@ export const CheckBoxList = ({list , checkboxChangeHandler , filterName}) => (
   ))}
  </React.Fragment>
 )
+
+CheckBoxList.propTypes = {
+ list : PropTypes.array,
+ checkboxChangeHandler : PropTypes.func,
+ filterName : PropTypes.string,
+}
