@@ -8,9 +8,10 @@ import { GbFooter } from '../components/Footer';
 import { SearchSVG } from '../components/svg/SearchSVG';
 import { DoneSVG } from '../components/svg/DoneSVG';
 import { CardSVG } from '../components/svg/CardSVG';
+import {NavFooterWrapper} from '../containers/NavFooterWrapper';
 
 /* rightLinks = [{txt : 'home' , link : '#'}] loggedIn={true/false} userImageUrl='link' profileLink='#' */
-class Home extends Component {
+class Homse extends Component {
 	state = {
 		showModal: false
 	};
@@ -22,17 +23,8 @@ class Home extends Component {
 	};
 
 	render() {
-		console.log(this.props.user)
 		return (
 			<div className="home-page">
-				<GbNavBar
-					righLinks={this.props.user ? [{ txt: 'Dashboard', link: 'dashboard' }] : ([{
-						txt: 'Sign in',
-						link: 'signIn'
-					}])
-					}
-					loggedIn={false}
-				/>
 				<div className='header'>
 					<GbCard50Skewed
 						backgroundUrl='https://images.unsplash.com/photo-1516807947649-1054add6bc97?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=11be05062d1f7ba80ca7d217e0aa241f&auto=format&fit=crop&w=1049&q=80'
@@ -73,15 +65,30 @@ class Home extends Component {
 						}]}
 					/>
 				</div>
-				<GbFooter
-					socialMedias={[
-						{ icon: <InstagramSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' },
-						{ icon: <TwitterSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' },
-						{ icon: <FacebookSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' }]}
-				/>
+
 			</div>
 		);
 	}
 }
 
+const Home = NavFooterWrapper(Homse);
 export default Home;
+
+/*
+
+				<GbNavBar
+					righLinks={this.props.user ? [{ txt: 'Dashboard', link: 'dashboard' }] : ([{
+						txt: 'Sign in',
+						link: 'signIn'
+					}])
+					}
+					loggedIn={false}
+				/>
+
+								<GbFooter
+					socialMedias={[
+						{ icon: <InstagramSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' },
+						{ icon: <TwitterSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' },
+						{ icon: <FacebookSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small' />, link: '#' }]}
+				/>
+				*/

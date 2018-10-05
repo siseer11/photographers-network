@@ -16,6 +16,53 @@ export const NavFooterWrapper = WrappedComponent => {
     /**
      * Logs out the user and redirects him to home.
      */
+    state = {
+      userOn : false,
+      links : [{txt: 'Home' , link:'home' , nav:true},{txt: 'Jobs' , link:'jobs' , nav:true},{txt: 'Sign in', link: 'signIn'}]
+    }
+
+    componentDidMount(){
+      this.updateLinks(this.props.user)
+    }
+
+
+    updateLinks = (user) => {
+      if(user){
+        if(user.type=='company'){
+          this.setState(()=>({
+            userOn : true,
+            links : [
+              {txt: 'Home' , link:'home' , nav:true},
+              {txt: 'Create Job' , link:'createJob' , nav:true},
+              {txt: 'Dashboard' , link: 'dashboard' , nav:true},
+              {txt: 'Sign out', clickHandler : this.logout}]
+          }))
+        }else{
+          this.setState(()=>({
+            userOn : true,
+            links : [
+              {txt: 'Home' , link:'home' , nav:true},
+              {txt: 'Jobs' , link:'jobs' , nav:true},
+              {txt: 'Dashboard' , link: 'dashboard' , nav:true},
+              {txt: 'Sign out', clickHandler : this.logout}]
+          }))
+        }
+      }else{
+        this.setState(()=>({
+          userOn : false,
+          links : [
+            {txt: 'Home' , link:'home' , nav:true},
+            {txt: 'Jobs' , link:'jobs' , nav:true},
+            {txt: 'Sign in', link: 'signIn'}
+          ]
+        }))
+      }
+    }
+
+    componentWillReceiveProps(nextProps){
+      this.updateLinks(nextProps.user)
+    }
+
     logout = () => {
       fire.auth().signOut();
       this.props.history.replace('/');
@@ -26,7 +73,7 @@ export const NavFooterWrapper = WrappedComponent => {
         <React.Fragment>
           <GbNavBar
             righLinks={
-              [{txt: 'Sign out', clickHandler: this.logout}]
+              this.state.links
             }
             loggedIn={false}
           />

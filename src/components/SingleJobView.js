@@ -23,10 +23,16 @@ const SingleJobView = ({company, companyName, date, description, location, price
     {
       user ?
         (user.type === "photographer" ?
-          (<Button classes="gb-btn gb-btn-medium gb-btn-primary"
-                   clickHandler={applyHandler}>{userApplied ? "Applied" : "Apply"}</Button>) :
-          (<p>You have to be a photographer to apply.</p>)) :
-        (
+          (
+            userApplied?(
+              <h2>You have already applied for this job.</h2>
+            ):(
+              <Button classes="gb-btn gb-btn-medium gb-btn-primary" clickHandler={applyHandler}>Apply</Button>
+            )
+          ) : (
+          <p>You have to be a photographer to apply.</p>
+          )
+        ) : (
           <div>
             <p>Sign in/up to apply for this job.</p>
             <Link to="/signUp">Sign up</Link>

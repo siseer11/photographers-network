@@ -61,7 +61,6 @@ export default class Dashboard extends Component {
       });
     } // either company or photographer
 
-    console.log(activeComponent);
 
     // checks, if there is already a response of the database
     // if not, shows the loading page

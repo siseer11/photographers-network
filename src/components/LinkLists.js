@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import {Link} from 'react-router-dom';
+import {Link , NavLink} from 'react-router-dom';
 
 export const LinkLists = ({ links, txtClasses, liClasses}) => (
   <React.Fragment>
@@ -8,9 +8,22 @@ export const LinkLists = ({ links, txtClasses, liClasses}) => (
       <li key={idx} className={liClasses}>
         {
           el.link?(
-            <Link className={txtClasses} to={`/${el.link}`}>
-              {el.txt ? el.txt : el.icon}
-            </Link>
+            el.nav?(
+              <NavLink
+                className={txtClasses}
+                to={`/${el.link}`}
+                activeStyle={{
+                  display: 'none',
+                }}
+              >
+                {el.txt ? el.txt : el.icon}
+              </NavLink>
+            ):(
+              <Link className={txtClasses} to={`/${el.link}`}>
+                {el.txt ? el.txt : el.icon}
+              </Link>
+            )
+
           ):(
             <div onClick={el.clickHandler} className={txtClasses}>{el.txt}</div>
           )

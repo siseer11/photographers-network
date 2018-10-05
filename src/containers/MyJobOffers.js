@@ -69,7 +69,6 @@ class MyJobOffersFetch extends React.Component {
 
 	render() {
 		const { loadingDb, stage, jobsList } = this.state;
-		console.log(jobsList);
 		return (
 			<React.Fragment>
 				{

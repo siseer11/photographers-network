@@ -1,21 +1,20 @@
 // dependencies
-import React, {Component} from "react";
-import {Link} from "react-router-dom";
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import LoadingPage from "../components/LoadingPage";
 import fire from '../config/Fire';
 
 // components
-import {GbCard50} from '../components/gbCard50';
+import { GbCard50 } from '../components/gbCard50';
 
 export default class AppliedJobs extends Component {
   render() {
-    console.log(this.props);
     return (
       <React.Fragment>
         {
           this.props.loading === false ?
-            <AppliedJobsFetch {...this.props}/> :
-            <LoadingPage/>
+            <AppliedJobsFetch {...this.props} /> :
+            <LoadingPage />
         }
       </React.Fragment>
     );
@@ -41,7 +40,7 @@ class AppliedJobsFetch extends Component {
    * Fetches applied jobs from current user from database.
    */
   fetchJobs() {
-    const {user} = this.props;
+    const { user } = this.props;
     let jobs = [];
     this.database
       .child('photographer')
@@ -53,8 +52,7 @@ class AppliedJobsFetch extends Component {
         });
       })
       .then(() => {
-        this.setState({jobList: jobs});
-        console.log(jobs);
+        this.setState({ jobList: jobs });
       });
   }
 
