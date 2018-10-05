@@ -1276,7 +1276,7 @@ input.gb-swithcer-checkbox:checked + .gb-switcher-slider:before {
   /* -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); */
   padding: 15px 10px;
-  background-color: red;
+  background-color: rgb(252, 13, 28);
 }
 
 .gb-navbar .center-content {

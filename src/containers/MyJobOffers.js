@@ -34,7 +34,7 @@ class MyJobOffersFetch extends React.Component {
 		**/
 		if(!this.props.user || this.props.user.type!=='company'){
 			this.props.history.replace('/');
-		}else{
+		} else {
 			//First get the data about the current company which jobs they have
 			fire.database()
 				.ref('company')
@@ -79,19 +79,19 @@ class MyJobOffersFetch extends React.Component {
 							<ul>
 								{
 									jobsList.map(el => (
-										<Link to={`job/${el.jobbId}`} key={el.jobbId}>
-											<GbCard50
-												type='half-left'
-												source={{
-													txt : el.companyName,
-													link : `/profile/${el.companyId}`
-												}}
-												postedTime={el.date}
-												category={el.type}
-											>
-												{el.title}
-											</GbCard50>
-										</Link>
+										<GbCard50
+											key={el.jobbId}
+											cardLink={`job/${el.jobbId}`}
+											type='half-left'
+											source={{
+												txt: el.companyName,
+												link: `/profile/${el.companyId}`
+											}}
+											postedTime={el.date}
+											category={el.type}
+										>
+											{el.title}
+										</GbCard50>
 									))
 								}
 							</ul>
