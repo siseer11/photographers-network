@@ -18,7 +18,7 @@ export const NavFooterWrapper = WrappedComponent => {
      */
     logout = () => {
       fire.auth().signOut();
-      this.props.history.push('/');
+      this.props.history.replace('/');
     };
 
     render() {
