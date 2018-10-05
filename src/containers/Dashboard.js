@@ -6,9 +6,11 @@ import fire from '../config/Fire';
 
 // components
 import { DashboardViewWithNav } from "../components/dashboardComponents/DashboardView";
-import { MyJobsPhotographerList } from "../components/dashboardComponents/gb-card-myjobs-photographer-list";
 import { PhotographerPortfolioList } from "../components/dashboardComponents/gb-card-photographer-portfolio-list";
 import { CompanyPortfolioList } from "../components/dashboardComponents/gb-card-company-portfolio-list";
+
+// containers
+import MyJobOffers from './MyJobOffers';
 
 export default class Dashboard extends Component {
   state = {
@@ -31,7 +33,7 @@ export default class Dashboard extends Component {
         },
         {
           name: "My jobs",
-          component: (<MyJobsPhotographerList data={dataMyJobs} />),
+          component: (<MyJobOffers {...this.props} />),
           active: false
         },
       ]
