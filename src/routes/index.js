@@ -11,7 +11,7 @@ import MyJobOffers from "../containers/MyJobOffers";
 import {JobsWithFooter} from "../containers/Jobs";
 import SingleJob from '../containers/SingleJob'
 
-export default ({user, loading}) => (
+export default ({user, loading, setLoadingTrue}) => (
   <BrowserRouter>
     <Switch>
       <Route
@@ -25,7 +25,7 @@ export default ({user, loading}) => (
           />
         )}
       />
-      <Route exact path="/signIn" render={props => <SignIn {...props} />}/>
+      <Route exact path="/signIn" render={props => <SignIn {...props} setLoadingTrue={setLoadingTrue} loading={loading}/>}/>
       <Route exact path="/signUp" render={props => <SignUp {...props} />}/>
       <Route
         exact

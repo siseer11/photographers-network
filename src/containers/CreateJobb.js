@@ -1,7 +1,7 @@
 import React from "react";
 import LoadingPage from '../components/LoadingPage';
 import { Redirect } from 'react-router-dom';
-import fire from "../config/Fire";
+import fire from '../config/Fire'
 import {CreateJobbForm} from '../components/CreateJobbForm';
  
 export default class CreateJobb extends React.Component {
