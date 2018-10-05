@@ -1,7 +1,7 @@
 import React from "react";
 import fire from '../config/Fire';
 import { Link } from 'react-router-dom';
-import {GbCard50} from '../components/gbCard50';
+import { GbCard50 } from '../components/gbCard50';
 
 export default class MyJobOffers extends React.Component {
 	render() {
@@ -11,8 +11,8 @@ export default class MyJobOffers extends React.Component {
 					this.props.loading === false ? (
 						<MyJobOffersFetch {...this.props} />
 					) : (
-						<h2>looooooooading</h2>
-					)
+							<h2>looooooooading</h2>
+						)
 
 				}
 			</React.Fragment>
@@ -30,9 +30,9 @@ class MyJobOffersFetch extends React.Component {
 		/** 
 		* Check if there is a user on and if it is a company
 		**/
-		if(!this.props.user || this.props.user.type!='company'){
+		if (!this.props.user || this.props.user.type != 'company') {
 			this.props.history.replace('/');
-		}else{
+		} else {
 			//First get the data about the current company which jobs they have
 			fire.database()
 				.ref('company')
@@ -77,19 +77,19 @@ class MyJobOffersFetch extends React.Component {
 							<ul>
 								{
 									jobsList.map(el => (
-										<Link to={`job/${el.jobbId}`} key={el.jobbId}>
-											<GbCard50
-												type='half-left'
-												source={{
-													txt : el.companyName,
-													link : `/profile/${el.companyId}`
-												}}
-												postedTime={el.date}
-												category={el.type}
-											>
-												{el.title}
-											</GbCard50>
-										</Link>
+										<GbCard50
+											key={el.jobbId}
+											cardLink={`job/${el.jobbId}`}
+											type='half-left'
+											source={{
+												txt: el.companyName,
+												link: `/profile/${el.companyId}`
+											}}
+											postedTime={el.date}
+											category={el.type}
+										>
+											{el.title}
+										</GbCard50>
 									))
 								}
 							</ul>

@@ -25,12 +25,25 @@ export default ({user, loading, setLoadingTrue}) => (
           />
         )}
       />
-      <Route exact path="/signIn" render={props => <SignIn {...props} setLoadingTrue={setLoadingTrue} loading={loading}/>}/>
+      <Route exact path="/signIn" 
+        render={props => 
+          <SignIn {...props} 
+          setLoadingTrue={setLoadingTrue} 
+          loading={loading}
+          user={user}
+          />}
+        />
       <Route exact path="/signUp" render={props => <SignUp {...props} />}/>
       <Route
         exact
         path="/signUp/:type"
-        render={props => <SignUp {...props}/>}
+        render={props => (
+        <SignUp {...props}
+        loading={loading}
+        user={user}
+        />
+        )
+      }
       />
       <Route
         exact

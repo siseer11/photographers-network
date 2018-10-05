@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {JobsList} from './JobsList';
-
+import {Filters} from '../containers/JobsFilters';
 
 export const JobsView = ({ jobsList, searchValue, changeHandler, locations, types, checkboxChangeHandler }) => (
 	<div className='job-page-inner'>
+	<div className='job-filter-options'>
 		<input
 			type='text'
 			value={searchValue}
@@ -12,24 +13,11 @@ export const JobsView = ({ jobsList, searchValue, changeHandler, locations, type
 			name='searchValue'
 			placeholder='Search for a job..'
 		/>
-		{ locations && <h2>Filter By City</h2> }
 		{
-			locations && locations.map(el => (
-				<label key={el}>
-					{el}
-					<input type='checkbox' data-value={el} data-for='locationsFilter' onChange={checkboxChangeHandler} />
-				</label>
-			))
+		(types || locations) &&
+		<Filters filters={[{types : types},{locations : locations}]} checkboxChangeHandler = {checkboxChangeHandler}/>
 		}
-		{ types && <h2>Filter By Type</h2> }
-		{
-			types && types.map(el => (
-				<label key={el}>
-					{el}
-					<input type='checkbox' data-value={el} data-for='typesFilter' onChange={checkboxChangeHandler} />
-				</label>
-			))
-		}
+	</div>
 		{
 			jobsList.length > 0 ? (
 				<React.Fragment>

@@ -3,6 +3,7 @@ import fire from '../config/Fire';
 import queryString from 'query-string';
 import {JobsView} from '../components/JobsView';
 import {WithNavFooter} from '../components/WithNavFooter';
+import LoadingPage from '../components/LoadingPage';
 
 class Jobs extends React.Component {
 	state = {
@@ -82,7 +83,7 @@ class Jobs extends React.Component {
 
  filterJobs(jobsArr , searchValue , locationsFilter = false , typesFilter = false){
   return jobsArr.filter((el)=>{
-   if(el.title.toLowerCase().indexOf(searchValue.toLowerCase()) < 0) return false;
+   if(searchValue && el.title.toLowerCase().indexOf(searchValue.toLowerCase()) < 0) return false;
    if(locationsFilter && !locationsFilter.includes(el.location)) return false;
    if(typesFilter && !typesFilter.includes(el.type)) return false;
    return true;
@@ -98,9 +99,13 @@ class Jobs extends React.Component {
 
 		return (
 			<div className='jobs-page'>
+				<div className='header'>
+					<div class='overlay'></div>
+					<h2>Jobs</h2>
+				</div>
 				{
 					loading ? (
-						<h2>Loading...</h2>
+						<LoadingPage />
 					) : (
 							<JobsView
 								jobsList={jobsList}
