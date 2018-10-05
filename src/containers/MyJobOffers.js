@@ -8,11 +8,11 @@ export default class MyJobOffers extends React.Component {
 		return (
 			<React.Fragment>
 				{
-					this.props.loading ? (
-						<h2>looooooooading</h2>
+					this.props.loading === false ? (
+						<MyJobOffersFetch {...this.props} />
 					) : (
-							<MyJobOffersFetch {...this.props} />
-						)
+						<h2>looooooooading</h2>
+					)
 
 				}
 			</React.Fragment>
@@ -36,7 +36,7 @@ class MyJobOffersFetch extends React.Component {
 			//First get the data about the current company which jobs they have
 			fire.database()
 				.ref('company')
-				.child(this.props.user.userId)
+				.child(this.props.user.uid)
 				.once('value', (snap) => {
 					/*After having the keys of the jobs go ahead and get the data about them */
 					let jobsIds = Object.keys(snap.val().postedJobs)

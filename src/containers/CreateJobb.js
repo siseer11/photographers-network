@@ -30,7 +30,7 @@ createValidDate = date => {
 * if the user is not a company redirect him to his dashboard
 **/
 componentDidMount() {
- if (!this.props.loading && this.props.user.type != 'company') {
+ if (this.props.loading === false && this.props.user.type != 'company') {
   this.props.history.replace('/dashboard');
  }
  const today = this.createValidDate(new Date());
@@ -123,14 +123,14 @@ componentDidMount() {
      'status': 'open',
      'payment': 'soooooon',
      'phootgrapher': 'none',
-     'company': this.props.user.userId,
+     'company': this.props.user.uid,
      'companyName': this.props.user.displayName,
      'jobbId' : jobbId,
     })
     .then(() => {
      fire.database()
       .ref('company')
-      .child(this.props.user.userId)
+      .child(this.props.user.uid)
       .child('postedJobs')
       .child(jobbId)
       .set({
@@ -153,10 +153,8 @@ componentDidMount() {
   return (
    <React.Fragment>
     {
-     this.props.loading ? (
-      <LoadingPage />
-     ) : (
-       this.props.user.type != 'company' ? (
+     this.props.loading===false?(
+      this.props.user.type != 'company' ? (
         <Redirect to='/dashboard'/>
        ) : (
          <CreateJobbForm
@@ -167,7 +165,9 @@ componentDidMount() {
           {...this.state}
          />
         )
-      )
+     ):(
+      <LoadingPage />
+     )
     }
    </React.Fragment>
   );
