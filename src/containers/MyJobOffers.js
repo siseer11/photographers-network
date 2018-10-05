@@ -1,7 +1,8 @@
 import React from "react";
 import fire from '../config/Fire';
 import { Link } from 'react-router-dom';
-import { GbCard50 } from '../components/gbCard50';
+import {GbCard50} from '../components/gbCard50';
+import LoadingPage from "../components/LoadingPage";
 
 export default class MyJobOffers extends React.Component {
 	render() {
@@ -11,8 +12,8 @@ export default class MyJobOffers extends React.Component {
 					this.props.loading === false ? (
 						<MyJobOffersFetch {...this.props} />
 					) : (
-							<h2>looooooooading</h2>
-						)
+						<LoadingPage/>
+					)
 
 				}
 			</React.Fragment>
@@ -25,12 +26,13 @@ class MyJobOffersFetch extends React.Component {
 		loadingDb: true,
 		stage: 0,
 		jobsList: [],
-	}
+	};
+
 	componentDidMount() {
 		/** 
 		* Check if there is a user on and if it is a company
 		**/
-		if (!this.props.user || this.props.user.type != 'company') {
+		if(!this.props.user || this.props.user.type!=='company'){
 			this.props.history.replace('/');
 		} else {
 			//First get the data about the current company which jobs they have
@@ -39,9 +41,9 @@ class MyJobOffersFetch extends React.Component {
 				.child(this.props.user.uid)
 				.once('value', (snap) => {
 					/*After having the keys of the jobs go ahead and get the data about them */
-					let jobsIds = Object.keys(snap.val().postedJobs)
+					let jobsIds = Object.keys(snap.val().postedJobs);
 
-					if (jobsIds.length == 0) {
+					if (jobsIds.length === 0) {
 						this.setState({
 							stage: 2,
 							loadingDb: false,
@@ -49,8 +51,8 @@ class MyJobOffersFetch extends React.Component {
 					} else {
 						this.setState({
 							stage: 1,
-						})
-						jobsIds = jobsIds.map(el => fire.database().ref('requests').child(el).once('value'))
+						});
+						jobsIds = jobsIds.map(el => fire.database().ref('requests').child(el).once('value'));
 
 						Promise.all(jobsIds)
 							.then((values) => {
@@ -60,7 +62,6 @@ class MyJobOffersFetch extends React.Component {
 									jobsList: values.map(el => el.val())
 								})
 							})
-
 					}
 				});
 		}
@@ -68,6 +69,7 @@ class MyJobOffersFetch extends React.Component {
 
 	render() {
 		const { loadingDb, stage, jobsList } = this.state;
+		console.log(jobsList);
 		return (
 			<React.Fragment>
 				{

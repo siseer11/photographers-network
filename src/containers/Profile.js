@@ -38,10 +38,13 @@ class Profile extends Component {
    * Fetches user information from the database with the uid-param.
    */
   fetchUserInformation = () => {
-    //TODO: Error handling, if wrong uid in url
     const {uid} = this.state;
     this.database.child('users').child(uid).once('value')
       .then(snap => {
+        if(!snap.exists()) {
+          this.props.history.replace('/');
+          return -1;
+        }
         let data = snap.val();
         let userData = {
           displayName: data.displayName,
