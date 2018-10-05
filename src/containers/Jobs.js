@@ -99,7 +99,7 @@ class Jobs extends React.Component {
 		return (
 			<div className='jobs-page'>
 				<div className='header'>
-					<div className='overlay'></div>
+					<div className='overlay'/>
 					<h2>Jobs</h2>
 				</div>
 				{

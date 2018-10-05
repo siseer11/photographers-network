@@ -62,19 +62,19 @@ class AppliedJobsFetch extends Component {
       <div>
         {
           jobList.map(job => (
-            <GbCard50
-              key={job.jobDescription.jobbId}
-              cardLink={`job/${job.jobDescription.jobbId}`}
-              type='half-left'
-              source={{
-                txt: job.jobDescription.companyName,
-                link: `/profile/${job.jobDescription.company}`
-              }}
-              postedTime={job.jobDescription.date}
-              category={job.jobDescription.type}
-            >
-              {job.jobDescription.title}
-            </GbCard50>
+              <GbCard50
+                key={job.jobDescription.jobbId}
+                cardLink={`job/${job.jobDescription.jobbId}`}
+                type='half-left'
+                source={{
+                  txt : job.jobDescription.companyName,
+                  link : `/profile/${job.jobDescription.company}`
+                }}
+                postedTime={job.jobDescription.date}
+                category={job.jobDescription.type}
+              >
+                {job.jobDescription.title}
+              </GbCard50>
           ))
         }
       </div>
