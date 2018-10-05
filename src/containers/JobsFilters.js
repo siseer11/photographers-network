@@ -15,8 +15,8 @@ export const Filters = ({filters,checkboxChangeHandler}) => (
         <React.Fragment>
          <p className='filter-by'>{key}</p>
          <div className={`filters-holder ${showModal?'shown':'hidden'}`}>
-          <div className='black-overlay'></div>
-          <div class='filters-list'>
+          <div className='black-overlay'/>
+          <div className='filters-list'>
            <div className='filters-list-header'>
             <h2>{key}</h2>
            </div>

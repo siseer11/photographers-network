@@ -64,8 +64,9 @@ class AppliedJobsFetch extends Component {
       <div>
         {
           jobList.map(job => (
-            <Link to={`job/${job.jobDescription.jobbId}`} key={job.jobDescription.jobbId}>
               <GbCard50
+                key={job.jobDescription.jobbId}
+                cardLink={`job/${job.jobDescription.jobbId}`}
                 type='half-left'
                 source={{
                   txt : job.jobDescription.companyName,
@@ -76,7 +77,6 @@ class AppliedJobsFetch extends Component {
               >
                 {job.jobDescription.title}
               </GbCard50>
-            </Link>
           ))
         }
       </div>
