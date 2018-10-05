@@ -1,6 +1,7 @@
 // dependencies
 import React from "react";
 import {Link} from "react-router-dom";
+import PropTypes from 'prop-types';
 
 // components
 import {DashboardHeader} from "./DashboardHeader";
@@ -46,3 +47,11 @@ const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, l
 };
 
 export const DashboardViewWithNav = NavFooterWrapper(DashboardView);
+
+DashboardView.propTypes = {
+  user: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
+  linkHandler : PropTypes.func,
+  activeComponent : PropTypes.string,
+  headerLinks : PropTypes.array,
+}

@@ -8,6 +8,7 @@ import { BusinessCardSVG } from './svg/BusinessCardSVG';
 import { CameraSVG } from './svg/CameraSVG';
 import { LocationSVG } from "./svg/LocationSVG";
 import { CustomSelect } from "./CustomSelect";
+import PropTypes from 'prop-types';
 
 export const SingUpView = ({ showCustomSelect, signupHandler, name, changeHandler, password, password2, location, showCustomSelectHandler, optionSelectHandler, type, email }) => (
 	<div className="section-content">
@@ -83,3 +84,17 @@ export const SingUpView = ({ showCustomSelect, signupHandler, name, changeHandle
 		</form>
 	</div>
 )
+
+SingUpView.propTypes = {
+	showCustomSelect : PropTypes.bool, 
+	signupHandler : PropTypes.func.isRequired, 
+	name : PropTypes.string.isRequired, 
+	changeHandler : PropTypes.func.isRequired, 
+	password : PropTypes.string.isRequired,
+	password2 : PropTypes.string.isRequired,  
+	location : PropTypes.string.isRequired, 
+	showCustomSelectHandler : PropTypes.func.isRequired, 
+	optionSelectHandler : PropTypes.func.isRequired, 
+	type : PropTypes.string.isRequired, 
+	email : PropTypes.string.isRequired 
+}

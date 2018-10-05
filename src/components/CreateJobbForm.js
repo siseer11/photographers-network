@@ -7,6 +7,8 @@ import { MoneySVG } from './svg/MoneySVG';
 import { CameraSVG } from "./svg/CameraSVG";
 import { CalendarSVG } from "./svg/CalendarSVG";
 import { TextArea } from './TextArea';
+import PropTypes from 'prop-types';
+
 const types = ["nature", "portrait", "dogs", "cats"];
 
 export const CreateJobbForm = ({ 
@@ -80,3 +82,18 @@ export const CreateJobbForm = ({
   </form>
  </div>
 )
+
+CreateJobbForm.propTypes = {
+  today : PropTypes.string.isRequired,
+  submitHandler : PropTypes.func.isRequired, 
+  showCustomSelectHandler : PropTypes.func.isRequired, 
+  changeHandler : PropTypes.func.isRequired, 
+  showCustomSelect : PropTypes.bool, 
+  optionSelectHandler: PropTypes.func, 
+  jobbTitle : PropTypes.string, 
+  jobbLocation : PropTypes.string, 
+  jobbType : PropTypes.string, 
+  jobbBudget : PropTypes.string,
+  jobbDate : PropTypes.string, 
+  jobbDescription : PropTypes.string
+}
