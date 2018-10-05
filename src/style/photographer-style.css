@@ -25,7 +25,21 @@
     height: auto;
 }
 
-.section-content.search-photographer {
+.section-content.single-job-view {
+    text-align: left;
+    padding: 20px;
+}
+
+.section-content.single-job-view a {
+    color: red;
+}
+
+.section-content.single-job-view .gb-btn {
+    margin: 10px;
+    color: white;
+}
+
+.section-content.search-photographer, .section-content.single-job-view {
     padding-top: 80px;
     min-height: calc(100vh - 150px);
 }
