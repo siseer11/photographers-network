@@ -123,7 +123,7 @@ componentDidMount() {
      'status': 'open',
      'payment': 'soooooon',
      'phootgrapher': 'none',
-     'company': this.props.user.uid,
+     'companyId': this.props.user.uid,
      'companyName': this.props.user.displayName,
      'jobbId' : jobbId,
     })
@@ -136,7 +136,6 @@ componentDidMount() {
       .set({
        'jobId': jobbId
       }).then(() => {
-       console.log('job was pushed');
        setTimeout(() => {
         this.props.history.push('/dashboard');
        }, 1000)

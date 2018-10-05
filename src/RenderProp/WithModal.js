@@ -6,7 +6,6 @@ export default class WithModal extends React.Component {
  }
 
  modalHandler = (e) => {
-  console.log(this.props.closeItemClass)
   let lastState = this.state.showModal;
   if(lastState==false){
    this.setState({

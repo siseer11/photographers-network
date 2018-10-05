@@ -16,7 +16,7 @@ export default ({user, loading, setLoadingTrue}) => (
     <Switch>
       <Route
         exact
-        path="/"
+        path="/home"
         render={props => (
           <Home
             {...props}
@@ -97,8 +97,16 @@ export default ({user, loading, setLoadingTrue}) => (
 						/>
 					)
 				}/>
-      <Route exact path='/jobs' component={JobsWithFooter}/>
-      <Redirect to="/"/>
+      <Route exact path='/jobs' render={
+					props=>(
+						<JobsWithFooter
+						{...props}
+						user={user}
+						loading={loading}
+						/>
+					)
+				}/>
+      <Redirect to="/home"/>
     </Switch>
   </BrowserRouter>
 );

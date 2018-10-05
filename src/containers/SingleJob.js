@@ -8,10 +8,10 @@ export default class SingleJob extends React.Component {
     return (
       <div>
         {
-          this.props.loading ? (
-            <LoadingPage/>
-          ) : (
+          this.props.loading === false ? (
             <SingleJobFetch {...this.props}/>
+          ) : (
+            <LoadingPage/>
           )
         }
       </div>
@@ -60,27 +60,20 @@ class SingleJobFetch extends React.Component {
       .ref('requests')
       .child(jobId)
       .once('value', (snap) => {
-        this.database
-          .ref('requests')
-          .child(jobId)
-          .child('photographers-applied')
-          .child(user.uid)
-          .once('value', snapshot => {
-            this.setState({
-              jobId: jobId,
-              jobDescription: snap.val(),
-              loadingData: false,
-              userApplied: snapshot.exists()
-            })
-          });
-      })
-      .catch(err => console.log(err))
+        const response = snap.val();
+        this.setState(()=>({
+          jobId: jobId,
+          jobDescription: response,
+          userApplied: (user?response['photographers-applied'].hasOwnProperty(user.uid): false),
+          loadingData : false,
+        }))
+      }).catch(err => console.log(err))
   }
+
 
   render() {
     const {user} = this.props;
     const {loadingData, jobDescription, userApplied} = this.state;
-
     return (
       <div>
         {

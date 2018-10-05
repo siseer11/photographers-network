@@ -1,9 +1,9 @@
 import React from 'react';
 import fire from '../config/Fire';
 import queryString from 'query-string';
-import {JobsView} from '../components/JobsView';
-import {WithNavFooter} from '../components/WithNavFooter';
+import { JobsView } from '../components/JobsView';
 import LoadingPage from '../components/LoadingPage';
+import {NavFooterWrapper} from '../containers/NavFooterWrapper';
 
 class Jobs extends React.Component {
 	state = {
@@ -44,23 +44,22 @@ class Jobs extends React.Component {
 				})
 
 				this.setState({
-					locations : locations,
-     types : types,
-     jobs: Object.values(snap.val() || {}),
+					locations: locations,
+					types: types,
+					jobs: Object.values(snap.val() || {}),
 					loading: false,
-    })
-   
-			}).then(() => console.log(this.state.jobs))
+				})
+
+			})
 		}
 	}
-
 
 	inputChangeHandler = (e) => {
 		this.setState({
 			[e.target.name]: e.target.value
 		})
- }
- 
+	}
+
  /** 
  * When a checkbox is clicked depending if it is true or not , 
  * it either take the value out of the speicifc array or adds it, in the state.
@@ -81,26 +80,26 @@ class Jobs extends React.Component {
 		}
 	}
 
- filterJobs(jobsArr , searchValue , locationsFilter = false , typesFilter = false){
-  return jobsArr.filter((el)=>{
-   if(searchValue && el.title.toLowerCase().indexOf(searchValue.toLowerCase()) < 0) return false;
-   if(locationsFilter && !locationsFilter.includes(el.location)) return false;
-   if(typesFilter && !typesFilter.includes(el.type)) return false;
-   return true;
-  })
- }
+	filterJobs(jobsArr, searchValue, locationsFilter = false, typesFilter = false) {
+		return jobsArr.filter((el) => {
+			if (searchValue && el.title.toLowerCase().indexOf(searchValue.toLowerCase()) < 0) return false;
+			if (locationsFilter && !locationsFilter.includes(el.location)) return false;
+			if (typesFilter && !typesFilter.includes(el.type)) return false;
+			return true;
+		})
+	}
 
 	render() {
 		let { loading, jobs: jobsList, searchValue, locations, types, locationsFilter, typesFilter } = this.state;
 
 
-  jobsList = this.filterJobs(jobsList , searchValue , locationsFilter.length > 0 && locationsFilter , typesFilter.length > 0 && typesFilter)
+		jobsList = this.filterJobs(jobsList, searchValue, locationsFilter.length > 0 && locationsFilter, typesFilter.length > 0 && typesFilter)
 
 
 		return (
 			<div className='jobs-page'>
 				<div className='header'>
-					<div class='overlay'></div>
+					<div className='overlay'></div>
 					<h2>Jobs</h2>
 				</div>
 				{
@@ -122,4 +121,4 @@ class Jobs extends React.Component {
 	}
 }
 
-export const JobsWithFooter = WithNavFooter(Jobs);
+export const JobsWithFooter = NavFooterWrapper(Jobs);

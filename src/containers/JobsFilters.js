@@ -1,5 +1,5 @@
 import React from 'react';
-import WithModal from '../HOC/WithModal';
+import WithModal from '../RenderProp/WithModal';
 import {CheckBoxList} from '../components/CheckBoxList';
 
 export const Filters = ({filters,checkboxChangeHandler}) => (
@@ -16,7 +16,7 @@ export const Filters = ({filters,checkboxChangeHandler}) => (
          <p className='filter-by'>{key}</p>
          <div className={`filters-holder ${showModal?'shown':'hidden'}`}>
           <div className='black-overlay'></div>
-          <div class='filters-list'>
+          <div className='filters-list'>
            <div className='filters-list-header'>
             <h2>{key}</h2>
            </div>

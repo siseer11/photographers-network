@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { GbCard50 } from '../components/gbCard50';
-import { Link } from 'react-router-dom';
 
 export const JobsList = ({ jobsList }) => (
 	<ul>

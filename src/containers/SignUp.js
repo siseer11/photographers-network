@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
 import fire from '../config/Fire';
-import { EmailSVG } from '../components/svg/EmailSVG';
-import { PasswordSVG } from "../components/svg/PasswordSVG";
-import { NameInputSVG } from "../components/svg/NameInputSVG";
-import { InputField } from "../components/InputField";
-import { BusinessCardSVG } from '../components/svg/BusinessCardSVG';
-import { CameraSVG } from '../components/svg/CameraSVG';
-import { LocationSVG } from "../components/svg/LocationSVG";
-import { CustomSelect } from "../components/CustomSelect";
-import LoadingPage from '../components/LoadingPage';
-import {Redirect} from 'react-router-dom';
+import {SingUpView} from '../components/SignUpView';
 
 export default class SignUp extends Component {
 	state = {
@@ -67,7 +58,6 @@ export default class SignUp extends Component {
 
 						})
 						.then(() => {
-							console.log('aici ar trebuii');
 							this.props.history.replace('/dashboard');
 						})
 						.catch((err) => console.log(err));
@@ -104,98 +94,12 @@ export default class SignUp extends Component {
 	};
 
 	render() {
-		const {name , email , password , password2 , location , type , showCustomSelect} = this.state;
+		const { name, email, password, password2, location, type, showCustomSelect } = this.state;
 		return (
-			this.props.loading===false?(
-				
-				this.props.user?(
-					<Redirect to='../dashboard' />
-				):(
-					<SingUpView signupHandler = {this.signup} name={name} changeHandler={this.handleChange} email={email}
-					password={password} password2 = {password2} location={location} showCustomSelectHandler={this.showCustomSelectHandler}
-					optionSelectHandler={this.optionSelectHandler} type={type} showCustomSelect ={showCustomSelect}
-					/>
-				)
-			):(
-				<LoadingPage />
-			)
-		); 
+			<SingUpView signupHandler={this.signup} name={name} changeHandler={this.handleChange} email={email}
+				password={password} password2={password2} location={location} showCustomSelectHandler={this.showCustomSelectHandler}
+				optionSelectHandler={this.optionSelectHandler} type={type} showCustomSelect={showCustomSelect}
+			/>
+		)
 	}
 }
-
-
-
-const SingUpView = ({showCustomSelect,signupHandler,name,changeHandler,password,password2,location , showCustomSelectHandler , optionSelectHandler , type , email}) => (
-	<div className="section-content">
-				<form onSubmit={signupHandler}>
-					<h1>Sign Up</h1>
-					<InputField
-						svg={
-							<NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-						}
-						value={name}
-						changeHandler={changeHandler}
-						type="text"
-						name="name"
-						placeholder="Enter your name"
-					/>
-					<InputField
-						svg={
-							<EmailSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-						}
-						value={email}
-						changeHandler={changeHandler}
-						type="email"
-						name="email"
-						placeholder="Enter email"
-					/>
-					<InputField
-						svg={
-							<PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-						}
-						value={password}
-						changeHandler={changeHandler}
-						type="password"
-						name="password"
-						placeholder="Password"
-					/>
-					<InputField
-						svg={
-							<PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-						}
-						value={password2}
-						changeHandler={changeHandler}
-						type="password"
-						name="password2"
-						placeholder="Repeat password"
-					/>
-					<InputField svg={<LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />}
-						value={location} changeHandler={changeHandler} type="text"
-						name="location"
-						placeholder="Enter your location" />
-					<div
-						className="custom-select gb-text-input gb-text-input-trans-background"
-						onClick={showCustomSelectHandler}
-					>
-						{type === "photographer" ? (
-							<CameraSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
-						) : (
-								<BusinessCardSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
-							)}
-						{type}
-						<CustomSelect
-							showCustomSelect={showCustomSelect}
-							optionsList={["photographer", "company"]}
-							optionSelectHandler={optionSelectHandler}
-						/>
-					</div>
-					<div className="btn-container">
-						<input
-							type="submit"
-							value="Sign Up"
-							className="gb-btn gb-btn-large gb-btn-primary"
-						/>
-					</div>
-				</form>
-			</div>
-)

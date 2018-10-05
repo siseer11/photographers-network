@@ -6,10 +6,6 @@ import fire from '../config/Fire';
 // components
 import {ProfileCard} from "../components/ProfileCard";
 import {LinkLists} from "../components/LinkLists";
-import {GbFooter} from "../components/Footer";
-import {FacebookSVG} from "../components/svg/FacebookSVG";
-import {TwitterSVG} from "../components/svg/TwitterSVG";
-import {InstagramSVG} from "../components/svg/InstagramSVG";
 
 // containers
 import PhotographerContent from "./PhotographerContent";

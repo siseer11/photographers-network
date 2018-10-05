@@ -49,7 +49,6 @@ class App extends Component {
 			.child("users")
 			.child(userId)
 			.once('value',(snap)=>{
-				console.log(snap.val());
 				const userInfos = snap.val();
 				this.setState(()=>({
 					user : {...userInfos , uid : userId},
