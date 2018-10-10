@@ -1,15 +1,15 @@
 // dependencies
 import React, {Component} from "react";
-import fire from '../config/Fire';
+import fire from '../../config/Fire';
 
 // containers
-import GbNavBar from '../components/gbNav';
+import GbNavBar from '../../components/gbNav';
 
 // components
-import {GbFooter} from "../components/Footer";
-import {InstagramSVG} from "../components/svg/InstagramSVG";
-import {TwitterSVG} from "../components/svg/TwitterSVG";
-import {FacebookSVG} from "../components/svg/FacebookSVG";
+import {GbFooter} from "../../components/Footer";
+import {InstagramSVG} from "../../components/svg/InstagramSVG";
+import {TwitterSVG} from "../../components/svg/TwitterSVG";
+import {FacebookSVG} from "../../components/svg/FacebookSVG";
 
 export const NavFooterWrapper = WrappedComponent => {
   return class extends Component {

@@ -6,9 +6,9 @@ import { Link } from 'react-router-dom';
 export const GbCard50 = ({ background, type, source, postedTime, category, children, cardLink }) => (
   <div
     className={`gb-card-12 ${
-      type == "half-left" ?
+      type === "half-left" ?
         "gb-card-12-image-left"
-        : type == 'full' ?
+        : type === 'full' ?
           "gb-card-12-full-desktop"
           : "gb-card-12-image-right"
       }`

@@ -9,7 +9,7 @@ import {Link} from 'react-router-dom';
 export default class GbNavBar extends React.Component {
   state = {
     sticky : false
-  }
+  };
 
   componentDidMount() {
     window.addEventListener('scroll', this.stickyNav);
@@ -23,7 +23,7 @@ export default class GbNavBar extends React.Component {
     this.setState({
       sticky : window.pageYOffset > 0
     })
-  }
+  };
 
   render() {
     const { righLinks, loggedIn, userImageUrl, profileLink } = this.props;

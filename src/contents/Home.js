@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
-import { InstagramSVG } from '../components/svg/InstagramSVG';
-import { FacebookSVG } from '../components/svg/FacebookSVG';
-import { TwitterSVG } from '../components/svg/TwitterSVG';
-import GbNavBar from '../components/gbNav'
 import { GbCard50Skewed } from '../components/gbCard50Skewed';
-import { GbFooter } from '../components/Footer';
 import { SearchSVG } from '../components/svg/SearchSVG';
 import { DoneSVG } from '../components/svg/DoneSVG';
 import { CardSVG } from '../components/svg/CardSVG';
-import {NavFooterWrapper} from '../containers/NavFooterWrapper';
+import {NavFooterWrapper} from './shared/NavFooterWrapper';
 
 /* rightLinks = [{txt : 'home' , link : '#'}] loggedIn={true/false} userImageUrl='link' profileLink='#' */
 class Homse extends Component {
@@ -31,7 +26,7 @@ class Homse extends Component {
 						type='Photographers'
 						aboutType='Find the job that suits you and get the job done.'
 						modalHandler={this.showThisModal}
-						showModal={this.state.showModal == 'photographers'}
+						showModal={this.state.showModal === 'photographers'}
 						modalLink='signUp/photographer'
 						modalButtonValue='Join Now'
 						modalList={[{
@@ -50,7 +45,7 @@ class Homse extends Component {
 						type='Companies'
 						aboutType='Find the photographer that suits you and get the job done'
 						modalHandler={this.showThisModal}
-						showModal={this.state.showModal == 'companies'}
+						showModal={this.state.showModal === 'companies'}
 						modalLink='signUp/company'
 						modalButtonValue='Get Started'
 						modalList={[{

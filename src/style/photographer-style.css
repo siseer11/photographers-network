@@ -39,7 +39,7 @@
     color: white;
 }
 
-.section-content.search-photographer, .section-content.single-job-view {
+.section-content.search-photographer, .section-content.single-job-view, .section-content.with-padding {
     padding-top: 80px;
     min-height: calc(100vh - 150px);
 }

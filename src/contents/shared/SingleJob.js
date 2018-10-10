@@ -1,7 +1,7 @@
 import React from 'react';
-import fire from '../config/Fire';
-import {SingleJobViewWithNav} from '../components/SingleJobView';
-import LoadingPage from '../components/LoadingPage';
+import fire from '../../config/Fire';
+import {SingleJobViewWithNav} from '../../components/SingleJobView';
+import LoadingPage from '../../components/LoadingPage';
 
 export default class SingleJob extends React.Component {
   render() {

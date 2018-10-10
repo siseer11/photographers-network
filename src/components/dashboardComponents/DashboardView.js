@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 
 // components
 import {DashboardHeader} from "./DashboardHeader";
-import {NavFooterWrapper} from "../../containers/NavFooterWrapper";
+import {NavFooterWrapper} from "../../contents/shared/NavFooterWrapper";
 
-// containers
-import MyJobOffers from '../../containers/MyJobOffers';
-import AppliedJobs from "../../containers/AppliedJobs";
+// contents
+import MyJobOffers from '../../contents/company/MyJobOffers';
+import AppliedJobs from "../../contents/photographer/AppliedJobs";
 
 
 const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, loading}) => {

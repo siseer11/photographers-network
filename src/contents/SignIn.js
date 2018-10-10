@@ -3,7 +3,7 @@ import fire from "../config/Fire";
 import { EmailSVG } from "../components/svg/EmailSVG";
 import { PasswordSVG } from "../components/svg/PasswordSVG";
 import { Error } from "../components/Error";
-import { InputField } from "../components/InputField";
+import { InputField } from "../components/formComponents/InputField";
 
 export default class SignIn extends Component {
   state = {

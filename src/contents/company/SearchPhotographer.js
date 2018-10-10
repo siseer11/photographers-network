@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import GbNavBar from "../components/gbNav";
-import { SearchInput } from "../components/SearchInput";
-import { GbFooter } from "../components/Footer";
-import { InstagramSVG } from "../components/svg/InstagramSVG";
-import { TwitterSVG } from "../components/svg/TwitterSVG";
-import { FacebookSVG } from "../components/svg/FacebookSVG";
-import fire from "../config/Fire";
-import { PhotographerResults } from "../components/PhotographerResults";
+import GbNavBar from "../../components/gbNav";
+import { SearchInput } from "../../components/formComponents/SearchInput";
+import { GbFooter } from "../../components/Footer";
+import { InstagramSVG } from "../../components/svg/InstagramSVG";
+import { TwitterSVG } from "../../components/svg/TwitterSVG";
+import { FacebookSVG } from "../../components/svg/FacebookSVG";
+import fire from "../../config/Fire";
+import { PhotographerResults } from "../../components/PhotographerResults";
 
 export default class SearchPhotographer extends Component {
   state = {

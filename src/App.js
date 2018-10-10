@@ -38,9 +38,10 @@ class App extends Component {
    this.setState({
     loading : true,
    })
-  }
+  };
 
   /**
+   * Fetches information about current user of the database.
    *
    * @param userId
    */

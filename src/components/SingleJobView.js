@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "./Button";
-import { NavFooterWrapper } from "../containers/NavFooterWrapper";
+import { NavFooterWrapper } from "../contents/shared/NavFooterWrapper";
 import PropTypes from 'prop-types'
 
 const SingleJobView = ({ company, companyName, date, description, location, price, title, type, user, applyHandler, userApplied }) => (

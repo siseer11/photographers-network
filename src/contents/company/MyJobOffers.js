@@ -1,8 +1,8 @@
 import React from "react";
-import fire from '../config/Fire';
+import fire from '../../config/Fire';
 import { Link } from 'react-router-dom';
-import {GbCard50} from '../components/gbCard50';
-import LoadingPage from "../components/LoadingPage";
+import {GbCard50} from '../../components/gbCard50';
+import LoadingPage from "../../components/LoadingPage";
 
 export default class MyJobOffers extends React.Component {
 	render() {

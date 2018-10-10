@@ -1,11 +1,11 @@
 // dependencies
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import LoadingPage from "../components/LoadingPage";
-import fire from '../config/Fire';
+import LoadingPage from "../../components/LoadingPage";
+import fire from '../../config/Fire';
 
 // components
-import { DashboardViewWithNav } from "../components/dashboardComponents/DashboardView";
+import { DashboardViewWithNav } from "../../components/dashboardComponents/DashboardView";
 
 export default class Dashboard extends Component {
   state = {

@@ -1,6 +1,6 @@
 import React from 'react';
-import WithModal from '../RenderProp/WithModal';
-import {CheckBoxList} from '../components/CheckBoxList';
+import WithModal from '../../RenderProp/WithModal';
+import {CheckBoxList} from '../../components/CheckBoxList';
 
 export const Filters = ({filters,checkboxChangeHandler}) => (
  <div className='filters'>

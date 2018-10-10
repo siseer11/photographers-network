@@ -1,15 +1,15 @@
 import React from "react";
 import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
-import Dashboard from "../containers/Dashboard";
-import SignIn from "../containers/SignIn";
-import Home from "../containers/Home";
-import SignUp from "../containers/SignUp";
-import {ProfileWithNav} from "../containers/Profile";
-import SearchPhotographer from "../containers/SearchPhotographer";
-import CreateJobb from "../containers/CreateJobb";
-import MyJobOffers from "../containers/MyJobOffers";
-import {JobsWithFooter} from "../containers/Jobs";
-import SingleJob from '../containers/SingleJob'
+import Dashboard from "../contents/shared/Dashboard";
+import SignIn from "../contents/SignIn";
+import Home from "../contents/Home";
+import SignUp from "../contents/SignUp";
+import {ProfileWithNav} from "../contents/shared/Profile";
+import SearchPhotographer from "../contents/company/SearchPhotographer";
+import CreateJobb from "../contents/company/CreateJobb";
+import MyJobOffers from "../contents/company/MyJobOffers";
+import {JobsWithFooter} from "../contents/shared/Jobs";
+import SingleJob from '../contents/shared/SingleJob'
 
 export default ({user, loading, setLoadingTrue}) => (
   <BrowserRouter>

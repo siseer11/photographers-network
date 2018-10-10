@@ -38,4 +38,4 @@ GbCard50SkewedModal.propTypes = {
 	buttonLink: PropTypes.string,
 	buttonValue: PropTypes.string,
 	closeModal: PropTypes.func.isRequired,
-}
+};

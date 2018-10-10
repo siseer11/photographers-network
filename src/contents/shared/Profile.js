@@ -1,16 +1,16 @@
 // dependencies
 import React, {Component} from 'react';
 import {Redirect} from 'react-router-dom';
-import fire from '../config/Fire';
+import fire from '../../config/Fire';
 
 // components
-import {ProfileCard} from "../components/ProfileCard";
-import {LinkLists} from "../components/LinkLists";
+import {ProfileCard} from "../../components/ProfileCard";
+import {LinkLists} from "../../components/LinkLists";
 
-// containers
-import PhotographerContent from "./PhotographerContent";
-import CompanyContent from "./CompanyContent";
-import LoadingPage from "../components/LoadingPage";
+// contents
+import PhotographerContent from "../photographer/PhotographerContent";
+import CompanyContent from "../company/CompanyContent";
+import LoadingPage from "../../components/LoadingPage";
 import {NavFooterWrapper} from "./NavFooterWrapper";
 
 
@@ -68,7 +68,6 @@ class Profile extends Component {
       }
       currUser = userData;
       loaded = true;
-      console.log("loaded everything!");
     }
 
     return (

@@ -1,9 +1,9 @@
 import React from 'react';
-import fire from '../config/Fire';
+import fire from '../../config/Fire';
 import queryString from 'query-string';
-import { JobsView } from '../components/JobsView';
-import LoadingPage from '../components/LoadingPage';
-import {NavFooterWrapper} from '../containers/NavFooterWrapper';
+import { JobsView } from '../../components/JobsView';
+import LoadingPage from '../../components/LoadingPage';
+import {NavFooterWrapper} from './/NavFooterWrapper';
 
 class Jobs extends React.Component {
 	state = {
