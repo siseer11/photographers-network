@@ -26,10 +26,10 @@ export default class GbNavBar extends React.Component {
   };
 
   render() {
-    const { righLinks, loggedIn, userImageUrl, profileLink } = this.props;
+    const { righLinks, loggedIn, userImageUrl, profileLink, homeLink } = this.props;
     return (
       <div className={`gb-navbar ${this.state.sticky?'sticky':''}`}>
-        <Link to='/' className="left-content">
+        <Link to={`/${homeLink}`} className="left-content">
           <SmallLogoSVG classes="gb-icon-medium gb-icon-fill-white" />
         </Link>
         <ul className="right-content">

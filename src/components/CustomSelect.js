@@ -15,4 +15,4 @@ CustomSelect.propTypes = {
 	optionsList : PropTypes.array.isRequired,
 	optionSelectHandler : PropTypes.func.isRequired, 
 	showCustomSelect : PropTypes.bool
-}
+};

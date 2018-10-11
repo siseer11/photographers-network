@@ -21,14 +21,17 @@ const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, l
     case "Home":
       currentComponent = type === "photographer" ?
         (<Link to='/jobs' className="gb-btn gb-btn-medium gb-btn-primary">Search for jobs</Link>) :
-        (<Link to='../createJob' className="gb-btn gb-btn-medium gb-btn-primary">Create job offer</Link>)
+        (<React.Fragment>
+          <Link to='../createJob' className="gb-btn gb-btn-medium gb-btn-primary">Create job offer</Link>
+          <Link to="/search-photographers" className="gb-btn gb-btn-medium gb-btn-primary">Search for photographers</Link>
+        </React.Fragment>)
       ;
       break;
     case "Applied Jobs":
       currentComponent = (<AppliedJobs user={user} loading={loading}/>);
       break;
     case "My Jobs":
-      currentComponent = (<MyJobOffers user={user} loading={loading} />);
+      currentComponent = (<MyJobOffers user={user} loading={loading}/>);
       break;
     default:
       currentComponent = (<div>No fitting component!</div>);
@@ -51,7 +54,7 @@ export const DashboardViewWithNav = NavFooterWrapper(DashboardView);
 DashboardView.propTypes = {
   user: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
-  linkHandler : PropTypes.func,
-  activeComponent : PropTypes.string,
-  headerLinks : PropTypes.array,
-}
+  linkHandler: PropTypes.func,
+  activeComponent: PropTypes.string,
+  headerLinks: PropTypes.array,
+};

@@ -1,14 +1,10 @@
-import React, { Component } from "react";
-import GbNavBar from "../../components/gbNav";
-import { SearchInput } from "../../components/formComponents/SearchInput";
-import { GbFooter } from "../../components/Footer";
-import { InstagramSVG } from "../../components/svg/InstagramSVG";
-import { TwitterSVG } from "../../components/svg/TwitterSVG";
-import { FacebookSVG } from "../../components/svg/FacebookSVG";
+import React, {Component} from "react";
+import {SearchInput} from "../../components/formComponents/SearchInput";
 import fire from "../../config/Fire";
-import { PhotographerResults } from "../../components/PhotographerResults";
+import {PhotographerResults} from "../../components/PhotographerResults";
+import {NavFooterWrapper} from "../shared/NavFooterWrapper";
 
-export default class SearchPhotographer extends Component {
+class SearchPhotographers extends Component {
   state = {
     searchValue: "",
     photographerResults: []
@@ -20,7 +16,7 @@ export default class SearchPhotographer extends Component {
    * @param e
    */
   handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({[e.target.name]: e.target.value});
   };
 
   /**
@@ -45,49 +41,24 @@ export default class SearchPhotographer extends Component {
         });
       })
       .then(() => {
-        this.setState({ photographerResults: photographers });
+        this.setState({photographerResults: photographers});
       });
-  };
-
-  /**
-   * Logs out the user and redirects him to home.
-   */
-  logout = () => {
-    fire.auth().signOut();
-    this.props.history.push("/");
   };
 
   render() {
     return (
       <React.Fragment>
         <div className='search-photographer section-content normalized'>
-          <GbNavBar
-            righLinks={this.props.user ? [{txt: 'Sign out', clickHandler: this.logout}] : ([{
-              txt: 'Sign in',
-              link: 'signIn'
-            }])
-            }
-            loggedIn={false}
-          />
           <h1 className="gb-title-medium">Search for a photographer in</h1>
           <SearchInput name="searchValue" value={this.state.searchValue}
                        placeholder="Type in a city/location..." changeHandler={this.handleChange}
                        searchHandler={this.search}/>
           <PhotographerResults photographers={this.state.photographerResults}/>
         </div>
-        <GbFooter
-          socialMedias={[
-            {
-              icon: <InstagramSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small'/>,
-              link: '#'
-            },
-            {icon: <TwitterSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small'/>, link: '#'},
-            {
-              icon: <FacebookSVG classes='gb-icon-fill-black-opacity-30 gb-icon-small'/>,
-              link: '#'
-            }]}
-        />
       </React.Fragment>
     );
   }
 }
+
+const SearchPhotographer = NavFooterWrapper(SearchPhotographers);
+export default SearchPhotographer;

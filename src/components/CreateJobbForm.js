@@ -24,8 +24,8 @@ export const CreateJobbForm = ({
  jobbBudget,
  jobbDate, 
  jobbDescription}) => (
- <div className="create-jobb-page" className='section-content'>
-  <h1>Create Jobb</h1>
+ <div className="create-jobb-page section-content with-padding">
+  <h1>Create Job</h1>
   <form onSubmit={submitHandler}>
    <InputField
     svg={<NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />}
@@ -74,14 +74,14 @@ export const CreateJobbForm = ({
     value={jobbDescription}
     name='Description'
     changeHandler={changeHandler}
-    placeholder='Jobb description' />
+    placeholder='Job description' />
    <input
     className='gb-btn gb-btn-large gb-btn-primary'
     type="submit"
     value="Create" />
   </form>
  </div>
-)
+);
 
 CreateJobbForm.propTypes = {
   today : PropTypes.string.isRequired,
@@ -96,4 +96,4 @@ CreateJobbForm.propTypes = {
   jobbBudget : PropTypes.string,
   jobbDate : PropTypes.string, 
   jobbDescription : PropTypes.string
-}
+};
