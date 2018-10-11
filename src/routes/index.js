@@ -1,5 +1,5 @@
 import React from "react";
-import {HashRouter, Route, Switch, Redirect} from "react-router-dom";
+import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import Dashboard from "../contents/shared/Dashboard";
 import SignIn from "../contents/SignIn";
 import Home from "../contents/Home";
@@ -12,7 +12,7 @@ import {JobsWithFooter} from "../contents/shared/Jobs";
 import SingleJob from '../contents/shared/SingleJob'
 
 export default ({user, loading, setLoadingTrue}) => (
-  <HashRouter>
+  <BrowserRouter basename='/app'>
     <Switch>
       <Route
         exact
@@ -108,5 +108,5 @@ export default ({user, loading, setLoadingTrue}) => (
 				}/>
       <Redirect to="/home"/>
     </Switch>
-  </HashRouter>
+  </BrowserRouter>
 );
