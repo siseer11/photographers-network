@@ -1,89 +1,112 @@
 import React from "react";
 import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
-import Dashboard from "../containers/Dashboard";
-import SignIn from "../containers/SignIn";
-import Home from "../containers/Home";
-import SignUp from "../containers/SignUp";
-import MyJobs from "../containers/MyJobs";
-import Profile from "../containers/Profile";
-import SearchPhotographer from "../containers/SearchPhotographer";
-import CreateJobb from "../containers/CreateJobb";
-import MyJobOffers from "../containers/MyJobOffers";
-import Jobs from "../containers/Jobs";
+import Dashboard from "../contents/shared/Dashboard";
+import SignIn from "../contents/SignIn";
+import Home from "../contents/Home";
+import SignUp from "../contents/SignUp";
+import {ProfileWithNav} from "../contents/shared/Profile";
+import SearchPhotographer from "../contents/company/SearchPhotographer";
+import CreateJobb from "../contents/company/CreateJobb";
+import MyJobOffers from "../contents/company/MyJobOffers";
+import {JobsWithFooter} from "../contents/shared/Jobs";
+import SingleJob from '../contents/shared/SingleJob'
 
-export default ({user, loadedResponse, type}) => (
-    <BrowserRouter>
-        <Switch>
-            <Route
-                exact
-                path="/"
-                render={props => (
-                    <Home
-                        {...props}
-                        user={user}
-                        loadedResponse={loadedResponse}
-                        type={type}
-                    />
-                )}
-            />
-            <Route exact path="/signIn" render={props => <SignIn {...props} />}/>
-            <Route exact path="/signUp" render={props => <SignUp {...props} />}/>
-            <Route
-                exact
-                path="/signUp/:type"
-                render={props => <SignUp {...props} />}
-            />
-            <Route exact path="/my-jobs" component={MyJobs}/>
-            <Route
-                exact
-                path="/dashboard"
-                render={props => (
-                    <Dashboard
-                        {...props}
-                        user={user}
-                        loadedResponse={loadedResponse}
-                        type={type}
-                    />
-                )}
-            />
-            <Route exact path="/profile"
-                   render={props => (
-                       <Profile
-                           {...props}
-                           user={user}
-                           loadedResponse={loadedResponse}
-                           type={type}
-                       />)}/>
-            <Route exact path="/profile/:uid" component={Profile}/>
-            <Route exact path="/search-photographers" render={props => <SearchPhotographer {...props} user={user}/>}/>
-            <Route
-                exact
-                path="/createJob"
-                render={props => (
-                    <CreateJobb
-                        {...props}
-                        user={user}
-                        loadedResponse={loadedResponse}
-                        type={type}
-                    />
-                )}
-            />
-            <Route
-                exact
-                path="/myJobOffers"
-                render={props => (
-                    <MyJobOffers
-                        {...props}
-                        user={user}
-                        loadedResponse={loadedResponse}
-                        type={type}
-                    />
-                )}
-            />
-            <Route exact path='/jobs' component={Jobs}/>
-            <Redirect to="/"/>
-        </Switch>
-    </BrowserRouter>
+export default ({user, loading, setLoadingTrue}) => (
+  <BrowserRouter basename='/app'>
+    <Switch>
+      <Route
+        exact
+        path="/home"
+        render={props => (
+          <Home
+            {...props}
+            user={user}
+            loading={loading}
+          />
+        )}
+      />
+      <Route exact path="/signIn" 
+        render={props => 
+          <SignIn {...props} 
+          setLoadingTrue={setLoadingTrue} 
+          loading={loading}
+          user={user}
+          />}
+        />
+      <Route exact path="/signUp" render={props => <SignUp {...props} />}/>
+      <Route
+        exact
+        path="/signUp/:type"
+        render={props => (
+        <SignUp {...props}
+        loading={loading}
+        user={user}
+        />
+        )
+      }
+      />
+      <Route
+        exact
+        path="/dashboard"
+        render={props => (
+          <Dashboard
+            {...props}
+            user={user}
+            loading={loading}
+          />
+        )}
+      />
+      <Route exact path="/profile/:uid" render={props => (
+        <ProfileWithNav
+          {...props}
+          user={user}
+          loading={loading}
+        />)}/>
+      <Route exact path="/search-photographers" render={props => <SearchPhotographer {...props} user={user}/>}/>
+      <Route
+        exact
+        path="/createJob"
+        render={props => (
+          <CreateJobb
+            {...props}
+            user={user}
+            loading={loading}
+          />
+        )}
+      />
+      <Route
+        exact
+        path="/myJobOffers"
+        render={props => (
+          <MyJobOffers
+            {...props}
+            user={user}
+            loading={loading}
+          />
+        )}
+      />
+      <Route 
+				exact
+				path='/job/:jobid'
+				render={
+					props=>(
+						<SingleJob
+						{...props}
+						user={user}
+						loading={loading}
+						/>
+					)
+				}/>
+      <Route exact path='/jobs' render={
+					props=>(
+						<JobsWithFooter
+						{...props}
+						user={user}
+						loading={loading}
+						/>
+					)
+				}/>
+      <Redirect to="/home"/>
+    </Switch>
+  </BrowserRouter>
 );
-
-

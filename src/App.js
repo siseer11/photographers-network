@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import fire from "./config/Fire";
 import "./style/gb-style.css";
 import "./style/photographer-style.css";
@@ -7,8 +7,7 @@ import Routes from "./routes";
 class App extends Component {
   state = {
     user: null,
-    loadedResponse: false,
-    type: "",
+    loading: null,
   };
   database = fire.database().ref();
 
@@ -25,40 +24,46 @@ class App extends Component {
   authListener = () => {
     fire.auth().onAuthStateChanged(user => {
       if (user) {
-        let currUser = {
-          displayName: user.displayName,
-          email: user.email,
-          uid: user.uid,
-          photoURL: user.photoURL
-        };
-        this.setState({ user: currUser }, () => {
-          this.getUserType();
-        });
-        console.log('user on')
+       this.getUserInfos(user.uid);
       } else {
-        console.log('no user on')
-        this.setState({ user: null , loadedResponse : false });
+        this.setState((prevState)=>({
+          loading: (prevState.loading!==null),
+          user: null,
+        }));
       }
     });
   };
 
-  /**
-   * Checks, if current user is a photographer or a company.
-   */
-  getUserType = () => {
-    const { user } = this.state;
-    this.database.child(`photographer/${user.uid}`).once("value", snap => {
-      this.setState({
-        type: snap.exists() ? "photographer" : "company",
-        loadedResponse: true
-      });
-    });
+  setLoadingTrue = () => {
+   this.setState({
+    loading : true,
+   })
   };
 
-  render() {
-    const { user, loadedResponse, type } = this.state;
-    return <Routes user={user} loadedResponse={loadedResponse} type={type} />;
-  }
+  /**
+   * Fetches information about current user of the database.
+   *
+   * @param userId
+   */
+  getUserInfos = (userId) => {
+		this.database
+			.child("users")
+			.child(userId)
+			.once('value',(snap)=>{
+				const userInfos = snap.val();
+				this.setState(()=>({
+					user : {...userInfos , uid : userId},
+					loading : false,
+          authenticated: true
+				}))
+			}).catch((err)=>console.log(err))
+
+	};
+
+	render() {
+		const { user, loading } = this.state;
+		return <Routes user={user} loading={loading} setLoadingTrue={this.setLoadingTrue}/>;
+	}
 }
 
 export default App;

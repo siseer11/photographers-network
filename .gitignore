@@ -4,6 +4,8 @@
 
 # firebase credentials
 /src/config
+/src/public/scripts/config
+/public/scripts/config
 
 # dependencies
 /node_modules
