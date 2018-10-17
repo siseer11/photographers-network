@@ -80,7 +80,7 @@ class SingleJobFetch extends React.Component {
           loadingData ? (
             <LoadingPage/>
           ) : (
-            <SingleJobViewWithNav {...jobDescription} user={user} applyHandler={this.applyForJob}
+            <SingleJobViewWithNav history={this.props.history} {...jobDescription} user={user} applyHandler={this.applyForJob}
                                   userApplied={userApplied}/>
           )
         }

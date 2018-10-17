@@ -58,11 +58,20 @@ class App extends Component {
 				}))
 			}).catch((err)=>console.log(err))
 
-	};
+  };
+  
+  updateAvatar = (newLink) => {
+    this.setState((prevState)=>({
+      user : {
+        ...prevState.user,
+        photoURL : newLink,
+      }
+    }))
+  }
 
 	render() {
 		const { user, loading } = this.state;
-		return <Routes user={user} loading={loading} setLoadingTrue={this.setLoadingTrue}/>;
+		return <Routes updateAvatar={this.updateAvatar} user={user} loading={loading} setLoadingTrue={this.setLoadingTrue}/>;
 	}
 }
 

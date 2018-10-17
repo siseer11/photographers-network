@@ -51,7 +51,7 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    const { user, loading } = this.props;
+    const { user, loading , updateAvatar } = this.props;
     let activeType = '';
     let activeComponent = '';
     if (!loading && user) {
@@ -79,6 +79,7 @@ export default class Dashboard extends Component {
                 headerLinks={activeType.headerLinks}
                 activeComponent={activeComponent}
                 loading={loading}
+                updateAvatar={updateAvatar}
               />
             ) : (
               <Redirect to='/' />
