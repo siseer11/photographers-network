@@ -11,7 +11,7 @@ import { CustomSelect } from "./CustomSelect";
 import PropTypes from 'prop-types';
 
 export const SingUpView = ({ showCustomSelect, signupHandler, name, changeHandler, password, password2, location, showCustomSelectHandler, optionSelectHandler, type, email }) => (
-	<div className="section-content">
+	<div className="section-content with-padding">
 		<form onSubmit={signupHandler}>
 			<h1>Sign Up</h1>
 			<InputField

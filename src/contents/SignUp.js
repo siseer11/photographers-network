@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import fire from '../config/Fire';
 import {SingUpView} from '../components/SignUpView';
+import {NavFooterWrapper} from "./shared/NavFooterWrapper";
 
-export default class SignUp extends Component {
+class Signup extends Component {
 	state = {
 		name: "",
 		email: "",
@@ -103,3 +104,6 @@ export default class SignUp extends Component {
 		)
 	}
 }
+
+const SignUp = NavFooterWrapper(Signup);
+export default SignUp;
