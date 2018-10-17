@@ -4,8 +4,9 @@ import { EmailSVG } from "../components/svg/EmailSVG";
 import { PasswordSVG } from "../components/svg/PasswordSVG";
 import { Error } from "../components/Error";
 import { InputField } from "../components/formComponents/InputField";
+import {NavFooterWrapper} from "./shared/NavFooterWrapper";
 
-export default class SignIn extends Component {
+class SignsIn extends Component {
   state = {
     email: "",
     password: "",
@@ -45,7 +46,7 @@ export default class SignIn extends Component {
   render() {
     return (
       <div>
-        <div className="section-content">
+        <div className="section-content with-padding">
           <form onSubmit={this.login}>
             <h1>Sign in</h1>
             <InputField
@@ -80,3 +81,6 @@ export default class SignIn extends Component {
     );
   }
 }
+
+const SignIn = NavFooterWrapper(SignsIn);
+export default SignIn;

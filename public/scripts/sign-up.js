@@ -36,7 +36,7 @@ function signUp(e) {
   const email = form["email"].value;
   const password = form["password"].value;
   const password2 = form["password2"].value;
-  const type = form["type"].value;
+  const type = selectType.innerText;
 
   const messages = inputIsValid(name, password, password2);
 
@@ -91,11 +91,20 @@ function showErrorMessage(message) {
   errorContainer.innerHTML = message;
 }
 
-function showCustomSelectHandler() {
+let show = false;
+
+function showCustomSelectHandler(e) {
   const selectDropDown = document.getElementById("select-dropdown");
-  selectDropDown.style.display = "block";
+  if (!e.target.classList.contains("custom-select-option")) {
+    selectDropDown.style.display = show ? "block" : "none";
+    show = !show;
+  }
 }
 
-function optionSelectHandler(type) {
-
+function optionSelectHandler(selectedType) {
+  const selectDropDown = document.getElementById("select-dropdown");
+  selectType.innerText = selectedType;
+  camera.style.display = selectedType === "photographer" ? "block" : "none";
+  contactCard.style.display = selectedType === "company" ? "block" : "none";
+  selectDropDown.style.display = "none";
 }

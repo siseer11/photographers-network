@@ -414,5 +414,11 @@ p.filter-by:hover{
 	padding: 0 15px;
 }
 
+.arrow-icon {
+    left: 235px;
+    width: 15px;
+    height: 15px;
+}
+
 
 /* CARD 50 OVERWRITE LINK end */

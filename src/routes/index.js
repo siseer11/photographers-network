@@ -12,7 +12,7 @@ import {JobsWithFooter} from "../contents/shared/Jobs";
 import SingleJob from '../contents/shared/SingleJob'
 
 export default ({user, loading, setLoadingTrue}) => (
-  <BrowserRouter basename='/app'>
+  <BrowserRouter basename='/app/'>
     <Switch>
       <Route
         exact
