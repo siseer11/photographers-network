@@ -60,18 +60,18 @@ class App extends Component {
 
   };
   
-  updateAvatar = (newLink) => {
+  updateUserInfo = (newInfos) => {
     this.setState((prevState)=>({
       user : {
         ...prevState.user,
-        photoURL : newLink,
+        ...newInfos
       }
     }))
   }
 
 	render() {
 		const { user, loading } = this.state;
-		return <Routes updateAvatar={this.updateAvatar} user={user} loading={loading} setLoadingTrue={this.setLoadingTrue}/>;
+		return <Routes updateUserInfo={this.updateUserInfo} user={user} loading={loading} setLoadingTrue={this.setLoadingTrue}/>;
 	}
 }
 

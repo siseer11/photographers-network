@@ -4,7 +4,7 @@ import { EmailSVG } from "../components/svg/EmailSVG";
 import { PasswordSVG } from "../components/svg/PasswordSVG";
 import { Error } from "../components/Error";
 import { InputField } from "../components/formComponents/InputField";
-import {NavFooterWrapper} from "./shared/NavFooterWrapper";
+import { NavFooterWrapper } from "./shared/NavFooterWrapper";
 
 class SignsIn extends Component {
   state = {
@@ -14,8 +14,8 @@ class SignsIn extends Component {
     errorMessage: "",
     error: false
   };
-  componentDidMount(){
-   this.props.setLoadingTrue();
+  componentDidMount() {
+    this.props.setLoadingTrue();
   }
   /**
    * Updates state to the current value of a certain target.
@@ -35,7 +35,7 @@ class SignsIn extends Component {
     fire
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then((signInData) => {
+      .then(signInData => {
         this.props.history.push("/dashboard");
       })
       .catch(error => {
@@ -51,7 +51,9 @@ class SignsIn extends Component {
             <h1>Sign in</h1>
             <InputField
               wrapperClass="gb-input-wrapper"
-              svg={<EmailSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />}
+              svg={
+                <EmailSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+              }
               value={this.state.email}
               changeHandler={this.handleChange}
               type="email"
@@ -60,7 +62,9 @@ class SignsIn extends Component {
             />
             <InputField
               wrapperClass="gb-input-wrapper"
-              svg={<PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />}
+              svg={
+                <PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+              }
               value={this.state.password}
               changeHandler={this.handleChange}
               type="password"

@@ -12,7 +12,7 @@ import MyJobOffers from '../../contents/company/MyJobOffers';
 import AppliedJobs from "../../contents/photographer/AppliedJobs";
 
 
-const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, loading , updateAvatar}) => {
+const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, loading , updateUserInfo}) => {
 
   let currentComponent = '';
 
@@ -40,7 +40,7 @@ const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, l
 
   return (
     <div>
-      <DashboardHeader updateAvatar={updateAvatar} type={type} links={headerLinks} user={user} linkHandler={linkHandler}>
+      <DashboardHeader updateUserInfo={updateUserInfo} type={type} links={headerLinks} user={user} linkHandler={linkHandler}>
         Welcome {user.displayName}!
       </DashboardHeader>
       {currentComponent}

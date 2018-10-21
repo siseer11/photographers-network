@@ -1,28 +1,27 @@
 // dependencies
-import React, {Component} from 'react';
-import {Redirect} from 'react-router-dom';
-import fire from '../../config/Fire';
+import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
+import fire from "../../config/Fire";
 
 // components
-import {ProfileCard} from "../../components/ProfileCard";
-import {LinkLists} from "../../components/LinkLists";
+import { ProfileCard } from "../../components/ProfileCard";
+import { LinkLists } from "../../components/LinkLists";
 
 // contents
 import PhotographerContent from "../photographer/PhotographerContent";
 import CompanyContent from "../company/CompanyContent";
 import LoadingPage from "../../components/LoadingPage";
-import {NavFooterWrapper} from "./NavFooterWrapper";
-
+import { NavFooterWrapper } from "./NavFooterWrapper";
 
 class Profile extends Component {
   state = {
     pageLinks: [
-      {txt: "Facebook", link: "www.facebook.com"},
-      {txt: "Twitter", link: "www.twitter.com"}
+      { txt: "Facebook", link: "www.facebook.com" },
+      { txt: "Twitter", link: "www.twitter.com" }
     ],
-    uid: this.props.match.params.uid || '',
+    uid: this.props.match.params.uid || "",
     fetchedUserData: false,
-    userData: null,
+    userData: null
   };
   database = fire.database().ref();
 
@@ -34,11 +33,14 @@ class Profile extends Component {
    * Fetches user information from the database with the uid-param.
    */
   fetchUserInformation = () => {
-    const {uid} = this.state;
-    this.database.child('users').child(uid).once('value')
+    const { uid } = this.state;
+    this.database
+      .child("users")
+      .child(uid)
+      .once("value")
       .then(snap => {
-        if(!snap.exists()) {
-          this.props.history.replace('/');
+        if (!snap.exists()) {
+          this.props.history.replace("/");
           return -1;
         }
         let data = snap.val();
@@ -46,15 +48,15 @@ class Profile extends Component {
           displayName: data.displayName,
           email: data.email,
           photoURL: data.photoURL,
-          type: data.type,
+          type: data.type
         };
-        this.setState({userData: userData, fetchedUserData: true});
+        this.setState({ userData: userData, fetchedUserData: true });
       });
   };
 
   render() {
-    const {user, loading} = this.props;
-    const {fetchedUserData, userData, uid, pageLinks} = this.state;
+    const { user, loading } = this.props;
+    const { fetchedUserData, userData, uid, pageLinks } = this.state;
 
     let otherUser = true;
     let loaded = false;
@@ -72,28 +74,30 @@ class Profile extends Component {
 
     return (
       <React.Fragment>
-        {
-          loaded ?
-            (user ?
-              (
-                <ProfileView user={currUser}
-                             isOtherUser={otherUser}
-                             logoutHandler={this.logout}
-                             pageLinks={pageLinks}
-                             uid={uid}
-                />
-              ) :
-              (<Redirect to="/"/>)) : (<LoadingPage/>)
-        }
+        {loaded ? (
+          user ? (
+            <ProfileView
+              user={currUser}
+              isOtherUser={otherUser}
+              logoutHandler={this.logout}
+              pageLinks={pageLinks}
+              uid={uid}
+            />
+          ) : (
+            <Redirect to="/" />
+          )
+        ) : (
+          <LoadingPage />
+        )}
       </React.Fragment>
     );
   }
 }
 
-const ProfileView = ({isOtherUser, user, logoutHandler, pageLinks}) => (
-  <div className='profile'>
+const ProfileView = ({ isOtherUser, user, logoutHandler, pageLinks }) => (
+  <div className="profile">
     <ProfileCard
-      backgroundImg='https://images.unsplash.com/photo-1526080676457-4544bf0ebba9?ixlib=rb-0.3.5&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ&s=981026b7c3ee99d54e0811e984995340'
+      backgroundImg="https://images.unsplash.com/photo-1526080676457-4544bf0ebba9?ixlib=rb-0.3.5&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ&s=981026b7c3ee99d54e0811e984995340"
       profileImg={user.photoURL}
       type={user.type}
     >
@@ -101,18 +105,20 @@ const ProfileView = ({isOtherUser, user, logoutHandler, pageLinks}) => (
     </ProfileCard>
 
     <div className="profile-content">
-      <LinkLists links={pageLinks}
-                 txtClasses="gb-text-black-opacity-30 gb-subtitle-medium"
-                 liClasses="footer-nav-item"/>
+      <LinkLists
+        links={pageLinks}
+        txtClasses="gb-text-black-opacity-30 gb-subtitle-medium"
+        liClasses="footer-nav-item"
+      />
     </div>
 
-    {isOtherUser ?
-      (<div>Not your own profile</div>) :
-      (user.type === "photographer" ?
-          (<PhotographerContent/>) :
-          (<CompanyContent/>)
-      )
-    }
+    {isOtherUser ? (
+      <div>Not your own profile</div>
+    ) : user.type === "photographer" ? (
+      <PhotographerContent />
+    ) : (
+      <CompanyContent />
+    )}
   </div>
 );
 

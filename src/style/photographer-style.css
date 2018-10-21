@@ -422,3 +422,39 @@ p.filter-by:hover{
 
 
 /* CARD 50 OVERWRITE LINK end */
+
+
+/* MODAL BECOME PREMIUM START*/
+.modal-become-premium {
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(0,0,0,.5);
+	z-index: 100;
+	align-items: center;
+	justify-content: center;
+}
+
+.modal-inner-box {
+	width: 90%;
+	height: 250px;
+	background: rgb(255,255,255);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	text-align: center;
+	padding: 30px;
+	box-sizing: border-box;
+	align-items: center;
+}
+
+.become-premium-button{
+	background: #d8e65e;
+	padding: 10px 30px;
+	color: white;
+	cursor: pointer;
+}
+
+/* MODAL BECOME PREMIUM END */

@@ -11,7 +11,7 @@ import MyJobOffers from "../contents/company/MyJobOffers";
 import {JobsWithFooter} from "../contents/shared/Jobs";
 import SingleJob from '../contents/shared/SingleJob'
 
-export default ({user, loading, setLoadingTrue , updateAvatar}) => (
+export default ({user, loading, setLoadingTrue , updateUserInfo}) => (
   <BrowserRouter basename='/app/'>
     <Switch>
       <Route
@@ -53,7 +53,7 @@ export default ({user, loading, setLoadingTrue , updateAvatar}) => (
             {...props}
             user={user}
             loading={loading}
-            updateAvatar={updateAvatar}
+            updateUserInfo={updateUserInfo}
           />
         )}
       />
