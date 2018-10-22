@@ -2,9 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../Button";
 import PropTypes from "prop-types";
-import fire from "../../config/Fire";
 import NoPremiumUser from "./NoPremiumUser";
 import Portofolio from "./Portofolio";
+import AvatarInput from "../../contents/AvatarInput";
 
 export const DashboardHeader = ({
   children,
@@ -22,7 +22,7 @@ export const DashboardHeader = ({
           style={{ flexDirection: "column" }}
           className="gb-card-7-height gb-background-primary"
         >
-          <InputFile
+          <AvatarInput
             uid={user.uid}
             userAvatar={user.photoURL}
             updateUserInfo={updateUserInfo}
@@ -54,102 +54,16 @@ export const DashboardHeader = ({
           </div>
         </div>
       </div>
-      {user.type === "photographer" && user.premium ? (
-        <Portofolio user={user} />
+      {user.type !== "photographer" ? (
+        ""
+      ) : user.premium ? (
+        <Portofolio user={user} updateUserInfo={updateUserInfo} />
       ) : (
         <NoPremiumUser updateUserInfo={updateUserInfo} user={user} />
       )}
     </div>
   );
 };
-
-class InputFile extends React.Component {
-  state = {
-    submitable: false
-  };
-
-  changeHandler = e => {
-    const file = this.fileInput.files[0];
-    //check that the file is smaller then 1mb
-    if (file) {
-      if (file.size > 1100000) {
-        console.log("The file must be under 1MB. Please conform to the rules!");
-      } else {
-        console.log("Perfect sized image.");
-        const userId = this.props.uid;
-        const updateUserInfo = this.props.updateUserInfo;
-        //create storage ref
-        let storageRef = fire.storage().ref(`${userId}/avatar`);
-
-        //upload file
-        let task = storageRef.put(file);
-
-        task.on(
-          "state_changed",
-          function progress(snap) {
-            console.log(snap);
-          },
-          function error(err) {
-            console.log(err);
-          },
-          function complete() {
-            task.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-              console.log("File available at", downloadURL);
-              fire
-                .database()
-                .ref("users")
-                .child(userId)
-                .update(
-                  {
-                    photoURL: downloadURL
-                  },
-                  err => {
-                    if (err) {
-                      console.log("fail");
-                    } else {
-                      console.log("succes");
-                      updateUserInfo({ photoURL: downloadURL });
-                    }
-                  }
-                );
-            });
-          }
-        );
-      }
-    }
-  };
-  render() {
-    return (
-      <div
-        className="z"
-        style={{
-          flexGrow: 1,
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
-      >
-        <label>
-          <img
-            style={{ cursor: "pointer" }}
-            className="gb-avatar gb-avatar-x-large"
-            src={this.props.userAvatar}
-            alt="avatar"
-          />
-          <input
-            multiple
-            style={{ display: "none" }}
-            ref={node => (this.fileInput = node)}
-            onChange={this.changeHandler}
-            type="file"
-            accept=".jpg, .jpeg, .png"
-          />
-        </label>
-      </div>
-    );
-  }
-}
 
 DashboardHeader.propTypes = {
   children: PropTypes.array.isRequired,

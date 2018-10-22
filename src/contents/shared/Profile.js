@@ -8,7 +8,7 @@ import { ProfileCard } from "../../components/ProfileCard";
 import { LinkLists } from "../../components/LinkLists";
 
 // contents
-import PhotographerContent from "../photographer/PhotographerContent";
+import { PhotographerContent } from "../photographer/PhotographerContent";
 import CompanyContent from "../company/CompanyContent";
 import LoadingPage from "../../components/LoadingPage";
 import { NavFooterWrapper } from "./NavFooterWrapper";
@@ -44,13 +44,7 @@ class Profile extends Component {
           return -1;
         }
         let data = snap.val();
-        let userData = {
-          displayName: data.displayName,
-          email: data.email,
-          photoURL: data.photoURL,
-          type: data.type
-        };
-        this.setState({ userData: userData, fetchedUserData: true });
+        this.setState({ userData: data, fetchedUserData: true });
       });
   };
 
@@ -115,7 +109,7 @@ const ProfileView = ({ isOtherUser, user, logoutHandler, pageLinks }) => (
     {isOtherUser ? (
       <div>Not your own profile</div>
     ) : user.type === "photographer" ? (
-      <PhotographerContent />
+      <PhotographerContent user={user} />
     ) : (
       <CompanyContent />
     )}

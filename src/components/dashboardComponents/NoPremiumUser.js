@@ -47,7 +47,6 @@ export default class NoPremiumUser extends React.Component {
     return (
       <React.Fragment>
         <p>For a portofolio you have to be premium...</p>
-
         <WithModal closeItemClass="close-modal">
           {({ showModal }) => (
             <React.Fragment>
