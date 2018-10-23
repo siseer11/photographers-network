@@ -1,16 +1,16 @@
 // dependencies
-import React, {Component} from "react";
-import {withRouter} from 'react-router-dom';
-import fire from '../../config/Fire';
-
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import fire from "../../config/Fire";
+import { withRouter } from "react-router-dom";
 // containers
-import GbNavBar from '../../components/nav-footer/gbNav';
+import GbNavBar from "../../components/nav-footer/gbNav";
 
 // components
-import {GbFooter} from "../../components/nav-footer/Footer";
-import {InstagramSVG} from "../../components/svg/InstagramSVG";
-import {TwitterSVG} from "../../components/svg/TwitterSVG";
-import {FacebookSVG} from "../../components/svg/FacebookSVG";
+import { GbFooter } from "../../components/nav-footer/Footer";
+import { InstagramSVG } from "../../components/svg/InstagramSVG";
+import { TwitterSVG } from "../../components/svg/TwitterSVG";
+import { FacebookSVG } from "../../components/svg/FacebookSVG";
 
 const NavigationFooterWrapper = WrappedComponent => {
   return class extends Component {
@@ -19,52 +19,44 @@ const NavigationFooterWrapper = WrappedComponent => {
      */
     state = {
       userOn: false,
-      links: [{txt: 'Home', link: 'home', nav: true}, {txt: 'Jobs', link: 'jobs', nav: true}, {
-        txt: 'Sign in',
-        link: 'signIn'
-      }],
-      homeLink: 'home',
+      links: [
+        { txt: "Home", link: "home", nav: true },
+        { txt: "Jobs", link: "jobs", nav: true },
+        {
+          txt: "Sign in",
+          link: "signIn"
+        }
+      ],
+      homeLink: "home",
       user: null
     };
 
     componentDidMount() {
-      this.updateLinks(this.props.user)
+      this.updateLinks(this.props.user);
     }
 
-    updateLinks = (user) => {
+    updateLinks = user => {
       if (user) {
-        if (user.type === 'company') {
+        if (user.type === "company") {
           this.setState(() => ({
             userOn: true,
-            links: [
-              //{txt: 'Home' , link:'home' , nav:true},
-              //{txt: 'Create Job' , link:'createJob' , nav:true},
-              //{txt: 'Dashboard' , link: 'dashboard' , nav:true},
-              {txt: 'Sign out', clickHandler: this.logout}],
-            homeLink: 'dashboard',
+            links: [{ txt: "Sign out", clickHandler: this.logout }],
+            homeLink: "dashboard",
             user: user
           }));
         } else {
           this.setState(() => ({
             userOn: true,
-            links: [
-              //{txt: 'Home' , link:'home' , nav:true},
-              //{txt: 'Jobs' , link:'jobs' , nav:true},
-              //{txt: 'Dashboard' , link: 'dashboard' , nav:true},
-              {txt: 'Sign out', clickHandler: this.logout}],
-            homeLink: 'dashboard',
+            links: [{ txt: "Sign out", clickHandler: this.logout }],
+            homeLink: "dashboard",
             user: user
           }));
         }
       } else {
         this.setState(() => ({
           userOn: false,
-          links: [
-            //{txt: 'Home' , link:'home' , nav:true},
-            //{txt: 'Jobs' , link:'jobs' , nav:true},
-            {txt: 'Sign in', link: 'signIn'}
-          ],
-          homeLink: 'home'
+          links: [{ txt: "Sign in", link: "signIn" }],
+          homeLink: "home"
         }));
       }
     };
@@ -78,7 +70,7 @@ const NavigationFooterWrapper = WrappedComponent => {
      */
     logout = () => {
       fire.auth().signOut();
-      this.props.history.replace('/');
+      this.props.history.replace("/");
     };
 
     render() {
@@ -86,35 +78,38 @@ const NavigationFooterWrapper = WrappedComponent => {
         <React.Fragment>
           <GbNavBar
             homeLink={this.state.homeLink}
-            righLinks={
-              this.state.links
-            }
+            righLinks={this.state.links}
             loggedIn={false}
             userOn={this.state.userOn}
             user={this.state.user}
           />
-          <WrappedComponent {...this.props}/>
+          <WrappedComponent {...this.props} />
           <GbFooter
             socialMedias={[
               {
-                icon: <InstagramSVG
-                  classes='gb-icon-fill-black-opacity-30 gb-icon-small'/>, link: '#'
+                icon: (
+                  <InstagramSVG classes="gb-icon-fill-black-opacity-30 gb-icon-small" />
+                ),
+                link: "#"
               },
               {
-                icon: <TwitterSVG
-                  classes='gb-icon-fill-black-opacity-30 gb-icon-small'/>,
-                link: '#'
+                icon: (
+                  <TwitterSVG classes="gb-icon-fill-black-opacity-30 gb-icon-small" />
+                ),
+                link: "#"
               },
               {
-                icon: <FacebookSVG
-                  classes='gb-icon-fill-black-opacity-30 gb-icon-small'/>,
-                link: '#'
-              }]}
+                icon: (
+                  <FacebookSVG classes="gb-icon-fill-black-opacity-30 gb-icon-small" />
+                ),
+                link: "#"
+              }
+            ]}
           />
         </React.Fragment>
       );
     }
-  }
+  };
 };
 
 export default NavigationFooterWrapper;
