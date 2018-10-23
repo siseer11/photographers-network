@@ -45,8 +45,8 @@ GbCard50.propTypes = {
   postedTime: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   children: PropTypes.string.isRequired,
-}
+};
 
 GbCard50.defaultProps = {
   background: 'https://images.unsplash.com/photo-1484069560501-87d72b0c3669?ixlib=rb-0.3.5&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ&s=f0f2eb77096c182d2c0c63982286e2b2',
-}
+};

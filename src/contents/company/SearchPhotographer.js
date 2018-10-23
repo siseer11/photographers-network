@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {SearchInput} from "../../components/formComponents/SearchInput";
+import {SearchInput} from "../../components/form/SearchInput";
 import fire from "../../config/Fire";
 import {PhotographerResults} from "../../components/PhotographerResults";
-import {NavFooterWrapper} from "../shared/NavFooterWrapper";
+import NavFooterWrapper from "../shared/NavFooterWrapper";
 
 class SearchPhotographers extends Component {
   state = {

@@ -5,7 +5,7 @@ import LoadingPage from "../../components/LoadingPage";
 import fire from '../../config/Fire';
 
 // components
-import { DashboardViewWithNav } from "../../components/dashboardComponents/DashboardView";
+import { DashboardViewWithNav } from "../../components/dashboard/DashboardView";
 
 export default class Dashboard extends Component {
   state = {

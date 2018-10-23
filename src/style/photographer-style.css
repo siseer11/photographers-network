@@ -1,7 +1,7 @@
 .section-content {
 	background: rgba(0, 0, 0, 0.8);
 	color: white;
-	height: 100vh;
+	min-height: 100vh;
 	padding: 10px;
 	text-align: center;
 }
@@ -11,6 +11,21 @@
 	margin: 10px;
 	padding: 10px;
 	color: #333333;
+}
+
+.user-card.applied {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-card.applied div {
+    display: flex;
+}
+
+.user-card.applied div .gb-btn {
+    margin: 5px 1px;
 }
 
 .section-content .user-card h3 {
@@ -132,6 +147,62 @@
 	margin: 10px auto;
 	width: 150px;
 	font-size: 12px;
+}
+
+/**
+Notifications
+ */
+
+.notification-container {
+    background-color: white;
+    position: absolute;
+    width: 60%;
+    right: 10px;
+    top: 65px;
+    padding: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.notification-container:after, .notification-container:before {
+    bottom: 100%;
+    left: 61%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+.notification-container:after {
+    border-color: rgba(161, 221, 255, 0);
+    border-bottom-color: white;
+    border-width: 5px;
+    margin-left: -5px;
+}
+.notification-container:before {
+    border-color: rgba(194, 225, 245, 0);
+    border-bottom-color: white;
+    border-width: 11px;
+    margin-left: -11px;
+}
+
+.notification-container div {
+    max-height: 300px;
+    overflow-y: scroll;
+    margin-top: 5px;
+}
+
+.notification-container .gb-card-12 {
+    margin-bottom: 10px;
+}
+
+.new-notification {
+    background-color: #fffc82;
+}
+
+.gb-icon-fill-white.new {
+    fill: yellow;
 }
 
 /**
