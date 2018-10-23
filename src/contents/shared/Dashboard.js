@@ -18,6 +18,10 @@ export default class Dashboard extends Component {
         {
           name: "Applied Jobs",
           active: false
+        },
+        {
+          name: "My Profile",
+          active: false
         }
       ]
     },
@@ -29,6 +33,10 @@ export default class Dashboard extends Component {
         },
         {
           name: "My Jobs",
+          active: false
+        },
+        {
+          name: "My Profile",
           active: false
         }
       ]

@@ -10,6 +10,7 @@ import NavFooterWrapper from "../../contents/shared/NavFooterWrapper";
 // contents
 import MyJobOffers from '../../contents/company/MyJobOffers';
 import AppliedJobs from "../../contents/photographer/AppliedJobs";
+import MyProfile from "../../contents/shared/MyProfile";
 
 
 const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, loading , updateUserInfo}) => {
@@ -32,6 +33,9 @@ const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, l
       break;
     case "My Jobs":
       currentComponent = (<MyJobOffers user={user} loading={loading}/>);
+      break;
+    case "My Profile":
+      currentComponent = (<MyProfile user={user} loading={loading}/>);
       break;
     default:
       currentComponent = (<div>No fitting component!</div>);

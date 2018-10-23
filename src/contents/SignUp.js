@@ -71,6 +71,7 @@ class Signup extends Component {
                   type: type,
                   email: user.email,
                   displayName: name,
+                  location: location,
                   photoURL:
                     "https://images.unsplash.com/photo-1520466809213-7b9a56adcd45?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ&s=6dd9dc582c677370d110940fda65b992"
                 });
