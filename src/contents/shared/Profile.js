@@ -1,6 +1,5 @@
 // dependencies
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
 import fire from "../../config/Fire";
 
 // components
@@ -21,7 +20,7 @@ class Profile extends Component {
     ],
     uid: this.props.match.params.uid || "",
     fetchedUserData: false,
-    userData: null
+    thisProfileData: null
   };
   database = fire.database().ref();
 
@@ -44,41 +43,48 @@ class Profile extends Component {
           return -1;
         }
         let data = snap.val();
-        this.setState({ userData: data, fetchedUserData: true });
+
+        const portofolio = data.portofolio
+          ? Object.values(data.portofolio)
+          : [];
+
+        this.setState({
+          thisProfileData: { ...data, portofolio: portofolio, uid: uid },
+          fetchedUserData: true
+        });
       });
   };
 
   render() {
     const { user, loading } = this.props;
-    const { fetchedUserData, userData, uid, pageLinks } = this.state;
+    const { fetchedUserData, thisProfileData, uid, pageLinks } = this.state; //change currUser to thisProfileData
 
     let otherUser = true;
     let loaded = false;
-    let currUser = null;
 
     // looks if there is response from the current user
     // and the user data has been already fetched
     if (!loading && fetchedUserData) {
       if (user) {
-        otherUser = user.uid !== uid;
+        otherUser = user.uid !== thisProfileData.uid;
       }
-      currUser = userData;
       loaded = true;
     }
 
     return (
       <React.Fragment>
         {loaded ? (
-          user ? (
+          user ? ( //THIS USER IS THE LOGGEDIN USER NOT THE USER THAT USER THAT PROFILE WE ARE LOOKING AT
             <ProfileView
-              user={currUser}
+              thisProfileData={thisProfileData} //THIS USER IN PROFILEVIEW IS THE USER THAT PROFILE BELONGS TO NOT THE LOGGEDINONE!
               isOtherUser={otherUser}
               logoutHandler={this.logout}
               pageLinks={pageLinks}
               uid={uid}
+              siggnedInUser={user}
             />
           ) : (
-            <Redirect to="/" />
+            <h2> NO SUCH PROFILE </h2>
           )
         ) : (
           <LoadingPage />
@@ -88,16 +94,16 @@ class Profile extends Component {
   }
 }
 
-const ProfileView = ({ isOtherUser, user, logoutHandler, pageLinks }) => (
+const ProfileView = ({
+  isOtherUser,
+  thisProfileData,
+  pageLinks,
+  siggnedInUser
+}) => (
   <div className="profile">
-    <ProfileCard
-      backgroundImg="https://images.unsplash.com/photo-1526080676457-4544bf0ebba9?ixlib=rb-0.3.5&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ&s=981026b7c3ee99d54e0811e984995340"
-      profileImg={user.photoURL}
-      type={user.type}
-    >
-      {user.displayName}
+    <ProfileCard {...thisProfileData} siggnedInUser={siggnedInUser}>
+      {thisProfileData.displayName}
     </ProfileCard>
-
     <div className="profile-content">
       <LinkLists
         links={pageLinks}
@@ -106,14 +112,14 @@ const ProfileView = ({ isOtherUser, user, logoutHandler, pageLinks }) => (
       />
     </div>
 
-    {isOtherUser ? (
-      <div>Not your own profile</div>
-    ) : user.type === "photographer" ? (
-      <PhotographerContent user={user} />
+    {thisProfileData.type === "photographer" ? (
+      <PhotographerContent
+        photographerData={thisProfileData}
+        isOtherUser={isOtherUser}
+      />
     ) : (
-      <CompanyContent />
+      <CompanyContent isOtherUser={isOtherUser} />
     )}
   </div>
 );
-
 export const ProfileWithNav = NavFooterWrapper(Profile);
