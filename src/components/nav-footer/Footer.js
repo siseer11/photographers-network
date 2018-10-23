@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { LinkLists } from "./LinkLists";
+import { LinkLists } from "../LinkLists";
 
 /* links = [{'txt' : 'About us' , 'link' : '#'}] socialMedias=[{icon: <InstagramSVG className=''/>,href:'#'}]*/
 export const GbFooter = ({ links, socialMedias }) => (

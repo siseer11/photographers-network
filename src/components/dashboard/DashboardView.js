@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 // components
 import {DashboardHeader} from "./DashboardHeader";
-import {NavFooterWrapper} from "../../contents/shared/NavFooterWrapper";
+import NavFooterWrapper from "../../contents/shared/NavFooterWrapper";
 
 // contents
 import MyJobOffers from '../../contents/company/MyJobOffers';

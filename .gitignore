@@ -2,6 +2,9 @@
 
 /functions
 
+# paypal credentials
+/src/paypal
+
 # firebase credentials
 /src/config
 /src/public/scripts/config
