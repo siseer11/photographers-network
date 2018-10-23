@@ -2,7 +2,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import LoadingPage from "../../components/LoadingPage";
-import fire from '../../config/Fire';
+import fire from "../../config/Fire";
 
 // components
 import { DashboardViewWithNav } from "../../components/dashboard/DashboardView";
@@ -17,7 +17,8 @@ export default class Dashboard extends Component {
         },
         {
           name: "Applied Jobs",
-          active: false}
+          active: false
+        }
       ]
     },
     company: {
@@ -29,9 +30,9 @@ export default class Dashboard extends Component {
         {
           name: "My Jobs",
           active: false
-        },
+        }
       ]
-    },
+    }
   };
   database = fire.database().ref();
 
@@ -51,16 +52,15 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    const { user, loading } = this.props;
-    let activeType = '';
-    let activeComponent = '';
+    const { user, loading, updateUserInfo } = this.props;
+    let activeType = "";
+    let activeComponent = "";
     if (!loading && user) {
       activeType = this.state[user.type];
-      activeType.headerLinks.map((link) => {
+      activeType.headerLinks.map(link => {
         if (link.active) activeComponent = link.name;
       });
     } // either company or photographer
-
 
     // checks, if there is already a response of the database
     // if not, shows the loading page
@@ -68,25 +68,24 @@ export default class Dashboard extends Component {
     // by just typing dashboard into the url), if there's none, redirects to home
     return (
       <React.Fragment>
-        {
-          loading === false ? (
-            user ? (
-              <DashboardViewWithNav
-                type={user.type}
-                user={user}
-                {...this.props}
-                linkHandler={this.setComponentToShow}
-                headerLinks={activeType.headerLinks}
-                activeComponent={activeComponent}
-                loading={loading}
-              />
-            ) : (
-              <Redirect to='/' />
-            )
+        {loading === false ? (
+          user ? (
+            <DashboardViewWithNav
+              type={user.type}
+              user={user}
+              {...this.props}
+              linkHandler={this.setComponentToShow}
+              headerLinks={activeType.headerLinks}
+              activeComponent={activeComponent}
+              loading={loading}
+              updateUserInfo={updateUserInfo}
+            />
           ) : (
-            <LoadingPage />
+            <Redirect to="/" />
           )
-        }
+        ) : (
+          <LoadingPage />
+        )}
       </React.Fragment>
     );
   }
