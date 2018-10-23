@@ -3,7 +3,7 @@ import fire from '../../config/Fire';
 import queryString from 'query-string';
 import { JobsView } from '../../components/JobsView';
 import LoadingPage from '../../components/LoadingPage';
-import {NavFooterWrapper} from './/NavFooterWrapper';
+import NavFooterWrapper from './NavFooterWrapper';
 
 class Jobs extends React.Component {
 	state = {
@@ -12,7 +12,8 @@ class Jobs extends React.Component {
 		searchValue: '',
 		locationsFilter: [],
 		typesFilter: [],
-	}
+	};
+
  /** 
  * When the component mounts, check to see if there are some parameters to filter in the link
  * if there are , fetch from the DB just that data, if not fetch all the jobs data
@@ -22,34 +23,35 @@ class Jobs extends React.Component {
 		const searchQuerry = queryString.parse(this.props.location.search);
 		const requests = fire.database().ref('requests');
 
-		if (Object.keys(searchQuerry).length != 0) {
+		if (Object.keys(searchQuerry).length !== 0) {
 			requests
 				.orderByChild(Object.keys(searchQuerry)[0])
 				.equalTo(Object.values(searchQuerry)[0])
 				.once('value', (snap) => {
+				  let allJobs = Object.values(snap.val() || {});
 					this.setState({
-						jobs: Object.values(snap.val() || {}),
+						jobs: allJobs.filter(job => job.status === "open"),
 						loading: false
 					})
 				})
 		} else {
 			requests.once('value', (snap) => {
-				let response = Object.values(snap.val());
+        let allJobs = Object.values(snap.val() || {});
+				let response = allJobs.filter(job => job.status === "open");
 				let locations = [];
 				let types = [];
 
 				response.forEach(el => {
 					if (locations.indexOf(el.location) < 0) locations.push(el.location);
 					if (types.indexOf(el.type) < 0) types.push(el.type);
-				})
+				});
 
 				this.setState({
 					locations: locations,
 					types: types,
-					jobs: Object.values(snap.val() || {}),
+					jobs: response,
 					loading: false,
 				})
-
 			})
 		}
 	}
@@ -58,7 +60,7 @@ class Jobs extends React.Component {
 		this.setState({
 			[e.target.name]: e.target.value
 		})
-	}
+	};
 
  /** 
  * When a checkbox is clicked depending if it is true or not , 
@@ -78,7 +80,7 @@ class Jobs extends React.Component {
 				[boxFor]: [...prevState[boxFor].slice(0, valIdx), ...prevState[boxFor].slice(valIdx + 1)]
 			}))
 		}
-	}
+	};
 
 	filterJobs(jobsArr, searchValue, locationsFilter = false, typesFilter = false) {
 		return jobsArr.filter((el) => {
@@ -92,9 +94,7 @@ class Jobs extends React.Component {
 	render() {
 		let { loading, jobs: jobsList, searchValue, locations, types, locationsFilter, typesFilter } = this.state;
 
-
 		jobsList = this.filterJobs(jobsList, searchValue, locationsFilter.length > 0 && locationsFilter, typesFilter.length > 0 && typesFilter)
-
 
 		return (
 			<div className='jobs-page'>

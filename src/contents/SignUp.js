@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import fire from "../config/Fire";
 import { SingUpView } from "../components/SignUpView";
-import { NavFooterWrapper } from "./shared/NavFooterWrapper";
+import NavFooterWrapper from "./shared/NavFooterWrapper";
 
 class Signup extends Component {
   state = {

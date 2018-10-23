@@ -3,7 +3,7 @@ import LoadingPage from '../../components/LoadingPage';
 import {Redirect} from 'react-router-dom';
 import fire from '../../config/Fire'
 import {CreateJobbForm} from '../../components/CreateJobbForm';
-import {NavFooterWrapper} from "../shared/NavFooterWrapper";
+import NavFooterWrapper from "../shared/NavFooterWrapper";
 
 class CreateJob extends React.Component {
   state = {

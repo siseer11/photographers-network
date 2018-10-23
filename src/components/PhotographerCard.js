@@ -20,4 +20,4 @@ PhotographerCard.propTypes = {
 	userPic: PropTypes.string, 
 	userName: PropTypes.string.isRequired, 
 	userLocation: PropTypes.string.isRequired 	
-}
+};

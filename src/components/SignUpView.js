@@ -3,7 +3,7 @@ import React from 'react';
 import { EmailSVG } from './svg/EmailSVG';
 import { PasswordSVG } from "./svg/PasswordSVG";
 import { NameInputSVG } from "./svg/NameInputSVG";
-import { InputField } from "./formComponents/InputField";
+import { InputField } from "./form/InputField";
 import { BusinessCardSVG } from './svg/BusinessCardSVG';
 import { CameraSVG } from './svg/CameraSVG';
 import { LocationSVG } from "./svg/LocationSVG";

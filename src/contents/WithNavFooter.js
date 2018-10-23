@@ -1,6 +1,6 @@
 import React from 'react';
-import GbNavBar from './gbNav';
-import {GbFooter} from './Footer';
+import GbNavBar from '../components/nav-footer/gbNav';
+import {GbFooter} from '../components/nav-footer/Footer';
 import { InstagramSVG } from '../components/svg/InstagramSVG';
 import { FacebookSVG } from '../components/svg/FacebookSVG';
 import { TwitterSVG } from '../components/svg/TwitterSVG';
