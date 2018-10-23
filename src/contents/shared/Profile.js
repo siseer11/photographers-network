@@ -11,7 +11,7 @@ import {LinkLists} from "../../components/LinkLists";
 import PhotographerContent from "../photographer/PhotographerContent";
 import CompanyContent from "../company/CompanyContent";
 import LoadingPage from "../../components/LoadingPage";
-import {NavFooterWrapper} from "./NavFooterWrapper";
+import NavFooterWrapper from "./NavFooterWrapper";
 
 
 class Profile extends Component {

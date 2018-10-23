@@ -3,8 +3,8 @@ import fire from "../config/Fire";
 import { EmailSVG } from "../components/svg/EmailSVG";
 import { PasswordSVG } from "../components/svg/PasswordSVG";
 import { Error } from "../components/Error";
-import { InputField } from "../components/formComponents/InputField";
-import {NavFooterWrapper} from "./shared/NavFooterWrapper";
+import { InputField } from "../components/form/InputField";
+import NavFooterWrapper from "./shared/NavFooterWrapper";
 
 class SignsIn extends Component {
   state = {

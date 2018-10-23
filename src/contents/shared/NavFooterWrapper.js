@@ -1,17 +1,18 @@
 // dependencies
 import React, {Component} from "react";
+import {withRouter} from 'react-router-dom';
 import fire from '../../config/Fire';
 
 // containers
-import GbNavBar from '../../components/gbNav';
+import GbNavBar from '../../components/nav-footer/gbNav';
 
 // components
-import {GbFooter} from "../../components/Footer";
+import {GbFooter} from "../../components/nav-footer/Footer";
 import {InstagramSVG} from "../../components/svg/InstagramSVG";
 import {TwitterSVG} from "../../components/svg/TwitterSVG";
 import {FacebookSVG} from "../../components/svg/FacebookSVG";
 
-export const NavFooterWrapper = WrappedComponent => {
+const NavigationFooterWrapper = WrappedComponent => {
   return class extends Component {
     /**
      * Logs out the user and redirects him to home.
@@ -22,7 +23,8 @@ export const NavFooterWrapper = WrappedComponent => {
         txt: 'Sign in',
         link: 'signIn'
       }],
-      homeLink: 'home'
+      homeLink: 'home',
+      user: null
     };
 
     componentDidMount() {
@@ -39,7 +41,8 @@ export const NavFooterWrapper = WrappedComponent => {
               //{txt: 'Create Job' , link:'createJob' , nav:true},
               //{txt: 'Dashboard' , link: 'dashboard' , nav:true},
               {txt: 'Sign out', clickHandler: this.logout}],
-            homeLink: 'dashboard'
+            homeLink: 'dashboard',
+            user: user
           }));
         } else {
           this.setState(() => ({
@@ -49,7 +52,8 @@ export const NavFooterWrapper = WrappedComponent => {
               //{txt: 'Jobs' , link:'jobs' , nav:true},
               //{txt: 'Dashboard' , link: 'dashboard' , nav:true},
               {txt: 'Sign out', clickHandler: this.logout}],
-            homeLink: 'dashboard'
+            homeLink: 'dashboard',
+            user: user
           }));
         }
       } else {
@@ -66,9 +70,12 @@ export const NavFooterWrapper = WrappedComponent => {
     };
 
     componentWillReceiveProps(nextProps) {
-      this.updateLinks(nextProps.user)
+      this.updateLinks(nextProps.user);
     }
 
+    /**
+     * Logs out user.
+     */
     logout = () => {
       fire.auth().signOut();
       this.props.history.replace('/');
@@ -83,6 +90,8 @@ export const NavFooterWrapper = WrappedComponent => {
               this.state.links
             }
             loggedIn={false}
+            userOn={this.state.userOn}
+            user={this.state.user}
           />
           <WrappedComponent {...this.props}/>
           <GbFooter
@@ -107,3 +116,5 @@ export const NavFooterWrapper = WrappedComponent => {
     }
   }
 };
+
+export default NavigationFooterWrapper;

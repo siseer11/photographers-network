@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { SourceLabel } from "./labelComponents/SourceLabel";
-import { TimeLabel } from "./labelComponents/TimeLabel";
-import { CategoryLabel } from "./labelComponents/CategoryLabel";
+import { SourceLabel } from "./label/SourceLabel";
+import { TimeLabel } from "./label/TimeLabel";
+import { CategoryLabel } from "./label/CategoryLabel";
 
 export const GbCardLabel = ({
  iconColor,

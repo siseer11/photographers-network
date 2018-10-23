@@ -1,12 +1,12 @@
 import React from 'react';
 import { CustomSelect } from "./CustomSelect";
-import { InputField } from './formComponents/InputField';
+import { InputField } from './form/InputField';
 import { NameInputSVG } from "./svg/NameInputSVG";
 import { LocationSVG } from "./svg/LocationSVG";
 import { MoneySVG } from './svg/MoneySVG';
 import { CameraSVG } from "./svg/CameraSVG";
 import { CalendarSVG } from "./svg/CalendarSVG";
-import { TextArea } from './formComponents/TextArea';
+import { TextArea } from './form/TextArea';
 import PropTypes from 'prop-types';
 
 const types = ["nature", "portrait", "dogs", "cats"];
