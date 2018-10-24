@@ -10,20 +10,33 @@ import NavFooterWrapper from "../../contents/shared/NavFooterWrapper";
 // contents
 import MyJobOffers from '../../contents/company/MyJobOffers';
 import AppliedJobs from "../../contents/photographer/AppliedJobs";
+import NoPremiumUser from "./NoPremiumUser";
+import Portofolio from "./Portofolio";
 
-
-const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, loading , updateUserInfo}) => {
+const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, loading, updateUserInfo}) => {
 
   let currentComponent = '';
 
-  //TODO: maybe find a better solultion than the switch?
+  //TODO: maybe find a better solution than the switch?
   switch (activeComponent) {
     case "Home":
       currentComponent = type === "photographer" ?
-        (<Link to='/jobs' className="gb-btn gb-btn-medium gb-btn-primary">Search for jobs</Link>) :
+        // user is photographer
+        (<React.Fragment>
+          {user.premium ? (
+            // user is premium
+            <Portofolio user={user} updateUserInfo={updateUserInfo}/>
+          ) : (
+            // user is not premium
+            <NoPremiumUser updateUserInfo={updateUserInfo} user={user}/>
+          )}
+          <Link to='/jobs' className="gb-btn gb-btn-medium gb-btn-primary">Search for jobs</Link>
+        </React.Fragment>) :
+        // user is company
         (<React.Fragment>
           <Link to='../createJob' className="gb-btn gb-btn-medium gb-btn-primary">Create job offer</Link>
-          <Link to="/search-photographers" className="gb-btn gb-btn-medium gb-btn-primary">Search for photographers</Link>
+          <Link to="/search-photographers" className="gb-btn gb-btn-medium gb-btn-primary">Search for
+            photographers</Link>
         </React.Fragment>)
       ;
       break;
@@ -40,7 +53,8 @@ const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, l
 
   return (
     <div>
-      <DashboardHeader updateUserInfo={updateUserInfo} type={type} links={headerLinks} user={user} linkHandler={linkHandler}>
+      <DashboardHeader updateUserInfo={updateUserInfo} type={type} links={headerLinks} user={user}
+                       linkHandler={linkHandler}>
         Welcome {user.displayName}!
       </DashboardHeader>
       {currentComponent}

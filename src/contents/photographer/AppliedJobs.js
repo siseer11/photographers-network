@@ -68,7 +68,7 @@ class AppliedJobsFetch extends Component {
               txt: job.jobDescription.companyName,
               link: `/profile/${job.jobDescription.company}`
             }}
-            postedTime={job.jobDescription.date}
+            postedTime={new Date(job.jobDescription.date).toLocaleDateString("en-US")}
             category={job.jobDescription.type}
           >
             {job.jobDescription.title}

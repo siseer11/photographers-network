@@ -15,7 +15,7 @@ export const JobsList = ({ jobsList }) => (
 						txt: el.companyName,
 						link: `/profile/${el.companyId}`
 					}}
-					postedTime={el.date}
+					postedTime={new Date(el.date).toLocaleDateString("en-US")}
 					category={el.type}
 				>
 					{el.title}
