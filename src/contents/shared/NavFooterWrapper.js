@@ -1,6 +1,5 @@
 // dependencies
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 import fire from "../../config/Fire";
 // containers
 import GbNavBar from "../../components/nav-footer/gbNav";
@@ -78,9 +77,10 @@ const NavigationFooterWrapper = WrappedComponent => {
           <GbNavBar
             homeLink={this.state.homeLink}
             righLinks={this.state.links}
-            loggedIn={false}
+            loggedIn={true}
             userOn={this.state.userOn}
             user={this.state.user}
+            userImageUrl={this.state.user ? this.state.user.photoURL : ""}
           />
           <WrappedComponent {...this.props} />
           <GbFooter
