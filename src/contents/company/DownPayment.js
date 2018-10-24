@@ -4,7 +4,7 @@ import {Redirect, Link} from 'react-router-dom';
 import fire from '../../config/Fire';
 import PaypalButton from '../shared/PayPalButton';
 import {Button} from "../../components/Button";
-//import CLIENT from '../../paypal/Client';
+import CLIENT from '../../paypal/Client';
 
 const ENV = process.env.NODE_ENV === 'production'
   ? 'production'
@@ -40,7 +40,7 @@ class DownPayment extends React.Component {
           accept <Link to={`/profile/${acceptedApplicant.uid}`}>{acceptedApplicant.displayName}</Link> as your
           photographer for your job request.</p>
         <PaypalButton
-         //client={CLIENT}
+          client={CLIENT}
           env={ENV}
           commit={true}
           currency={'SEK'}
