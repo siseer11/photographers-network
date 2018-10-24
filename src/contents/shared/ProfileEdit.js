@@ -5,9 +5,7 @@ import { ProfileEditView } from './ProfileEditView';
 import firebase from 'firebase';
 
 export class ProfileEdit extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
+	state = {
 		  image: "https://example.com/jane-q-user/profile.jpg",
 		  url: this.props.user.photoURL,
 		  progress: 0,
@@ -17,9 +15,7 @@ export class ProfileEdit extends Component {
 		  location: this.props.user.location,
 		  photoURL: this.props.user.url,
 		}
-	  }
-
-
+	  
 	database = fire.database().ref();
 
 	/**
