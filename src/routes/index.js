@@ -9,7 +9,8 @@ import SearchPhotographer from "../contents/company/SearchPhotographer";
 import CreateJobb from "../contents/company/CreateJobb";
 import MyJobOffers from "../contents/company/MyJobOffers";
 import {JobsWithFooter} from "../contents/shared/Jobs";
-import SingleJob from '../contents/shared/SingleJob'
+import SingleJob from '../contents/shared/SingleJob';
+import { ProfileEdit } from '../contents/shared/ProfileEdit';
 
 export default ({user, loading, setLoadingTrue , updateUserInfo}) => (
   <BrowserRouter basename='/app/'>
@@ -57,6 +58,11 @@ export default ({user, loading, setLoadingTrue , updateUserInfo}) => (
           />
         )}
       />
+      <Route exact path="/ProfileEdit" render={props => (
+        <ProfileEdit
+        {...props}
+        user={user}
+      />)}/>
       <Route exact path="/profile/:uid" render={props => (
         <ProfileWithNav
           {...props}

@@ -3,7 +3,6 @@ import { Component } from 'react';
 import fire from '../../config/Fire';
 import { ProfileEditView } from './ProfileEditView';
 import firebase from 'firebase';
-import { storage } from '../../config/Fire';
 
 export class ProfileEdit extends Component {
 	constructor(props) {
@@ -18,10 +17,6 @@ export class ProfileEdit extends Component {
 		  location: this.props.user.location,
 		  photoURL: this.props.user.url,
 		}
-		this.handleChangeUpload = this
-      .handleChangeUpload
-      .bind(this);
-       
 	  }
 
 
@@ -48,14 +43,14 @@ export class ProfileEdit extends Component {
 
 		if (name !== "" && email !== "" && location !== "" && url !== "") {
 
-		var newUser = firebase.auth().currentUser;
+		firebase.auth().currentUser.updateProfile(
+			{
 
-		newUser.updateProfile({
+				displayName: name,
+				photoURL: url
+			}
+		)
 
-			displayName: name,
-			photoURL: url
-		})
-			
 			.then(() => {
 
 				if(user.location !== location && location !=="") {
@@ -93,8 +88,9 @@ export class ProfileEdit extends Component {
 			})
 
 			.then(() => {
-				alert("User Updated");
-			})	
+				this.props.history.replace("/dashboard");
+				alert("User Updated!! please refresh the page for updates");
+			  })
 	
 		}
 		else {
@@ -111,7 +107,7 @@ export class ProfileEdit extends Component {
 		  //handle start
 		  
 		
-		const uploadTask = storage.ref(`images/${image.name}`).put(image);
+		const uploadTask = fire.storage().ref(`images/${image.name}`).put(image);
 		uploadTask.on('state_changed', 
 		(snapshot) => {
 		  // progrss function ....
@@ -124,7 +120,7 @@ export class ProfileEdit extends Component {
 		}, 
 	  () => {
 		  // complete function ....
-		  storage.ref('images').child(image.name).getDownloadURL().then(url => {
+		  fire.storage().ref('images').child(image.name).getDownloadURL().then(url => {
 			  console.log(url);
 			  this.setState({url});
 		  })
