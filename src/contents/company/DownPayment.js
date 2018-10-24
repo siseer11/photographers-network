@@ -8,7 +8,6 @@ const ENV = process.env.NODE_ENV === "production" ? "production" : "sandbox";
 
 class DownPayment extends React.Component {
   state = {
-    currency: "USD",
     total: this.props.price,
     error: "",
     success: false
@@ -25,6 +24,7 @@ class DownPayment extends React.Component {
   render() {
     const { paymentHandler, acceptedApplicant } = this.props;
     let total = 1; //this.state.total;
+    //TODO: implement calculation for the payment (see trello task) and show calculation for user
     return (
       <React.Fragment>
         <h3>Make down payment</h3>

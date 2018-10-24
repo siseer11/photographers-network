@@ -2,8 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../Button";
 import PropTypes from "prop-types";
-import NoPremiumUser from "./NoPremiumUser";
-import Portofolio from "./Portofolio";
 import AvatarInput from "../../contents/AvatarInput";
 
 export const DashboardHeader = ({
@@ -54,13 +52,6 @@ export const DashboardHeader = ({
           </div>
         </div>
       </div>
-      {user.type !== "photographer" ? (
-        ""
-      ) : user.premium ? (
-        <Portofolio user={user} updateUserInfo={updateUserInfo} />
-      ) : (
-        <NoPremiumUser updateUserInfo={updateUserInfo} user={user} />
-      )}
     </div>
   );
 };
