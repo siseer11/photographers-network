@@ -2,7 +2,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import fire from "../../config/Fire";
-import { withRouter } from "react-router-dom";
 // containers
 import GbNavBar from "../../components/nav-footer/gbNav";
 

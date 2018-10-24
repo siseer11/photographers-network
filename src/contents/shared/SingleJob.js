@@ -1,6 +1,6 @@
 import React from "react";
 import fire from "../../config/Fire";
-import { SingleJobViewWithNav } from "../../components/single-job/SingleJobView";
+import {SingleJobViewWithNav} from "../../components/single-job/SingleJobView";
 import LoadingPage from "../../components/LoadingPage";
 
 export default class SingleJob extends React.Component {
@@ -10,7 +10,7 @@ export default class SingleJob extends React.Component {
         {this.props.loading === false ? (
           <SingleJobFetch {...this.props} />
         ) : (
-          <LoadingPage />
+          <LoadingPage/>
         )}
       </div>
     );
@@ -26,7 +26,9 @@ class SingleJobFetch extends React.Component {
     appliedPhotographers: [],
     acceptedApplicant: "",
     downPayment: false,
-    isDeclinedPhotographer: false
+    isDeclinedPhotographer: false,
+    showDeleteModal: false,
+    jobExists: true
   };
   database = fire.database();
 
@@ -43,11 +45,16 @@ class SingleJobFetch extends React.Component {
    * Fetches information about the job from the database.
    */
   fetchDatabaseInfo = jobId => {
-    const { user } = this.props;
+    const {user} = this.props;
     this.database
       .ref("requests")
       .child(jobId)
-      .once("value", snap => {
+      .once("value", async snap => {
+        // checks, if job exists
+        if (!snap.exists()) {
+          await this.setState({jobExists: false, loadingData: false,});
+          return -1;
+        }
         const response = snap.val();
         const photographersObj = response["photographers-applied"]
           ? response["photographers-applied"]
@@ -81,7 +88,7 @@ class SingleJobFetch extends React.Component {
    * Sets event listeners for changes in the database.
    */
   setEventListensers = () => {
-    const { jobId, appliedPhotographers } = this.state;
+    const {jobId, appliedPhotographers} = this.state;
     let appliedPhotographersCopy = [...appliedPhotographers];
 
     // Event listener if applicant was added
@@ -96,11 +103,30 @@ class SingleJobFetch extends React.Component {
           displayName: data.displayName,
           email: data.email
         });
-        this.setState({ appliedPhotographers: appliedPhotographersCopy });
+        this.setState({appliedPhotographers: appliedPhotographersCopy});
       });
   };
 
   // ---------- COMPANY METHODS ----------:
+  showDeleteModal = show => {
+    this.setState({showDeleteModal: show});
+  };
+
+  /**
+   * Deletes job from every database node and redirects to dashboard.
+   *
+   * @returns {Promise.<void>}
+   */
+  deleteJob = async () => {
+    await (this.database.ref('requests').child(this.state.jobId).remove());
+    await (this.database.ref('company').child(this.state.jobDescription.companyId).child('postedJobs').child(this.state.jobId).remove());
+    let photographers = await ( this.database.ref('photographer').once('value'));
+    photographers.forEach(async photographer => {
+      console.log(photographer.key);
+      await this.database.ref('photographer').child(photographer.key).child('applied-jobs').child(this.state.jobId).remove();
+    });
+    this.props.history.replace('/dashboard');
+  };
 
   /**
    * Removes applicant from the current job.
@@ -108,7 +134,7 @@ class SingleJobFetch extends React.Component {
    * @param uid
    */
   declineApplicant = uid => {
-    const { jobId, jobDescription } = this.state;
+    const {jobId, jobDescription} = this.state;
     // remove applicant from database and state
     this.database
       .ref("requests")
@@ -122,7 +148,7 @@ class SingleJobFetch extends React.Component {
           photo => photo.uid === uid
         );
         appliedPhotographersCopy.splice(index, 1);
-        this.setState({ appliedPhotographers: appliedPhotographersCopy });
+        this.setState({appliedPhotographers: appliedPhotographersCopy});
       });
     // add notification
     this.database
@@ -133,10 +159,10 @@ class SingleJobFetch extends React.Component {
       .set({
         title: `${
           jobDescription.companyName
-        } has declined your application for ${jobDescription.title}.`,
+          } has declined your application for ${jobDescription.title}.`,
         link: `/job/${jobId}`,
         read: false,
-        time: new Date().toLocaleDateString("en-US")
+        time: new Date().getTime()
       });
   };
 
@@ -145,11 +171,11 @@ class SingleJobFetch extends React.Component {
    * @param uid
    */
   acceptApplicant = uid => {
-    const { appliedPhotographers } = this.state;
+    const {appliedPhotographers} = this.state;
     const photographer = appliedPhotographers.filter(
       user => user.uid === uid
     )[0];
-    this.setState({ acceptedApplicant: photographer });
+    this.setState({acceptedApplicant: photographer});
   };
 
   /**
@@ -157,7 +183,7 @@ class SingleJobFetch extends React.Component {
    * successful payment.
    */
   successfulPayment = () => {
-    const { jobId, acceptedApplicant, jobDescription } = this.state;
+    const {jobId, acceptedApplicant, jobDescription} = this.state;
     this.database
       .ref("requests")
       .child(jobId)
@@ -167,22 +193,14 @@ class SingleJobFetch extends React.Component {
         status: "in progress"
       })
       .then(() => {
-        this.setState({ downPayment: true });
+        this.setState({downPayment: true});
       });
-    this.database
-      .ref("users")
-      .child(acceptedApplicant.uid)
-      .child("notifications")
-      .push()
-      .set({
-        title: `${
-          jobDescription.companyName
-        } has accepted you to execute the job request "${
-          jobDescription.title
-        }".`,
+    this.database.ref("users").child(acceptedApplicant.uid).child("notifications")
+      .push().set({
+        title: `${jobDescription.companyName} has accepted you to execute the job request "${jobDescription.title}".`,
         link: `/job/${jobId}`,
         read: false,
-        time: new Date().toLocaleDateString("en-US")
+        time: new Date().getTime()
       });
   };
 
@@ -192,8 +210,8 @@ class SingleJobFetch extends React.Component {
    * User applies for a job.
    */
   applyForJob = () => {
-    const { user } = this.props;
-    const { jobId, jobDescription } = this.state;
+    const {user} = this.props;
+    const {jobId, jobDescription} = this.state;
     this.database
       .ref("requests")
       .child(jobId)
@@ -214,7 +232,7 @@ class SingleJobFetch extends React.Component {
           });
       })
       .then(() => {
-        this.setState({ userApplied: true });
+        this.setState({userApplied: true});
         // creates notification for company
         this.database
           .ref("users")
@@ -224,10 +242,10 @@ class SingleJobFetch extends React.Component {
           .set({
             title: `${user.displayName} applied for your job request "${
               jobDescription.title
-            }".`,
+              }".`,
             link: `/job/${jobId}`,
             read: false,
-            time: new Date().toLocaleDateString("en-US")
+            time: new Date().getTime()
           });
       });
   };
@@ -236,7 +254,7 @@ class SingleJobFetch extends React.Component {
    * Checks, if user has already applied to the job and has been declined.
    */
   userIsDeclinedPhotographer() {
-    const { user } = this.props;
+    const {user} = this.props;
     if (user.type === "photographer") {
       this.database
         .ref("photographer")
@@ -244,13 +262,13 @@ class SingleJobFetch extends React.Component {
         .child("applied-jobs")
         .child(this.state.jobId)
         .once("value", snap => {
-          this.setState({ isDeclinedPhotographer: snap.exists() });
+          this.setState({isDeclinedPhotographer: snap.exists()});
         });
     }
   }
 
   render() {
-    const { user } = this.props;
+    const {user} = this.props;
     const {
       loadingData,
       jobDescription,
@@ -263,22 +281,26 @@ class SingleJobFetch extends React.Component {
     return (
       <div>
         {loadingData ? (
-          <LoadingPage />
+          <LoadingPage/>
         ) : (
-          <SingleJobViewWithNav
-            history={this.props.history}
-            {...jobDescription}
-            user={user}
-            applyHandler={this.applyForJob}
-            userApplied={userApplied}
-            appliedPhotographers={appliedPhotographers}
-            acceptHandler={this.acceptApplicant}
-            declineHandler={this.declineApplicant}
-            acceptedApplicant={acceptedApplicant}
-            downPayment={downPayment}
-            successfulPaymentHandler={this.successfulPayment}
-            isDeclinedPhotographer={isDeclinedPhotographer}
-          />
+            <SingleJobViewWithNav
+              history={this.props.history}
+              {...jobDescription}
+              user={user}
+              applyHandler={this.applyForJob}
+              userApplied={userApplied}
+              appliedPhotographers={appliedPhotographers}
+              acceptHandler={this.acceptApplicant}
+              declineHandler={this.declineApplicant}
+              acceptedApplicant={acceptedApplicant}
+              downPayment={downPayment}
+              successfulPaymentHandler={this.successfulPayment}
+              isDeclinedPhotographer={isDeclinedPhotographer}
+              deleteHandler={this.deleteJob}
+              showDeleteModal={this.showDeleteModal}
+              showModal={this.state.showDeleteModal}
+              jobExists={this.state.jobExists}
+            />
         )}
       </div>
     );

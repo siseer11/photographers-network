@@ -75,7 +75,7 @@ class CreateJob extends React.Component {
   changeHandler = (e) => {
     this.setState({
       [`jobb${e.target.name}`]: e.target.value
-    })
+    }, ()=>console.log(this.state.jobbDate))
   };
 
   /**
@@ -119,7 +119,7 @@ class CreateJob extends React.Component {
           'price': Number(jobbBudget),
           'location': jobbLocation,
           'type': jobbType,
-          'date': jobbDate,
+          'date': new Date(jobbDate).getTime(),
           'status': 'open',
           'payment': 'soooooon',
           'phootgrapher': 'none',
