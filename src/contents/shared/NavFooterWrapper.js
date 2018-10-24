@@ -15,18 +15,13 @@ const NavigationFooterWrapper = WrappedComponent => {
     /**
      * Logs out the user and redirects him to home.
      */
+
     state = {
       userOn: false,
-      links: [
-        { txt: "Home", link: "home", nav: true },
-        { txt: "Jobs", link: "jobs", nav: true },
-        {
-          txt: "Sign in",
-          link: "signIn"
-        }
-      ],
+      links: [{ txt: "Sign in", link: "signIn" }],
       homeLink: "home",
-      user: null
+      user: null,
+      userLinks: []
     };
 
     componentDidMount() {
@@ -35,26 +30,27 @@ const NavigationFooterWrapper = WrappedComponent => {
 
     updateLinks = user => {
       if (user) {
-        if (user.type === "company") {
-          this.setState(() => ({
-            userOn: true,
-            links: [{ txt: "Sign out", clickHandler: this.logout }],
-            homeLink: "dashboard",
-            user: user
-          }));
-        } else {
-          this.setState(() => ({
-            userOn: true,
-            links: [{ txt: "Sign out", clickHandler: this.logout }],
-            homeLink: "dashboard",
-            user: user
-          }));
-        }
-      } else {
+        const company = user.type === "company";
         this.setState(() => ({
-          userOn: false,
-          links: [{ txt: "Sign in", link: "signIn" }],
-          homeLink: "home"
+          userOn: true,
+          homeLink: "dashboard",
+          user: user,
+          links: [],
+          userLinks: [
+            {
+              txt: "Profile",
+              link: `profile/${user.uid}`
+            },
+            {
+              txt: "Dashboard",
+              link: "dashboard"
+            },
+            {
+              txt: company ? "Create job" : "Jobs",
+              link: company ? "createJob" : "jobs"
+            },
+            { txt: "Sign out", clickHandler: this.logout }
+          ]
         }));
       }
     };
@@ -72,15 +68,16 @@ const NavigationFooterWrapper = WrappedComponent => {
     };
 
     render() {
+      const { userLinks, homeLink, links, userOn, user } = this.state;
       return (
         <React.Fragment>
           <GbNavBar
-            homeLink={this.state.homeLink}
-            righLinks={this.state.links}
-            loggedIn={true}
-            userOn={this.state.userOn}
-            user={this.state.user}
-            userImageUrl={this.state.user ? this.state.user.photoURL : ""}
+            homeLink={homeLink}
+            righLinks={links}
+            userOn={userOn}
+            user={user}
+            userImageUrl={user ? user.photoURL : ""}
+            userLinks={userLinks}
           />
           <WrappedComponent {...this.props} />
           <GbFooter
