@@ -40,7 +40,7 @@ class DownPayment extends React.Component {
           accept <Link to={`/profile/${acceptedApplicant.uid}`}>{acceptedApplicant.displayName}</Link> as your
           photographer for your job request.</p>
         <PaypalButton
-         // client={CLIENT}
+         //client={CLIENT}
           env={ENV}
           commit={true}
           currency={'SEK'}

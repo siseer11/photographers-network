@@ -11,13 +11,14 @@ import MyJobOffers from "../contents/company/MyJobOffers";
 import {JobsWithFooter} from "../contents/shared/Jobs";
 import SingleJob from '../contents/shared/SingleJob';
 import { ProfileEdit } from '../contents/shared/ProfileEdit';
+import ErrorPage from '../contents/shared/ErrorPage';
 
 export default ({user, loading, setLoadingTrue , updateUserInfo}) => (
   <BrowserRouter basename='/app/'>
     <Switch>
       <Route
         exact
-        path="/home"
+        path="(/home|/)"
         render={props => (
           <Home
             {...props}
@@ -35,6 +36,7 @@ export default ({user, loading, setLoadingTrue , updateUserInfo}) => (
           />}
         />
       <Route exact path="/signUp" render={props => <SignUp {...props} />}/>
+      
       <Route
         exact
         path="/signUp/:type"
@@ -113,6 +115,7 @@ export default ({user, loading, setLoadingTrue , updateUserInfo}) => (
 						/>
 					)
 				}/>
+        <ErrorPage />
       <Redirect to="/home"/>
     </Switch>
   </BrowserRouter>
