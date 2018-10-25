@@ -1,17 +1,14 @@
 import React from 'react';
-import { EmailSVG } from '../../components/svg/EmailSVG';
 import { NameInputSVG } from "../../components/svg/NameInputSVG";
 import { InputField } from "../../components/form/InputField";
 import { LocationSVG } from "../../components/svg/LocationSVG";
-import { BusinessCardSVG } from '../../components/svg/BusinessCardSVG';
-import { FileAttachmentSVG } from '../../components/svg/FileAttachmentSVG';
-import { CameraSVG } from '../../components/svg/CameraSVG';
+import NavFooterWrapper from "./NavFooterWrapper";
 import PropTypes from 'prop-types';
+import AvatarInput from "../AvatarInput";
+
+const ProfileEditView = ({ updateUserHandler, updateUserInfo, name, changeHandler, location, user}) => (
 
 
-export const ProfileEditView = ({ updateUserHandler, name, photoURL, changeHandler, location, user, type, email, handleChangeUpload, progress, url }) => (
-
-	
 	<div className="section-content with-padding">
 
 		<form onSubmit={updateUserHandler}>
@@ -24,15 +21,7 @@ export const ProfileEditView = ({ updateUserHandler, name, photoURL, changeHandl
 				changeHandler={changeHandler}
 				type="text"
 				name="name"
-			/>
-			<InputField
-				svg={
-					<EmailSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-				}
-				value={email}
-				changeHandler={changeHandler}
-				type="email"
-				name="email"
+				placeholder="Change your name"
 			/>
 
 			<InputField svg={<LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />}
@@ -40,30 +29,15 @@ export const ProfileEditView = ({ updateUserHandler, name, photoURL, changeHandl
 				changeHandler={changeHandler}
 				type="text"
 				name="location"
-				
+				placeholder="change your location"
 			/>
-
-			<div className="custom-select gb-text-input gb-text-input-trans-background">
-				{type === "photographer" ? (
-					<CameraSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-				) : (
-						<BusinessCardSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-					)}
-				{user.type}
-
-			</div>
-			<div>
-				<InputField svg={<FileAttachmentSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />}
-					type="file"
-					value={photoURL}
-					name="avatar"
-					changeHandler={handleChangeUpload}
-				/>
-			<progress value={progress} max="100" /><br/>
-			<img src={url || 'http://via.placeholder.com/400x300'} alt="Uploaded images" style={{width: 160, height: 120}} />
-			</div>
-
-			
+			change photo:
+			<AvatarInput
+				uid={user.uid}
+				userAvatar={user.photoURL}
+				updateUserInfo={updateUserInfo}
+				name="avatar"
+			/>
 			<div className="btn-container">
 				<input
 					type="submit"
@@ -72,15 +46,13 @@ export const ProfileEditView = ({ updateUserHandler, name, photoURL, changeHandl
 				/>
 			</div>
 		</form>
-		 
 	</div>
 )
 
 
 ProfileEditView.propTypes = {
-	name : PropTypes.string.isRequired,  
-	location : PropTypes.string.isRequired, 
-	type : PropTypes.string.isRequired, 
-	email : PropTypes.string.isRequired 
+	name: PropTypes.string.isRequired,
+	location: PropTypes.string.isRequired,
 }
 
+export const ProfileEditViewWithNav = NavFooterWrapper(ProfileEditView);

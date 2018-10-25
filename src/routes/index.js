@@ -64,6 +64,7 @@ export default ({user, loading, setLoadingTrue , updateUserInfo}) => (
         <ProfileEdit
         {...props}
         user={user}
+        updateUserInfo={updateUserInfo}
       />)}/>
       <Route exact path="/profile/:uid" render={props => (
         <ProfileWithNav
