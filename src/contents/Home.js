@@ -11,6 +11,10 @@ class Homse extends Component {
 		showModal: false
 	};
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.user) this.props.history.replace('/dashboard');
+  }
+
 	showThisModal = (modalName) => {
 		this.setState({
 			showModal: modalName
