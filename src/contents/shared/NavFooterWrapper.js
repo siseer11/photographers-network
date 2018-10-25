@@ -52,6 +52,14 @@ const NavigationFooterWrapper = WrappedComponent => {
             { txt: "Sign out", clickHandler: this.logout }
           ]
         }));
+      } else {
+        this.setState({
+          userOn: false,
+          links: [{ txt: "Sign in", link: "signIn" }],
+          homeLink: "home",
+          user: null,
+          userLinks: []
+        });
       }
     };
 
