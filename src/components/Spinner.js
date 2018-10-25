@@ -1,20 +1,20 @@
-import React from 'react';
+import React from "react";
 
 export const Spinner = () => {
-    return (
-        <div className="lds-default">
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-            <div/>
-        </div>
-    );
+  return (
+    <div className="lds-default">
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+      <div />
+    </div>
+  );
 };

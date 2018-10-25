@@ -100,5 +100,5 @@ SingleJobView.propTypes = {
   type: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
   applyHandler: PropTypes.func.isRequired,
-  userApplied: PropTypes.bool,
+  userApplied: PropTypes.bool
 };

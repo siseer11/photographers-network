@@ -2,6 +2,10 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import WithModal from "../../RenderProp/WithModal";
 import fire from "../../config/Fire";
+import PaypalButton from "../../contents/shared/PayPalButton";
+import CLIENT from "../../paypal/Client";
+
+const ENV = process.env.NODE_ENV === "production" ? "production" : "sandbox";
 
 export default class NoPremiumUser extends React.Component {
   state = {
@@ -42,8 +46,19 @@ export default class NoPremiumUser extends React.Component {
       );
   };
 
+  onError = () => {
+    this.setState({ error: "Something went wrong!" });
+  };
+
+  onCancel = () => {
+    this.setState({ error: "Your cancelled your payment!" });
+  };
+  succesPayment = () => {
+    this.makeUserPremium();
+  };
   render() {
     const { buttonStatus } = this.state;
+    const total = 30;
     return (
       <React.Fragment>
         <p>For a portofolio you have to be premium...</p>
@@ -68,6 +83,16 @@ export default class NoPremiumUser extends React.Component {
                   >
                     {buttonStatus}
                   </div>
+                  <PaypalButton
+                    client={CLIENT}
+                    env={ENV}
+                    commit={true}
+                    currency={"SEK"}
+                    total={total}
+                    onSuccess={this.succesPayment}
+                    onError={this.onError}
+                    onCancel={this.onCancel}
+                  />
                 </div>
               </div>
             </React.Fragment>
