@@ -144,16 +144,12 @@ const RightUserOn = ({
   userLinks
 }) => (
   <React.Fragment>
-    <WithModal closeItemClass="weird-close-sistem">
+    <WithModal>
       {({ showModal }) => (
         <React.Fragment>
           <BellSVG
             classes={`gb-icon-medium gb-icon-fill-white ${newNotifications &&
               "new"}`}
-          />
-          <div
-            style={{ display: showModal ? "flex" : "none" }}
-            className="weird-close-sistem"
           />
           {showModal && (
             <NotificationContainer
@@ -166,13 +162,9 @@ const RightUserOn = ({
       )}
     </WithModal>
     <li className="nav-user-avatar-wrapper">
-      <WithModal closeItemClass="weird-close-sistem">
+      <WithModal>
         {({ showModal }) => (
           <React.Fragment>
-            <div
-              style={{ display: showModal ? "flex" : "none" }}
-              className="weird-close-sistem"
-            />
             <div
               style={{ backgroundImage: `url(${userImageUrl})` }}
               className="gb-avatar-small gb-avatar nav-user-avatar"
@@ -181,7 +173,7 @@ const RightUserOn = ({
               className="dropdown-menu-list"
               style={{ display: showModal ? "flex" : "none" }}
             >
-              <li class="nav-user-triangle" />
+              <li className="nav-user-triangle" />
               <LinkLists links={userLinks} liClasses="dropdown-menu-item" />
             </ul>
           </React.Fragment>
@@ -193,7 +185,6 @@ const RightUserOn = ({
 
 GbNavBar.propTypes = {
   righLinks: PropTypes.arrayOf(PropTypes.object),
-  loggedIn: PropTypes.bool.isRequired,
   userImageUrl: PropTypes.string,
   profileLink: PropTypes.string
 };
