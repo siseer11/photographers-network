@@ -1,12 +1,12 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { SmallLogoSVG } from "../svg/SmallLogoSVG";
-import { Avatar } from "../Avatar";
 import { LinkLists } from "../LinkLists";
 import { Link } from "react-router-dom";
 import { BellSVG } from "../svg/BellSVG";
 import { NotificationContainer } from "./NotificationContainer";
 import fire from "../../config/Fire";
+import WithModal from "../../RenderProp/WithModal";
 
 /* rightLinks = [{txt : 'home' , link : '#'}] loggedIn={true/false} userImageUrl='link' profileLink='#'*/
 export default class GbNavBar extends React.Component {
@@ -98,12 +98,11 @@ export default class GbNavBar extends React.Component {
   render() {
     const {
       righLinks,
-      loggedIn,
       userImageUrl,
-      profileLink,
       homeLink,
       userOn,
-      user
+      user,
+      userLinks
     } = this.props;
     const { showNotificationBox, notifications, newNotifications } = this.state;
     return (
@@ -112,46 +111,22 @@ export default class GbNavBar extends React.Component {
           <SmallLogoSVG classes="gb-icon-medium gb-icon-fill-white" />
         </Link>
         <ul className="right-content">
-          {userOn ? (
-            <React.Fragment>
-              <div onClick={this.showNotificationsHandler} className="bell">
-                <BellSVG
-                  classes={`gb-icon-medium gb-icon-fill-white ${newNotifications &&
-                    "new"}`}
-                />
-              </div>
-              <LinkLists
-                links={righLinks}
-                txtClasses="gb-text-white gb-paragraph-medium gb-tablet-hide"
-              />
-              <Link
-                style={{ backgroundImage: `url(${userImageUrl})` }}
-                className="gb-avatar-small gb-avatar"
-                to={user ? `profile/${user.uid}` : ""}
-              />
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              {userOn && (
-                <div onClick={this.showNotificationsHandler} className="bell">
-                  <BellSVG
-                    classes={`gb-icon-medium gb-icon-fill-white ${newNotifications &&
-                      "new"}`}
-                  />
-                </div>
-              )}
-              {showNotificationBox && (
-                <NotificationContainer
-                  notifications={notifications}
-                  showBoxHandler={this.showNotificationsHandler}
-                  readHandler={this.handleReadNotification}
-                />
-              )}
-              <LinkLists
-                links={righLinks}
-                txtClasses="gb-text-white gb-paragraph-medium"
-              />
-            </React.Fragment>
+          <LinkLists
+            links={righLinks}
+            txtClasses="gb-text-white gb-paragraph-medium"
+          />
+          {userOn && (
+            <RightUserOn
+              showNotificationsHandler={this.showNotificationsHandler}
+              newNotifications={newNotifications}
+              notifications={notifications}
+              handleReadNotification={this.handleReadNotification}
+              showNotificationBox={showNotificationBox}
+              user={user}
+              righLinks={righLinks}
+              userImageUrl={userImageUrl}
+              userLinks={userLinks}
+            />
           )}
         </ul>
       </div>
@@ -159,9 +134,72 @@ export default class GbNavBar extends React.Component {
   }
 }
 
+const RightUserOn = ({
+  showNotificationsHandler,
+  newNotifications,
+  notifications,
+  handleReadNotification,
+  showNotificationBox,
+  userImageUrl,
+  userLinks
+}) => (
+  <React.Fragment>
+    <WithModal closeItemClass="weird-close-sistem">
+      {({ showModal }) => (
+        <React.Fragment>
+          <BellSVG
+            classes={`gb-icon-medium gb-icon-fill-white ${newNotifications &&
+              "new"}`}
+          />
+          <div
+            style={{ display: showModal ? "flex" : "none" }}
+            className="weird-close-sistem"
+          />
+          {showModal && (
+            <NotificationContainer
+              notifications={notifications}
+              showBoxHandler={showNotificationsHandler}
+              readHandler={handleReadNotification}
+            />
+          )}
+        </React.Fragment>
+      )}
+    </WithModal>
+    <li className="nav-user-avatar-wrapper">
+      <WithModal closeItemClass="weird-close-sistem">
+        {({ showModal }) => (
+          <React.Fragment>
+            <div
+              style={{ display: showModal ? "flex" : "none" }}
+              className="weird-close-sistem"
+            />
+            <div
+              style={{ backgroundImage: `url(${userImageUrl})` }}
+              className="gb-avatar-small gb-avatar nav-user-avatar"
+            />
+            <ul
+              className="dropdown-menu-list"
+              style={{ display: showModal ? "flex" : "none" }}
+            >
+              <li class="nav-user-triangle" />
+              <LinkLists links={userLinks} liClasses="dropdown-menu-item" />
+            </ul>
+          </React.Fragment>
+        )}
+      </WithModal>
+    </li>
+  </React.Fragment>
+);
+
 GbNavBar.propTypes = {
   righLinks: PropTypes.arrayOf(PropTypes.object),
   loggedIn: PropTypes.bool.isRequired,
   userImageUrl: PropTypes.string,
   profileLink: PropTypes.string
 };
+
+/*
+
+  Create job link 
+
+*/
