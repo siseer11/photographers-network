@@ -3,14 +3,16 @@ import React, { Component } from "react";
 import fire from "../../config/Fire";
 import { Link } from "react-router-dom";
 
+<<<<<<< HEAD
 // components
 import { ProfileCard } from "../../components/ProfileCard";
 import { LinkLists } from "../../components/LinkLists";
 
 
+=======
+>>>>>>> upstream/master
 // contents
-import { PhotographerContent } from "../photographer/PhotographerContent";
-import CompanyContent from "../company/CompanyContent";
+import { ProfileView } from "../../components/ProfileView";
 import LoadingPage from "../../components/LoadingPage";
 import NavFooterWrapper from "./NavFooterWrapper";
 
@@ -96,6 +98,7 @@ class Profile extends Component {
   }
 }
 
+<<<<<<< HEAD
 const ProfileView = ({
   isOtherUser,
   thisProfileData,
@@ -132,4 +135,6 @@ const ProfileView = ({
 
     </div>
   );
+=======
+>>>>>>> upstream/master
 export const ProfileWithNav = NavFooterWrapper(Profile);
