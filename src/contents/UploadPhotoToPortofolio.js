@@ -139,7 +139,6 @@ export default class UploadPhotoToPortofolio extends React.Component {
             <input
               onChange={this.descriptionChange}
               type="text"
-              onChange={this.descriptionChange}
               value={imageDescription}
               placeholder="Image description"
             />
