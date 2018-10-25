@@ -181,7 +181,7 @@ const RightUserOn = ({
               className="dropdown-menu-list"
               style={{ display: showModal ? "flex" : "none" }}
             >
-              <li class="nav-user-triangle" />
+              <li className="nav-user-triangle" />
               <LinkLists links={userLinks} liClasses="dropdown-menu-item" />
             </ul>
           </React.Fragment>

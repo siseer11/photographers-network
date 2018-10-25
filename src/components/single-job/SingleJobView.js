@@ -8,6 +8,7 @@ import {SingleJobViewhotographer} from "./SingleJobViewPhotographer";
 import {SingleJobViewCompany} from "./SingleJobViewCompany";
 
 const SingleJobView = ({
+                         jobId,
                          company,
                          companyName,
                          date,
@@ -58,6 +59,7 @@ const SingleJobView = ({
                                             user={user}
                                             isDeclinedPhotographer={isDeclinedPhotographer}
                                             applyHandler={applyHandler}
+                                            jobId={jobId}
                   />
                 ) :
                 // user is company

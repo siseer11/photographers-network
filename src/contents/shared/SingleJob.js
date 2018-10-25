@@ -118,14 +118,19 @@ class SingleJobFetch extends React.Component {
    * @returns {Promise.<void>}
    */
   deleteJob = async () => {
-    await (this.database.ref('requests').child(this.state.jobId).remove());
-    await (this.database.ref('company').child(this.state.jobDescription.companyId).child('postedJobs').child(this.state.jobId).remove());
-    let photographers = await ( this.database.ref('photographer').once('value'));
-    photographers.forEach(async photographer => {
-      console.log(photographer.key);
-      await this.database.ref('photographer').child(photographer.key).child('applied-jobs').child(this.state.jobId).remove();
-    });
-    this.props.history.replace('/dashboard');
+    try {
+      await (this.database.ref('requests').child(this.state.jobId).remove());
+      await (this.database.ref('company').child(this.state.jobDescription.companyId).child('postedJobs').child(this.state.jobId).remove());
+      let photographers = await ( this.database.ref('photographer').once('value'));
+      photographers.forEach(async photographer => {
+        console.log(photographer.key);
+        await this.database.ref('photographer').child(photographer.key).child('applied-jobs').child(this.state.jobId).remove();
+      });
+      this.props.history.replace('/dashboard');
+    } catch(err) {
+      console.log("Error:" + err.message);
+    }
+
   };
 
   /**
@@ -286,6 +291,7 @@ class SingleJobFetch extends React.Component {
             <SingleJobViewWithNav
               history={this.props.history}
               {...jobDescription}
+              jobId={this.state.jobId}
               user={user}
               applyHandler={this.applyForJob}
               userApplied={userApplied}
