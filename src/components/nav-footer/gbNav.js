@@ -8,7 +8,6 @@ import { NotificationContainer } from "./NotificationContainer";
 import fire from "../../config/Fire";
 import WithModal from "../../RenderProp/WithModal";
 
-/* rightLinks = [{txt : 'home' , link : '#'}] loggedIn={true/false} userImageUrl='link' profileLink='#'*/
 export default class GbNavBar extends React.Component {
   state = {
     sticky: false,
