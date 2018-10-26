@@ -84,7 +84,7 @@ const NavigationFooterWrapper = WrappedComponent => {
      */
     logout = () => {
       fire.auth().signOut();
-      this.props.history.replace("/");
+      this.props.history.replace("/home");
     };
 
     render() {
