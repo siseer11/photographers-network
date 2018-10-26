@@ -8,6 +8,7 @@ import {SingleJobViewhotographer} from "./SingleJobViewPhotographer";
 import {SingleJobViewCompany} from "./SingleJobViewCompany";
 
 const SingleJobView = ({
+                         jobId,
                          company,
                          companyName,
                          date,
@@ -29,7 +30,8 @@ const SingleJobView = ({
                          deleteHandler,
                          showDeleteModal,
                          showModal,
-                         jobExists
+                         jobExists,
+                         submittedWork
                        }) => (
 
   <div className="single-job-view section-content">
@@ -58,6 +60,8 @@ const SingleJobView = ({
                                             user={user}
                                             isDeclinedPhotographer={isDeclinedPhotographer}
                                             applyHandler={applyHandler}
+                                            jobId={jobId}
+                                            submittedWork={submittedWork}
                   />
                 ) :
                 // user is company
@@ -70,6 +74,7 @@ const SingleJobView = ({
                                         downPayment={downPayment}
                                         price={price}
                                         successfulPaymentHandler={successfulPaymentHandler}
+                                        submittedWork={submittedWork}
                   />
                 )
             ) : (

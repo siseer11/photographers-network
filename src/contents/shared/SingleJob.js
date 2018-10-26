@@ -28,7 +28,8 @@ class SingleJobFetch extends React.Component {
     downPayment: false,
     isDeclinedPhotographer: false,
     showDeleteModal: false,
-    jobExists: true
+    jobExists: true,
+    submittedWork: []
   };
   database = fire.database();
 
@@ -66,6 +67,7 @@ class SingleJobFetch extends React.Component {
             ...photographer
           };
         });
+        const workObj = response["submitted-work"] ? response["submitted-work"] : [];
         this.setState(
           () => ({
             jobId: jobId,
@@ -76,7 +78,8 @@ class SingleJobFetch extends React.Component {
             loadingData: false,
             appliedPhotographers: appliedPhotographers,
             acceptedApplicant: response.phootgrapher,
-            downPayment: response.payment === "down payment done"
+            downPayment: response.payment === "down payment done",
+            submittedWork: Object.values(workObj)
           }),
           () => this.userIsDeclinedPhotographer()
         );
@@ -118,14 +121,19 @@ class SingleJobFetch extends React.Component {
    * @returns {Promise.<void>}
    */
   deleteJob = async () => {
-    await (this.database.ref('requests').child(this.state.jobId).remove());
-    await (this.database.ref('company').child(this.state.jobDescription.companyId).child('postedJobs').child(this.state.jobId).remove());
-    let photographers = await ( this.database.ref('photographer').once('value'));
-    photographers.forEach(async photographer => {
-      console.log(photographer.key);
-      await this.database.ref('photographer').child(photographer.key).child('applied-jobs').child(this.state.jobId).remove();
-    });
-    this.props.history.replace('/dashboard');
+    try {
+      await (this.database.ref('requests').child(this.state.jobId).remove());
+      await (this.database.ref('company').child(this.state.jobDescription.companyId).child('postedJobs').child(this.state.jobId).remove());
+      let photographers = await ( this.database.ref('photographer').once('value'));
+      photographers.forEach(async photographer => {
+        console.log(photographer.key);
+        await this.database.ref('photographer').child(photographer.key).child('applied-jobs').child(this.state.jobId).remove();
+      });
+      this.props.history.replace('/dashboard');
+    } catch(err) {
+      console.log("Error:" + err.message);
+    }
+
   };
 
   /**
@@ -278,6 +286,7 @@ class SingleJobFetch extends React.Component {
       downPayment,
       isDeclinedPhotographer
     } = this.state;
+    console.log(this.state.submittedWork);
     return (
       <div>
         {loadingData ? (
@@ -286,6 +295,7 @@ class SingleJobFetch extends React.Component {
             <SingleJobViewWithNav
               history={this.props.history}
               {...jobDescription}
+              jobId={this.state.jobId}
               user={user}
               applyHandler={this.applyForJob}
               userApplied={userApplied}
@@ -300,6 +310,7 @@ class SingleJobFetch extends React.Component {
               showDeleteModal={this.showDeleteModal}
               showModal={this.state.showDeleteModal}
               jobExists={this.state.jobExists}
+              submittedWork={this.state.submittedWork}
             />
         )}
       </div>

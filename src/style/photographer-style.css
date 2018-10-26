@@ -1,3 +1,51 @@
+
+.image-container img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-container .gb-btn {
+    margin: auto;
+}
+
+.single-image-container {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    margin: 5px;
+    display: inline-block;
+}
+
+.single-image-container:hover .img-hover {
+    opacity: 1;
+}
+
+.image-container .img-hover {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 90px;
+    height: 90px;
+    background-color: rgba(31, 31, 31, 0.71);
+    transition: .5s ease;
+    opacity: 0;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 10px;
+}
+
 .section-content {
   background: rgba(0, 0, 0, 0.8);
   color: white;
@@ -757,6 +805,61 @@ ul.portofolio-list {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+/* Fake-form Fake-input ends */
+/* Fake-form Fake-input starts */
+
+.dropdown-menu-list {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    background: white;
+    top: 0;
+    right: 15px;
+    top: 71px;
+    width: 200px;
+    font-weight: 100;
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 10px 0;
+    animation: fadeIn forwards linear 0.2s;
+}
+
+.dropdown-menu-item {
+    padding: 5px 10px;
+}
+
+.nav-user-triangle {
+    width: 0;
+    height: 0;
+    border-bottom: 10px solid white;
+    border-left: 10px solid #ffffff00;
+    border-right: 10px solid #ffffff00;
+    position: fixed;
+    top: 62px;
+    right: 28px;
+}
+
+.dropdown-menu-item:hover {
+    background-color: #e7e8f1;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.weird-close-sistem {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 /* Fake-form Fake-input ends */
