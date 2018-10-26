@@ -18,7 +18,7 @@ export default class UploadPhotoToPortofolio extends React.Component {
   fileChanged = e => {
     const file = e.target.files[0];
     this.setState({
-      imageFile: file
+      imageFiles: file
     });
   };
 
@@ -37,7 +37,7 @@ export default class UploadPhotoToPortofolio extends React.Component {
       .child(userId)
       .child("portofolio")
       .child(fileId)
-      .update(
+      .set(
         {
           id: fileId,
           desc: imageDescription,
@@ -65,7 +65,7 @@ export default class UploadPhotoToPortofolio extends React.Component {
               closeModalListener();
             }, 500);
             changeState({
-              imageFile: "",
+              imageFiles: "",
               imageDescription: "",
               stage: "Submit"
             });
@@ -76,7 +76,6 @@ export default class UploadPhotoToPortofolio extends React.Component {
 
   formSubmit = e => {
     e.preventDefault();
-    const updateUserInDb = this.updateUserInDb;
     const { imageFile, imageDescription } = this.state;
     const { user } = this.props;
     const userId = user.uid;
@@ -102,6 +101,7 @@ export default class UploadPhotoToPortofolio extends React.Component {
       stage: "Loading..."
     });
 
+    const that = this;
     task.on(
       "state_changed",
       function progress(snap) {
@@ -114,7 +114,7 @@ export default class UploadPhotoToPortofolio extends React.Component {
         task.snapshot.ref
           .getDownloadURL()
           .then(downloadURL =>
-            updateUserInDb(fileId, imageDescription, downloadURL, changeState)
+            that.updateUserInDb(fileId, imageDescription, downloadURL, changeState)
           );
       }
     );
@@ -142,7 +142,7 @@ export default class UploadPhotoToPortofolio extends React.Component {
               value={imageDescription}
               placeholder="Image description"
             />
-            <input type="submit" value={stage} disabled={stage != "Submit"} />
+            <input type="submit" value={stage} disabled={stage !== "Submit"} />
           </form>
         </div>
       </React.Fragment>

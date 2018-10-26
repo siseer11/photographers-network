@@ -187,9 +187,3 @@ GbNavBar.propTypes = {
   userImageUrl: PropTypes.string,
   profileLink: PropTypes.string
 };
-
-/*
-
-  Create job link 
-
-*/
