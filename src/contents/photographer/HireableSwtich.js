@@ -48,15 +48,24 @@ export default class HireableSwitch extends React.Component {
   render() {
     const { hireable, waiting } = this.state;
     return (
-      <React.Fragment>
-        <h2>You are {!hireable && "not"} hireable!</h2>
-        <input
-          onChange={this.inputChanged}
-          type="checkbox"
-          checked={hireable}
-          disabled={waiting}
-        />
-      </React.Fragment>
+      <div className="hireable-option-changer">
+        <label>
+          You are {!hireable && "not"} hireable!
+          <input
+            onChange={this.inputChanged}
+            type="checkbox"
+            checked={hireable}
+            disabled={waiting}
+          />
+          <Slider on={hireable} waiting={waiting} />
+        </label>
+      </div>
     );
   }
 }
+
+const Slider = ({ on, waiting }) => (
+  <div style={{ opacity: waiting ? 0.5 : 1 }} className="mySlider-track">
+    <div className={`mySlider-tumb ${on ? "on" : ""}`} />
+  </div>
+);
