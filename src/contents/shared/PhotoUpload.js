@@ -23,7 +23,7 @@ class PhotoUpload extends Component {
   fileChanged = e => {
     this.setState({
       imageFiles: e.target.files
-    }, () => console.log(this.state.imageFiles));
+    });
   };
 
   descriptionChange = e => {
@@ -35,7 +35,7 @@ class PhotoUpload extends Component {
   addToStorage = (file, storageRef, databaseRef, resolve) => {
     // generate a random file id
     const fileId = this.database.ref(databaseRef).push().key;
-
+    console.log("fileid:" + fileId);
     //create storage ref
     let storageReference = this.storage.ref(`${storageRef}/${fileId}`);
     //upload file
@@ -58,10 +58,10 @@ class PhotoUpload extends Component {
           .getDownloadURL()
           .then(downloadURL => {
               that.setState(prevState => (
-                {
-                  images:[...prevState.images, {url: downloadURL, id: fileId}],
-                }),
-                ()=> that.addToDatabase(databaseRef, fileId, downloadURL, resolve));
+                  {
+                    images: [...prevState.images, {url: downloadURL, id: fileId}],
+                  }),
+                () => that.addToDatabase(databaseRef, fileId, downloadURL, resolve));
             }
           );
       }
@@ -102,8 +102,9 @@ class PhotoUpload extends Component {
     Promise.all(promises).then(() => {
       setTimeout(() => {
         closeModalListener();
+        console.log("hello");
         callBackFunction(this.state.images);
-        this.setState({stage:"Submit"});
+        this.setState({stage: "Submit", images: []});
       }, 500);
     });
   };
@@ -111,8 +112,6 @@ class PhotoUpload extends Component {
   render() {
     const {imageDescription, stage} = this.state;
     const {descriptionField} = this.props;
-    console.log("database-url: " + this.props.databaseRef);
-    console.log("storage-url: " + this.props.storageRef);
 
     return (
       <React.Fragment>
@@ -121,26 +120,28 @@ class PhotoUpload extends Component {
           style={{display: this.props.showModal ? "flex" : "none"}}
           className="add-image-modal"
         >
-          <form onSubmit={this.formSubmit}>
-            <input
-              className="add-image-input"
-              type="file"
-              onChange={this.fileChanged}
-              accept=".jpg, .jpeg, .png"
-              multiple
-            />
-            {
-              descriptionField &&
+          <div>
+            <form onSubmit={this.formSubmit}>
               <input
-                onChange={this.descriptionChange}
-                type="text"
-                value={imageDescription}
-                placeholder="Image description"
+                className="add-image-input"
+                type="file"
+                onChange={this.fileChanged}
+                accept=".jpg, .jpeg, .png"
+                multiple
               />
-            }
-            <input type="submit" value={stage} disabled={stage !== "Submit"}/>
+              {
+                descriptionField &&
+                <input
+                  onChange={this.descriptionChange}
+                  type="text"
+                  value={imageDescription}
+                  placeholder="Image description"
+                />
+              }
+              <input type="submit" value={stage} disabled={stage !== "Submit"}/>
+            </form>
             <button onClick={this.props.closeModalListener}>Cancel</button>
-          </form>
+          </div>
         </div>
       </React.Fragment>
     );

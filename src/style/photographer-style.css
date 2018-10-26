@@ -10,6 +10,10 @@
     object-fit: cover;
 }
 
+.image-container .gb-btn {
+    margin: auto;
+}
+
 .single-image-container {
     position: relative;
     width: 90px;
@@ -648,6 +652,18 @@ p.filter-by:hover {
     left: 0;
     background: rgba(0, 0, 0, 0.8);
     z-index: 10;
+    justify-content: center;
+}
+
+.add-image-modal > div {
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    flex-direction: column;
+}
+
+.add-image-modal > div button {
+    height: 38px;
 }
 
 .add-image-modal form {

@@ -28,7 +28,8 @@ class SingleJobFetch extends React.Component {
     downPayment: false,
     isDeclinedPhotographer: false,
     showDeleteModal: false,
-    jobExists: true
+    jobExists: true,
+    submittedWork: []
   };
   database = fire.database();
 
@@ -66,6 +67,7 @@ class SingleJobFetch extends React.Component {
             ...photographer
           };
         });
+        const workObj = response["submitted-work"] ? response["submitted-work"] : [];
         this.setState(
           () => ({
             jobId: jobId,
@@ -76,7 +78,8 @@ class SingleJobFetch extends React.Component {
             loadingData: false,
             appliedPhotographers: appliedPhotographers,
             acceptedApplicant: response.phootgrapher,
-            downPayment: response.payment === "down payment done"
+            downPayment: response.payment === "down payment done",
+            submittedWork: Object.values(workObj)
           }),
           () => this.userIsDeclinedPhotographer()
         );
@@ -283,6 +286,7 @@ class SingleJobFetch extends React.Component {
       downPayment,
       isDeclinedPhotographer
     } = this.state;
+    console.log(this.state.submittedWork);
     return (
       <div>
         {loadingData ? (
@@ -306,6 +310,7 @@ class SingleJobFetch extends React.Component {
               showDeleteModal={this.showDeleteModal}
               showModal={this.state.showDeleteModal}
               jobExists={this.state.jobExists}
+              submittedWork={this.state.submittedWork}
             />
         )}
       </div>
