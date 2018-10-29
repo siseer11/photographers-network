@@ -69,7 +69,7 @@ export default class HireMeModal extends React.Component {
         }
       );
 
-    /* If the job is one that existed, make it's sentToPrivate: true */
+    /* If the job is one that existed, make it's sentToPrivate: true , and add the id of the photographer to the sentTo*/
     const updateSentToPrivate = jobId => {
       fire
         .database()
@@ -77,7 +77,8 @@ export default class HireMeModal extends React.Component {
         .child(jobId)
         .update(
           {
-            sentToPrivate: true
+            sentToPrivate: true,
+            sentTo: photographerId
           },
           err => {
             if (err) {

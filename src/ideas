@@ -1,0 +1,45 @@
+// IDEAS 
+-> IF A PHOTOGRAPHER REJECTED JOB OFFER , DO NOT LET THE COMPANY SEND IT AGAIN
+
+Database structure : 
+ -> We have worked on it, had a initial plan for it, then we have added new things day by day, now things are not linking anymore as they should,
+ i think that we are building up on an unstable base.
+
+
+
+
+
+
+
+
+ -> Jobs : 
+  -> public
+   --> sent-to-private
+  -> private
+
+Public : Everyone can see it , also the company can sent it as private request
+ -> sent-to-private : Company already sent it to a photographer
+
+Private : Visible just for a specific photographer
+
+Company Jobs field : 
+ Open jobs both private and public saved in the postedJobs
+ Once a job is done , take it out from postedJobs also from the request push it into some inProgress thing.
+
+
+
+
+
+
+
+
+Public job : {
+ private : false,
+ sentTo : 'xadaz123zsad',
+}
+
+Private job : {
+ private : true,
+ sentTo : 'asdz123zsda5125',
+}
+
