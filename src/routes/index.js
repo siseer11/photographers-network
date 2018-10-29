@@ -11,6 +11,8 @@ import MyJobOffers from "../contents/company/MyJobOffers";
 import {JobsWithFooter} from "../contents/shared/Jobs";
 import SingleJob from '../contents/shared/SingleJob';
 import SubmitWork from '../contents/photographer/SubmitWork';
+import OpenSingleJob from "../contents/shared/OpenSingleJob";
+import ProgressSingleJob from "../contents/shared/ProgressSingleJob";
 
 export default ({user, loading, setLoadingTrue, updateUserInfo}) => (
   <BrowserRouter basename='/app/'>
@@ -88,6 +90,30 @@ export default ({user, loading, setLoadingTrue, updateUserInfo}) => (
         render={
           props => (
             <SingleJob
+              {...props}
+              user={user}
+              loading={loading}
+            />
+          )
+        }/>
+      <Route
+        exact
+        path='/open-job/:jobid'
+        render={
+          props => (
+            <OpenSingleJob
+              {...props}
+              user={user}
+              loading={loading}
+            />
+          )
+        }/>
+      <Route
+        exact
+        path='/progress-job/:jobid'
+        render={
+          props => (
+            <ProgressSingleJob
               {...props}
               user={user}
               loading={loading}
