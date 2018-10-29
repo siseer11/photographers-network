@@ -118,7 +118,7 @@ class PhotoUpload extends Component {
         <div className="add-image-plus">+</div>
         <div
           style={{display: this.props.showModal ? "flex" : "none"}}
-          className="add-image-modal"
+          className="add-image-modal close"
         >
           <div>
             <form onSubmit={this.formSubmit}>

@@ -647,6 +647,19 @@ p.filter-by:hover {
   left: 0;
   background: rgba(0, 0, 0, 0.8);
   z-index: 10;
+    justify-content: center;
+}
+
+.add-image-modal > div > button {
+    height: 30px;
+}
+
+.add-image-modal > div {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-self: center;
 }
 
 .add-image-modal form {

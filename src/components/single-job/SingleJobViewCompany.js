@@ -4,7 +4,7 @@ import {AppliedPhotographers} from './AppliedPhotographers';
 import DownPayment from '../../contents/company/DownPayment';
 import {SubmittedWork} from "./SubmittedWork";
 
-export const SingleJobViewCompany = ({showDeleteModal, acceptedApplicant, appliedPhotographers, acceptHandler, declineHandler, downPayment, price, successfulPaymentHandler, submittedWork}) => (
+export const SingleJobViewCompany = ({showDeleteModal, acceptedApplicant, appliedPhotographers, acceptHandler, declineHandler, downPayment, price, successfulPaymentHandler, submittedWork, acceptWorkHandler, downloadHandler, acceptedWork}) => (
   <React.Fragment>
     <Button classes="gb-btn gb-btn-medium gb-btn-primary"
             clickHandler={() => showDeleteModal(true)}>Delete</Button>
@@ -20,7 +20,15 @@ export const SingleJobViewCompany = ({showDeleteModal, acceptedApplicant, applie
             // done payment is done, there is chosen photographer
             (
               submittedWork.length > 0 ?
-                <SubmittedWork pictures={submittedWork}/> :
+                (
+                  acceptedWork ?
+                    <h3>Job closed. You accepted submitted work of photographer.</h3> :
+                    <SubmittedWork
+                      pictures={submittedWork}
+                      acceptWorkHandler={acceptWorkHandler}
+                      downloadHandler={downloadHandler}
+                    />
+                ) :
                 <div><h3>Photographer: </h3><p>{acceptedApplicant.displayName}</p></div>
             ) :
             // done payment has not been done, payment option is showed

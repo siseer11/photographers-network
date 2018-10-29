@@ -100,7 +100,7 @@ class Submitwork extends Component {
           {!this.state.submitted ?
             <React.Fragment>
               Submit your work here!
-              <WithModal className="portofolio-add">
+              <WithModal className="portofolio-add" closeItemClass="close">
                 {({showModal, closeModalListener}) => (
                   <PhotoUpload databaseRef={`photographer/${user.uid}/applied-jobs/${jobId}/submitted-work`}
                                storageRef={`${user.uid}/submitted-works/${jobId}`}

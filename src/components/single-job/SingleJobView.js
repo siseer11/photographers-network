@@ -31,7 +31,10 @@ const SingleJobView = ({
                          showDeleteModal,
                          showModal,
                          jobExists,
-                         submittedWork
+                         submittedWork,
+                         acceptWorkHandler,
+                         downloadHandler,
+                         acceptedWork
                        }) => (
 
   <div className="single-job-view section-content">
@@ -62,6 +65,7 @@ const SingleJobView = ({
                                             applyHandler={applyHandler}
                                             jobId={jobId}
                                             submittedWork={submittedWork}
+                                            acceptedWork={acceptedWork}
                   />
                 ) :
                 // user is company
@@ -75,6 +79,9 @@ const SingleJobView = ({
                                         price={price}
                                         successfulPaymentHandler={successfulPaymentHandler}
                                         submittedWork={submittedWork}
+                                        acceptWorkHandler={acceptWorkHandler}
+                                        downloadHandler={downloadHandler}
+                                        acceptedWork={acceptedWork}
                   />
                 )
             ) : (

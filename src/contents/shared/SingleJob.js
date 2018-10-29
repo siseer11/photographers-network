@@ -2,6 +2,8 @@ import React from "react";
 import fire from "../../config/Fire";
 import {SingleJobViewWithNav} from "../../components/single-job/SingleJobView";
 import LoadingPage from "../../components/LoadingPage";
+import JSZip from 'jszip';
+import FileSaver from 'file-saver';
 
 export default class SingleJob extends React.Component {
   render() {
@@ -29,7 +31,8 @@ class SingleJobFetch extends React.Component {
     isDeclinedPhotographer: false,
     showDeleteModal: false,
     jobExists: true,
-    submittedWork: []
+    submittedWork: [],
+    acceptedWork: false
   };
   database = fire.database();
 
@@ -79,7 +82,8 @@ class SingleJobFetch extends React.Component {
             appliedPhotographers: appliedPhotographers,
             acceptedApplicant: response.phootgrapher,
             downPayment: response.payment === "down payment done",
-            submittedWork: Object.values(workObj)
+            submittedWork: Object.values(workObj),
+            acceptedWork: response.status === "closed"
           }),
           () => this.userIsDeclinedPhotographer()
         );
@@ -111,6 +115,81 @@ class SingleJobFetch extends React.Component {
   };
 
   // ---------- COMPANY METHODS ----------:
+  /**
+   * Downloads zip file of submitted work.
+   */
+  downloadWork = () => {
+    const {submittedWork} = this.state;
+    let filesToDownload = [];
+    //
+    submittedWork.forEach(file => {
+      // pushes Promise for download data to array
+      filesToDownload.push(this.downloadURLAsAPromise(file.url));
+      console.log(filesToDownload);
+    });
+    Promise.all(filesToDownload).then(values => {
+      // create new zip file
+      let zip = new JSZip();
+      // add every value to the zip
+      for(let i = 0; i < values.length; i++)
+        zip.file(`submitted-work/${submittedWork[i].id}.jpg`, values[i]);
+
+      zip.generateAsync({type: "blob"}).then(content => {
+        // provides zip file for download
+        FileSaver.saveAs(content, "download.zip");
+      });
+    });
+  };
+
+  /**
+   * Creates Promise with the download data for current url.
+   *
+   * @param url
+   * @returns {Promise}
+   */
+  downloadURLAsAPromise = url => {
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.responseType = "blob";
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            resolve(xhr.response);
+          } else {
+            reject(new Error("Ajax error for " + url + ": " + xhr.status));
+          }
+        }
+      };
+      xhr.send();
+    });
+  };
+
+  acceptWork = () => {
+    const {jobDescription, jobId, acceptedApplicant} = this.state;
+    this.database
+      .ref("requests")
+      .child(jobId)
+      .update({
+        status: "closed"
+      });
+    // add notification
+    this.database
+      .ref("users")
+      .child(acceptedApplicant.uid)
+      .child("notifications")
+      .push()
+      .set({
+        title: `${
+          jobDescription.companyName
+          } has accepted your submitted work for ${jobDescription.title}.`,
+        link: `/job/${jobId}`,
+        read: false,
+        time: new Date().getTime()
+      });
+    this.setState({acceptedWork:true});
+  };
+
   showDeleteModal = show => {
     this.setState({showDeleteModal: show});
   };
@@ -311,6 +390,9 @@ class SingleJobFetch extends React.Component {
               showModal={this.state.showDeleteModal}
               jobExists={this.state.jobExists}
               submittedWork={this.state.submittedWork}
+              acceptWorkHandler={this.acceptWork}
+              downloadHandler={this.downloadWork}
+              acceptedWork={this.state.acceptedWork}
             />
         )}
       </div>
