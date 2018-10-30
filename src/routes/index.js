@@ -10,9 +10,9 @@ import CreateJobb from "../contents/company/CreateJobb";
 import MyJobOffers from "../contents/company/MyJobOffers";
 import { JobsWithFooter } from "../contents/shared/Jobs";
 import SingleJob from "../contents/shared/SingleJob";
-import PrivateJobRequest from "../contents/PrivateJobRequest";
+import { PrivateJobRequest } from "../components/PrivateJobRequests";
 import SubmitWork from "../contents/photographer/SubmitWork";
-import DeclinedPrivateJob from "../contents/DeclinedPrivateJob";
+import { DeclinedPrivateJob } from "../components/DeclinedPrivateJob";
 
 export default ({ user, loading, setLoadingTrue, updateUserInfo }) => (
   <BrowserRouter basename="/app/">

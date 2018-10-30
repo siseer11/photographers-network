@@ -1,33 +1,9 @@
 import React from "react";
-import queryString from "query-string";
-import fire from "../config/Fire";
 import { Link } from "react-router-dom";
+import fire from "../../config/Fire";
+import { DeclinedPrivateJobView } from "../../components/DeclinedPrivateJobView";
 
-export default class DeclinedPrivateJob extends React.Component {
-  render() {
-    const { loading, location, user } = this.props;
-
-    /* waiting for the user infos */
-    if (loading != false) {
-      return <h2>Waiting for user data</h2>;
-    }
-
-    /* if the company does not own this job , first check against the queryString */
-    const companyQueryId = queryString.parse(location.search).company;
-    if (companyQueryId != user.uid) {
-      return <h2>Not your job go away...</h2>;
-    }
-
-    return (
-      <DeclinedPrivateJobAfterLoading
-        {...this.props}
-        companyQueryId={companyQueryId}
-      />
-    );
-  }
-}
-
-class DeclinedPrivateJobAfterLoading extends React.Component {
+export default class DeclinedPrivateJobFunctionality extends React.Component {
   state = {
     jobInfos: {},
     loadingDb: true,
@@ -158,7 +134,7 @@ class DeclinedPrivateJobAfterLoading extends React.Component {
     }
 
     return (
-      <DeclinedPrivateJobAfterLoadingView
+      <DeclinedPrivateJobView
         {...jobInfos}
         makePublic={this.makePublic}
         deleteJob={this.deleteJob}
@@ -167,38 +143,3 @@ class DeclinedPrivateJobAfterLoading extends React.Component {
     );
   }
 }
-
-const DeclinedPrivateJobAfterLoadingView = ({
-  date,
-  description,
-  location,
-  price,
-  title,
-  type,
-  makePublic,
-  deleteJob,
-  editDeleteStatus
-}) => (
-  <div className="job-view-private">
-    <h2>Job title : {title}</h2>
-    <p>Description : {description}</p>
-    <h2>Budget : {price} </h2>
-    <h5>Type of photography : {type} </h5>
-    <p>Location : {location} </p>
-    <p>Date : {new Date(date).toLocaleDateString()} </p>
-    <div className="accept-reject-buttons">
-      {editDeleteStatus ? (
-        <div className="status">{editDeleteStatus}</div>
-      ) : (
-        <React.Fragment>
-          <div className="accpet-button" onClick={makePublic}>
-            Make job public
-          </div>
-          <div className="reject-button" onClick={deleteJob}>
-            Delete Job
-          </div>
-        </React.Fragment>
-      )}
-    </div>
-  </div>
-);

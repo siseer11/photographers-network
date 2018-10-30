@@ -45,7 +45,7 @@ export default class HireMeModal extends React.Component {
       .child(`${photographerId}/notifications`)
       .push(
         {
-          link: `private/job/${jobbId}?user=${photographerId}`,
+          link: `/private/job/${jobbId}?user=${photographerId}`,
           read: false,
           title: `You got a new private job request from ${
             company.displayName
