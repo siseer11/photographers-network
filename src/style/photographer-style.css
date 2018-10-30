@@ -282,7 +282,7 @@ Notifications
 }
 
 .title-bar .gb-icon-small {
-  transition: ease;
+  transition: .2s transform;
 }
 
 .title-bar .turned-icon {
