@@ -8,8 +8,8 @@ import { DashboardHeader } from "./DashboardHeader";
 import NavFooterWrapper from "../../contents/shared/NavFooterWrapper";
 
 // contents
-import MyJobOffers from "../../contents/company/MyJobOffers";
-import AppliedJobs from "../../contents/photographer/AppliedJobs";
+import MyJobOffers from "../../contents/company/my-jobs/MyJobOffers";
+import AppliedJobs from "../../contents/photographer/applied-jobs/AppliedJobs";
 import NoPremiumUser from "./NoPremiumUser";
 import Portofolio from "./Portofolio";
 import HireableSwitch from "../../contents/photographer/HireableSwtich";

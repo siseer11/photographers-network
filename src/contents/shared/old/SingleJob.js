@@ -1,7 +1,9 @@
 import React from "react";
-import fire from "../../config/Fire";
-import {SingleJobViewWithNav} from "../../components/single-job/SingleJobView";
-import LoadingPage from "../../components/LoadingPage";
+import fire from "../../../config/Fire";
+import {SingleJobViewWithNav} from "../../../components/single-job/old/SingleJobView";
+import LoadingPage from "../../../components/LoadingPage";
+import JSZip from 'jszip';
+import FileSaver from 'file-saver';
 
 export default class SingleJob extends React.Component {
   render() {
@@ -28,7 +30,9 @@ class SingleJobFetch extends React.Component {
     downPayment: false,
     isDeclinedPhotographer: false,
     showDeleteModal: false,
-    jobExists: true
+    jobExists: true,
+    submittedWork: [],
+    acceptedWork: false
   };
   database = fire.database();
 
@@ -66,6 +70,7 @@ class SingleJobFetch extends React.Component {
             ...photographer
           };
         });
+        const workObj = response["submitted-work"] ? response["submitted-work"] : [];
         this.setState(
           () => ({
             jobId: jobId,
@@ -76,7 +81,9 @@ class SingleJobFetch extends React.Component {
             loadingData: false,
             appliedPhotographers: appliedPhotographers,
             acceptedApplicant: response.phootgrapher,
-            downPayment: response.payment === "down payment done"
+            downPayment: response.payment === "down payment done",
+            submittedWork: Object.values(workObj),
+            acceptedWork: response.status === "closed"
           }),
           () => this.userIsDeclinedPhotographer()
         );
@@ -108,6 +115,81 @@ class SingleJobFetch extends React.Component {
   };
 
   // ---------- COMPANY METHODS ----------:
+  /**
+   * Downloads zip file of submitted work.
+   */
+  downloadWork = () => {
+    const {submittedWork} = this.state;
+    let filesToDownload = [];
+    //
+    submittedWork.forEach(file => {
+      // pushes Promise for download data to array
+      filesToDownload.push(this.downloadURLAsAPromise(file.url));
+      console.log(filesToDownload);
+    });
+    Promise.all(filesToDownload).then(values => {
+      // create new zip file
+      let zip = new JSZip();
+      // add every value to the zip
+      for(let i = 0; i < values.length; i++)
+        zip.file(`submitted-work/${submittedWork[i].id}.jpg`, values[i]);
+
+      zip.generateAsync({type: "blob"}).then(content => {
+        // provides zip file for download
+        FileSaver.saveAs(content, "download.zip");
+      });
+    });
+  };
+
+  /**
+   * Creates Promise with the download data for current url.
+   *
+   * @param url
+   * @returns {Promise}
+   */
+  downloadURLAsAPromise = url => {
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.responseType = "blob";
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            resolve(xhr.response);
+          } else {
+            reject(new Error("Ajax error for " + url + ": " + xhr.status));
+          }
+        }
+      };
+      xhr.send();
+    });
+  };
+
+  acceptWork = () => {
+    const {jobDescription, jobId, acceptedApplicant} = this.state;
+    this.database
+      .ref("requests")
+      .child(jobId)
+      .update({
+        status: "closed"
+      });
+    // add notification
+    this.database
+      .ref("users")
+      .child(acceptedApplicant.uid)
+      .child("notifications")
+      .push()
+      .set({
+        title: `${
+          jobDescription.companyName
+          } has accepted your submitted work for ${jobDescription.title}.`,
+        link: `/job/${jobId}`,
+        read: false,
+        time: new Date().getTime()
+      });
+    this.setState({acceptedWork:true});
+  };
+
   showDeleteModal = show => {
     this.setState({showDeleteModal: show});
   };
@@ -118,14 +200,19 @@ class SingleJobFetch extends React.Component {
    * @returns {Promise.<void>}
    */
   deleteJob = async () => {
-    await (this.database.ref('requests').child(this.state.jobId).remove());
-    await (this.database.ref('company').child(this.state.jobDescription.companyId).child('postedJobs').child(this.state.jobId).remove());
-    let photographers = await ( this.database.ref('photographer').once('value'));
-    photographers.forEach(async photographer => {
-      console.log(photographer.key);
-      await this.database.ref('photographer').child(photographer.key).child('applied-jobs').child(this.state.jobId).remove();
-    });
-    this.props.history.replace('/dashboard');
+    try {
+      await (this.database.ref('requests').child(this.state.jobId).remove());
+      await (this.database.ref('company').child(this.state.jobDescription.companyId).child('postedJobs').child(this.state.jobId).remove());
+      let photographers = await ( this.database.ref('photographer').once('value'));
+      photographers.forEach(async photographer => {
+        console.log(photographer.key);
+        await this.database.ref('photographer').child(photographer.key).child('applied-jobs').child(this.state.jobId).remove();
+      });
+      this.props.history.replace('/dashboard');
+    } catch(err) {
+      console.log("Error:" + err.message);
+    }
+
   };
 
   /**
@@ -278,6 +365,7 @@ class SingleJobFetch extends React.Component {
       downPayment,
       isDeclinedPhotographer
     } = this.state;
+    console.log(this.state.submittedWork);
     return (
       <div>
         {loadingData ? (
@@ -286,6 +374,7 @@ class SingleJobFetch extends React.Component {
             <SingleJobViewWithNav
               history={this.props.history}
               {...jobDescription}
+              jobId={this.state.jobId}
               user={user}
               applyHandler={this.applyForJob}
               userApplied={userApplied}
@@ -300,6 +389,10 @@ class SingleJobFetch extends React.Component {
               showDeleteModal={this.showDeleteModal}
               showModal={this.state.showDeleteModal}
               jobExists={this.state.jobExists}
+              submittedWork={this.state.submittedWork}
+              acceptWorkHandler={this.acceptWork}
+              downloadHandler={this.downloadWork}
+              acceptedWork={this.state.acceptedWork}
             />
         )}
       </div>

@@ -31,6 +31,21 @@ const NavigationFooterWrapper = WrappedComponent => {
     updateLinks = user => {
       if (user) {
         const company = user.type === "company";
+
+        const specificLinks = [
+          {
+            txt: company ? "Create job" : "Jobs",
+            link: company ? "createJob" : "jobs"
+          }
+        ];
+
+        if (company) {
+          specificLinks.push({
+            txt: "Search for photographers",
+            link: "search-photographers"
+          });
+        }
+
         this.setState(() => ({
           userOn: true,
           homeLink: "dashboard",
@@ -45,13 +60,18 @@ const NavigationFooterWrapper = WrappedComponent => {
               txt: "Dashboard",
               link: "dashboard"
             },
-            {
-              txt: company ? "Create job" : "Jobs",
-              link: company ? "createJob" : "jobs"
-            },
+            ...specificLinks,
             { txt: "Sign out", clickHandler: this.logout }
           ]
         }));
+      } else {
+        this.setState({
+          userOn: false,
+          links: [{ txt: "Sign in", link: "signIn" }],
+          homeLink: "home",
+          user: null,
+          userLinks: []
+        });
       }
     };
 
@@ -64,7 +84,7 @@ const NavigationFooterWrapper = WrappedComponent => {
      */
     logout = () => {
       fire.auth().signOut();
-      this.props.history.replace("/");
+      this.props.history.replace("/home");
     };
 
     render() {

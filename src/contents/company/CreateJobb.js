@@ -1,173 +1,93 @@
 import React from "react";
-import LoadingPage from '../../components/LoadingPage';
-import {Redirect} from 'react-router-dom';
-import fire from '../../config/Fire'
-import {CreateJobbForm} from '../../components/CreateJobbForm';
+import LoadingPage from "../../components/LoadingPage";
+import { Redirect } from "react-router-dom";
+import fire from "../../config/Fire";
+import CreateJobForm from "../CreateJobForm";
 import NavFooterWrapper from "../shared/NavFooterWrapper";
 
 class CreateJob extends React.Component {
-  state = {
-    jobbTitle: "",
-    jobbLocation: "",
-    jobbType: 'nature',
-    jobbBudget: '',
-    jobbDate: '',
-    jobbDescription: '',
-    today: '',
-  };
-
-  /**
-   * Create a date with format YYYY-MM-DD
-   **/
-  createValidDate = date => {
-    const year = date.getFullYear();
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    return `${year}-${month >= 10 ? month : `0${month}`}-${day >= 10 ? day : `0${day}`}`;
-  };
-
   /**
    * When the component mounts, after the loading is done
    * if the user is not a company redirect him to his dashboard
    **/
   componentDidMount() {
-    if (this.props.loading === false && this.props.user.type !== 'company') {
-      this.props.history.replace('/dashboard');
+    if (this.props.loading === false && this.props.user.type !== "company") {
+      this.props.history.replace("/dashboard");
     }
-    const today = this.createValidDate(new Date());
-    this.setState({
-      jobbDate: today,
-      today: today,
-    })
   }
-
-  /**
-   * Function that deal with the custom select
-   **/
-  optionSelectHandler = (type) => {
-    this.setState({
-      jobbType: type,
-    })
-  };
-
-  showCustomSelectHandler = () => {
-    this.setState(
-      prevState => ({
-        showCustomSelect: !prevState.showCustomSelect
-      }),
-      () => {
-        if (this.state.showCustomSelect === true) {
-          window.addEventListener("click", e => {
-            if (!e.target.classList.contains("custom-select")) {
-              this.setState({
-                showCustomSelect: false
-              });
-            }
-          });
-        }
-      }
-    );
-  };
-
-  /**
-   * Input change handler that updates the state of the component
-   **/
-  changeHandler = (e) => {
-    this.setState({
-      [`jobb${e.target.name}`]: e.target.value
-    }, ()=>console.log(this.state.jobbDate))
-  };
-
-  /**
-   * Function that check if all the inputs are completed with the right data
-   * before sending the form
-   **/
-  inputChecker = () => {
-    const {jobbTitle, jobbLocation, jobbType, jobbBudget, jobbDate} = this.state;
-    if (!jobbTitle) {
-      return 'Title must be not empty'
-    }
-    if (!jobbLocation) {
-      return 'Location must be not empty'
-    }
-    if (!jobbType) {
-      return 'Type must be completed'
-    }
-    if (!jobbBudget || Number(jobbBudget) <= 0) {
-      return 'Budget must be completed and greater then 0';
-    }
-    if (!jobbDate) {
-      return 'Date must be selected'
-    }
-    return true;
-  };
 
   /**
    * Function called when the form is submited
    **/
-  submitHandler = (e) => {
-    e.preventDefault();
-    const {jobbTitle, jobbLocation, jobbType, jobbBudget, jobbDate, jobbDescription} = this.state;
-    const jobbId = fire.database().ref('requests').push().key;
-    if (this.inputChecker() === true) {
-      fire.database()
-        .ref('requests')
-        .child(jobbId)
-        .set({
-          'title': jobbTitle,
-          'description': jobbDescription,
-          'price': Number(jobbBudget),
-          'location': jobbLocation,
-          'type': jobbType,
-          'date': new Date(jobbDate).getTime(),
-          'status': 'open',
-          'payment': 'soooooon',
-          'phootgrapher': 'none',
-          'companyId': this.props.user.uid,
-          'companyName': this.props.user.displayName,
-          'jobbId': jobbId,
-        })
-        .then(() => {
-          fire.database()
-            .ref('company')
-            .child(this.props.user.uid)
-            .child('postedJobs')
-            .child(jobbId)
-            .set({
-              'jobId': jobbId
-            }).then(() => {
-            setTimeout(() => {
-              this.props.history.push('/dashboard');
-            }, 1000)
-          }).catch((err) => console.log(err));
+  submitHandler = values => {
+    const { user, history } = this.props;
+    //Get a new id for the job
+    const jobbId = fire
+      .database()
+      .ref("requests")
+      .push().key;
 
-        })
-        .catch((err) => console.log(err))
-    } else {
-      console.log(this.inputChecker())
-    }
+    //Add the new created job in the database under requests
+    fire
+      .database()
+      .ref("requests")
+      .child(jobbId)
+      .set(
+        {
+          ...values,
+          status: "open",
+          payment: "soooooon",
+          phootgrapher: "none",
+          companyId: user.uid,
+          companyName: user.displayName,
+          jobbId: jobbId
+        },
+        err => {
+          if (err) {
+            console.log(err);
+          } else {
+            addJobIntoCompany();
+          }
+        }
+      );
+
+    //Add the job in the company postedJobs field
+    const addJobIntoCompany = () => {
+      fire
+        .database()
+        .ref("company")
+        .child(user.uid)
+        .child("postedJobs")
+        .child(jobbId)
+        .set(
+          {
+            jobId: jobbId
+          },
+          err => {
+            if (err) {
+              console.log(err);
+            } else {
+              setTimeout(() => {
+                history.push("/dashboard");
+              }, 1000);
+            }
+          }
+        );
+    };
   };
 
   render() {
     return (
       <React.Fragment>
-        {
-          this.props.loading === false ? (
-            this.props.user.type !== 'company' ? (
-              <Redirect to='/dashboard'/>
-            ) : (
-              <CreateJobbForm
-                submitHandler={this.submitHandler}
-                changeHandler={this.changeHandler}
-                showCustomSelectHandler={this.showCustomSelectHandler}
-                optionSelectHandler={this.optionSelectHandler}
-                {...this.state}
-              />
-            )
+        {this.props.loading === false ? (
+          this.props.user.type !== "company" ? (
+            <Redirect to="/dashboard" />
           ) : (
-            <LoadingPage/>
+            <CreateJobForm submitHandler={this.submitHandler} />
           )
-        }
+        ) : (
+          <LoadingPage />
+        )}
       </React.Fragment>
     );
   }

@@ -1,13 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import NavFooterWrapper from "../../contents/shared/NavFooterWrapper";
+import NavFooterWrapper from "../../../contents/shared/NavFooterWrapper";
 import PropTypes from 'prop-types'
-import {DeleteModal} from "./DeleteModal";
-import {JobDescription} from "./JobDescription";
+import {DeleteModal} from "../DeleteModal";
+import {JobDescription} from "../JobDescription";
 import {SingleJobViewhotographer} from "./SingleJobViewPhotographer";
 import {SingleJobViewCompany} from "./SingleJobViewCompany";
 
 const SingleJobView = ({
+                         jobId,
                          company,
                          companyName,
                          date,
@@ -29,7 +30,11 @@ const SingleJobView = ({
                          deleteHandler,
                          showDeleteModal,
                          showModal,
-                         jobExists
+                         jobExists,
+                         submittedWork,
+                         acceptWorkHandler,
+                         downloadHandler,
+                         acceptedWork
                        }) => (
 
   <div className="single-job-view section-content">
@@ -58,6 +63,9 @@ const SingleJobView = ({
                                             user={user}
                                             isDeclinedPhotographer={isDeclinedPhotographer}
                                             applyHandler={applyHandler}
+                                            jobId={jobId}
+                                            submittedWork={submittedWork}
+                                            acceptedWork={acceptedWork}
                   />
                 ) :
                 // user is company
@@ -70,6 +78,10 @@ const SingleJobView = ({
                                         downPayment={downPayment}
                                         price={price}
                                         successfulPaymentHandler={successfulPaymentHandler}
+                                        submittedWork={submittedWork}
+                                        acceptWorkHandler={acceptWorkHandler}
+                                        downloadHandler={downloadHandler}
+                                        acceptedWork={acceptedWork}
                   />
                 )
             ) : (
