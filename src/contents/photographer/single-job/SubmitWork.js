@@ -1,15 +1,15 @@
 // dependencies
 import React, {Component} from 'react';
-import fire from "../../config/Fire";
+import fire from "../../../config/Fire";
 
 // high order component
-import NavFooterWrapper from '../shared/NavFooterWrapper';
+import NavFooterWrapper from '../../shared/NavFooterWrapper';
 
 // component
-import LoadingPage from "../../components/LoadingPage";
-import PhotoUpload from "../shared/PhotoUpload";
-import WithModal from "../../RenderProp/WithModal";
-import {Button} from "../../components/Button";
+import LoadingPage from "../../../components/LoadingPage";
+import PhotoUpload from "../../shared/PhotoUpload";
+import WithModal from "../../../RenderProp/WithModal";
+import {Button} from "../../../components/Button";
 
 class Submitwork extends Component {
   state = {
@@ -85,7 +85,7 @@ class Submitwork extends Component {
         title: `${user.displayName} submitted his work for "${
           jobDescription.title
           }".`,
-        link: `/job/${jobId}`,
+        link: `/progress-job/${jobId}`,
         read: false,
         time: new Date().getTime()
       });
@@ -100,7 +100,7 @@ class Submitwork extends Component {
           {!this.state.submitted ?
             <React.Fragment>
               Submit your work here!
-              <WithModal className="portofolio-add">
+              <WithModal className="portofolio-add" closeItemClass="close">
                 {({showModal, closeModalListener}) => (
                   <PhotoUpload databaseRef={`photographer/${user.uid}/applied-jobs/${jobId}/submitted-work`}
                                storageRef={`${user.uid}/submitted-works/${jobId}`}

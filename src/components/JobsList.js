@@ -8,7 +8,7 @@ export const JobsList = ({ jobsList }) => (
 		{
 			jobsList.map(el => (
 				<GbCard50
-					cardLink={`job/${el.jobbId}`}
+					cardLink={`open-job/${el.jobbId}`}
 					key={el.jobbId}
 					type='half-left'
 					source={{

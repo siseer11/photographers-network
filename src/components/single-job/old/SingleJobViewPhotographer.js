@@ -1,8 +1,8 @@
 import React from 'react';
-import {Button} from "../Button";
+import {Button} from "../../Button";
 import {Link} from 'react-router-dom';
 
-export const SingleJobViewhotographer = ({user, userApplied, acceptedApplicant, isDeclinedPhotographer, applyHandler, jobId, submittedWork}) => (
+export const SingleJobViewhotographer = ({user, userApplied, acceptedApplicant, isDeclinedPhotographer, applyHandler, jobId, submittedWork, acceptedWork}) => (
   // user is photographer
   // checks if current user applied for this job
   userApplied ? (
@@ -10,7 +10,11 @@ export const SingleJobViewhotographer = ({user, userApplied, acceptedApplicant, 
     acceptedApplicant !== "none" && acceptedApplicant.uid === user.uid ?
       (
         submittedWork.length > 0 ?
-          <h2>Waiting for company to approve your submitted work.</h2> :
+          (
+            acceptedWork ?
+              <h2>Your submitted work has been approved. You will receive the payment asap.</h2> :
+              <h2>Waiting for company to approve your submitted work.</h2>
+          ) :
           <React.Fragment>
             <h2>You have been accepted to do this job.</h2>
             <p>Submit your work here:</p>

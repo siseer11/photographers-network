@@ -17,7 +17,7 @@ export const MyJobsCategoryView = ({categoryTitle, jobs}) => (
           jobs.map(el => (
             <GbCard50
               key={el.jobbId}
-              cardLink={`job/${el.jobbId}`}
+              cardLink={`${categoryTitle === "Open" ? "open" : "progress"}-job/${el.jobbId}`}
               type='half-left'
               source={{
                 txt: el.companyName,

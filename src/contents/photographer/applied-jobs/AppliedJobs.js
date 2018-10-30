@@ -1,10 +1,10 @@
 // dependencies
-import React, { Component } from "react";
-import LoadingPage from "../../components/LoadingPage";
-import fire from "../../config/Fire";
+import React, {Component} from "react";
+import LoadingPage from "../../../components/LoadingPage";
+import fire from "../../../config/Fire";
 
 // components
-import { GbCard50 } from "../../components/gbCard50";
+import {GbCard50} from "../../../components/gbCard50";
 
 export default class AppliedJobs extends Component {
   render() {
@@ -13,7 +13,7 @@ export default class AppliedJobs extends Component {
         {this.props.loading === false ? (
           <AppliedJobsFetch {...this.props} />
         ) : (
-          <LoadingPage />
+          <LoadingPage/>
         )}
       </React.Fragment>
     );
@@ -26,7 +26,11 @@ export default class AppliedJobs extends Component {
 class AppliedJobsFetch extends Component {
   state = {
     loadedDb: false,
-    jobList: []
+    jobList: [],
+    appliedJobs: [],
+    acceptedJobs: [],
+    declinedJobs: [],
+    finishedJobs: []
   };
 
   database = fire.database().ref();
@@ -39,7 +43,7 @@ class AppliedJobsFetch extends Component {
    * Fetches applied jobs from current user from database.
    */
   fetchJobs() {
-    const { user } = this.props;
+    const {user} = this.props;
     let jobs = [];
     this.database
       .child("photographer")
@@ -47,31 +51,33 @@ class AppliedJobsFetch extends Component {
       .child("applied-jobs")
       .once("value", snap => {
         snap.forEach(job => {
-          jobs.push(job.val());
+          this.database.child("requests").child(job.val().jobbId).once("value", jobRequest => {
+            jobs.push(jobRequest.val());
+          })
+            .then(() => {
+              this.setState({jobList: jobs});
+            });
         });
-      })
-      .then(() => {
-        this.setState({ jobList: jobs });
       });
   }
 
   render() {
-    const { jobList } = this.state;
+    const {jobList} = this.state;
     return (
       <div>
         {jobList.map(job => (
           <GbCard50
-            key={job.jobDescription.jobbId}
-            cardLink={`job/${job.jobDescription.jobbId}`}
+            key={job.jobbId}
+            cardLink={`${job.status === "open" ? "open" : "progress"}-job/${job.jobbId}`}
             type="half-left"
             source={{
-              txt: job.jobDescription.companyName,
-              link: `/profile/${job.jobDescription.company}`
+              txt: job.companyName,
+              link: `/profile/${job.company}`
             }}
-            postedTime={new Date(job.jobDescription.date).toLocaleDateString("en-US")}
-            category={job.jobDescription.type}
+            postedTime={new Date(job.date).toLocaleDateString("en-US")}
+            category={job.type}
           >
-            {job.jobDescription.title}
+            {job.title}
           </GbCard50>
         ))}
       </div>
