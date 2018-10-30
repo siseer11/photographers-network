@@ -7,16 +7,25 @@ import SignUp from "../contents/SignUp";
 import { ProfileWithNav } from "../contents/shared/Profile";
 import SearchPhotographer from "../contents/company/SearchPhotographer";
 import CreateJobb from "../contents/company/CreateJobb";
+import { JobsWithFooter } from "../contents/shared/Jobs";
+import { PrivateJobRequest } from "../components/PrivateJobRequests";
+import { DeclinedPrivateJob } from "../components/DeclinedPrivateJob";
 import MyJobOffers from "../contents/company/my-jobs/MyJobOffers";
-import {JobsWithFooter} from "../contents/shared/Jobs";
-import SingleJob from '../contents/shared/old/SingleJob';
 import SubmitWork from '../contents/photographer/single-job/SubmitWork';
-import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
 import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
+import SingleJob from '../contents/shared/old/SingleJob';
+import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
 
 export default ({user, loading, setLoadingTrue, updateUserInfo}) => (
   <BrowserRouter>
     <Switch>
+      <Route
+        exact
+        path="/declined-private-job/:jobId"
+        render={props => (
+          <DeclinedPrivateJob {...props} user={user} loading={loading} />
+        )}
+      />
       <Route
         exact
         path="/home"
@@ -34,17 +43,11 @@ export default ({user, loading, setLoadingTrue, updateUserInfo}) => (
           />
         )}
       />
-      <Route exact path="/signUp" render={props => <SignUp {...props} />}/>
+      <Route exact path="/signUp" render={props => <SignUp {...props} />} />
       <Route
         exact
         path="/signUp/:type"
-        render={props => (
-          <SignUp {...props}
-                  loading={loading}
-                  user={user}
-          />
-        )
-        }
+        render={props => <SignUp {...props} loading={loading} user={user} />}
       />
       <Route
         exact
@@ -123,16 +126,28 @@ export default ({user, loading, setLoadingTrue, updateUserInfo}) => (
       <Route exact path='/submit-work/:jobid' render={props =>
         <SubmitWork {...props} user={user} loading={loading}/>}
       />
-      <Route exact path='/jobs' render={
-        props => (
-          <JobsWithFooter
-            {...props}
-            user={user}
-            loading={loading}
-          />
-        )
-      }/>
-      <Redirect to="/home"/>
+      <Route
+        exact
+        path="/submit-work/:jobid"
+        render={props => (
+          <SubmitWork {...props} user={user} loading={loading} />
+        )}
+      />
+      <Route
+        exact
+        path="/jobs"
+        render={props => (
+          <JobsWithFooter {...props} user={user} loading={loading} />
+        )}
+      />
+      <Route
+        exact
+        path="/private/job/:jobId"
+        render={props => (
+          <PrivateJobRequest {...props} user={user} loading={loading} />
+        )}
+      />
+      <Redirect to="/home" />
     </Switch>
   </BrowserRouter>
 );
