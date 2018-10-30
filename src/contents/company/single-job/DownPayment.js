@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import PaypalButton from "../shared/PayPalButton";
-import { Button } from "../../components/Button";
-import CLIENT from "../../paypal/Client";
+import PaypalButton from "../../shared/PayPalButton";
+import { Button } from "../../../components/Button";
+import CLIENT from "../../../paypal/Client";
 
 const ENV = process.env.NODE_ENV === "production" ? "production" : "sandbox";
 
@@ -13,8 +13,8 @@ class DownPayment extends React.Component {
     success: false
   };
 
-  onError = () => {
-    this.setState({ error: "Something went wrong!" });
+  onError = err => {
+    this.setState({ error: "Something went wrong!"+err.message });
   };
 
   onCancel = () => {

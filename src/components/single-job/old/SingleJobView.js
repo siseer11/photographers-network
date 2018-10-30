@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import NavFooterWrapper from "../../contents/shared/NavFooterWrapper";
+import NavFooterWrapper from "../../../contents/shared/NavFooterWrapper";
 import PropTypes from 'prop-types'
-import {DeleteModal} from "./DeleteModal";
-import {JobDescription} from "./JobDescription";
+import {DeleteModal} from "../DeleteModal";
+import {JobDescription} from "../JobDescription";
 import {SingleJobViewhotographer} from "./SingleJobViewPhotographer";
 import {SingleJobViewCompany} from "./SingleJobViewCompany";
 

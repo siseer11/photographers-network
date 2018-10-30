@@ -205,16 +205,16 @@ Notifications
 .notification-container {
   background-color: white;
   position: absolute;
-  width: 60%;
+  width: 200px;
   right: 10px;
-  top: 65px;
+  top: 75px;
   padding: 10px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .notification-container:after, .notification-container:before {
   bottom: 100%;
-  left: 61%;
+  right: 55px;
   border: solid transparent;
   content: " ";
   height: 0;
@@ -726,8 +726,6 @@ ul.portofolio-list {
   position: fixed;
   top: 0;
   left: 0;
-  justify-content: center;
-  align-items: center;
   width: 100vw;
   min-height: 100vh;
   background: rgba(0, 0, 0, 0.5);
@@ -767,7 +765,6 @@ ul.portofolio-list {
   flex-direction: column;
   position: fixed;
   background: white;
-  top: 0;
   right: 15px;
   top: 71px;
   width: 200px;

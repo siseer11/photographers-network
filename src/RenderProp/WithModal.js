@@ -30,7 +30,7 @@ export default class WithModal extends React.Component {
     if (lastState == false) {
       this.showModal();
       if (!closeItemClass) {
-        //if the item is closing whenever a user press somewhere on teh window
+        //if the item is closing whenever a user press somewhere on the window
         window.setTimeout(
           () => window.addEventListener("click", closeModalRemoveListener),
           0

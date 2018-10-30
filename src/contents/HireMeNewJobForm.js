@@ -41,7 +41,8 @@ export default class HireMeNewJobForm extends React.Component {
           companyName: company.displayName,
           sentTo: photographerId,
           jobbId: jobbId,
-          sentToPrivate: true
+          sentToPrivate: true,
+          private: true
         },
         err => {
           if (err) {
@@ -58,7 +59,7 @@ export default class HireMeNewJobForm extends React.Component {
       fire
         .database()
         .ref("company")
-        .child(`${company.uid}/privateJobs/${jobbId}`)
+        .child(`${company.uid}/postedJobs/${jobbId}`)
         .set(
           {
             jobId: jobbId,
