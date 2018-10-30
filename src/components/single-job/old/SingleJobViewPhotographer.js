@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from "../Button";
+import {Button} from "../../Button";
 import {Link} from 'react-router-dom';
 
 export const SingleJobViewhotographer = ({user, userApplied, acceptedApplicant, isDeclinedPhotographer, applyHandler, jobId, submittedWork, acceptedWork}) => (

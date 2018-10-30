@@ -1,15 +1,15 @@
 import React from "react";
-import fire from "../../config/Fire";
-import {OpenSingleJobViewCompany} from "../../components/single-job/open/OpenSingleJobViewCompany";
-import {DeleteModal} from "../../components/single-job/DeleteModal";
+import fire from "../../../config/Fire";
+import {OpenSingleJobViewCompany} from "../../../components/single-job/open/OpenSingleJobViewCompany";
+import {DeleteModal} from "../../../components/single-job/DeleteModal";
 
 export default class OpenSingleJobCompany extends React.Component {
   state = {
-    appliedPhotographers: [],
-    acceptedApplicant: "",
-    downPayment: false,
-    showDeleteModal: false,
-    jobExists: true
+    appliedPhotographers: this.props.appliedPhotographers,
+    acceptedApplicant: this.props.acceptedApplicant,
+    downPayment: this.props.downPayment,
+    showDeleteModal: this.props.showDeleteModal,
+    jobExists: this.props.jobExists
   };
   database = fire.database();
 
@@ -35,7 +35,6 @@ export default class OpenSingleJobCompany extends React.Component {
     } catch (err) {
       console.log("Error:" + err.message);
     }
-
   };
 
   /**
@@ -44,7 +43,7 @@ export default class OpenSingleJobCompany extends React.Component {
    * @param uid
    */
   declineApplicant = uid => {
-    const {jobId, jobDescription} = this.state;
+    const {jobId, jobDescription} = this.props;
     // remove applicant from database and state
     this.database
       .ref("requests")
@@ -60,6 +59,9 @@ export default class OpenSingleJobCompany extends React.Component {
         appliedPhotographersCopy.splice(index, 1);
         this.setState({appliedPhotographers: appliedPhotographersCopy});
       });
+    this.database.ref("photographer").child(uid).child("applied-jobs").child(jobId).update({
+      status: "declined"
+    });
     // add notification
     this.database
       .ref("users")
@@ -70,7 +72,7 @@ export default class OpenSingleJobCompany extends React.Component {
         title: `${
           jobDescription.companyName
           } has declined your application for ${jobDescription.title}.`,
-        link: `/job/${jobId}`,
+        link: `/open-job/${jobId}`,
         read: false,
         time: new Date().getTime()
       });
@@ -93,7 +95,8 @@ export default class OpenSingleJobCompany extends React.Component {
    * successful payment.
    */
   successfulPayment = () => {
-    const {jobId, acceptedApplicant, jobDescription} = this.state;
+    const {jobId, jobDescription} = this.props;
+    const {acceptedApplicant} = this.state;
     this.database
       .ref("requests")
       .child(jobId)
@@ -105,26 +108,29 @@ export default class OpenSingleJobCompany extends React.Component {
       .then(() => {
         this.setState({downPayment: true});
 
-        this.database.ref("users").child(acceptedApplicant.uid).child("notifications")
-          .push().set({
-          title: `${jobDescription.companyName} has accepted you to execute the job request "${jobDescription.title}".`,
-          link: `/job/${jobId}`,
-          read: false,
-          time: new Date().getTime()
-        })
-          .then(() => this.props.history.replace(`/progress-job/${jobId}`));
-      });
-
+        this.database.ref("photographer").child(acceptedApplicant.uid).child("applied-jobs").child(jobId).update({
+          status: "accepted"
+        }).then(()=> {
+          this.database.ref("users").child(acceptedApplicant.uid).child("notifications")
+            .push().set({
+            title: `${jobDescription.companyName} has accepted you to execute the job request "${jobDescription.title}".`,
+            link: `/progress-job/${jobId}`,
+            read: false,
+            time: new Date().getTime()
+          })
+            .then(() => this.props.history.replace(`/progress-job/${jobId}`));
+        });
+      })
+      .catch(err => console.log(err));
   };
 
   render() {
     const {
-      jobDescription,
       appliedPhotographers,
       acceptedApplicant,
       downPayment
-    } = this.props;
-    console.log(appliedPhotographers);
+    } = this.state;
+    const {jobDescription} = this.props;
     return (
       <React.Fragment>
         {this.state.showDeleteModal &&

@@ -1,11 +1,11 @@
 import React from "react";
-import fire from "../../config/Fire";
-import LoadingPage from "../../components/LoadingPage";
-import OpenSingleJobPhotographer from "../photographer/OpenSingleJobPhotographer";
-import {JobDescription} from "../../components/single-job/JobDescription";
-import NavFooterWrapper from "../shared/NavFooterWrapper";
-import ProgressSingleJobCompany from "../company/ProgressSingleJobCompany";
-import ProgressSingleJobPhotographer from "../photographer/ProgressSingleJobPhotographer";
+import fire from "../../../config/Fire";
+import LoadingPage from "../../../components/LoadingPage";
+import OpenSingleJobPhotographer from "../../photographer/single-job/OpenSingleJobPhotographer";
+import {JobDescription} from "../../../components/single-job/JobDescription";
+import NavFooterWrapper from "../NavFooterWrapper";
+import ProgressSingleJobCompany from "../../company/single-job/ProgressSingleJobCompany";
+import ProgressSingleJobPhotographer from "../../photographer/single-job/ProgressSingleJobPhotographer";
 
 export default class ProgressSingleJob extends React.Component {
   render() {
@@ -57,12 +57,15 @@ class ProgressSingleJobFetch extends React.Component {
           return -1;
         }
         const response = snap.val();
+        const workObj = response["submitted-work"] ? response["submitted-work"] : [];
         this.setState(
           () => ({
             jobId: jobId,
             jobDescription: response,
             loadingData: false,
-            acceptedApplicant: response.phootgrapher
+            acceptedApplicant: response.phootgrapher,
+            submittedWork: Object.values(workObj),
+            acceptedWork: response.status === "closed"
           })
         );
       })
@@ -70,7 +73,7 @@ class ProgressSingleJobFetch extends React.Component {
   };
 
   setAcceptedWork = () => {
-    this.setState({acceptedWork:true});
+    this.setState({acceptedWork: true});
   };
 
   render() {
@@ -80,30 +83,38 @@ class ProgressSingleJobFetch extends React.Component {
       acceptedApplicant,
       submittedWork,
       acceptedWork,
-      jobId
+      jobId,
+      jobExists
     } = this.state;
 
     if (loadingData) return <LoadingPage/>;
 
     const {user} = this.props;
-    const {title, description, date, location, price, type, company, companyName} = jobDescription;
 
     return (
       <div className="single-job-view section-content">
-        <JobDescription title={title} description={description} date={date} location={location} price={price}
-                        type={type}
-                        company={company} companyName={companyName}/>
         {
-          user.type === "photographer" ?
-            <ProgressSingleJobPhotographer submittedWork={submittedWork}
-                                           acceptedWork={acceptedWork}
-                                           jobId={jobId}
-            />
-            :
-            <ProgressSingleJobCompany acceptedApplicant={acceptedApplicant}
-                                      submittedWork={submittedWork}
-                                      setAcceptedWork={this.setAcceptedWork}
-            />
+          jobExists ?
+            <React.Fragment>
+              <JobDescription {...jobDescription}/>
+              {
+                user.type === "photographer" ?
+                  <ProgressSingleJobPhotographer submittedWork={submittedWork}
+                                                 acceptedWork={acceptedWork}
+                                                 jobId={jobId}
+                  />
+                  :
+                  <ProgressSingleJobCompany acceptedApplicant={acceptedApplicant}
+                                            submittedWork={submittedWork}
+                                            acceptedWork={acceptedWork}
+                                            jobId={jobId}
+                                            jobDescription={jobDescription}
+                                            user={user}
+                                            setAcceptedWork={this.setAcceptedWork}
+                  />
+              }
+            </React.Fragment> :
+            <div>Job does not seem to exist anymore.</div>
         }
       </div>
 

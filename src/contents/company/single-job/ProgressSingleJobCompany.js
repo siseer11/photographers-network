@@ -1,13 +1,10 @@
 import React from "react";
-import fire from "../../config/Fire";
-import {ProgressSingleJobViewCompany} from "../../components/single-job/progress/ProgressSingleJobViewCompany";
+import fire from "../../../config/Fire";
+import {ProgressSingleJobViewCompany} from "../../../components/single-job/progress/ProgressSingleJobViewCompany";
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
 
 export default class ProgressSingleJobCompany extends React.Component {
-  state = {
-
-  };
   database = fire.database();
 
   // ---------- COMPANY METHODS ----------:
@@ -15,7 +12,7 @@ export default class ProgressSingleJobCompany extends React.Component {
    * Downloads zip file of submitted work.
    */
   downloadWork = () => {
-    const {submittedWork} = this.state;
+    const {submittedWork} = this.props;
     let filesToDownload = [];
     //
     submittedWork.forEach(file => {
@@ -62,13 +59,16 @@ export default class ProgressSingleJobCompany extends React.Component {
   };
 
   acceptWork = () => {
-    const {jobDescription, jobId, acceptedApplicant} = this.state;
+    const {jobDescription, jobId, acceptedApplicant} = this.props;
     this.database
       .ref("requests")
       .child(jobId)
       .update({
         status: "closed"
       });
+    this.database.ref("photographer").child(acceptedApplicant.uid).child("applied-jobs").child(jobId).update({
+      status: "finished"
+    });
     // add notification
     this.database
       .ref("users")
@@ -79,7 +79,7 @@ export default class ProgressSingleJobCompany extends React.Component {
         title: `${
           jobDescription.companyName
           } has accepted your submitted work for ${jobDescription.title}.`,
-        link: `/job/${jobId}`,
+        link: `/progress-job/${jobId}`,
         read: false,
         time: new Date().getTime()
       });

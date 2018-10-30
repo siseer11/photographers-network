@@ -1,12 +1,12 @@
 import React from "react";
-import fire from "../../config/Fire";
-import {OpenSingleJobViewPhotographer} from "../../components/single-job/open/OpenSingleJobViewPhotographer";
+import fire from "../../../config/Fire";
+import {OpenSingleJobViewPhotographer} from "../../../components/single-job/open/OpenSingleJobViewPhotographer";
 
 
 export default class OpenSingleJobPhotographer extends React.Component {
   state = {
-    userApplied: false,
-    isDeclinedPhotographer: false
+    userApplied: this.props.userApplied,
+    isDeclinedPhotographer: this.props.isDeclinedPhotographer
   };
   database = fire.database();
 
@@ -33,7 +33,8 @@ export default class OpenSingleJobPhotographer extends React.Component {
           .child("applied-jobs")
           .child(jobId)
           .set({
-            jobDescription
+            jobbId: jobId,
+            status: "applied"
           });
       })
       .then(() => {
@@ -48,22 +49,19 @@ export default class OpenSingleJobPhotographer extends React.Component {
             title: `${user.displayName} applied for your job request "${
               jobDescription.title
               }".`,
-            link: `/job/${jobId}`,
+            link: `/open-job/${jobId}`,
             read: false,
             time: new Date().getTime()
           });
       });
   };
 
-
-
   render() {
     const {
       userApplied,
       isDeclinedPhotographer
-    } = this.props;
+    } = this.state;
 
-    console.log(this.state.submittedWork);
     return (
       <OpenSingleJobViewPhotographer userApplied={userApplied}
                                      isDeclinedPhotographer={isDeclinedPhotographer}

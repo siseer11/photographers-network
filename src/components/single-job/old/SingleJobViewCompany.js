@@ -1,8 +1,8 @@
 import React from 'react';
-import {Button} from "../Button";
-import {AppliedPhotographers} from './AppliedPhotographers';
-import DownPayment from '../../contents/company/DownPayment';
-import {SubmittedWork} from "./SubmittedWork";
+import {Button} from "../../Button";
+import {AppliedPhotographers} from '../AppliedPhotographers';
+import DownPayment from '../../../contents/company/single-job/DownPayment';
+import {SubmittedWork} from "../SubmittedWork";
 
 export const SingleJobViewCompany = ({showDeleteModal, acceptedApplicant, appliedPhotographers, acceptHandler, declineHandler, downPayment, price, successfulPaymentHandler, submittedWork, acceptWorkHandler, downloadHandler, acceptedWork}) => (
   <React.Fragment>

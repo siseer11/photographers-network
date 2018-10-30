@@ -1,5 +1,5 @@
 import React from "react";
-import fire from "../../config/Fire";
+import fire from "../../../config/Fire";
 import {Link} from 'react-router-dom';
 
 export default class ProgressSingleJobPhotographer extends React.Component {
@@ -16,7 +16,7 @@ export default class ProgressSingleJobPhotographer extends React.Component {
       jobId
     } = this.props;
 
-    console.log(this.state.submittedWork);
+    console.log(this.props.submittedWork);
     return (
       submittedWork.length > 0 ?
         (

@@ -7,15 +7,15 @@ import SignUp from "../contents/SignUp";
 import { ProfileWithNav } from "../contents/shared/Profile";
 import SearchPhotographer from "../contents/company/SearchPhotographer";
 import CreateJobb from "../contents/company/CreateJobb";
-import MyJobOffers from "../contents/company/MyJobOffers";
+import MyJobOffers from "../contents/company/my-jobs/MyJobOffers";
 import {JobsWithFooter} from "../contents/shared/Jobs";
-import SingleJob from '../contents/shared/SingleJob';
-import SubmitWork from '../contents/photographer/SubmitWork';
-import OpenSingleJob from "../contents/shared/OpenSingleJob";
-import ProgressSingleJob from "../contents/shared/ProgressSingleJob";
+import SingleJob from '../contents/shared/old/SingleJob';
+import SubmitWork from '../contents/photographer/single-job/SubmitWork';
+import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
+import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
 
 export default ({user, loading, setLoadingTrue, updateUserInfo}) => (
-  <BrowserRouter basename='/app/'>
+  <BrowserRouter>
     <Switch>
       <Route
         exact

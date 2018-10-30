@@ -1,7 +1,7 @@
 import React from "react";
-import fire from "../../config/Fire";
-import {SingleJobViewWithNav} from "../../components/single-job/SingleJobView";
-import LoadingPage from "../../components/LoadingPage";
+import fire from "../../../config/Fire";
+import {SingleJobViewWithNav} from "../../../components/single-job/old/SingleJobView";
+import LoadingPage from "../../../components/LoadingPage";
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
 

@@ -1,10 +1,10 @@
 import React from "react";
-import fire from "../../config/Fire";
-import LoadingPage from "../../components/LoadingPage";
-import OpenSingleJobPhotographer from "../photographer/OpenSingleJobPhotographer";
-import OpenSingleJobCompany from "../company/OpenSingleJobCompany";
-import {JobDescription} from "../../components/single-job/JobDescription";
-import NavFooterWrapper from "../shared/NavFooterWrapper";
+import fire from "../../../config/Fire";
+import LoadingPage from "../../../components/LoadingPage";
+import OpenSingleJobPhotographer from "../../photographer/single-job/OpenSingleJobPhotographer";
+import OpenSingleJobCompany from "../../company/single-job/OpenSingleJobCompany";
+import {JobDescription} from "../../../components/single-job/JobDescription";
+import NavFooterWrapper from "../NavFooterWrapper";
 
 export default class OpenSingleJob extends React.Component {
   render() {
@@ -140,13 +140,10 @@ class OpenSingleJobFetch extends React.Component {
     if (loadingData) return <LoadingPage/>;
 
     const {user} = this.props;
-    const {title, description, date, location, price, type, company, companyName} = jobDescription;
 
     return (
       <div className="single-job-view section-content">
-        <JobDescription title={title} description={description} date={date} location={location} price={price}
-                        type={type}
-                        company={company} companyName={companyName}/>
+        <JobDescription {...jobDescription}/>
         {
           user.type === "photographer" ?
             <OpenSingleJobPhotographer userApplied={userApplied}
@@ -158,8 +155,10 @@ class OpenSingleJobFetch extends React.Component {
             :
             <OpenSingleJobCompany appliedPhotographers={appliedPhotographers}
                                   jobDescription={jobDescription}
+                                  jobId={jobId}
                                   acceptedApplicant={acceptedApplicant}
                                   downPayment={downPayment}
+                                  {...this.props}
             />
         }
       </div>
