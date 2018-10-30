@@ -4,7 +4,7 @@ import LoadingPage from "../../../components/LoadingPage";
 import fire from "../../../config/Fire";
 
 // components
-import {GbCard50} from "../../../components/gbCard50";
+import MyJobsCategoryView from "../../../components/my-jobs/MyJobsCategoryView";
 
 export default class AppliedJobs extends Component {
   render() {
@@ -26,13 +26,11 @@ export default class AppliedJobs extends Component {
 class AppliedJobsFetch extends Component {
   state = {
     loadedDb: false,
-    jobList: [],
     appliedJobs: [],
     acceptedJobs: [],
     declinedJobs: [],
     finishedJobs: []
   };
-
   database = fire.database().ref();
 
   componentDidMount() {
@@ -45,6 +43,7 @@ class AppliedJobsFetch extends Component {
   fetchJobs() {
     const {user} = this.props;
     let jobs = [];
+
     this.database
       .child("photographer")
       .child(user.uid)
@@ -52,34 +51,28 @@ class AppliedJobsFetch extends Component {
       .once("value", snap => {
         snap.forEach(job => {
           this.database.child("requests").child(job.val().jobbId).once("value", jobRequest => {
-            jobs.push(jobRequest.val());
+            jobs.push({...jobRequest.val(), statusPhotographer: job.val().status});
           })
             .then(() => {
-              this.setState({jobList: jobs});
+              this.setState({
+                appliedJobs: jobs.filter(job => job.statusPhotographer === "applied"),
+                acceptedJobs: jobs.filter(job => job.statusPhotographer === "accepted"),
+                declinedJobs: jobs.filter(job => job.statusPhotographer === "declined"),
+                finishedJobs: jobs.filter(job => job.statusPhotographer === "finished")
+              });
             });
         });
       });
   }
 
   render() {
-    const {jobList} = this.state;
+    const {appliedJobs, acceptedJobs, declinedJobs, finishedJobs} = this.state;
     return (
-      <div>
-        {jobList.map(job => (
-          <GbCard50
-            key={job.jobbId}
-            cardLink={`${job.status === "open" ? "open" : "progress"}-job/${job.jobbId}`}
-            type="half-left"
-            source={{
-              txt: job.companyName,
-              link: `/profile/${job.company}`
-            }}
-            postedTime={new Date(job.date).toLocaleDateString("en-US")}
-            category={job.type}
-          >
-            {job.title}
-          </GbCard50>
-        ))}
+      <div className="my-jobs-container">
+        <MyJobsCategoryView categoryTitle="Applied" jobs={appliedJobs}/>
+        <MyJobsCategoryView categoryTitle="Accepted" jobs={acceptedJobs}/>
+        <MyJobsCategoryView categoryTitle="Declined" jobs={declinedJobs}/>
+        <MyJobsCategoryView categoryTitle="Finished" jobs={finishedJobs}/>
       </div>
     );
   }
