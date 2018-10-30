@@ -60,6 +60,10 @@ const NavigationFooterWrapper = WrappedComponent => {
               txt: "Dashboard",
               link: "dashboard"
             },
+            {
+              txt: "Edit profile",
+              link: "ProfileEdit"
+            },
             ...specificLinks,
             { txt: "Sign out", clickHandler: this.logout }
           ]

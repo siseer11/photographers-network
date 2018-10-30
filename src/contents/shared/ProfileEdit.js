@@ -1,106 +1,100 @@
-import React from 'react';
-import { Component } from 'react';
-import fire from '../../config/Fire';
-import { ProfileEditViewWithNav } from './ProfileEditView';
-import firebase from 'firebase';
+import React from "react";
+import fire from "../../config/Fire";
+import { ProfileEditViewWithNav } from "./ProfileEditView";
+import firebase from "firebase";
 
-export class ProfileEdit extends Component {
-	state = {
-		 
-		  name: this.props.user.displayName,
-		  email: this.props.user.email,
-		  type: this.props.user.type,
-		  location: this.props.user.location,
-		  photoURL: this.props.user.photoURL,
-		}
-	  
-	database = fire.database().ref();
+export class ProfileEdit extends React.Component {
+  state = {
+    name: this.props.user.displayName,
+    location: "",
+    photoURL: this.props.user.photoURL
+  };
+  /**
+   * Updates state to the current value of a certain target.
+   * @param e
+   */
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-	/**
-		* Updates state to the current value of a certain target.
-		* @param e
-		*/
-		handleChange = e => {
-			this.setState({ [e.target.name]: e.target.value });
-		};
+  /**
+   * Registers the user as photographer or company.
+   * @param e
+   */
 
-	/**
-		* Registers the user as photographer or company.
-		*
-		* @param e
-		*/
+  updateUser = e => {
+    e.preventDefault();
+    let { name, location, photoURL } = this.state;
+    const database = fire.database().ref();
+    const { user, updateUserInfo } = this.props;
 
-	updateUser = (e) => {
-		e.preventDefault();
-		let { name, email, type, location, photoURL } = this.state;
-		const { user, updateUserInfo } = this.props;
+    if (name !== "" && location !== "" && photoURL !== "") {
+      // 1. Update
+      firebase
+        .auth()
+        .currentUser.updateProfile({
+          displayName: name,
+          photoURL: photoURL
+        })
+        .then(() => {
+          if (user.location !== location && location !== "") {
+            database
+              .child(`locations/${user.location}/${user.type}/${user.uid}`)
+              .remove();
 
-		if (name !== "" && location !== "" && photoURL !== "") {
+            database
+              .child(`locations/${location}/${user.type}/${user.uid}`)
+              .set({
+                displayName: name,
+                photoURL: photoURL
+              });
+          }
+        })
+        .then(() => {
+          database
+            .child("users")
+            .child(user.uid)
+            .update({
+              location: location,
+              displayName: name,
+              photoURL: photoURL
+            });
+        })
+        .then(() => {
+          database
+            .child(user.type)
+            .child(user.uid)
+            .update({
+              location: location
+            });
+        })
+        .then(() => {
+          this.props.history.replace("/dashboard");
+          updateUserInfo({
+            location: location,
+            displayName: name,
+            photoURL: photoURL
+          });
+        });
+    } else {
+      console.log("Please fill in the all input fields");
+    }
+  };
 
-		firebase.auth().currentUser.updateProfile(
-			{
+  render() {
+    const { name, location } = this.state;
+    const { user, loading } = this.props;
 
-				displayName: name,
-				photoURL: photoURL
-			}
-		)
-
-			.then(() => {
-
-				if(user.location !== location && location !=="") {
-					this.database.child("locations").child(user.location).child(user.type).child(user.uid).remove();
-					
-					
-					this.database.child("locations").child(location).child(user.type).child(user.uid).update({
-						displayName: name,
-						photoURL: photoURL
-					});
-				}
-
-			})
-
-			.then(() => {
-				this.database.child("users").child(user.uid).update({
-					type: type,
-					email: email,
-					location: location,
-					displayName: name,
-					photoURL: photoURL
-				});
-
-			})
-
-			.then(() => {
-				this.database.child(user.type).child(user.uid).update({
-					email: email,
-					location: location,
-				});
-			})
-
-			.then(() => {
-				this.props.history.replace("/dashboard");
-				updateUserInfo({ type: type,
-					email: email,
-					location: location,
-					displayName: name,
-					photoURL: photoURL });
-			  })
-	
-		}
-		else {
-			console.log("Please fill in the all input fields");
-		}
-	};
-
-	render() {
-		const { name, location, type } = this.state;
-		const { user } = this.props;
-
-		return (
-				<ProfileEditViewWithNav updateUserHandler={this.updateUser} {...this.props} name={name} changeHandler={this.handleChange} location={location}
-				 type={type} user={user} photoURL= {this.state.photoURL}
-			/>
-		);
-	}
+    return (
+      <ProfileEditViewWithNav
+        updateUserHandler={this.updateUser}
+        {...this.props}
+        name={name}
+        changeHandler={this.handleChange}
+        location={location}
+        user={user}
+        photoURL={this.state.photoURL}
+      />
+    );
+  }
 }
-

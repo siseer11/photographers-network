@@ -1,9 +1,10 @@
 // dependencies
 import React from "react";
+import WithModal from "../../RenderProp/WithModal";
 
 // components
-import {GbCard50} from '../gbCard50';
-import {ArrowDown} from "../svg/ArrowDown";
+import { GbCard50 } from "../gbCard50";
+import { ArrowDown } from "../svg/ArrowDown";
 
 export default class MyJobsCategoryView extends React.Component {
   state = {
@@ -53,3 +54,4 @@ export default class MyJobsCategoryView extends React.Component {
     );
   }
 }
+

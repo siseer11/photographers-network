@@ -44,7 +44,7 @@ export default class WithModal extends React.Component {
   render() {
     return (
       <div className={this.props.className} onClick={this.modalHandler}>
-        {this.props.children(this.state)}
+        {this.props.children({ ...this.state, ...this.props })}
       </div>
     );
   }

@@ -9,16 +9,16 @@ import SearchPhotographer from "../contents/company/SearchPhotographer";
 import CreateJobb from "../contents/company/CreateJobb";
 import MyJobOffers from "../contents/company/my-jobs/MyJobOffers";
 import { JobsWithFooter } from "../contents/shared/Jobs";
-import { ProfileEdit } from '../contents/shared/ProfileEdit';
-import ErrorPage from '../contents/shared/ErrorPage';
+import { ProfileEdit } from "../contents/shared/ProfileEdit";
+import ErrorPage from "../contents/shared/ErrorPage";
 import { PrivateJobRequest } from "../components/PrivateJobRequests";
 import { DeclinedPrivateJob } from "../components/DeclinedPrivateJob";
-import SubmitWork from '../contents/photographer/single-job/SubmitWork';
+import SubmitWork from "../contents/photographer/single-job/SubmitWork";
 import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
 import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
-//import SingleJob from '../contents/shared/old/SingleJob';
+import { WithLoading } from "../components/WithLoading";
 
-export default ({user, loading, setLoadingTrue, updateUserInfo}) => (
+export default ({ user, loading, setLoadingTrue, updateUserInfo }) => (
   <BrowserRouter>
     <Switch>
       <Route
@@ -63,13 +63,23 @@ export default ({user, loading, setLoadingTrue, updateUserInfo}) => (
         )}
       />
 
-      <Route exact path="/ProfileEdit" render={props => (
-        <ProfileEdit
-        {...props}
-        user={user}
-        updateUserInfo={updateUserInfo}
-      />)}/>
-      
+      <Route
+        exact
+        path="/ProfileEdit"
+        render={props => (
+          <WithLoading
+            component={
+              <ProfileEdit
+                {...props}
+                user={user}
+                updateUserInfo={updateUserInfo}
+              />
+            }
+            loading={loading}
+          />
+        )}
+      />
+
       <Route
         exact
         path="/profile/:uid"
@@ -99,42 +109,24 @@ export default ({user, loading, setLoadingTrue, updateUserInfo}) => (
       />
       <Route
         exact
-        path='/job/:jobid'
-        render={
-          props => (
-            <SingleJob
-              {...props}
-              user={user}
-              loading={loading}
-            />
-          )
-        }/>
+        path="/open-job/:jobid"
+        render={props => (
+          <OpenSingleJob {...props} user={user} loading={loading} />
+        )}
+      />
       <Route
         exact
-        path='/open-job/:jobid'
-        render={
-          props => (
-            <OpenSingleJob
-              {...props}
-              user={user}
-              loading={loading}
-            />
-          )
-        }/>
+        path="/progress-job/:jobid"
+        render={props => (
+          <ProgressSingleJob {...props} user={user} loading={loading} />
+        )}
+      />
       <Route
         exact
-        path='/progress-job/:jobid'
-        render={
-          props => (
-            <ProgressSingleJob
-              {...props}
-              user={user}
-              loading={loading}
-            />
-          )
-        }/>
-      <Route exact path='/submit-work/:jobid' render={props =>
-        <SubmitWork {...props} user={user} loading={loading}/>}
+        path="/submit-work/:jobid"
+        render={props => (
+          <SubmitWork {...props} user={user} loading={loading} />
+        )}
       />
       <Route
         exact
@@ -158,15 +150,13 @@ export default ({user, loading, setLoadingTrue, updateUserInfo}) => (
         )}
       />
 
-      <Route exact path='/jobs' render={
-					props=>(
-						<JobsWithFooter
-						{...props}
-						user={user}
-						loading={loading}
-						/>
-					)
-				}/>
+      <Route
+        exact
+        path="/jobs"
+        render={props => (
+          <JobsWithFooter {...props} user={user} loading={loading} />
+        )}
+      />
       <Redirect to="/home" />
     </Switch>
   </BrowserRouter>
