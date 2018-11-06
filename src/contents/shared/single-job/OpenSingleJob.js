@@ -97,6 +97,7 @@ class OpenSingleJobFetch extends React.Component {
         .child("applied-jobs")
         .child(this.state.jobId)
         .once("value", snap => {
+          // if job id does not exist, the photographer has been declined
           this.setState({isDeclinedPhotographer: snap.exists()});
         });
     }

@@ -29,13 +29,21 @@ class Submitwork extends Component {
       });
   }
 
+  componentDidMount() {
+    window.onbeforeunload = this.removeImages;
+  }
+
   //TODO: delete photos, if user refreshes and does not submit photos
   //TODO: if user refreshes and already submitted photos, he must not be able to submit new ones
 
   componentWillUnmount() {
-    console.log("hi");
-    if (!this.state.submitted) {
-      this.state.images.forEach(image => {
+    this.removeImages();
+  }
+
+  removeImages() {
+    const {submitted, images} = this.state;
+    if (!submitted) {
+      images.forEach(image => {
         this.removeFromDatabaseAndStorage(image.id)
           .then(() => console.log("image removed!"));
       });
@@ -43,7 +51,7 @@ class Submitwork extends Component {
   }
 
   showPhotos = (images) => {
-    this.setState(prevState => ({images: [...prevState.images, ...images]}), () => console.log(this.state.images));
+    this.setState(prevState => ({images: [...prevState.images, ...images]}));
   };
 
   removeImage = id => {
