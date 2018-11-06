@@ -1,9 +1,18 @@
 import React from "react";
 import fire from "../../../config/Fire";
 import {OpenSingleJobViewPhotographer} from "../../../components/single-job/open/OpenSingleJobViewPhotographer";
+import {connect} from "react-redux";
+import {addNewNotification} from "../../../redux/actions/notifications-action";
 
+const mapStateToProps = state => ({
 
-export default class OpenSingleJobPhotographer extends React.Component {
+});
+
+const mapDispatchToProps = dispatch => ({
+  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid))
+});
+
+class OpenSingleJobPhotographer extends React.Component {
   state = {
     userApplied: this.props.userApplied,
     isDeclinedPhotographer: this.props.isDeclinedPhotographer
@@ -40,19 +49,14 @@ export default class OpenSingleJobPhotographer extends React.Component {
       .then(() => {
         this.setState({userApplied: true});
         // creates notification for company
-        this.database
-          .ref("users")
-          .child(jobDescription.companyId)
-          .child("notifications")
-          .push()
-          .set({
-            title: `${user.displayName} applied for your job request "${
-              jobDescription.title
-              }".`,
-            link: `/open-job/${jobId}`,
-            read: false,
-            time: new Date().getTime()
-          });
+        this.props.addNotification({
+          title: `${user.displayName} applied for your job request "${
+            jobDescription.title
+            }".`,
+          link: `/open-job/${jobId}`,
+          read: false,
+          time: new Date().getTime()
+        }, jobDescription.companyId);
       });
   };
 
@@ -70,3 +74,5 @@ export default class OpenSingleJobPhotographer extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(OpenSingleJobPhotographer);

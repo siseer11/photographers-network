@@ -10,6 +10,16 @@ import LoadingPage from "../../../components/LoadingPage";
 import PhotoUpload from "../../shared/PhotoUpload";
 import WithModal from "../../../RenderProp/WithModal";
 import {Button} from "../../../components/Button";
+import {connect} from "react-redux";
+import {addNewNotification} from "../../../redux/actions/notifications-action";
+
+const mapStateToProps = state => ({
+
+});
+
+const mapDispatchToProps = dispatch => ({
+  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid))
+});
 
 class Submitwork extends Component {
   state = {
@@ -77,18 +87,14 @@ class Submitwork extends Component {
   };
 
   addNotification(jobDescription, user, jobId) {
-    this.database
-      .ref("users").child(jobDescription.companyId)
-      .child("notifications")
-      .push()
-      .set({
-        title: `${user.displayName} submitted his work for "${
-          jobDescription.title
-          }".`,
-        link: `/progress-job/${jobId}`,
-        read: false,
-        time: new Date().getTime()
-      });
+    this.props.addNotification({
+      title: `${user.displayName} submitted his work for "${
+        jobDescription.title
+        }".`,
+      link: `/progress-job/${jobId}`,
+      read: false,
+      time: new Date().getTime()
+    }, jobDescription.companyId);
   }
 
   render() {
@@ -139,4 +145,4 @@ class Submitwork extends Component {
 }
 
 const SubmitWork = NavFooterWrapper(Submitwork);
-export default SubmitWork;
+export default connect(mapStateToProps, mapDispatchToProps)(SubmitWork);

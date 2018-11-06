@@ -1,8 +1,13 @@
-import { USER_RELATED } from "../actions/first-action";
 
-export const user = (state = { name: "z" }, action) => {
+
+const initialState = {
+  uid: '',
+  displayName: ''
+};
+
+export const user = (state = initialState, action) => {
   switch (action.type) {
-    case USER_RELATED:
+    case "USER_RELATED":
       return state;
     default:
       return state;
