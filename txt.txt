@@ -1,0 +1,74 @@
+REDUX THUNK INFOS :
+
+- Redux Thunk middleware allows you to write action creators that return a function instead of an action. 
+  The thunk can be used to delay the dispatch of an action, or to dispatch only if a certain condition is met. 
+  The inner function receives the store methods dispatch and getState as parameters.
+
+
+
+
+A thunk is a function that wraps an expression to delay its evaluation.
+
+  // calculation of 1 + 2 is immediate
+  // x === 3
+  let x = 1 + 2;
+
+  // calculation of 1 + 2 is delayed
+  // foo can be called later to perform the calculation
+  // foo is a thunk!
+  let foo = () => 1 + 2;
+  The term originated as a humorous past-tense version of "think".
+
+
+
+
+
+  store state = {
+   user : {
+    displayName : '',
+    email : '',
+    photoURL : '',
+    type : '',   
+   },
+   userNotifications : {
+    qweasd : {
+     id : qweasd, 
+    }....
+   },
+   allJobs : {
+    fetchedOnce : false,
+    data : {
+     dqwea : {
+      id: dqwea,
+      ...
+     }
+    }
+   },
+   visitedProfiles : {
+    wqeasd : {
+     id : wqeasd,
+     ...
+    }
+   },
+   appliedJobs : {
+    asdq : {
+     id : asdq,
+     ...
+    }
+   },
+   postedJobs : {
+    orq : {
+     id : orq , 
+     ...
+    }
+   },
+   visitedJobs : {
+    dqwz : {
+     id: dqwz,
+    }
+    ....
+   },
+   appLoading : true,
+  }
+
+  localstorage !
