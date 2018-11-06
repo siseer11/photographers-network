@@ -3,15 +3,18 @@ import fire from "./config/Fire";
 import { createStore, applyMiddleware, compose } from "redux";
 import thunkMiddleware from "redux-thunk";
 import MainReducer from "./redux/reducers";
+import { reactReduxFirebase, getFirebase } from 'react-redux-firebase';
 
 import "./style/gb-style.css";
 import "./style/photographer-style.css";
 import Routes from "./routes";
 
+//TODO: put store into an own file
 const store = createStore(
   MainReducer,
   compose(
     applyMiddleware(thunkMiddleware),
+    reactReduxFirebase(fire),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
@@ -35,7 +38,6 @@ class App extends Component {
    */
   authListener = () => {
     fire.auth().onAuthStateChanged(user => {
-      console.log(user);
       if (user) {
         this.getUserInfos(user.uid);
       } else {
