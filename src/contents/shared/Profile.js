@@ -1,9 +1,16 @@
 // dependencies
 import React, { Component } from "react";
 import fire from "../../config/Fire";
+import { Link } from "react-router-dom";
+
+// components
+import { ProfileCard } from "../../components/ProfileCard";
+import { LinkLists } from "../../components/LinkLists";
+
 
 // contents
-import { ProfileView } from "../../components/ProfileView";
+import { PhotographerContent } from "../photographer/PhotographerContent";
+import CompanyContent from "../company/CompanyContent";
 import LoadingPage from "../../components/LoadingPage";
 import NavFooterWrapper from "./NavFooterWrapper";
 
@@ -15,7 +22,7 @@ class Profile extends Component {
     ],
     uid: this.props.match.params.uid || "",
     fetchedUserData: false,
-    thisProfileData: null
+    thisProfileData: null,
   };
   database = fire.database().ref();
 
@@ -53,7 +60,6 @@ class Profile extends Component {
   render() {
     const { user, loading } = this.props;
     const { fetchedUserData, thisProfileData, uid, pageLinks } = this.state; //change currUser to thisProfileData
-
     let otherUser = true;
     let loaded = false;
 
@@ -78,15 +84,52 @@ class Profile extends Component {
               uid={uid}
               siggnedInUser={user}
             />
+
           ) : (
-            <h2> NO SUCH PROFILE </h2>
-          )
+              <h2> NO SUCH PROFILE </h2>
+            )
         ) : (
-          <LoadingPage />
-        )}
+            <LoadingPage />
+          )}
       </React.Fragment>
     );
   }
 }
 
+const ProfileView = ({
+  isOtherUser,
+  thisProfileData,
+  pageLinks,
+  siggnedInUser
+
+}) => (
+    <div>
+      <div className="profile">
+        <ProfileCard {...thisProfileData} siggnedInUser={siggnedInUser}>
+          {thisProfileData.displayName}
+        </ProfileCard>
+        <div className="profile-content">
+          <LinkLists
+            links={pageLinks}
+            txtClasses="gb-text-black-opacity-30 gb-subtitle-medium"
+            liClasses="footer-nav-item"
+          />
+          <Link to="/ProfileEdit" className="gb-btn gb-btn-medium gb-btn-primary">
+            Edit Profile
+         </Link>
+        </div>
+
+        {thisProfileData.type === "photographer" ? (
+          <PhotographerContent
+            photographerData={thisProfileData}
+            isOtherUser={isOtherUser}
+          />
+        ) : (
+            <CompanyContent isOtherUser={isOtherUser} />
+          )}
+
+      </div>
+
+    </div>
+  );
 export const ProfileWithNav = NavFooterWrapper(Profile);

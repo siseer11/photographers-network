@@ -14,18 +14,11 @@ import NoPremiumUser from "./NoPremiumUser";
 import Portofolio from "./Portofolio";
 import HireableSwitch from "../../contents/photographer/HireableSwtich";
 
-const DashboardView = ({
-  user,
-  type,
-  linkHandler,
-  activeComponent,
-  headerLinks,
-  loading,
-  updateUserInfo
-}) => {
-  let currentComponent = "";
+const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, loading , updateUserInfo}) => {
 
-  //TODO: maybe find a better solution than the switch?
+  let currentComponent = '';
+
+  //TODO: maybe find a better solultion than the switch?
   switch (activeComponent) {
     case "Home":
       currentComponent =
