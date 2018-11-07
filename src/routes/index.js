@@ -1,7 +1,5 @@
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import { Provider } from "react-redux";
-
 import Dashboard from "../contents/shared/Dashboard";
 import SignIn from "../contents/SignIn";
 import Home from "../contents/Home";
@@ -19,8 +17,7 @@ import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
 import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
 import { WithLoading } from "../components/WithLoading";
 
-export default ({ user, loading, setLoadingTrue, updateUserInfo, store }) => (
-  <Provider store={store}>
+export default ({ user, loading, setLoadingTrue, updateUserInfo }) => (
     <BrowserRouter>
       <Switch>
         <Route
@@ -162,5 +159,4 @@ export default ({ user, loading, setLoadingTrue, updateUserInfo, store }) => (
         <Redirect to="/home" />
       </Switch>
     </BrowserRouter>
-  </Provider>
 );

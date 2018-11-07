@@ -36,9 +36,6 @@ export const addNotification = notification => ({
 export const fetchNotifications = () => {
   return (dispatch, getState) => {
     let state = getState();
-    if(!state.firebase.auth.uid) {
-      return fetchNotifications();
-    }
     dispatch(notificationsFetchStart());
     return database
       .ref("users")

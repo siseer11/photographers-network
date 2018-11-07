@@ -1,70 +1,37 @@
 import React from "react";
-import fire from "../../../config/Fire";
 import {OpenSingleJobViewPhotographer} from "../../../components/single-job/open/OpenSingleJobViewPhotographer";
 import {connect} from "react-redux";
 import {addNewNotification} from "../../../redux/actions/notifications-action";
-
-const mapStateToProps = state => ({
-
-});
+import {applyForJob} from "../../../redux/actions/single-job-action";
 
 const mapDispatchToProps = dispatch => ({
-  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid))
+  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid)),
+  applyForSingleJob: jobId => dispatch(applyForJob(jobId))
 });
 
 class OpenSingleJobPhotographer extends React.Component {
-  state = {
-    userApplied: this.props.userApplied,
-    isDeclinedPhotographer: this.props.isDeclinedPhotographer
-  };
-  database = fire.database();
-
-// ---------- PHOTOGRAPHERS METHODS ----------:
-
   /**
    * User applies for a job.
    */
   applyForJob = () => {
     const {user, jobId, jobDescription} = this.props;
-    this.database
-      .ref("requests")
-      .child(jobId)
-      .child("photographers-applied")
-      .child(user.uid)
-      .set({
-        email: user.email,
-        displayName: user.displayName
-      })
-      .then(() => {
-        this.database
-          .ref("photographer")
-          .child(user.uid)
-          .child("applied-jobs")
-          .child(jobId)
-          .set({
-            jobbId: jobId,
-            status: "applied"
-          });
-      })
-      .then(() => {
-        this.setState({userApplied: true});
-        // creates notification for company
-        this.props.addNotification({
-          title: `${user.displayName} applied for your job request "${
-            jobDescription.title
-            }".`,
-          link: `/open-job/${jobId}`,
-          read: false,
-          time: new Date().getTime()
-        }, jobDescription.companyId);
-      });
+    this.props.applyForSingleJob(jobId);
+    const notification = {
+      title: `${user.displayName} applied for your job request "${
+        jobDescription.title
+        }".`,
+      link: `/open-job/${jobId}`,
+      read: false,
+      time: new Date().getTime()
+    };
+    this.props.addNotification(notification, jobDescription.companyId);
   };
 
   render() {
     const {
       userApplied,
       isDeclinedPhotographer
-    } = this.state;
+    } = this.props;
 
     return (
       <OpenSingleJobViewPhotographer userApplied={userApplied}
@@ -75,4 +42,4 @@ class OpenSingleJobPhotographer extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OpenSingleJobPhotographer);
+export default connect(null, mapDispatchToProps)(OpenSingleJobPhotographer);

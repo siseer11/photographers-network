@@ -30,12 +30,11 @@ class GbNavBar extends React.Component {
   database = fire.database();
 
   componentDidMount() {
-    if(!this.props.fetchedNotifications) {
+    if(!this.props.fetchedNotifications && this.props.auth.uid) {
       this.props.fetchNotifications();
       this.props.childAddedListener();
     }
     window.addEventListener("scroll", this.stickyNav);
-    console.log(this.props.auth);
   }
 
   componentWillUnmount() {
