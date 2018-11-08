@@ -1,11 +1,11 @@
 import React from "react";
 import LoadingPage from "../../../components/LoadingPage";
-import {JobDescription} from "../../../components/single-job/JobDescription";
+import { JobDescription } from "../../../components/single-job/JobDescription";
 import NavFooterWrapper from "../NavFooterWrapper";
 import ProgressSingleJobCompany from "../../company/single-job/ProgressSingleJobCompany";
 import ProgressSingleJobPhotographer from "../../photographer/single-job/ProgressSingleJobPhotographer";
-import {connect} from "react-redux";
-import {fetchJobInfo} from "../../../redux/actions/single-job-action";
+import { connect } from "react-redux";
+import { fetchJobInfo } from "../../../redux/actions/single-job-action";
 
 const mapStateToProps = state => ({
   jobLoading: state.singleJob.jobLoading,
@@ -26,7 +26,7 @@ class ProgressSingleJobFetch extends React.Component {
   }
 
   setAcceptedWork = () => {
-    this.setState({acceptedWork: true});
+    this.setState({ acceptedWork: true });
   };
 
   render() {
@@ -39,40 +39,43 @@ class ProgressSingleJobFetch extends React.Component {
       acceptedWork
     } = this.props;
 
-    if (jobLoading) return <LoadingPage/>;
+    if (jobLoading) return <LoadingPage />;
 
-    const {user} = this.props;
+    const { user } = this.props;
 
     return (
       <div className="single-job-view section-content">
-        {
-          jobExists ?
-            <React.Fragment>
-              <JobDescription {...jobDescription}/>
-              {
-                user.type === "photographer" ?
-                  <ProgressSingleJobPhotographer submittedWork={submittedWork}
-                                                 acceptedWork={acceptedWork}
-                                                 jobId={jobId}
-                  />
-                  :
-                  <ProgressSingleJobCompany acceptedApplicant={jobDescription.phootgrapher}
-                                            submittedWork={submittedWork}
-                                            acceptedWork={acceptedWork}
-                                            jobId={jobId}
-                                            jobDescription={jobDescription}
-                                            user={user}
-                                            setAcceptedWork={this.setAcceptedWork}
-                  />
-              }
-            </React.Fragment> :
-            <div>Job does not seem to exist anymore.</div>
-        }
+        {jobExists ? (
+          <React.Fragment>
+            <JobDescription {...jobDescription} />
+            {user.type === "photographer" ? (
+              <ProgressSingleJobPhotographer
+                submittedWork={submittedWork}
+                acceptedWork={acceptedWork}
+                jobId={jobId}
+              />
+            ) : (
+              <ProgressSingleJobCompany
+                acceptedApplicant={jobDescription.phootgrapher}
+                submittedWork={submittedWork}
+                acceptedWork={acceptedWork}
+                jobId={jobId}
+                jobDescription={jobDescription}
+                user={user}
+                setAcceptedWork={this.setAcceptedWork}
+              />
+            )}
+          </React.Fragment>
+        ) : (
+          <div>Job does not seem to exist anymore.</div>
+        )}
       </div>
-
     );
   }
 }
 
 const ProgressSingleJob = NavFooterWrapper(ProgressSingleJobFetch);
-export default connect(mapStateToProps, mapDispatchToProps)(ProgressSingleJob);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ProgressSingleJob);

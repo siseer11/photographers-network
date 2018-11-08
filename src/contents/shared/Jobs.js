@@ -74,7 +74,7 @@ class Jobs extends React.Component {
     let { searchValue, locationsFilter, typesFilter } = this.state;
 
     const { jobsLoading, error, jobsData, locations, types } = this.props;
-    console.log(this.props);
+
     let jobsList = this.filterJobs(
       [...jobsData],
       searchValue,
@@ -122,12 +122,10 @@ const mapDispatchToProps = dispatch => ({
   fetchJobs: () => dispatch(fetchJobs())
 });
 
-Jobs = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Jobs);
-
-export const JobsWithFooter = NavFooterWrapper(Jobs);
 
 /*
 const searchQuerry = queryString.parse(this.props.location.search);

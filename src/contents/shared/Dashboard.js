@@ -1,13 +1,11 @@
 // dependencies
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import LoadingPage from "../../components/LoadingPage";
-import fire from "../../config/Fire";
+import { connect } from "react-redux";
 
 // components
-import { DashboardViewWithNav } from "../../components/dashboard/DashboardView";
+import { DashboardView } from "../../components/dashboard/DashboardView";
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
   state = {
     photographer: {
       headerLinks: [
@@ -34,11 +32,9 @@ export default class Dashboard extends Component {
       ]
     }
   };
-  database = fire.database().ref();
 
   /**
    * Sets the clicked element to active.
-   *
    * @param name
    * @param type
    */
@@ -52,41 +48,32 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    const { user, loading, updateUserInfo } = this.props;
+    const { userData: user, loading, updateUserInfo } = this.props;
     let activeType = "";
     let activeComponent = "";
-    if (!loading && user) {
-      activeType = this.state[user.type];
-      activeType.headerLinks.map(link => {
-        if (link.active) activeComponent = link.name;
-      });
-    } // either company or photographer
 
-    // checks, if there is already a response of the database
-    // if not, shows the loading page
-    // if yes, checks, if there is actually a user (to avoid to get to the dashboard
-    // by just typing dashboard into the url), if there's none, redirects to home
+    activeType = this.state[user.type];
+    activeType.headerLinks.map(link => {
+      if (link.active) activeComponent = link.name;
+    });
+
     return (
-      <React.Fragment>
-        {loading === false ? (
-          user ? (
-            <DashboardViewWithNav
-              type={user.type}
-              user={user}
-              {...this.props}
-              linkHandler={this.setComponentToShow}
-              headerLinks={activeType.headerLinks}
-              activeComponent={activeComponent}
-              loading={loading}
-              updateUserInfo={updateUserInfo}
-            />
-          ) : (
-            <Redirect to="/" />
-          )
-        ) : (
-          <LoadingPage />
-        )}
-      </React.Fragment>
+      <DashboardView
+        type={user.type}
+        user={user}
+        {...this.props}
+        linkHandler={this.setComponentToShow}
+        headerLinks={activeType.headerLinks}
+        activeComponent={activeComponent}
+        loading={false}
+        updateUserInfo={updateUserInfo}
+      />
     );
   }
 }
+
+const mapStateToProps = state => ({
+  userData: state.user.userData
+});
+
+export default connect(mapStateToProps)(Dashboard);

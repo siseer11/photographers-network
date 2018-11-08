@@ -4,9 +4,7 @@ import { PropTypes } from "prop-types";
 
 export default class AvatarInput extends React.Component {
   static propTypes = {
-    uid: PropTypes.string.isRequired,
-    updateUserInfo: PropTypes.func.isRequired,
-    userAvatar: PropTypes.string.isRequired
+    uid: PropTypes.string.isRequired
   };
 
   updateUserProfileInDb = (downloadURL, userId, updateUserInfo) => {
