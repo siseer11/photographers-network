@@ -5,6 +5,7 @@ export const JOBS_FETCH_START = "JOBS_FETCH_START";
 export const JOBS_FETCH_FINISHED = "JOBS_FETCH_FINISHED";
 export const JOBS_FETCH_ERROR = "JOBS_FETCH_ERROR";
 export const JOB_DELETED = "JOB_DELETED";
+export const PHOTOGRAPHER_JOBS_FINISHED = "PHOTOGRAPHER_JOBS_FINISHED";
 
 //ACTION CREATORS
 export const jobsFetchStart = () => ({
@@ -40,6 +41,18 @@ const populateFilters = (dispatch, jobsData, types = [], locations = []) => {
   dispatch(jobsFetchFinished(jobsData, types, locations));
 };
 
+const filterPhotographer = (dispatch, jobData, uid) => {
+  console.log(jobData);
+  const jobsArray = Object.values(jobData);
+  const appliedJobs = jobsArray.map(job => {
+    const photographersObj = job["photographers-applied"]
+      ? job["photographers-applied"]
+      : [];
+    if (photographersObj.hasOwnProperty(uid)) return job;
+  });
+  dispatch({type: PHOTOGRAPHER_JOBS_FINISHED, jobs: appliedJobs}); //TODO
+};
+
 export const fetchJobs = (jobId = "") => {
   return (dispatch, getState) => {
     dispatch(jobsFetchStart());
@@ -55,6 +68,7 @@ export const fetchJobs = (jobId = "") => {
           const jobsData = snap.val();
           if (!jobId) {
             populateFilters(dispatch, jobsData);
+            filterPhotographer(dispatch, jobsData, getState().firebase.auth.uid);
           } else {
             dispatch(jobsFetchFinished(jobsData));
           }
@@ -71,7 +85,7 @@ export const fetchJobs = (jobId = "") => {
     reqRef.on("child_added", snap => {
       if (!getState().allJobs.fetchedOnce) return;
       let jobData = snap.val();
-      jobData = { [jobData.jobbId]: jobData };
+      jobData = {[jobData.jobbId]: jobData};
 
       dispatch(jobsFetchFinished(jobData));
     });
@@ -82,7 +96,7 @@ export const fetchJobs = (jobId = "") => {
 
     reqRef.on("child_changed", snap => {
       let jobData = snap.val();
-      jobData = { [jobData.jobbId]: jobData };
+      jobData = {[jobData.jobbId]: jobData};
       dispatch(jobsFetchFinished(jobData));
     });
   };

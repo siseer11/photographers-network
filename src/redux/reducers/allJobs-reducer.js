@@ -2,7 +2,7 @@ import {
   JOBS_FETCH_ERROR,
   JOBS_FETCH_FINISHED,
   JOBS_FETCH_START,
-  JOB_DELETED
+  JOB_DELETED, PHOTOGRAPHER_JOBS_FINISHED
 } from "../actions/jobs-action";
 
 export const allJobs = (
@@ -11,23 +11,27 @@ export const allJobs = (
     jobsLoading: true,
     fetchedOnce: false,
     availableJobLocations: [],
-    availableJobTypes: []
+    availableJobTypes: [],
+    appliedJobs: [],
+    acceptedJobs: [],
+    declinedJobs: [],
+    finishedJobs: []
   },
   action
 ) => {
   switch (action.type) {
-    case "JOBS_FETCH_ERROR":
+    case JOBS_FETCH_ERROR:
       return {
         ...state,
         error: action.error,
         jobsLoading: false
       };
-    case "JOBS_FETCH_START":
+    case JOBS_FETCH_START:
       return {
         ...state,
         jobsLoading: true
       };
-    case "JOBS_FETCH_FINISHED":
+    case JOBS_FETCH_FINISHED:
       return {
         ...state,
         fetchedOnce: true,
@@ -43,7 +47,7 @@ export const allJobs = (
         ],
         availableJobLocations: action.availableJobLocations
       };
-    case "JOB_DELETED":
+    case JOB_DELETED:
       const jobId = action.jobId;
       return {
         ...state,
@@ -54,6 +58,15 @@ export const allJobs = (
             deleted: true
           }
         }
+      };
+    case PHOTOGRAPHER_JOBS_FINISHED:
+      const {jobs} = action;
+      return {
+        ...state,
+        appliedJobs: jobs.filter(job => job.statusPhotographer === "applied"),
+        acceptedJobs: jobs.filter(job => job.statusPhotographer === "accepted"),
+        declinedJobs: jobs.filter(job => job.statusPhotographer === "declined"),
+        finishedJobs: jobs.filter(job => job.statusPhotographer === "finished")
       };
     default:
       return state;

@@ -1,29 +1,20 @@
 // dependencies
 import React, {Component} from "react";
-import LoadingPage from "../../../components/LoadingPage";
 import fire from "../../../config/Fire";
+import {connect} from "react-redux";
 
 // components
 import MyJobsCategoryView from "../../../components/my-jobs/MyJobsCategoryView";
+import {fetchJobs} from "../../../redux/actions/jobs-action";
 
-export default class AppliedJobs extends Component {
-  render() {
-    return (
-      <React.Fragment>
-        {this.props.loading === false ? (
-          <AppliedJobsFetch {...this.props} />
-        ) : (
-          <LoadingPage/>
-        )}
-      </React.Fragment>
-    );
-  }
-}
+const mapStateToProps = state => ({
+});
 
-/**
- * Helper component because we need user information to fetch data from the database.
- */
-class AppliedJobsFetch extends Component {
+const mapDispatchToProps = dispatch => ({
+  fetchJobs: () => dispatch(fetchJobs())
+});
+
+class AppliedJobs extends Component {
   state = {
     loadedDb: false,
     appliedJobs: [],
@@ -34,7 +25,7 @@ class AppliedJobsFetch extends Component {
   database = fire.database().ref();
 
   componentDidMount() {
-    this.fetchJobs();
+    this.props.fetchJobs();
   }
 
   /**
@@ -77,3 +68,5 @@ class AppliedJobsFetch extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(AppliedJobs);
