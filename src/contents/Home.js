@@ -4,16 +4,18 @@ import { SearchSVG } from '../components/svg/SearchSVG';
 import { DoneSVG } from '../components/svg/DoneSVG';
 import { CardSVG } from '../components/svg/CardSVG';
 import NavFooterWrapper from './shared/NavFooterWrapper';
+import {connect} from "react-redux";
+import {Redirect} from "react-router-dom";
+
+const mapStateToProps = state => ({
+  auth: state.firebase.auth,
+});
 
 /* rightLinks = [{txt : 'home' , link : '#'}] loggedIn={true/false} userImageUrl='link' profileLink='#' */
 class Homse extends Component {
 	state = {
 		showModal: false
 	};
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.user) this.props.history.replace('/dashboard');
-  }
 
 	showThisModal = (modalName) => {
 		this.setState({
@@ -22,6 +24,7 @@ class Homse extends Component {
 	};
 
 	render() {
+	  if(this.props.auth.uid) return <Redirect to='/dashboard'/>;
 		return (
 			<div className="home-page">
 				<div className='header'>
@@ -71,4 +74,4 @@ class Homse extends Component {
 }
 
 const Home = NavFooterWrapper(Homse);
-export default Home;
+export default connect(mapStateToProps)(Home);

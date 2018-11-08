@@ -2,8 +2,18 @@ import React from "react";
 import fire from "../../../config/Fire";
 import {OpenSingleJobViewCompany} from "../../../components/single-job/open/OpenSingleJobViewCompany";
 import {DeleteModal} from "../../../components/single-job/DeleteModal";
+import {connect} from "react-redux";
+import {addNewNotification} from "../../../redux/actions/notifications-action";
 
-export default class OpenSingleJobCompany extends React.Component {
+const mapStateToProps = state => ({
+
+});
+
+const mapDispatchToProps = dispatch => ({
+  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid))
+});
+
+class OpenSingleJobCompany extends React.Component {
   state = {
     appliedPhotographers: this.props.appliedPhotographers,
     acceptedApplicant: this.props.acceptedApplicant,
@@ -62,20 +72,14 @@ export default class OpenSingleJobCompany extends React.Component {
     this.database.ref("photographer").child(uid).child("applied-jobs").child(jobId).update({
       status: "declined"
     });
-    // add notification
-    this.database
-      .ref("users")
-      .child(uid)
-      .child("notifications")
-      .push()
-      .set({
-        title: `${
-          jobDescription.companyName
-          } has declined your application for ${jobDescription.title}.`,
-        link: `/open-job/${jobId}`,
-        read: false,
-        time: new Date().getTime()
-      });
+    this.props.addNotification({
+      title: `${
+        jobDescription.companyName
+        } has declined your application for ${jobDescription.title}.`,
+      link: `/open-job/${jobId}`,
+      read: false,
+      time: new Date().getTime()
+    }, uid);
   };
 
   /**
@@ -111,14 +115,13 @@ export default class OpenSingleJobCompany extends React.Component {
         this.database.ref("photographer").child(acceptedApplicant.uid).child("applied-jobs").child(jobId).update({
           status: "accepted"
         }).then(()=> {
-          this.database.ref("users").child(acceptedApplicant.uid).child("notifications")
-            .push().set({
+          this.props.addNotification({
             title: `${jobDescription.companyName} has accepted you to execute the job request "${jobDescription.title}".`,
             link: `/progress-job/${jobId}`,
             read: false,
             time: new Date().getTime()
-          })
-            .then(() => this.props.history.replace(`/progress-job/${jobId}`));
+          }, acceptedApplicant.uid);
+          this.props.history.replace(`/progress-job/${jobId}`);
         });
       })
       .catch(err => console.log(err));
@@ -153,3 +156,5 @@ export default class OpenSingleJobCompany extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(OpenSingleJobCompany);

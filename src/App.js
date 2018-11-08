@@ -1,20 +1,9 @@
 import React, { Component } from "react";
 import fire from "./config/Fire";
-import { createStore, applyMiddleware, compose } from "redux";
-import thunkMiddleware from "redux-thunk";
-import MainReducer from "./redux/reducers";
 
 import "./style/gb-style.css";
 import "./style/photographer-style.css";
 import Routes from "./routes";
-
-const store = createStore(
-  MainReducer,
-  compose(
-    applyMiddleware(thunkMiddleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  )
-);
 
 class App extends Component {
   state = {
@@ -35,7 +24,6 @@ class App extends Component {
    */
   authListener = () => {
     fire.auth().onAuthStateChanged(user => {
-      console.log(user);
       if (user) {
         this.getUserInfos(user.uid);
       } else {
@@ -94,7 +82,6 @@ class App extends Component {
         user={user}
         loading={loading}
         setLoadingTrue={this.setLoadingTrue}
-        store={store}
       />
     );
   }
