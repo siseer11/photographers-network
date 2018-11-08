@@ -1,4 +1,5 @@
 import React from "react";
+import {Redirect} from "react-router-dom";
 import LoadingPage from "../../../components/LoadingPage";
 import OpenSingleJobPhotographer from "../../photographer/single-job/OpenSingleJobPhotographer";
 import OpenSingleJobCompany from "../../company/single-job/OpenSingleJobCompany";
@@ -27,7 +28,6 @@ class OpenSingleJobFetch extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
     this.props.fetchJobInfo(this.props.match.params.jobid, "photographer");
   }
 
@@ -45,9 +45,10 @@ class OpenSingleJobFetch extends React.Component {
     } = this.props;
 
     if (jobLoading) return <LoadingPage/>;
+    if (jobDescription.status !== "open") return <Redirect to={`/progress-job/${this.props.match.params.jobid}`}/>;
 
-    const type = "photographer";
     const {user} = this.props;
+    const type = user ? user.type : "photographer";
 
     return (
       <div className="single-job-view section-content">
@@ -60,6 +61,8 @@ class OpenSingleJobFetch extends React.Component {
                   <OpenSingleJobPhotographer userApplied={userApplied}
                                              isDeclinedPhotographer={isDeclinedPhotographer}
                                              jobId={jobId}
+                                             user={user}
+                                             jobDescription={jobDescription}
                   />
                   :
                   <OpenSingleJobCompany appliedPhotographers={appliedPhotographers}
@@ -73,7 +76,6 @@ class OpenSingleJobFetch extends React.Component {
             </React.Fragment> :
             <p>Job does not exist!</p>
         }
-
       </div>
 
     );

@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {markNotificationAsRead} from "../../redux/actions/notifications-action";
 
 const mapStateToProps = state => ({
-  notifications: state.notifications.notifications.reverse()
+  notifications: state.notifications.notifications
 });
 
 const mapDispatchToProps = dispatch => ({

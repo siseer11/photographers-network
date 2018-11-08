@@ -1,7 +1,7 @@
 import React from "react";
 import { ProfileCard } from "./ProfileCard";
 import { LinkLists } from "./LinkLists";
-import { PhotographerContent } from "../contents/photographer/PhotographerContent";
+import { PhotographerContent } from "../contents/photographer/dashboard/PhotographerContent";
 import CompanyContent from "../contents/company/CompanyContent";
 
 export const ProfileView = ({

@@ -1,4 +1,5 @@
 import React from "react";
+import {Redirect} from "react-router-dom";
 import LoadingPage from "../../../components/LoadingPage";
 import {JobDescription} from "../../../components/single-job/JobDescription";
 import NavFooterWrapper from "../NavFooterWrapper";
@@ -25,10 +26,6 @@ class ProgressSingleJobFetch extends React.Component {
     this.props.fetchJobInfo(this.props.match.params.jobid);
   }
 
-  setAcceptedWork = () => {
-    this.setState({acceptedWork: true});
-  };
-
   render() {
     const {
       jobLoading,
@@ -40,8 +37,10 @@ class ProgressSingleJobFetch extends React.Component {
     } = this.props;
 
     if (jobLoading) return <LoadingPage/>;
+    if (jobDescription.status === "open") return <Redirect to={`/open-job/${this.props.match.params.jobid}`}/>;
 
     const {user} = this.props;
+    const type = user ? user.type : "photographer";
 
     return (
       <div className="single-job-view section-content">
@@ -50,7 +49,7 @@ class ProgressSingleJobFetch extends React.Component {
             <React.Fragment>
               <JobDescription {...jobDescription}/>
               {
-                user.type === "photographer" ?
+                type === "photographer" ?
                   <ProgressSingleJobPhotographer submittedWork={submittedWork}
                                                  acceptedWork={acceptedWork}
                                                  jobId={jobId}
@@ -62,7 +61,6 @@ class ProgressSingleJobFetch extends React.Component {
                                             jobId={jobId}
                                             jobDescription={jobDescription}
                                             user={user}
-                                            setAcceptedWork={this.setAcceptedWork}
                   />
               }
             </React.Fragment> :

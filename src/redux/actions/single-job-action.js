@@ -7,10 +7,6 @@ export const JOB_FETCH_START = "JOB_FETCH_START";
 export const JOB_FETCH_SUCCESS = "JOB_FETCH_SUCCESS";
 export const JOB_FETCH_ERROR = "JOB_FETCH_ERROR";
 export const JOB_EXISTS_ERROR = "JOB_EXISTS_ERROR";
-export const APPLY_TO_JOB = "APPLY_TO_JOB";
-export const SUBMIT_WORK = "SUBMIT_WORK";
-export const ACCEPT_APPLICANT = "ACCEPT_APPLICANT";
-export const DECLINE_APPLICANT = "DECLINE_APPLICANT";
 
 // -------------------- ACTION CREATORS -------------------- //
 export const singleJobFetchStart = () => ({
@@ -50,57 +46,6 @@ export const fetchJobInfo = (jobId, type) => {
       }).catch(err => dispatch(singleJobFetchError(err)));
   };
 };
-
-export const applyForJob = jobId => {
-  return (dispatch, getState) => {
-    const auth = getState().firebase.auth;
-    return database
-      .ref("requests")
-      .child(jobId)
-      .child("photographers-applied")
-      .child(auth.uid)
-      .set({
-        email: auth.email,
-        displayName: auth.displayName
-      })
-      .then(() => {
-        this.database
-          .ref("photographer")
-          .child(auth.uid)
-          .child("applied-jobs")
-          .child(jobId)
-          .set({
-            jobbId: jobId,
-            status: "applied"
-          });
-      })
-      .then(() => {
-        dispatch({type: APPLY_TO_JOB});
-      });
-  };
-};
-
-export const acceptApplicantForJob = (acceptedApplicant, jobId) => {
-  return (dispatch, getState) => {
-    return database
-      .ref("requests")
-      .child(jobId)
-      .update({
-        phootgrapher: acceptedApplicant,
-        payment: "down payment done",
-        status: "in progress"
-      })
-      .then(() => {
-      dispatch({type: ACCEPT_APPLICANT, applicant: acceptedApplicant});
-        this.setState({downPayment: true});
-        this.database.ref("photographer").child(acceptedApplicant.uid).child("applied-jobs").child(jobId).update({
-          status: "accepted"
-        })
-      })
-      .catch(err => console.log(err));
-  };
-};
-
 //-------------------- HELP FUNCTIONS -------------------- //
 
 /**

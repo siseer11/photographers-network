@@ -27,7 +27,6 @@ class GbNavBar extends React.Component {
     showNotificationBox: false,
     user: null
   };
-  database = fire.database();
 
   componentDidMount() {
     if(!this.props.fetchedNotifications && this.props.auth.uid) {
@@ -50,8 +49,7 @@ class GbNavBar extends React.Component {
   showNotificationsHandler = () => {
     this.setState(prev => {
       return {
-        showNotificationBox: !prev.showNotificationBox,
-        newNotifications: false
+        showNotificationBox: !prev.showNotificationBox
       };
     });
   };

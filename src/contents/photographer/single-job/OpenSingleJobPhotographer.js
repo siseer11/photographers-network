@@ -2,7 +2,7 @@ import React from "react";
 import {OpenSingleJobViewPhotographer} from "../../../components/single-job/open/OpenSingleJobViewPhotographer";
 import {connect} from "react-redux";
 import {addNewNotification} from "../../../redux/actions/notifications-action";
-import {applyForJob} from "../../../redux/actions/single-job-action";
+import {applyForJob} from "../../../redux/actions/single-job-action-photographer";
 
 const mapDispatchToProps = dispatch => ({
   addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid)),

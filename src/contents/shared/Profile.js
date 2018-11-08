@@ -9,7 +9,7 @@ import { LinkLists } from "../../components/LinkLists";
 
 
 // contents
-import { PhotographerContent } from "../photographer/PhotographerContent";
+import { PhotographerContent } from "../photographer/dashboard/PhotographerContent";
 import CompanyContent from "../company/CompanyContent";
 import LoadingPage from "../../components/LoadingPage";
 import NavFooterWrapper from "./NavFooterWrapper";

@@ -19,14 +19,14 @@ export const notificationsReducer = (state = initialState, action) => {
     case NOTIFICATIONS_FETCH_ERROR:
       return {...state, isFetching: false, errorMessage: action.message};
     case NOTIFICATIONS_FETCH_FINISHED:
-      let unreadNotifications = action.notifications.filter(
+      let unreadNotes = action.notifications.filter(
         note => !note.read
       );
       return {
         ...state,
         isFetching: false,
         notifications: action.notifications,
-        newNotifications: unreadNotifications.length > 0,
+        newNotifications: unreadNotes.length > 0,
         fetchedNotifications: true
       };
     case MARK_AS_READ:
@@ -34,7 +34,8 @@ export const notificationsReducer = (state = initialState, action) => {
         note =>
           note.id === action.id ? { ...note, read: true } : note
       );
-      return {...state, notifications: notes};
+      let unread = notes.filter(note => !note.read);
+      return {...state, notifications: notes, newNotifications: unread.length > 0};
     case ADD_NOTIFICATION:
       return {...state, notifications: [...state.notifications, action.notification], newNotifications: true};
     default:
