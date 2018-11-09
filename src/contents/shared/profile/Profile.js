@@ -2,15 +2,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { fetchProfileInfos } from "../../redux/actions/profile-action";
+import { fetchProfileInfos } from "../../../redux/actions/profile-action";
 
 // components
-import { ProfileCard } from "../../components/ProfileCard";
-import { LinkLists } from "../../components/LinkLists";
+import { ProfileCard } from "../../../components/ProfileCard";
+import { LinkLists } from "../../../components/LinkLists";
 
 // contents
-import { PhotographerContent } from "../photographer/dashboard/PhotographerContent";
-import CompanyContent from "../company/CompanyContent";
+import { PhotographerContent } from "../../photographer/dashboard/PhotographerContent";
+import CompanyContent from "../../company/profile/CompanyContent";
 
 class Profile extends Component {
   componentDidMount() {

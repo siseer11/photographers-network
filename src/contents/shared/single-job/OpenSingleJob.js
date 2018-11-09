@@ -9,6 +9,8 @@ import {connect} from "react-redux";
 import {fetchJobInfo} from "../../../redux/actions/single-job-action";
 
 const mapStateToProps = state => ({
+  user: state.user.userData,
+  userOn: state.user.userOn,
   jobLoading: state.singleJob.jobLoading,
   jobExists: state.singleJob.jobExists,
   jobId: state.singleJob.jobId,
@@ -22,7 +24,7 @@ const mapDispatchToProps = dispatch => ({
   fetchJobInfo: jobId => dispatch(fetchJobInfo(jobId))
 });
 
-class OpenSingleJobFetch extends React.Component {
+class OpenSingleJob extends React.Component {
   state = {
     downPayment: false
   };
@@ -41,13 +43,13 @@ class OpenSingleJobFetch extends React.Component {
       jobDescription,
       userApplied,
       appliedPhotographers,
-      isDeclinedPhotographer
+      isDeclinedPhotographer,
+      user
     } = this.props;
 
     if (jobLoading) return <LoadingPage/>;
     if (jobDescription.status !== "open") return <Redirect to={`/progress-job/${this.props.match.params.jobid}`}/>;
 
-    const {user} = this.props;
     const type = user ? user.type : "photographer";
 
     return (
@@ -82,5 +84,4 @@ class OpenSingleJobFetch extends React.Component {
   }
 }
 
-const OpenSingleJob = NavFooterWrapper(OpenSingleJobFetch);
 export default connect(mapStateToProps, mapDispatchToProps)(OpenSingleJob);

@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 // components
-import { DashboardView } from "../../components/dashboard/DashboardView";
+import { DashboardView } from "../../../components/dashboard/DashboardView";
 
 class Dashboard extends Component {
   state = {

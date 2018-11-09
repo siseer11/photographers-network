@@ -1,11 +1,14 @@
 import fire from "../../config/Fire";
 
+const database = fire.database();
+
 //ACTION TYPES
 export const JOBS_FETCH_START = "JOBS_FETCH_START";
 export const JOBS_FETCH_FINISHED = "JOBS_FETCH_FINISHED";
 export const JOBS_FETCH_ERROR = "JOBS_FETCH_ERROR";
 export const JOB_DELETED = "JOB_DELETED";
 export const PHOTOGRAPHER_JOBS_FINISHED = "PHOTOGRAPHER_JOBS_FINISHED";
+export const COMPANY_JOBS_FINISHED = "COMPANY_JOBS_FINISHED";
 
 //ACTION CREATORS
 export const jobsFetchStart = () => ({
@@ -41,16 +44,50 @@ const populateFilters = (dispatch, jobsData, types = [], locations = []) => {
   dispatch(jobsFetchFinished(jobsData, types, locations));
 };
 
-const filterPhotographer = (dispatch, jobData, uid) => {
-  console.log(jobData);
-  const jobsArray = Object.values(jobData);
-  const appliedJobs = jobsArray.map(job => {
-    const photographersObj = job["photographers-applied"]
-      ? job["photographers-applied"]
-      : [];
-    if (photographersObj.hasOwnProperty(uid)) return job;
-  });
-  dispatch({type: PHOTOGRAPHER_JOBS_FINISHED, jobs: appliedJobs}); //TODO
+export const myJobsFetch = () => {
+  return (dispatch, getState) => {
+    dispatch(jobsFetchStart());
+    return database
+      .ref("company")
+      .child(getState().firebase.auth.uid)
+      .once("value", snap => {
+        /*After having the keys of the jobs go ahead and get the data about them */
+        let jobsIds = Object.keys(snap.val().postedJobs || {});
+
+        jobsIds = jobsIds.map(el =>
+          database
+            .ref("requests")
+            .child(el)
+            .once("value")
+        );
+        Promise.all(jobsIds).then(values => {
+          let allJobs = values.map(el => el.val());
+          dispatch({type: COMPANY_JOBS_FINISHED, jobs: allJobs});
+        });
+      });
+  };
+};
+
+export const appliedJobsFetch = () => {
+  return (dispatch, getState) => {
+    dispatch(jobsFetchStart());
+    let jobs = [];
+    return database
+      .ref("photographer")
+      .child(getState().firebase.auth.uid)
+      .child("applied-jobs")
+      .once("value", snap => {
+        snap.forEach(job => {
+          database.ref("requests").child(job.val().jobbId).once("value", jobRequest => {
+            jobs.push({...jobRequest.val(), statusPhotographer: job.val().status});
+          })
+            .then(() => {
+              //TODO: change database structure, to avoid dispatching it for each entry!
+              dispatch({type: PHOTOGRAPHER_JOBS_FINISHED, jobs});
+            });
+        });
+      });
+  }
 };
 
 export const fetchJobs = (jobId = "") => {
@@ -68,7 +105,6 @@ export const fetchJobs = (jobId = "") => {
           const jobsData = snap.val();
           if (!jobId) {
             populateFilters(dispatch, jobsData);
-            filterPhotographer(dispatch, jobsData, getState().firebase.auth.uid);
           } else {
             dispatch(jobsFetchFinished(jobsData));
           }

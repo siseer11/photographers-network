@@ -5,6 +5,7 @@ import { setAuthListener } from "./redux/actions/user-action";
 import "./style/gb-style.css";
 import "./style/photographer-style.css";
 import Routes from "./routes";
+import LoadingPage from "./components/LoadingPage";
 
 class App extends Component {
   componentDidMount() {
@@ -13,13 +14,12 @@ class App extends Component {
   render() {
     const { userDataLoading, userData, userOn } = this.props;
     if (userDataLoading) {
-      return <h2>Loading... </h2>;
+      return <LoadingPage/>;
     } else {
       return (
         <Routes
           userOn={this.props.userOn}
           userType={this.props.userData.type}
-          updateUserInfo={this.updateUserInfo}
           setLoadingTrue={this.setLoadingTrue}
         />
       );

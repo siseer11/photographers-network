@@ -1,15 +1,15 @@
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import Dashboard from "../contents/shared/Dashboard";
+import Dashboard from "../contents/shared/dashboard/Dashboard";
 import SignIn from "../contents/SignIn";
 import Home from "../contents/Home";
 import SignUp from "../contents/SignUp";
-import Profile from "../contents/shared/Profile";
+import Profile from "../contents/shared/profile/Profile";
 import SearchPhotographer from "../contents/company/SearchPhotographer";
 import CreateJobb from "../contents/company/CreateJobb";
 import MyJobOffers from "../contents/company/my-jobs/MyJobOffers";
-import Jobs from "../contents/shared/Jobs";
-import ProfileEdit from "../contents/shared/ProfileEdit";
+import Jobs from "../contents/shared/jobs/Jobs";
+import ProfileEdit from "../contents/shared/profile/ProfileEdit";
 import GbNavBar from "../components/nav-footer/gbNav";
 import { PrivateJobRequest } from "../components/PrivateJobRequests";
 import { DeclinedPrivateJob } from "../components/DeclinedPrivateJob";
@@ -68,7 +68,7 @@ export default ({
           path="/ProfileEdit"
           render={props =>
             userOn ? (
-              <ProfileEdit {...props} updateUserInfo={updateUserInfo} />
+              <ProfileEdit {...props} />
             ) : (
               <Redirect to="/signin" />
             )
@@ -88,7 +88,7 @@ export default ({
           exact
           path="/createJob"
           render={props =>
-            userType == "company" ? (
+            userType === "company" ? (
               <CreateJobb {...props} />
             ) : (
               <Redirect to="/dashboard" />
@@ -99,7 +99,7 @@ export default ({
           exact
           path="/myJobOffers"
           render={props =>
-            userType == "company" ? (
+            userType === "company" ? (
               <MyJobOffers {...props} />
             ) : (
               <Redirect to="/dashboard" />
@@ -113,6 +113,27 @@ export default ({
           render={props =>
             userOn ? <PrivateJobRequest {...props} /> : <Redirect to="signin" />
           }
+        />
+        <Route
+          exact
+          path="/open-job/:jobid"
+          render={props => (
+            <OpenSingleJob {...props} />
+          )}
+        />
+        <Route
+          exact
+          path="/progress-job/:jobid"
+          render={props => (
+            <ProgressSingleJob {...props} user={user} loading={loading} />
+          )}
+        />
+        <Route
+          exact
+          path="/submit-work/:jobid"
+          render={props => (
+            <SubmitWork {...props} user={user} loading={loading} />
+          )}
         />
         <Redirect to="/home" />
       </Switch>
