@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "../Button";
 import PropTypes from "prop-types";
-import AvatarInput from "../../contents/AvatarInput";
+import AvatarInput from "../../contents/shared/profile/AvatarInput";
 
 export const DashboardHeader = ({
   children,

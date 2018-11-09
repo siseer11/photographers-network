@@ -1,15 +1,42 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { ProfileEditViewWithNav } from "./ProfileEditView";
+import { ProfileEditView } from "./ProfileEditView";
+import {fetchProfileInfos, updateUserInfo} from "../../../redux/actions/profile-action";
+
+
+const mapStateToProps = state => {
+  const profileData = state.profiles.data[state.firebase.auth.uid];
+  console.log(profileData);
+  return {
+    user: state.user.userData,
+    displayName: profileData ? profileData.displayName : "",
+    photoURL: profileData ? profileData.photoURL : "",
+    location: profileData ? profileData.location : "",
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  updateUserData: (name, location, photoURL, user) => dispatch(updateUserInfo(name, location, photoURL, user)),
+  fetchProfileInfos: uid => dispatch(fetchProfileInfos(uid))
+});
 
 class ProfileEdit extends React.Component {
   state = {
-    name: this.props.user.displayName,
-    location: "",
-    photoURL: this.props.user.photoURL
+    name: this.props.displayName,
+    location: this.props.location,
+    photoURL: this.props.photoURL
   };
-  /**
+
+  componentDidMount() {
+    this.props.fetchProfileInfos(this.props.user.uid);
+  };
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({name: nextProps.displayName, photoURL: nextProps.photoURL, location: nextProps.location});
+  }
+
+   /**
    * Updates state to the current value of a certain target.
    * @param e
    */
@@ -17,37 +44,43 @@ class ProfileEdit extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  /*
-  * Fake
-  * JUST A PLACEHOLDER!
-  * */
-  updateUser = () => {
-    console.log("fake");
+  /**
+   * Updates user.
+   *
+   * @param e
+   */
+  updateUser = e => {
+    e.preventDefault();
+    let { name, location, photoURL } = this.state;
+    const { user } = this.props;
+
+    if (name !== "" && location !== "" && photoURL !== "") {
+      this.props.updateUserData(name, location, photoURL, user)
+        .then(()=> this.props.history.replace(`/profile/${user.uid}`));
+    } else {
+      console.log("Please fill in the all input fields");
+    }
   };
 
   render() {
     const { name, location } = this.state;
-    const { userData } = this.props;
+    const { user } = this.props;
 
     return (
-      <ProfileEditViewWithNav
+      <ProfileEditView
         updateUserHandler={this.updateUser}
         {...this.props}
         name={name}
         changeHandler={this.handleChange}
         location={location}
-        user={userData}
+        user={user}
         photoURL={this.state.photoURL}
       />
     );
   }
 }
 
-const mapStateToProps = state => ({
-  userData: state.user.userData
-});
-
-export default connect(mapStateToProps)(ProfileEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileEdit);
 
 /*
 Update user logic :

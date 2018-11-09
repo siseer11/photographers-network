@@ -1,63 +1,35 @@
 // dependencies
 import React, {Component} from "react";
-import fire from "../../../config/Fire";
 import {connect} from "react-redux";
 
 // components
 import MyJobsCategoryView from "../../../components/my-jobs/MyJobsCategoryView";
-import {fetchJobs} from "../../../redux/actions/jobs-action";
+import {appliedJobsFetch, fetchJobs} from "../../../redux/actions/jobs-action";
 
-const mapStateToProps = state => ({
-});
+const mapStateToProps = state => {
+  const jobs = state.allJobs;
+  return {
+    fetchedAppliedOnce: jobs.fetchedAppliedOnce,
+    appliedJobs: jobs.photographer.appliedJobs,
+    acceptedJobs: jobs.photographer.acceptedJobs,
+    declinedJobs: jobs.photographer.declinedJobs,
+    finishedJobs: jobs.photographer.finishedJobs
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
-  fetchJobs: () => dispatch(fetchJobs())
+  fetchJobs: () => dispatch(appliedJobsFetch())
 });
 
 class AppliedJobs extends Component {
-  state = {
-    loadedDb: false,
-    appliedJobs: [],
-    acceptedJobs: [],
-    declinedJobs: [],
-    finishedJobs: []
-  };
-  database = fire.database().ref();
-
   componentDidMount() {
-    this.props.fetchJobs();
-  }
-
-  /**
-   * Fetches applied jobs from current user from database.
-   */
-  fetchJobs() {
-    const {user} = this.props;
-    let jobs = [];
-
-    this.database
-      .child("photographer")
-      .child(user.uid)
-      .child("applied-jobs")
-      .once("value", snap => {
-        snap.forEach(job => {
-          this.database.child("requests").child(job.val().jobbId).once("value", jobRequest => {
-            jobs.push({...jobRequest.val(), statusPhotographer: job.val().status});
-          })
-            .then(() => {
-              this.setState({
-                appliedJobs: jobs.filter(job => job.statusPhotographer === "applied"),
-                acceptedJobs: jobs.filter(job => job.statusPhotographer === "accepted"),
-                declinedJobs: jobs.filter(job => job.statusPhotographer === "declined"),
-                finishedJobs: jobs.filter(job => job.statusPhotographer === "finished")
-              });
-            });
-        });
-      });
+    if(!this.props.fetchedAppliedOnce) {
+      this.props.fetchJobs();
+    }
   }
 
   render() {
-    const {appliedJobs, acceptedJobs, declinedJobs, finishedJobs} = this.state;
+    const {appliedJobs, acceptedJobs, declinedJobs, finishedJobs} = this.props;
     return (
       <div className="my-jobs-container">
         <MyJobsCategoryView categoryTitle="Applied" jobs={appliedJobs}/>

@@ -2,7 +2,6 @@ import React from "react";
 import {Redirect} from "react-router-dom";
 import LoadingPage from "../../../components/LoadingPage";
 import {JobDescription} from "../../../components/single-job/JobDescription";
-import NavFooterWrapper from "../NavFooterWrapper";
 import ProgressSingleJobCompany from "../../company/single-job/ProgressSingleJobCompany";
 import ProgressSingleJobPhotographer from "../../photographer/single-job/ProgressSingleJobPhotographer";
 import {connect} from "react-redux";
@@ -21,7 +20,7 @@ const mapDispatchToProps = dispatch => ({
   fetchJobInfo: jobId => dispatch(fetchJobInfo(jobId))
 });
 
-class ProgressSingleJobFetch extends React.Component {
+class ProgressSingleJob extends React.Component {
   componentDidMount() {
     this.props.fetchJobInfo(this.props.match.params.jobid);
   }
@@ -72,5 +71,4 @@ class ProgressSingleJobFetch extends React.Component {
   }
 }
 
-const ProgressSingleJob = NavFooterWrapper(ProgressSingleJobFetch);
 export default connect(mapStateToProps, mapDispatchToProps)(ProgressSingleJob);

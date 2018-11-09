@@ -17,6 +17,7 @@ export default class MyJobsCategoryView extends React.Component {
 
   render() {
     const {categoryTitle, jobs} = this.props;
+    console.log(jobs);
     const {closed} = this.state;
 
     return (

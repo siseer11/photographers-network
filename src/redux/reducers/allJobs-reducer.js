@@ -2,7 +2,7 @@ import {
   JOBS_FETCH_ERROR,
   JOBS_FETCH_FINISHED,
   JOBS_FETCH_START,
-  JOB_DELETED, PHOTOGRAPHER_JOBS_FINISHED
+  JOB_DELETED, PHOTOGRAPHER_JOBS_FINISHED, COMPANY_JOBS_FINISHED
 } from "../actions/jobs-action";
 
 export const allJobs = (
@@ -10,12 +10,22 @@ export const allJobs = (
     jobsData: {},
     jobsLoading: true,
     fetchedOnce: false,
+    fetchedAppliedOnce: false,
+    fetchedCompanyJobsOnce: false,
     availableJobLocations: [],
     availableJobTypes: [],
-    appliedJobs: [],
-    acceptedJobs: [],
-    declinedJobs: [],
-    finishedJobs: []
+    photographer: {
+      appliedJobs: [],
+      acceptedJobs: [],
+      declinedJobs: [],
+      finishedJobs: [],
+    },
+    company: {
+      allJobs: [],
+      openJobs: [],
+      inProgressJobs: [],
+      closedJobs: []
+    }
   },
   action
 ) => {
@@ -63,10 +73,31 @@ export const allJobs = (
       const {jobs} = action;
       return {
         ...state,
-        appliedJobs: jobs.filter(job => job.statusPhotographer === "applied"),
-        acceptedJobs: jobs.filter(job => job.statusPhotographer === "accepted"),
-        declinedJobs: jobs.filter(job => job.statusPhotographer === "declined"),
-        finishedJobs: jobs.filter(job => job.statusPhotographer === "finished")
+        photographer: {
+          ...state.photographer,
+          appliedJobs: jobs.filter(job => job.statusPhotographer === "applied"),
+          acceptedJobs: jobs.filter(job => job.statusPhotographer === "accepted"),
+          declinedJobs: jobs.filter(job => job.statusPhotographer === "declined"),
+          finishedJobs: jobs.filter(job => job.statusPhotographer === "finished"),
+        },
+        jobsLoading: false,
+        fetchedAppliedOnce: true
+      };
+    case COMPANY_JOBS_FINISHED:
+      const allJobs = action.jobs;
+      return {
+        ...state,
+        company: {
+          ...state.company,
+          allJobs,
+          openJobs: allJobs.filter(job => job.status === "open"),
+          inProgressJobs: allJobs.filter(
+            job => job.status === "in progress"
+          ),
+          closedJobs: allJobs.filter(job => job.status === "closed")
+        },
+        jobsLoading: false,
+        fetchedCompanyJobsOnce:true
       };
     default:
       return state;
