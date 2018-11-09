@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 
 // components
 import { DashboardHeader } from "./DashboardHeader";
-import NavFooterWrapper from "../../contents/shared/NavFooterWrapper";
 
 // contents
 import MyJobOffers from "../../contents/company/my-jobs/MyJobOffers";
@@ -14,9 +13,16 @@ import NoPremiumUser from "./NoPremiumUser";
 import Portofolio from "./Portofolio";
 import HireableSwitch from "../../contents/photographer/dashboard/HireableSwtich";
 
-const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, loading , updateUserInfo}) => {
-
-  let currentComponent = '';
+export const DashboardView = ({
+  user,
+  type,
+  linkHandler,
+  activeComponent,
+  headerLinks,
+  loading,
+  updateUserInfo
+}) => {
+  let currentComponent = "";
 
   //TODO: maybe find a better solultion than the switch?
   switch (activeComponent) {
@@ -81,8 +87,6 @@ const DashboardView = ({user, type, linkHandler, activeComponent, headerLinks, l
     </div>
   );
 };
-
-export const DashboardViewWithNav = NavFooterWrapper(DashboardView);
 
 DashboardView.propTypes = {
   user: PropTypes.object.isRequired,

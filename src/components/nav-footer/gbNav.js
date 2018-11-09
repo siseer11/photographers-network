@@ -7,29 +7,25 @@ import { BellSVG } from "../svg/BellSVG";
 import NotificationContainer from "./NotificationContainer";
 import fire from "../../config/Fire";
 import WithModal from "../../RenderProp/WithModal";
-import {connect} from "react-redux";
-import {childAddedListener, fetchNotifications} from "../../redux/actions/notifications-action";
+import { connect } from "react-redux";
+import { signOutUser } from "../../redux/actions/user-action";
 
-const mapStateToProps = state => ({
-  newNotifications: state.notifications.newNotifications,
-  auth: state.firebase.auth,
-  fetchedNotifications: state.notifications.fetchedNotifications
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchNotifications: () => dispatch(fetchNotifications()),
-  childAddedListener: () => dispatch(childAddedListener())
-});
+import {
+  childAddedListener,
+  fetchNotifications
+} from "../../redux/actions/notifications-action";
 
 class GbNavBar extends React.Component {
   state = {
     sticky: false,
     showNotificationBox: false,
-    user: null
+    links: [{ txt: "Sign in", link: "signIn" }],
+    homeLink: "home",
+    userLinks: []
   };
 
   componentDidMount() {
-    if(!this.props.fetchedNotifications && this.props.auth.uid) {
+    if (!this.props.fetchedNotifications && this.props.userOn) {
       this.props.fetchNotifications();
       this.props.childAddedListener();
     }
@@ -55,14 +51,50 @@ class GbNavBar extends React.Component {
   };
 
   render() {
-    const {
-      righLinks,
-      userImageUrl,
-      homeLink,
-      userOn,
-      user,
-      userLinks
-    } = this.props;
+    const { userOn, userData: user, signOutUser } = this.props;
+
+    let righLinks = [{ txt: "Sign in", link: "signIn" }];
+    let homeLink = "home";
+    let userLinks;
+
+    if (userOn) {
+      righLinks = [];
+      homeLink = "dashboard";
+
+      const company = user.type === "company";
+
+      let specificLinks = [
+        {
+          txt: company ? "Create job" : "Jobs",
+          link: company ? "createJob" : "jobs"
+        }
+      ];
+
+      if (company) {
+        specificLinks.push({
+          txt: "Search for photographers",
+          link: "search-photographers"
+        });
+      }
+
+      userLinks = [
+        {
+          txt: "Profile",
+          link: `profile/${user.uid}`
+        },
+        {
+          txt: "Dashboard",
+          link: "dashboard"
+        },
+        {
+          txt: "Edit profile",
+          link: "ProfileEdit"
+        },
+        ...specificLinks,
+        { txt: "Sign out", clickHandler: signOutUser }
+      ];
+    }
+
     const { showNotificationBox } = this.state;
     return (
       <div className={`gb-navbar ${this.state.sticky ? "sticky" : ""}`}>
@@ -80,8 +112,7 @@ class GbNavBar extends React.Component {
               newNotifications={this.props.newNotifications}
               showNotificationBox={showNotificationBox}
               user={user}
-              righLinks={righLinks}
-              userImageUrl={userImageUrl}
+              userImageUrl={user.photoURL}
               userLinks={userLinks}
             />
           )}
@@ -90,6 +121,35 @@ class GbNavBar extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  const not = state.notifications;
+  const user = state.user;
+  return {
+    newNotifications: not.newNotifications,
+    auth: state.firebase.auth,
+    fetchedNotifications: not.fetchedNotifications,
+    userOn: user.userOn,
+    userData: user.userData
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  fetchNotifications: () => dispatch(fetchNotifications()),
+  childAddedListener: () => dispatch(childAddedListener()),
+  signOutUser: () => dispatch(signOutUser())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GbNavBar);
+
+GbNavBar.propTypes = {
+  righLinks: PropTypes.arrayOf(PropTypes.object),
+  userImageUrl: PropTypes.string,
+  profileLink: PropTypes.string
+};
 
 const RightUserOn = ({
   showNotificationsHandler,
@@ -108,9 +168,7 @@ const RightUserOn = ({
               "new"}`}
           />
           {showModal && (
-            <NotificationContainer
-              showBoxHandler={showNotificationsHandler}
-            />
+            <NotificationContainer showBoxHandler={showNotificationsHandler} />
           )}
         </React.Fragment>
       )}
@@ -136,11 +194,3 @@ const RightUserOn = ({
     </li>
   </React.Fragment>
 );
-
-export default connect(mapStateToProps, mapDispatchToProps)(GbNavBar);
-
-GbNavBar.propTypes = {
-  righLinks: PropTypes.arrayOf(PropTypes.object),
-  userImageUrl: PropTypes.string,
-  profileLink: PropTypes.string
-};
