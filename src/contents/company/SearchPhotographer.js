@@ -1,29 +1,40 @@
 import React, { Component } from "react";
 import fire from "../../config/Fire";
 import { connect } from "react-redux";
+import { searchPhotographer } from "../../redux/actions/searchPhotographer-action";
+import { resetSearchState } from "../../redux/actions/searchPhotographer-action";
 
+import { PhotographersList } from "../../components/PhotographersList";
 import { SearchInput } from "../../components/form/SearchInput";
-import { PhotographerResults } from "../../components/PhotographerResults";
-import NavFooterWrapper from "../shared/NavFooterWrapper";
 
 class SearchPhotographers extends Component {
   state = {
     searchValue: "",
-    photographerResults: []
+    photographerResults: [],
+    lastSearched: ""
   };
   database = fire.database().ref();
 
-  /**
-   * Updates state to the current value of a certain target.
-   * @param e
-   */
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  search = () => console.log("here is the logic");
+  search = e => {
+    e.preventDefault();
+    const location = this.state.searchValue;
+    this.props.searchPhotographer(location);
+    this.setState({
+      lastSearched: location
+    });
+  };
+
+  componentWillUnmount() {
+    this.props.resetSearchState();
+  }
 
   render() {
+    const { lastSearched } = this.state;
+    const { photographersData, loading } = this.props;
     return (
       <React.Fragment>
         <div className="search-photographer section-content normalized">
@@ -35,46 +46,33 @@ class SearchPhotographers extends Component {
             changeHandler={this.handleChange}
             searchHandler={this.search}
           />
-          <PhotographerResults photographers={this.state.photographerResults} />
+
+          {loading ? (
+            <h2>Loading...</h2>
+          ) : loading === false ? (
+            <PhotographersList list={photographersData[lastSearched]} />
+          ) : (
+            <h2>Nothing</h2>
+          )}
         </div>
       </React.Fragment>
     );
   }
 }
 
-const SearchPhotographer = NavFooterWrapper(SearchPhotographers);
-
 const mapStateToProps = state => ({
-  userData: state.user.userData
+  userData: state.user.userData,
+  photographersData: state.photographers.photographersData,
+  loading: state.photographers.loading,
+  error: state.photographers.error
 });
 
-export default connect(mapStateToProps)(SearchPhotographer);
+const mapDispatchToProps = dispatch => ({
+  searchPhotographer: country => dispatch(searchPhotographer(country)),
+  resetSearchState: () => dispatch(resetSearchState())
+});
 
-/*
-
-SEARCH LOGIC
-
-  
-   * Looks for all photographers in the certain location.
-
-  search = (e, location) => {
-   e.preventDefault();
-   let photographers = [];
-   this.database.child("locations").child(location).child("photographer").once("value")
-     .then(snapshots => {
-       snapshots.forEach(snap => {
-         let data = snap.val();
-         photographers.push({
-           uid: snap.key,
-           photoURL: data.photoURL,
-           displayName: data.displayName,
-           location: location
-         });
-       });
-     })
-     .then(() => {
-       this.setState({photographerResults: photographers});
-     });
- };
-
- */
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchPhotographers);

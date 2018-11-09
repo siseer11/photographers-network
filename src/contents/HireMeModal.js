@@ -31,70 +31,6 @@ export default class HireMeModal extends React.Component {
     });
   };
 
-  // PUSH THE JOB REQ AS NOTIFICATION TO PHOTOGRAPHER
-  sendRequestHandler = (jobbId, newCreatedJob = false) => {
-    const { photographerId, company, closeModal } = this.props;
-    this.setState({
-      reqSentLoading: true
-    });
-
-    /* Send the notification to the photographer */
-    fire
-      .database()
-      .ref("users")
-      .child(`${photographerId}/notifications`)
-      .push(
-        {
-          link: `/private/job/${jobbId}?user=${photographerId}`,
-          read: false,
-          title: `You got a new private job request from ${
-            company.displayName
-          }`,
-          time: new Date().getTime()
-        },
-        err => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log("notification pushed succesfull");
-            if (newCreatedJob) {
-              this.setState({
-                reqSentLoading: false
-              });
-              closeModal();
-            } else {
-              updateSentToPrivate(jobbId);
-            }
-          }
-        }
-      );
-
-    /* If the job is one that existed, make it's sentToPrivate: true , and add the id of the photographer to the sentTo*/
-    const updateSentToPrivate = jobId => {
-      fire
-        .database()
-        .ref("requests")
-        .child(jobId)
-        .update(
-          {
-            sentToPrivate: true,
-            sentTo: photographerId
-          },
-          err => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log("finished");
-              this.setState({
-                reqSentLoading: false
-              });
-              closeModal();
-            }
-          }
-        );
-    };
-  };
-
   render() {
     const { page, reqSentLoading } = this.state;
     const { company, photographerId, photographerName } = this.props;
@@ -107,7 +43,6 @@ export default class HireMeModal extends React.Component {
             company={company}
             photographerId={photographerId}
             photographerName={photographerName}
-            sendRequestHandler={this.sendRequestHandler}
           />
         ) : page == "existing-job" ? (
           <HireMeExistingJobOffer
@@ -116,7 +51,6 @@ export default class HireMeModal extends React.Component {
             company={company}
             photographerId={photographerId}
             typeHandler={this.typeChangeHandler}
-            sendRequestHandler={this.sendRequestHandler}
             reqSentLoading={reqSentLoading}
           />
         ) : (

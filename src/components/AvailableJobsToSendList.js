@@ -5,7 +5,9 @@ export const AvailableJobsToSendList = ({
   existingJobs,
   sendRequestHandler,
   reqSentLoading,
-  backHandler
+  backHandler,
+  photographerId,
+  company
 }) => (
   <React.Fragment>
     {!reqSentLoading && (
@@ -20,7 +22,7 @@ export const AvailableJobsToSendList = ({
     ) : (
       <ul className="openjobslist">
         {existingJobs.map(el => (
-          <li className="openjobitem" key={el.jobbId}>
+          <li className="openjobitem" key={el.jobId}>
             <div className="job-infos">
               <h2 className="openjobtitle">{el.title}</h2>
               <p className="openjobtitle">{el.descrition}</p>
@@ -28,7 +30,9 @@ export const AvailableJobsToSendList = ({
               <p className="openjobprice">{el.price}£</p>
             </div>
             <div
-              onClick={() => sendRequestHandler(el.jobbId)}
+              onClick={() =>
+                sendRequestHandler(photographerId, company, el.jobId)
+              }
               className="sendoffer"
             >
               Send

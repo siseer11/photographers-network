@@ -6,6 +6,9 @@ import { firebaseReducer } from "react-redux-firebase";
 import { singleJobReducer } from "./singleJob-reducer";
 import { profilesReducer } from "./profilesReducer";
 import { signUpReducer } from "./signUp-reducer";
+import { createJobReducer } from "./createJob-reducer";
+import { searchPhotographerReducer } from "./searchPhotographer-reducer";
+import { privateJobReducer } from "./privateJob-reducer";
 
 const MainReducer = combineReducers({
   user,
@@ -14,7 +17,10 @@ const MainReducer = combineReducers({
   firebase: firebaseReducer,
   singleJob: singleJobReducer,
   profiles: profilesReducer,
-  signUp: signUpReducer
+  signUp: signUpReducer,
+  createJob: createJobReducer,
+  photographers: searchPhotographerReducer,
+  privateJobRequest: privateJobReducer
 });
 
 export default MainReducer;
