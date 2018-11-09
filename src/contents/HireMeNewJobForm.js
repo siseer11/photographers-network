@@ -1,10 +1,11 @@
 import React from "react";
 import { PropTypes } from "prop-types";
+import { connect } from "react-redux";
+import { pushPrivateJob } from "../redux/actions/privateJob-action";
 
-import fire from "../config/Fire";
 import CreateJobForm from "./CreateJobForm";
 
-export default class HireMeNewJobForm extends React.Component {
+class HireMeNewJobForm extends React.Component {
   static propTypes = {
     backHandler: PropTypes.func.isRequired,
     company: PropTypes.object.isRequired,
@@ -14,68 +15,13 @@ export default class HireMeNewJobForm extends React.Component {
   };
 
   submitHandler = values => {
-    const {
-      company,
-      photographerId,
+    /*
       phootgrapherName,
-      sendRequestHandler
-    } = this.props;
-    // Get a new id for this jobb
-    const jobbId = fire
-      .database()
-      .ref("requests")
-      .push().key;
+      sendRequestHandler,
+    */
 
-    // Push the new created job to the database
-    fire
-      .database()
-      .ref("requests")
-      .child(jobbId)
-      .set(
-        {
-          ...values,
-          status: "open",
-          payment: "soooooon",
-          phootgrapher: "none",
-          companyId: company.uid,
-          companyName: company.displayName,
-          sentTo: photographerId,
-          jobbId: jobbId,
-          sentToPrivate: true,
-          private: true
-        },
-        err => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log("Step 1/3 done...");
-            addPrivateJobToComapny();
-          }
-        }
-      );
-
-    // Add the job to the private jobs in the Company db
-    const addPrivateJobToComapny = () => {
-      fire
-        .database()
-        .ref("company")
-        .child(`${company.uid}/postedJobs/${jobbId}`)
-        .set(
-          {
-            jobId: jobbId,
-            private: true
-          },
-          err => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log("Step 2/3 done...");
-              //Send the jobb as Request to the photographer
-              sendRequestHandler(jobbId, true);
-            }
-          }
-        );
-    };
+    const { company, photographerId, pushPrivateJob } = this.props;
+    pushPrivateJob(values, company, photographerId);
   };
 
   render() {
@@ -90,3 +36,13 @@ export default class HireMeNewJobForm extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  pushPrivateJob: (jobData, company, photographerId) =>
+    dispatch(pushPrivateJob(jobData, company, photographerId))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(HireMeNewJobForm);

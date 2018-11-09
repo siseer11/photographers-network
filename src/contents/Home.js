@@ -3,7 +3,6 @@ import { GbCard50Skewed } from "../components/gbCard50Skewed";
 import { SearchSVG } from "../components/svg/SearchSVG";
 import { DoneSVG } from "../components/svg/DoneSVG";
 import { CardSVG } from "../components/svg/CardSVG";
-import NavFooterWrapper from "./shared/NavFooterWrapper";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 

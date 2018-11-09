@@ -19,6 +19,7 @@ class Profile extends Component {
     const profileId = this.props.match.params.uid;
 
     if (!profilesData[profileId]) {
+      console.log("nu e");
       this.props.fetchProfile(profileId);
     }
   }
@@ -91,9 +92,14 @@ const ProfileView = ({
           txtClasses="gb-text-black-opacity-30 gb-subtitle-medium"
           liClasses="footer-nav-item"
         />
-        <Link to="/ProfileEdit" className="gb-btn gb-btn-medium gb-btn-primary">
-          Edit Profile
-        </Link>
+        {!isOtherUser && (
+          <Link
+            to="/ProfileEdit"
+            className="gb-btn gb-btn-medium gb-btn-primary"
+          >
+            Edit Profile
+          </Link>
+        )}
       </div>
 
       {thisProfileData.type === "photographer" ? (

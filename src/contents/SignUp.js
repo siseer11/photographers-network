@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { sigUpUser } from "../redux/actions/signUp-action";
 
-import fire from "../config/Fire";
 import { SingUpView } from "../components/SignUpView";
-import NavFooterWrapper from "./shared/NavFooterWrapper";
 
 class SignUp extends Component {
   state = {
@@ -15,7 +13,6 @@ class SignUp extends Component {
     type: this.props.match.params.type || "photographer",
     location: ""
   };
-  database = fire.database().ref();
 
   /**
    * Updates state to the current value of a certain target.
@@ -52,6 +49,11 @@ class SignUp extends Component {
     );
   };
 
+  signup = e => {
+    e.preventDefault();
+    this.props.signUserUp(this.state);
+  };
+
   render() {
     const {
       name,
@@ -62,8 +64,6 @@ class SignUp extends Component {
       type,
       showCustomSelect
     } = this.state;
-    const { userOn } = this.props;
-
     return (
       <SingUpView
         signupHandler={this.signup}
@@ -86,4 +86,11 @@ const mapStateToProps = state => ({
   userOn: state.user.userOn
 });
 
-export default connect(mapStateToProps)(SignUp);
+const mapDispatchToProps = dispatch => ({
+  signUserUp: userData => dispatch(sigUpUser(userData))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignUp);
