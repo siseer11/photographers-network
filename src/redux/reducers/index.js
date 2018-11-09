@@ -5,6 +5,7 @@ import { notificationsReducer } from "./notifications-reducer";
 import { firebaseReducer } from "react-redux-firebase";
 import { singleJobReducer } from "./singleJob-reducer";
 import { profilesReducer } from "./profilesReducer";
+import { signUpReducer } from "./signUp-reducer";
 
 const MainReducer = combineReducers({
   user,
@@ -12,7 +13,8 @@ const MainReducer = combineReducers({
   notifications: notificationsReducer,
   firebase: firebaseReducer,
   singleJob: singleJobReducer,
-  profiles: profilesReducer
+  profiles: profilesReducer,
+  signUp: signUpReducer
 });
 
 export default MainReducer;

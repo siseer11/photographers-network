@@ -13,10 +13,66 @@ import { PhotographerContent } from "../photographer/PhotographerContent";
 import CompanyContent from "../company/CompanyContent";
 
 class Profile extends Component {
+  componentDidMount() {
+    const { profilesData, user } = this.props;
+
+    const profileId = this.props.match.params.uid;
+
+    if (!profilesData[profileId]) {
+      this.props.fetchProfile(profileId);
+    }
+  }
+
   render() {
-    return <h2>HEllo</h2>;
+    const { fetchingProfile, profilesData, error, match, user } = this.props;
+    const queryId = match.params.uid;
+    const isOtherUser = queryId !== user.uid;
+    const pageLinks = [
+      { txt: "Facebook", link: "www.facebook.com" },
+      { txt: "Twitter", link: "www.twitter.com" }
+    ];
+
+    let thisProfileData = profilesData[queryId];
+
+    if (fetchingProfile) {
+      return <h2>Fetching Profile Data...</h2>;
+    }
+
+    if (error) {
+      return <h2>404 ERROR</h2>;
+    }
+
+    return (
+      <ProfileView
+        isOtherUser={isOtherUser}
+        thisProfileData={thisProfileData}
+        pageLinks={pageLinks}
+        siggnedInUser={user}
+      />
+    );
   }
 }
+
+const mapStateToProps = state => {
+  const profiles = state.profiles;
+  const user = state.user;
+  return {
+    user: user.userData,
+    userOn: user.userOn,
+    profilesData: profiles.data,
+    fetchingProfile: profiles.fetchingProfile,
+    error: profiles.error
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  fetchProfile: uid => dispatch(fetchProfileInfos(uid))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Profile);
 
 const ProfileView = ({
   isOtherUser,
@@ -51,92 +107,3 @@ const ProfileView = ({
     </div>
   </div>
 );
-
-const mapStateToProps = state => ({
-  user: state.user.userData,
-  userOn: state.user.userOn,
-  profilesData: state.profiles.data,
-  fetchingProfile: state.profiles.fetchingProfile,
-  error: state.profiles.error
-});
-
-const mapDispatchToProsp = dispatch => ({
-  fetchProfile: uid => dispatch(fetchProfileInfos(uid))
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProsp
-)(Profile);
-
-/*
-state = {
-    pageLinks: [
-      { txt: "Facebook", link: "www.facebook.com" },
-      { txt: "Twitter", link: "www.twitter.com" }
-    ],
-    uid: this.props.match.params.uid || "",
-    fetchedUserData: false,
-    thisProfileData: null,
-  };
-  database = fire.database().ref();
-
-  componentDidMount() {
-    this.fetchUserInformation();
-  }
-
-  fetchUserInformation = () => {
-   const { uid } = this.state;
-   this.database
-     .child("users")
-     .child(uid)
-     .once("value")
-     .then(snap => {
-       if (!snap.exists()) {
-         this.props.history.replace("/");
-         return -1;
-       }
-       let data = snap.val();
-
-       const portofolio = data.portofolio
-         ? Object.values(data.portofolio)
-         : [];
-
-       this.setState({
-         thisProfileData: { ...data, portofolio: portofolio, uid: uid },
-         fetchedUserData: true
-       });
-     });
- };
-
- render() {
-   const { user, loading } = this.props;
-   const { fetchedUserData, thisProfileData, uid, pageLinks } = this.state; //change currUser to thisProfileData
-   let otherUser = true;
-   let loaded = false;
-
-   // looks if there is response from the current user
-   // and the user data has been already fetched
-   if (!loading && fetchedUserData) {
-     if (user) {
-       otherUser = user.uid !== thisProfileData.uid;
-     }
-     loaded = true;
-   }
-
-   return (
-     <React.Fragment>
-       {loaded ? (
-         user ? ( //THIS USER IS THE LOGGEDIN USER NOT THE USER THAT PROFILE WE ARE LOOKING AT
-           
-
-         ) : (
-             <h2> NO SUCH PROFILE </h2>
-           )
-       ) : (
-           <LoadingPage />
-         )}
-     </React.Fragment>
-   );
- }
- */

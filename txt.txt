@@ -91,3 +91,5 @@ A thunk is a function that wraps an expression to delay its evaluation.
  -> Clean GbNav
  -> Signin error handlings!
  -> Delete the navFooterWrapper since now we have it everywheer
+ -> Hirable button
+ -> Profile page still ugly code
