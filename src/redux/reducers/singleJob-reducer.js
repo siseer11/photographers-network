@@ -1,8 +1,24 @@
 import {
-  ACCEPT_APPLICANT,
-  APPLY_TO_JOB, JOB_EXISTS_ERROR, JOB_FETCH_ERROR, JOB_FETCH_START,
+  JOB_EXISTS_ERROR,
+  JOB_FETCH_ERROR,
+  JOB_FETCH_START,
   JOB_FETCH_SUCCESS
 } from "../actions/single-job-action";
+
+import {
+  APPLY_TO_JOB,
+  SUBMIT_WORK,
+  SUBMIT_WORK_ERROR
+} from "../actions/single-job-action-photographer";
+
+import {
+  ACCEPT_APPLICANT,
+  ACCEPT_WORK,
+  DECLINE_APPLICANT,
+  DELETE_JOB,
+  DELETE_JOB_ERROR
+} from "../actions/single-job-action-company";
+
 
 const initialState = {
   jobExists: false,
@@ -34,9 +50,23 @@ export const singleJobReducer = (state = initialState, action) => {
     case JOB_EXISTS_ERROR:
       return {...state, jobLoaded: true, jobLoading: false, jobExists: false};
     case APPLY_TO_JOB:
-      return {...state, openJob: {...this.state.openJob, userApplied: true}};
+      return {...state, openJob: {...state.openJob, userApplied: true}};
     case ACCEPT_APPLICANT:
       return {...state, jobDescription: {...state.jobDescription, phootgrapher: action.applicant}, downPayment: true};
+    case DECLINE_APPLICANT:
+      const appliedPhotographers = [
+        ...state.openJob.appliedPhotographers.slice(0, action.uid),
+        ...state.openJob.appliedPhotographers.slice(action.uid+1)
+      ];
+      return {...state, openJob: {...state.openJob, appliedPhotographers }};
+    case DELETE_JOB:
+      return {...state, ...initialState};
+    case DELETE_JOB_ERROR: case SUBMIT_WORK_ERROR:
+      return {...state, errorMessage: action.message};
+    case ACCEPT_WORK:
+      return {...state, progressJob: {...state.progressJob, acceptedWork:true}};
+    case SUBMIT_WORK:
+      return {...state, progressJob: {...state.progressJob, submittedWork:action.images}};
     default:
       return state;
   }

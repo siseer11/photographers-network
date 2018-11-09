@@ -84,7 +84,7 @@ export default class CreateJobForm extends React.Component {
 
   formSubmited = e => {
     e.preventDefault();
-    const passed = this.checkForm();
+    const passed = true;//this.checkForm();
     if (passed === true) {
       const s = this.state;
       /* send data to the parent */

@@ -1,23 +1,17 @@
 import React from "react";
-import fire from "../../../config/Fire";
 import {ProgressSingleJobViewCompany} from "../../../components/single-job/progress/ProgressSingleJobViewCompany";
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
 import {connect} from "react-redux";
 import {addNewNotification} from "../../../redux/actions/notifications-action";
-
-const mapStateToProps = state => ({
-
-});
+import {acceptWork} from "../../../redux/actions/single-job-action-company";
 
 const mapDispatchToProps = dispatch => ({
-  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid))
+  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid)),
+  acceptSubmittedWork: (jobId, acceptedApplicant) => dispatch(acceptWork(jobId, acceptedApplicant))
 });
 
 class ProgressSingleJobCompany extends React.Component {
-  database = fire.database();
-
-  // ---------- COMPANY METHODS ----------:
   /**
    * Downloads zip file of submitted work.
    */
@@ -70,15 +64,7 @@ class ProgressSingleJobCompany extends React.Component {
 
   acceptWork = () => {
     const {jobDescription, jobId, acceptedApplicant} = this.props;
-    this.database
-      .ref("requests")
-      .child(jobId)
-      .update({
-        status: "closed"
-      });
-    this.database.ref("photographer").child(acceptedApplicant.uid).child("applied-jobs").child(jobId).update({
-      status: "finished"
-    });
+    this.props.acceptSubmittedWork(jobId, acceptedApplicant);
     // add notification
     this.props.addNotification({
       title: `${
@@ -88,7 +74,6 @@ class ProgressSingleJobCompany extends React.Component {
       read: false,
       time: new Date().getTime()
     }, acceptedApplicant.uid);
-    this.props.setAcceptedWork();
   };
 
   render() {
@@ -109,4 +94,4 @@ class ProgressSingleJobCompany extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProgressSingleJobCompany);
+export default connect(null, mapDispatchToProps)(ProgressSingleJobCompany);

@@ -50,6 +50,7 @@ export const fetchNotifications = () => {
             ...notification
           };
         });
+        notifications.reverse();
         dispatch(notificationsFetchFinished(notifications));
       }).catch(err => dispatch(notificationsFetchError(err)));
   }
@@ -66,9 +67,7 @@ export const markNotificationAsRead = id => {
       .update(
         {
           read: true
-        },
-        dispatch(markAsRead(id))
-      );
+        }).then(() => dispatch(markAsRead(id)));
   };
 };
 
@@ -90,7 +89,6 @@ export const childAddedListener = () => {
           dispatch(addNotification(notification));
         }
       });
-
   };
 };
 
@@ -102,7 +100,7 @@ export const addNewNotification = (notification, uid) => {
       .child("notifications")
       .push()
       .set({
-        notification
+        ...notification
       });
   };
 };

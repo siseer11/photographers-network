@@ -9,7 +9,7 @@ import { ProfileCard } from "../../components/ProfileCard";
 import { LinkLists } from "../../components/LinkLists";
 
 // contents
-import { PhotographerContent } from "../photographer/PhotographerContent";
+import { PhotographerContent } from "../photographer/dashboard/PhotographerContent";
 import CompanyContent from "../company/CompanyContent";
 
 class Profile extends Component {

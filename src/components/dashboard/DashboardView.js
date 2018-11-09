@@ -11,7 +11,7 @@ import MyJobOffers from "../../contents/company/my-jobs/MyJobOffers";
 import AppliedJobs from "../../contents/photographer/applied-jobs/AppliedJobs";
 import NoPremiumUser from "./NoPremiumUser";
 import Portofolio from "./Portofolio";
-import HireableSwitch from "../../contents/photographer/HireableSwtich";
+import HireableSwitch from "../../contents/photographer/dashboard/HireableSwtich";
 
 export const DashboardView = ({
   user,
