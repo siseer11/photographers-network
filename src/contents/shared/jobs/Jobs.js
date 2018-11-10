@@ -4,7 +4,6 @@ import { fetchJobs } from "../../../redux/actions/jobs-action";
 
 import { JobsView } from "../../../components/JobsView";
 import LoadingPage from "../../../components/LoadingPage";
-import NavFooterWrapper from "../NavFooterWrapper";
 
 class Jobs extends React.Component {
   state = {

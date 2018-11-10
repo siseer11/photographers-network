@@ -11,7 +11,7 @@ import MyJobOffers from "../contents/company/my-jobs/MyJobOffers";
 import Jobs from "../contents/shared/jobs/Jobs";
 import ProfileEdit from "../contents/shared/profile/ProfileEdit";
 import GbNavBar from "../components/nav-footer/gbNav";
-import { PrivateJobRequest } from "../components/PrivateJobRequests";
+import PrivateJobRequest from "../components/PrivateJobRequests";
 import { DeclinedPrivateJob } from "../components/DeclinedPrivateJob";
 import SubmitWork from "../contents/photographer/single-job/SubmitWork";
 import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
@@ -67,11 +67,7 @@ export default ({
           exact
           path="/ProfileEdit"
           render={props =>
-            userOn ? (
-              <ProfileEdit {...props} />
-            ) : (
-              <Redirect to="/signin" />
-            )
+            userOn ? <ProfileEdit {...props} /> : <Redirect to="/signin" />
           }
         />
         <Route
@@ -117,9 +113,7 @@ export default ({
         <Route
           exact
           path="/open-job/:jobid"
-          render={props => (
-            <OpenSingleJob {...props} />
-          )}
+          render={props => <OpenSingleJob {...props} />}
         />
         <Route
           exact

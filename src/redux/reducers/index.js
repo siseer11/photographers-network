@@ -9,6 +9,7 @@ import { signUpReducer } from "./signUp-reducer";
 import { createJobReducer } from "./createJob-reducer";
 import { searchPhotographerReducer } from "./searchPhotographer-reducer";
 import { privateJobReducer } from "./privateJob-reducer";
+import { acceptDeclinePrivateJob } from "./acceptDeclinePrivateJob-reducer";
 
 const MainReducer = combineReducers({
   user,
@@ -20,7 +21,8 @@ const MainReducer = combineReducers({
   signUp: signUpReducer,
   createJob: createJobReducer,
   photographers: searchPhotographerReducer,
-  privateJobRequest: privateJobReducer
+  privateJobRequest: privateJobReducer,
+  acceptDeclinePrivateJob: acceptDeclinePrivateJob
 });
 
 export default MainReducer;
