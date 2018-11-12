@@ -1,12 +1,11 @@
 import React from 'react';
-import { NameInputSVG } from "../../components/svg/NameInputSVG";
-import { InputField } from "../../components/form/InputField";
-import { LocationSVG } from "../../components/svg/LocationSVG";
-import NavFooterWrapper from "./NavFooterWrapper";
+import { NameInputSVG } from "../../../components/svg/NameInputSVG";
+import { InputField } from "../../../components/form/InputField";
+import { LocationSVG } from "../../../components/svg/LocationSVG";
 import PropTypes from 'prop-types';
-import AvatarInput from "../AvatarInput";
+import AvatarInput from "./AvatarInput";
 
-const ProfileEditView = ({ updateUserHandler, updateUserInfo, name, changeHandler, location, user}) => (
+export const ProfileEditView = ({ updateUserHandler, name, changeHandler, location, user, photoURL}) => (
 
 
 	<div className="section-content with-padding">
@@ -34,8 +33,7 @@ const ProfileEditView = ({ updateUserHandler, updateUserInfo, name, changeHandle
 			change photo:
 			<AvatarInput
 				uid={user.uid}
-				userAvatar={user.photoURL}
-				updateUserInfo={updateUserInfo}
+				userAvatar={photoURL}
 				name="avatar"
 			/>
 			<div className="btn-container">
@@ -47,12 +45,10 @@ const ProfileEditView = ({ updateUserHandler, updateUserInfo, name, changeHandle
 			</div>
 		</form>
 	</div>
-)
+);
 
 
 ProfileEditView.propTypes = {
 	name: PropTypes.string.isRequired,
 	location: PropTypes.string.isRequired,
-}
-
-export const ProfileEditViewWithNav = NavFooterWrapper(ProfileEditView);
+};

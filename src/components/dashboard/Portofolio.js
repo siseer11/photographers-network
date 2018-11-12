@@ -6,8 +6,7 @@ import UploadPhotoToPortofolio from "../../contents/UploadPhotoToPortofolio";
 
 export default class Portofolio extends React.Component {
   static propTypes = {
-    user: PropTypes.object,
-    updateUserInfo: PropTypes.func.isRequired
+    user: PropTypes.object
   };
   render() {
     const { user, updateUserInfo } = this.props;

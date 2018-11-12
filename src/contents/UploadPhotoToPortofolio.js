@@ -5,7 +5,6 @@ import { PropTypes } from "prop-types";
 export default class UploadPhotoToPortofolio extends React.Component {
   static propTypes = {
     closeModalListener: PropTypes.func.isRequired,
-    updateUserInfo: PropTypes.func.isRequired,
     showModal: PropTypes.bool
   };
 
@@ -114,7 +113,12 @@ export default class UploadPhotoToPortofolio extends React.Component {
         task.snapshot.ref
           .getDownloadURL()
           .then(downloadURL =>
-            that.updateUserInDb(fileId, imageDescription, downloadURL, changeState)
+            that.updateUserInDb(
+              fileId,
+              imageDescription,
+              downloadURL,
+              changeState
+            )
           );
       }
     );

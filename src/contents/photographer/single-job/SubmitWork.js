@@ -1,6 +1,6 @@
 // dependencies
 import React, {Component} from 'react';
-import fire from "../../../config/Fire";
+import {Redirect} from "react-router-dom";
 
 // high order component
 import NavFooterWrapper from '../../shared/NavFooterWrapper';
@@ -10,6 +10,19 @@ import LoadingPage from "../../../components/LoadingPage";
 import PhotoUpload from "../../shared/PhotoUpload";
 import WithModal from "../../../RenderProp/WithModal";
 import {Button} from "../../../components/Button";
+import {connect} from "react-redux";
+import {addNewNotification} from "../../../redux/actions/notifications-action";
+import {removeImgFromDBandStore, submitWork} from "../../../redux/actions/single-job-action-photographer";
+
+const mapStateToProps = state => ({
+  jobDescription: state.singleJob.jobDescription
+});
+
+const mapDispatchToProps = dispatch => ({
+  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid)),
+  submitWorkForJob: (jobId, images) => dispatch(submitWork(jobId, images)),
+  removeImgFromDBandStore: (jobId, id) => dispatch(removeImgFromDBandStore(jobId, id))
+});
 
 class Submitwork extends Component {
   state = {
@@ -18,8 +31,14 @@ class Submitwork extends Component {
     loading: true,
     submitted: false,
   };
-  database = fire.database();
-  storage = fire.storage();
+
+  componentDidMount() {
+    window.onbeforeunload = this.removeImages;
+  }
+
+  componentWillUnmount() {
+    this.removeImages();
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.match.params.jobid)
@@ -29,18 +48,7 @@ class Submitwork extends Component {
       });
   }
 
-  //TODO: delete photos, if user refreshes and does not submit photos
   //TODO: if user refreshes and already submitted photos, he must not be able to submit new ones
-
-  componentWillUnmount() {
-    console.log("hi");
-    if (!this.state.submitted) {
-      this.state.images.forEach(image => {
-        this.removeFromDatabaseAndStorage(image.id)
-          .then(() => console.log("image removed!"));
-      });
-    }
-  }
 
   showPhotos = (images) => {
     this.setState(prevState => ({images: [...prevState.images, ...images]}), () => console.log(this.state.images));
@@ -51,45 +59,34 @@ class Submitwork extends Component {
     let imagesCopy = [...this.state.images];
     imagesCopy.splice(index, 1);
     this.setState(prevState => ({images: imagesCopy}),
-      () => this.removeFromDatabaseAndStorage(id));
+      () => this.props.removeImgFromDBandStore(this.state.jobId, id));
   };
 
-  async removeFromDatabaseAndStorage(id) {
-    const {jobId} = this.state;
-    const {user} = this.props;
-    try {
-      await this.database.ref(`photographer/${user.uid}/applied-jobs/${jobId}/submitted-work/`).child(id).remove();
-      await this.storage.ref(`${user.uid}/submitted-works/${jobId}`).child(id).delete();
-    } catch (err) {
-      console.log(err.message);
+  removeImages() {
+    const {submitted, images} = this.state;
+    if (!submitted) {
+      images.forEach(image => {
+        this.props.removeImgFromDBandStore(this.state.jobId, image.id)
+          .then(() => console.log("image removed!"));
+      });
     }
   }
 
   submit = () => {
-    const {user} = this.props;
+    const {user, jobDescription} = this.props;
     const {jobId, images} = this.state;
-    this.database.ref("requests").child(jobId).once('value', snapshot => {
-      const jobDescription = snapshot.val();
-      this.addNotification(jobDescription, user, jobId);
-      this.database.ref("requests").child(jobId).update({"submitted-work": images});
-      this.setState({submitted: true});
-    });
+    this.props.submitWorkForJob(jobId, images);
+    const notification = {
+      title: `${user.displayName} submitted his work for "${
+        jobDescription.title
+        }".`,
+      link: `/progress-job/${jobId}`,
+      read: false,
+      time: new Date().getTime()
+    };
+    this.props.addNotification(notification, jobDescription.companyId);
+    this.setState({submitted: true});
   };
-
-  addNotification(jobDescription, user, jobId) {
-    this.database
-      .ref("users").child(jobDescription.companyId)
-      .child("notifications")
-      .push()
-      .set({
-        title: `${user.displayName} submitted his work for "${
-          jobDescription.title
-          }".`,
-        link: `/progress-job/${jobId}`,
-        read: false,
-        time: new Date().getTime()
-      });
-  }
 
   render() {
     const {jobId, images} = this.state;
@@ -128,7 +125,7 @@ class Submitwork extends Component {
                 }
               </div>
             </React.Fragment> :
-            <h2>Successfully submitted!</h2>
+            <Redirect to={`/progress-job/${jobId}`}/>
           }
         </div>
       ) : (
@@ -139,4 +136,4 @@ class Submitwork extends Component {
 }
 
 const SubmitWork = NavFooterWrapper(Submitwork);
-export default SubmitWork;
+export default connect(mapStateToProps, mapDispatchToProps)(SubmitWork);

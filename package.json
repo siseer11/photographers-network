@@ -4,16 +4,20 @@
   "private": true,
   "dependencies": {
     "file-saver": "^2.0.0-rc.4",
-    "firebase": "^5.5.3",
+    "firebase": "^5.5.7",
     "jszip": "^3.1.5",
     "paypal": "^1.0.1",
     "prop-types": "^15.6.2",
     "query-string": "^6.2.0",
-    "react": "^16.5.2",
+    "react": "^16.6.0",
     "react-async-script-loader": "^0.3.0",
-    "react-dom": "^16.5.2",
+    "react-dom": "^16.6.0",
+    "react-redux": "^5.1.0",
+    "react-redux-firebase": "^2.1.9",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.0.4"
+    "react-scripts": "^2.1.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",

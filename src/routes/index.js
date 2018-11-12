@@ -1,117 +1,153 @@
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import Dashboard from "../contents/shared/Dashboard";
+import Dashboard from "../contents/shared/dashboard/Dashboard";
 import SignIn from "../contents/SignIn";
 import Home from "../contents/Home";
 import SignUp from "../contents/SignUp";
-import { ProfileWithNav } from "../contents/shared/Profile";
+import Profile from "../contents/shared/profile/Profile";
 import SearchPhotographer from "../contents/company/SearchPhotographer";
 import CreateJobb from "../contents/company/CreateJobb";
 import MyJobOffers from "../contents/company/my-jobs/MyJobOffers";
-import { JobsWithFooter } from "../contents/shared/Jobs";
-import { ProfileEdit } from "../contents/shared/ProfileEdit";
-import ErrorPage from "../contents/shared/ErrorPage";
+import Jobs from "../contents/shared/jobs/Jobs";
+import ProfileEdit from "../contents/shared/profile/ProfileEdit";
+import GbNavBar from "../components/nav-footer/gbNav";
 import { PrivateJobRequest } from "../components/PrivateJobRequests";
 import { DeclinedPrivateJob } from "../components/DeclinedPrivateJob";
 import SubmitWork from "../contents/photographer/single-job/SubmitWork";
 import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
 import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
-import { WithLoading } from "../components/WithLoading";
+import { GbFooter } from "../components/nav-footer/Footer";
 
-export default ({ user, loading, setLoadingTrue, updateUserInfo }) => (
+export default ({
+  user,
+  loading,
+  setLoadingTrue,
+  updateUserInfo,
+  userOn,
+  userType
+}) => (
   <BrowserRouter>
-    <Switch>
-      <Route
-        exact
-        path="/declined-private-job/:jobId"
-        render={props => (
-          <DeclinedPrivateJob {...props} user={user} loading={loading} />
-        )}
-      />
-      <Route
-        exact
-        path="/home"
-        render={props => <Home {...props} user={user} loading={loading} />}
-      />
-      <Route
-        exact
-        path="/signIn"
-        render={props => (
-          <SignIn
-            {...props}
-            setLoadingTrue={setLoadingTrue}
-            loading={loading}
-            user={user}
-          />
-        )}
-      />
-      <Route
-        exact
-        path="/signUp/:type"
-        render={props => <SignUp {...props} loading={loading} user={user} />}
-      />
-      <Route
-        exact
-        path="/dashboard"
-        render={props => (
-          <Dashboard
-            {...props}
-            user={user}
-            loading={loading}
-            updateUserInfo={updateUserInfo}
-          />
-        )}
-      />
+    <React.Fragment>
+      <GbNavBar />
+      <Switch>
+        <Route
+          exact
+          path="/declined-private-job/:jobId"
+          render={props => (
+            <DeclinedPrivateJob {...props} user={user} loading={loading} />
+          )}
+        />
+        <Route exact path="/home" component={Home} />
+        <Route
+          exact
+          path="/signIn"
+          render={props =>
+            !userOn ? (
+              <SignIn {...props} setLoadingTrue={setLoadingTrue} />
+            ) : (
+              <Redirect to="/dashboard" />
+            )
+          }
+        />
+        <Route
+          exact
+          path="/signUp/:type"
+          render={props =>
+            !userOn ? <SignUp {...props} /> : <Redirect to="/dashboard" />
+          }
+        />
+        <Route
+          exact
+          path="/dashboard"
+          render={props =>
+            userOn ? <Dashboard {...props} /> : <Redirect to="/signin" />
+          }
+        />
+        <Route
+          exact
+          path="/ProfileEdit"
+          render={props =>
+            userOn ? (
+              <ProfileEdit {...props} />
+            ) : (
+              <Redirect to="/signin" />
+            )
+          }
+        />
+        <Route
+          exact
+          path="/profile/:uid"
+          render={props => <Profile {...props} />}
+        />
+        <Route
+          exact
+          path="/search-photographers"
+          render={props => <SearchPhotographer {...props} />}
+        />
+        <Route
+          exact
+          path="/createJob"
+          render={props =>
+            userType === "company" ? (
+              <CreateJobb {...props} />
+            ) : (
+              <Redirect to="/dashboard" />
+            )
+          }
+        />
+        <Route
+          exact
+          path="/myJobOffers"
+          render={props =>
+            userType === "company" ? (
+              <MyJobOffers {...props} />
+            ) : (
+              <Redirect to="/dashboard" />
+            )
+          }
+        />
+        <Route exact path="/jobs" render={props => <Jobs {...props} />} />
+        <Route
+          exact
+          path="/private/job/:jobId"
+          render={props =>
+            userOn ? <PrivateJobRequest {...props} /> : <Redirect to="signin" />
+          }
+        />
+        <Route
+          exact
+          path="/open-job/:jobid"
+          render={props => (
+            <OpenSingleJob {...props} />
+          )}
+        />
+        <Route
+          exact
+          path="/progress-job/:jobid"
+          render={props => (
+            <ProgressSingleJob {...props} user={user} loading={loading} />
+          )}
+        />
+        <Route
+          exact
+          path="/submit-work/:jobid"
+          render={props => (
+            <SubmitWork {...props} user={user} loading={loading} />
+          )}
+        />
+        <Redirect to="/home" />
+      </Switch>
+      <GbFooter />
+    </React.Fragment>
+  </BrowserRouter>
+);
 
-      <Route
-        exact
-        path="/ProfileEdit"
-        render={props => (
-          <WithLoading
-            component={
-              <ProfileEdit
-                {...props}
-                user={user}
-                updateUserInfo={updateUserInfo}
-              />
-            }
-            loading={loading}
-          />
-        )}
-      />
-
-      <Route
-        exact
-        path="/profile/:uid"
-        render={props => (
-          <ProfileWithNav {...props} user={user} loading={loading} />
-        )}
-      />
-      <Route
-        exact
-        path="/search-photographers"
-        render={props => <SearchPhotographer {...props} user={user} />}
-      />
-
-      <Route
-        exact
-        path="/createJob"
-        render={props => (
-          <CreateJobb {...props} user={user} loading={loading} />
-        )}
-      />
-      <Route
-        exact
-        path="/myJobOffers"
-        render={props => (
-          <MyJobOffers {...props} user={user} loading={loading} />
-        )}
-      />
+/*
       <Route
         exact
         path="/open-job/:jobid"
         render={props => (
-          <OpenSingleJob {...props} user={user} loading={loading} />
+          <OpenSingleJob {...props} />
         )}
       />
       <Route
@@ -128,36 +164,4 @@ export default ({ user, loading, setLoadingTrue, updateUserInfo }) => (
           <SubmitWork {...props} user={user} loading={loading} />
         )}
       />
-      <Route
-        exact
-        path="/submit-work/:jobid"
-        render={props => (
-          <SubmitWork {...props} user={user} loading={loading} />
-        )}
-      />
-      <Route
-        exact
-        path="/jobs"
-        render={props => (
-          <JobsWithFooter {...props} user={user} loading={loading} />
-        )}
-      />
-      <Route
-        exact
-        path="/private/job/:jobId"
-        render={props => (
-          <PrivateJobRequest {...props} user={user} loading={loading} />
-        )}
-      />
-
-      <Route
-        exact
-        path="/jobs"
-        render={props => (
-          <JobsWithFooter {...props} user={user} loading={loading} />
-        )}
-      />
-      <Redirect to="/home" />
-    </Switch>
-  </BrowserRouter>
-);
+      */

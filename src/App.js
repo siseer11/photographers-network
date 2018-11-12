@@ -1,89 +1,47 @@
 import React, { Component } from "react";
-import fire from "./config/Fire";
+import { connect } from "react-redux";
+import { setAuthListener } from "./redux/actions/user-action";
+
 import "./style/gb-style.css";
 import "./style/photographer-style.css";
 import Routes from "./routes";
+import LoadingPage from "./components/LoadingPage";
 
 class App extends Component {
-  state = {
-    user: null,
-    loading: null
-  };
-  database = fire.database().ref();
-
-  /**
-   * Checks user state, each time a component did mount.
-   */
   componentDidMount() {
-    this.authListener();
+    this.props.authListener();
   }
-
-  /**
-   * Checks, if user is logged in and updates state.
-   */
-  authListener = () => {
-    fire.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.getUserInfos(user.uid);
-      } else {
-        this.setState(prevState => ({
-          loading: false,
-          user: null
-        }));
-      }
-    });
-  };
-
-  setLoadingTrue = () => {
-    this.setState({
-      loading: true
-    });
-  };
-
-  /**
-   * Fetches information about current user of the database.
-   *
-   * @param userId
-   */
-  getUserInfos = userId => {
-    this.database
-      .child("users")
-      .child(userId)
-      .once("value", snap => {
-        const userInfos = snap.val();
-        this.setState(() => ({
-          user: {
-            ...userInfos,
-            uid: userId,
-            portofolio: Object.values(userInfos.portofolio || {})
-          },
-          loading: false,
-          authenticated: true
-        }));
-      })
-      .catch(err => console.log(err));
-  };
-
-  updateUserInfo = newInfos => {
-    this.setState(prevState => ({
-      user: {
-        ...prevState.user,
-        ...newInfos
-      }
-    }));
-  };
-
   render() {
-    const { user, loading } = this.state;
-    return (
-      <Routes
-        updateUserInfo={this.updateUserInfo}
-        user={user}
-        loading={loading}
-        setLoadingTrue={this.setLoadingTrue}
-      />
-    );
+    const { userDataLoading, userData, userOn } = this.props;
+    if (userDataLoading) {
+      return <LoadingPage/>;
+    } else {
+      return (
+        <Routes
+          userOn={this.props.userOn}
+          userType={this.props.userData.type}
+          setLoadingTrue={this.setLoadingTrue}
+        />
+      );
+    }
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  userDataLoading: state.user.userDataLoading,
+  userData: state.user.userData,
+  userOn: state.user.userOn
+});
+
+const mapDispatchToProps = dispatch => ({
+  authListener: () => dispatch(setAuthListener())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
+
+/*
+
+      */

@@ -1,13 +1,17 @@
 import React from "react";
-import fire from "../../../config/Fire";
 import {ProgressSingleJobViewCompany} from "../../../components/single-job/progress/ProgressSingleJobViewCompany";
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
+import {connect} from "react-redux";
+import {addNewNotification} from "../../../redux/actions/notifications-action";
+import {acceptWork} from "../../../redux/actions/single-job-action-company";
 
-export default class ProgressSingleJobCompany extends React.Component {
-  database = fire.database();
+const mapDispatchToProps = dispatch => ({
+  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid)),
+  acceptSubmittedWork: (jobId, acceptedApplicant) => dispatch(acceptWork(jobId, acceptedApplicant))
+});
 
-  // ---------- COMPANY METHODS ----------:
+class ProgressSingleJobCompany extends React.Component {
   /**
    * Downloads zip file of submitted work.
    */
@@ -60,30 +64,16 @@ export default class ProgressSingleJobCompany extends React.Component {
 
   acceptWork = () => {
     const {jobDescription, jobId, acceptedApplicant} = this.props;
-    this.database
-      .ref("requests")
-      .child(jobId)
-      .update({
-        status: "closed"
-      });
-    this.database.ref("photographer").child(acceptedApplicant.uid).child("applied-jobs").child(jobId).update({
-      status: "finished"
-    });
+    this.props.acceptSubmittedWork(jobId, acceptedApplicant);
     // add notification
-    this.database
-      .ref("users")
-      .child(acceptedApplicant.uid)
-      .child("notifications")
-      .push()
-      .set({
-        title: `${
-          jobDescription.companyName
-          } has accepted your submitted work for ${jobDescription.title}.`,
-        link: `/progress-job/${jobId}`,
-        read: false,
-        time: new Date().getTime()
-      });
-    this.props.setAcceptedWork();
+    this.props.addNotification({
+      title: `${
+        jobDescription.companyName
+        } has accepted your submitted work for ${jobDescription.title}.`,
+      link: `/progress-job/${jobId}`,
+      read: false,
+      time: new Date().getTime()
+    }, acceptedApplicant.uid);
   };
 
   render() {
@@ -103,3 +93,5 @@ export default class ProgressSingleJobCompany extends React.Component {
     );
   }
 }
+
+export default connect(null, mapDispatchToProps)(ProgressSingleJobCompany);

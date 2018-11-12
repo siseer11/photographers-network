@@ -1,0 +1,95 @@
+REDUX THUNK INFOS :
+
+- Redux Thunk middleware allows you to write action creators that return a function instead of an action. 
+  The thunk can be used to delay the dispatch of an action, or to dispatch only if a certain condition is met. 
+  The inner function receives the store methods dispatch and getState as parameters.
+
+
+
+
+A thunk is a function that wraps an expression to delay its evaluation.
+
+  // calculation of 1 + 2 is immediate
+  // x === 3
+  let x = 1 + 2;
+
+  // calculation of 1 + 2 is delayed
+  // foo can be called later to perform the calculation
+  // foo is a thunk!
+  let foo = () => 1 + 2;
+  The term originated as a humorous past-tense version of "think".
+
+
+
+
+
+  store state = {
+   user : {
+    displayName : '',
+    email : '',
+    photoURL : '',
+    type : '',   
+   },
+   userNotifications : {
+    qweasd : {
+     id : qweasd, 
+    }....
+   },
+   allJobs : {
+    fetchedOnce : false,
+    data : {
+     dqwea : {
+      id: dqwea,
+      ...
+     }
+    }
+   },
+   visitedProfiles : {
+    wqeasd : {
+     id : wqeasd,
+     ...
+    }
+   },
+   appliedJobs : {
+    asdq : {
+     id : asdq,
+     ...
+    }
+   },
+   postedJobs : {
+    orq : {
+     id : orq , 
+     ...
+    }
+   },
+   visitedJobs : {
+    dqwz : {
+     id: dqwz,
+    }
+    ....
+   },
+   appLoading : true,
+  }
+
+  localstorage !
+
+
+
+
+
+  TODO : 
+ -> In the signin , must handle the action, doing nothing now
+ -> In the signup , must handle the action , doing nothing now
+ -> In dashboard not sure about the loading prop that i'm passing down
+ -> In profileEdit must do the logic
+ -> In profile must do the whole logic, a lot..
+ -> In searchPhotographer the logic, move to actions , also it does not need the data about the user...
+ -> In createJob must take care of the logic
+ -> Into MyJobOffers must take care of the logic , now i skip all the logic printing out just an h2
+ -> take a look at openSingleJob might not work, also i do not think we are checking if there is a user on, just company/photographer 
+ -> PrivateJobReq must take care of functionality, also check to see if the person is a company or photographer, i do not think i'm doing that
+ -> Clean GbNav
+ -> Signin error handlings!
+ -> Delete the navFooterWrapper since now we have it everywheer
+ -> Hirable button
+ -> Profile page still ugly code

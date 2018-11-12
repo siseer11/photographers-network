@@ -1,8 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Notification} from "./Notification";
+import {connect} from "react-redux";
+import {markNotificationAsRead} from "../../redux/actions/notifications-action";
 
-export const NotificationContainer = ({notifications, readHandler, showBoxHandler}) => (
+const mapStateToProps = state => ({
+  notifications: state.notifications.notifications
+});
+
+const mapDispatchToProps = dispatch => ({
+  markAsRead: id => dispatch(markNotificationAsRead(id))
+});
+
+const NotificationContainer = ({notifications, markAsRead, showBoxHandler}) => (
   <div className="notification-container">
     <h3>Notifications</h3>
     <div>
@@ -15,7 +25,7 @@ export const NotificationContainer = ({notifications, readHandler, showBoxHandle
             type='half-left'
             postedTime={new Date(note.time).toLocaleDateString("en-US")}
             read={note.read}
-            clickHandler={readHandler}
+            clickHandler={markAsRead}
             showHandler={showBoxHandler}
             index={note.id}
           >
@@ -27,6 +37,8 @@ export const NotificationContainer = ({notifications, readHandler, showBoxHandle
     </div>
   </div>
 );
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationContainer);
 
 NotificationContainer.propTypes = {
   notifications: PropTypes.array.isRequired,

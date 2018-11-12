@@ -1,12 +1,14 @@
 import React, { Component } from "react";
-import fire from "../config/Fire";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { signUserInAsync } from "../redux/actions/user-action";
 import { EmailSVG } from "../components/svg/EmailSVG";
 import { PasswordSVG } from "../components/svg/PasswordSVG";
 import { Error } from "../components/Error";
 import { InputField } from "../components/form/InputField";
 import NavFooterWrapper from "./shared/NavFooterWrapper";
 
-class SignsIn extends Component {
+class SignIn extends Component {
   state = {
     email: "",
     password: "",
@@ -14,9 +16,7 @@ class SignsIn extends Component {
     errorMessage: "",
     error: false
   };
-  componentDidMount() {
-    this.props.setLoadingTrue();
-  }
+
   /**
    * Updates state to the current value of a certain target.
    * @param e
@@ -25,22 +25,9 @@ class SignsIn extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  /**
-   * Logs in user. Doesn't log in user, if he's no photographer/company.
-   *
-   * @param e
-   */
   login = e => {
     e.preventDefault();
-    fire
-      .auth()
-      .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(signInData => {
-        this.props.history.push("/dashboard");
-      })
-      .catch(error => {
-        this.setState({ error: true, errorMessage: error.message });
-      });
+    this.props.signInUser(this.state.email, this.state.password);
   };
 
   render() {
@@ -86,5 +73,11 @@ class SignsIn extends Component {
   }
 }
 
-const SignIn = NavFooterWrapper(SignsIn);
-export default SignIn;
+const mapDispatchToProps = dispatch => ({
+  signInUser: (email, password) => dispatch(signUserInAsync(email, password))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(SignIn);
