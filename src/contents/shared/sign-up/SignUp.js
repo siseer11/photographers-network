@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { sigUpUser } from "../redux/actions/signUp-action";
+import { sigUpUser } from "../../../redux/actions/signUp-action";
 
-import { SingUpView } from "../components/SignUpView";
+import { SingUpView } from "../../../components/SignUpView";
 
 class SignUp extends Component {
   state = {

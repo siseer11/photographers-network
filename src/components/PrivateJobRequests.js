@@ -2,7 +2,7 @@ import React from "react";
 import queryString from "query-string";
 import { connect } from "react-redux";
 
-import PrivateJobFunctionality from "../contents/PrivateJobFunctionality";
+import PrivateJobFunctionality from "../contents/company/private-job/PrivateJobFunctionality";
 
 const PrivateJobRequest = props => {
   const { user, location } = props;

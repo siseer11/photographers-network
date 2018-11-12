@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { signUserInAsync } from "../redux/actions/user-action";
-import { EmailSVG } from "../components/svg/EmailSVG";
-import { PasswordSVG } from "../components/svg/PasswordSVG";
-import { Error } from "../components/Error";
-import { InputField } from "../components/form/InputField";
+import { signUserInAsync } from "../../../redux/actions/user-action";
+import { EmailSVG } from "../../../components/svg/EmailSVG";
+import { PasswordSVG } from "../../../components/svg/PasswordSVG";
+import { Error } from "../../../components/Error";
+import { InputField } from "../../../components/form/InputField";
 
 class SignIn extends Component {
   state = {

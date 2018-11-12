@@ -1,19 +1,22 @@
 import React from "react";
-import { connect } from "react-redux";
-import { createJob } from "../../redux/actions/createJob-action";
+import { PropTypes } from "prop-types";
 
-import { CustomSelect } from "../../components/CustomSelect";
-import { InputField } from "../../components/form/InputField";
-import { NameInputSVG } from "../../components/svg/NameInputSVG";
-import { LocationSVG } from "../../components/svg/LocationSVG";
-import { MoneySVG } from "../../components/svg/MoneySVG";
-import { CameraSVG } from "../../components/svg/CameraSVG";
-import { CalendarSVG } from "../../components/svg/CalendarSVG";
-import { TextArea } from "../../components/form/TextArea";
+import { CustomSelect } from "../../../components/CustomSelect";
+import { InputField } from "../../../components/form/InputField";
+import { NameInputSVG } from "../../../components/svg/NameInputSVG";
+import { LocationSVG } from "../../../components/svg/LocationSVG";
+import { MoneySVG } from "../../../components/svg/MoneySVG";
+import { CameraSVG } from "../../../components/svg/CameraSVG";
+import { CalendarSVG } from "../../../components/svg/CalendarSVG";
+import { TextArea } from "../../../components/form/TextArea";
 
 const types = ["nature", "portrait", "dogs", "cats"];
 
-class CreateJob extends React.Component {
+export default class CreateJobForm extends React.Component {
+  static propTypes = {
+    submitHandler: PropTypes.func.isRequired
+  };
+
   createValidDate = date => {
     const year = date.getFullYear();
     const day = date.getDate();
@@ -24,35 +27,23 @@ class CreateJob extends React.Component {
   };
 
   state = {
-    jobTitle: "",
-    jobLocation: "",
-    jobType: "nature",
-    jobBudget: "",
-    jobDate: this.createValidDate(new Date()),
-    jobDescription: ""
+    jobbTitle: "",
+    jobbLocation: "",
+    jobbType: "nature",
+    jobbBudget: "",
+    jobbDate: this.createValidDate(new Date()),
+    jobbDescription: ""
   };
 
   changeHandler = e => {
     this.setState({
-      [`job${e.target.name}`]: e.target.value
+      [`jobb${e.target.name}`]: e.target.value
     });
-  };
-
-  submitHandler = e => {
-    e.preventDefault();
-    this.props.createJob(
-      {
-        ...this.state,
-        date: new Date(this.state.jobDate).getTime()
-      },
-      this.props.user,
-      this.props.history
-    );
   };
 
   optionSelectHandler = type => {
     this.setState({
-      jobType: type
+      jobbType: type
     });
   };
 
@@ -75,31 +66,64 @@ class CreateJob extends React.Component {
     );
   };
 
+  checkForm = () => {
+    const { jobbTitle, jobbLocation, jobbBudget, jobbDescription } = this.state;
+
+    if (!/^[a-z -]{5,}$/gi.test(jobbTitle)) {
+      return "Job title must have at least 5 chars, letters,spaces and -";
+    } else if (!jobbLocation) {
+      return "The jobb location must be completed.";
+    } else if (!jobbBudget || Number(jobbBudget) < 10) {
+      return "The job budget must filled and higher then 10$";
+    } else if (!/^[a-z -\.]{20,}$/gi.test(jobbDescription)) {
+      return "Job description must have at least 20 chars, containing letters,spaces, - and points";
+    } else {
+      return true;
+    }
+  };
+
+  formSubmited = e => {
+    e.preventDefault();
+    const passed = this.checkForm();
+    if (passed === true) {
+      const s = this.state;
+      /* send data to the parent */
+      this.props.submitHandler({
+        title: s.jobbTitle,
+        description: s.jobbDescription,
+        price: Number(s.jobbBudget),
+        location: s.jobbLocation,
+        type: s.jobbType,
+        date: new Date(s.jobbDate).getTime()
+      });
+    } else {
+      console.log(passed);
+    }
+  };
+
   render() {
     const {
-      jobTitle,
-      jobLocation,
-      jobType,
-      jobBudget,
-      jobDate,
-      jobDescription,
+      jobbTitle,
+      jobbLocation,
+      jobbType,
+      jobbBudget,
+      jobbDate,
+      jobbDescription,
       showCustomSelect
     } = this.state;
-
-    const { loading, error, succes } = this.props;
 
     let today = new Date();
     today = this.createValidDate(today);
 
     return (
-      <div className="create-job-page section-content with-padding">
+      <div className="create-jobb-page section-content with-padding">
         <h1>Create Jobsss</h1>
-        <form onSubmit={this.submitHandler}>
+        <form onSubmit={this.formSubmited}>
           <InputField
             svg={
               <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
             }
-            value={jobTitle}
+            value={jobbTitle}
             changeHandler={this.changeHandler}
             type="text"
             name="Title"
@@ -109,7 +133,7 @@ class CreateJob extends React.Component {
             svg={
               <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
             }
-            value={jobLocation}
+            value={jobbLocation}
             changeHandler={this.changeHandler}
             type="text"
             name="Location"
@@ -120,7 +144,7 @@ class CreateJob extends React.Component {
             onClick={this.showCustomSelectHandler}
           >
             <CameraSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
-            {jobType}
+            {jobbType}
             <CustomSelect
               showCustomSelect={showCustomSelect}
               optionsList={types}
@@ -131,7 +155,7 @@ class CreateJob extends React.Component {
             svg={
               <MoneySVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
             }
-            value={jobBudget}
+            value={jobbBudget}
             changeHandler={this.changeHandler}
             type="number"
             name="Budget"
@@ -142,7 +166,7 @@ class CreateJob extends React.Component {
             svg={
               <CalendarSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
             }
-            value={jobDate || today}
+            value={jobbDate || today}
             changeHandler={this.changeHandler}
             type="date"
             name="Date"
@@ -152,7 +176,7 @@ class CreateJob extends React.Component {
             svg={
               <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
             }
-            value={jobDescription}
+            value={jobbDescription}
             name="Description"
             changeHandler={this.changeHandler}
             placeholder="Job description"
@@ -160,28 +184,10 @@ class CreateJob extends React.Component {
           <input
             className="gb-btn gb-btn-large gb-btn-primary"
             type="submit"
-            value={loading ? "Loading..." : succes ? "Done!" : "Create"}
-            disabled={loading || succes}
+            value="Create"
           />
         </form>
       </div>
     );
   }
 }
-
-const mapStateToProps = state => ({
-  loading: state.createJob.loading,
-  error: state.createJob.error,
-  succes: state.createJob.succes,
-  user: state.user.userData
-});
-
-const mapDispatchToProps = dispatch => ({
-  createJob: (jobData, companyData, history) =>
-    dispatch(createJob(jobData, companyData, history))
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreateJob);

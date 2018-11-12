@@ -1,5 +1,5 @@
 import React from "react";
-import fire from "../config/Fire";
+import fire from "../../../config/Fire";
 import { PropTypes } from "prop-types";
 
 export default class UploadPhotoToPortofolio extends React.Component {

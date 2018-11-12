@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import Dashboard from "../contents/shared/dashboard/Dashboard";
-import SignIn from "../contents/SignIn";
-import Home from "../contents/Home";
-import SignUp from "../contents/SignUp";
+import SignIn from "../contents/shared/sign-in/SignIn";
+import Home from "../contents/shared/home/Home";
+import SignUp from "../contents/shared/sign-up/SignUp";
 import Profile from "../contents/shared/profile/Profile";
-import SearchPhotographer from "../contents/company/SearchPhotographer";
-import CreateJobb from "../contents/company/CreateJobb";
+import SearchPhotographer from "../contents/company/search-photographer/SearchPhotographer";
+import CreateJobb from "../contents/company/create-job/CreateJobb";
 import MyJobOffers from "../contents/company/my-jobs/MyJobOffers";
 import Jobs from "../contents/shared/jobs/Jobs";
 import ProfileEdit from "../contents/shared/profile/ProfileEdit";
