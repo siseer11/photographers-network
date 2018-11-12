@@ -5,7 +5,7 @@ import {addNewNotification} from "../../../redux/actions/notifications-action";
 import {applyForJob} from "../../../redux/actions/single-job-action-photographer";
 
 const mapDispatchToProps = dispatch => ({
-  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid)),
+  addNotification: notification => dispatch(addNewNotification(notification)),
   applyForSingleJob: jobId => dispatch(applyForJob(jobId))
 });
 
@@ -14,17 +14,18 @@ class OpenSingleJobPhotographer extends React.Component {
    * User applies for a job.
    */
   applyForJob = () => {
-    const {user, jobId, jobDescription} = this.props;
+    const {profile, jobId, jobDescription} = this.props;
     this.props.applyForSingleJob(jobId);
     const notification = {
-      title: `${user.displayName} applied for your job request "${
+      title: `${profile.firstName} ${profile.lastName} applied for your job request "${
         jobDescription.title
         }".`,
       link: `/open-job/${jobId}`,
       read: false,
-      time: new Date().getTime()
+      createdAt: new Date(),
+      recipientUserId: jobDescription.companyId
     };
-    this.props.addNotification(notification, jobDescription.companyId);
+    this.props.addNotification(notification);
   };
 
   render() {

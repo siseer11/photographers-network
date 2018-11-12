@@ -16,7 +16,9 @@ const mapStateToProps = state => ({
   jobDescription: state.singleJob.jobDescription,
   userApplied: state.singleJob.openJob.userApplied,
   appliedPhotographers: state.singleJob.openJob.appliedPhotographers,
-  isDeclinedPhotographer: state.singleJob.openJob.isDeclinedPhotographer
+  isDeclinedPhotographer: state.singleJob.openJob.isDeclinedPhotographer,
+  auth: state.firebase.auth,
+  profile: state.firebase.profile
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -43,14 +45,16 @@ class OpenSingleJob extends React.Component {
       userApplied,
       appliedPhotographers,
       isDeclinedPhotographer,
-      user
+      user,
+      auth,
+      profile
     } = this.props;
 
     if (jobLoading) return <LoadingPage />;
     if (jobDescription.status !== "open")
       return <Redirect to={`/progress-job/${this.props.match.params.jobid}`} />;
 
-    const type = user ? user.type : "photographer";
+    const type = profile.type;
 
     return (
       <div className="single-job-view section-content">
@@ -62,7 +66,8 @@ class OpenSingleJob extends React.Component {
                 userApplied={userApplied}
                 isDeclinedPhotographer={isDeclinedPhotographer}
                 jobId={jobId}
-                user={user}
+                auth={auth}
+                profile={profile}
                 jobDescription={jobDescription}
               />
             ) : (

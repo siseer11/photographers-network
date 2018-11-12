@@ -15,11 +15,13 @@ import {addNewNotification} from "../../../redux/actions/notifications-action";
 import {removeImgFromDBandStore, submitWork} from "../../../redux/actions/single-job-action-photographer";
 
 const mapStateToProps = state => ({
-  jobDescription: state.singleJob.jobDescription
+  jobDescription: state.singleJob.jobDescription,
+  auth: state.firebase.auth,
+  profile: state.firebase.profile
 });
 
 const mapDispatchToProps = dispatch => ({
-  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid)),
+  addNotification: notification => dispatch(addNewNotification(notification)),
   submitWorkForJob: (jobId, images) => dispatch(submitWork(jobId, images)),
   removeImgFromDBandStore: (jobId, id) => dispatch(removeImgFromDBandStore(jobId, id))
 });
@@ -73,24 +75,25 @@ class Submitwork extends Component {
   }
 
   submit = () => {
-    const {user, jobDescription} = this.props;
+    const {profile, jobDescription} = this.props;
     const {jobId, images} = this.state;
     this.props.submitWorkForJob(jobId, images);
     const notification = {
-      title: `${user.displayName} submitted his work for "${
+      title: `${profile.firstName} ${profile.lastName} submitted his work for "${
         jobDescription.title
         }".`,
       link: `/progress-job/${jobId}`,
       read: false,
-      time: new Date().getTime()
+      time: new Date(),
+      recipientUserId: jobDescription.companyId
     };
-    this.props.addNotification(notification, jobDescription.companyId);
+    this.props.addNotification(notification);
     this.setState({submitted: true});
   };
 
   render() {
     const {jobId, images} = this.state;
-    const {user} = this.props;
+    const {auth} = this.props;
     return (
       this.state.loading === false ? (
         <div className="section-content with-padding">
@@ -99,8 +102,8 @@ class Submitwork extends Component {
               Submit your work here!
               <WithModal className="portofolio-add" closeItemClass="close">
                 {({showModal, closeModalListener}) => (
-                  <PhotoUpload databaseRef={`photographer/${user.uid}/applied-jobs/${jobId}/submitted-work`}
-                               storageRef={`${user.uid}/submitted-works/${jobId}`}
+                  <PhotoUpload databaseRef={`photographer/${auth.uid}/applied-jobs/${jobId}/submitted-work`}
+                               storageRef={`${auth.uid}/submitted-works/${jobId}`}
                                closeModalListener={closeModalListener}
                                showModal={showModal}
                                callBackFunction={this.showPhotos}

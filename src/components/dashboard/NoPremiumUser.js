@@ -1,13 +1,18 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import WithModal from "../../RenderProp/WithModal";
-import fire from "../../config/Fire";
 import PaypalButton from "../../contents/shared/PayPalButton";
 import CLIENT from "../../paypal/Client";
+import { connect } from "react-redux";
+import {markAsPremium} from "../../redux/actions/profile-action";
 
 const ENV = process.env.NODE_ENV === "production" ? "production" : "sandbox";
 
-export default class NoPremiumUser extends React.Component {
+const mapDispatchToProps = dispatch => ({
+  markAsPremium: () => dispatch(markAsPremium())
+});
+
+class NoPremiumUser extends React.Component {
   state = {
     buttonStatus: "Become Premium"
   };
@@ -22,27 +27,13 @@ export default class NoPremiumUser extends React.Component {
     this.setState(() => ({
       buttonStatus: "Loading..."
     }));
-    fire
-      .database()
-      .ref("users")
-      .child(this.props.user.uid)
-      .update(
-        {
-          premium: true
-        },
-        err => {
-          if (err) {
-            this.setState(() => ({
-              buttonStatus: "Error"
-            }));
-          } else {
-            this.setState(() => ({
-              buttonStatus: "Done!"
-            }));
-            this.props.updateUserInfo({ premium: true });
-          }
-        }
-      );
+    this.props.markAsPremium()
+      .then(()=> this.setState(() => ({
+        buttonStatus: "Done!"
+      })))
+      .catch(err => this.setState(() => ({
+        buttonStatus: "Error"
+      })));
   };
 
   onError = () => {
@@ -101,3 +92,5 @@ export default class NoPremiumUser extends React.Component {
     );
   }
 }
+
+export default connect(null, mapDispatchToProps)(NoPremiumUser);

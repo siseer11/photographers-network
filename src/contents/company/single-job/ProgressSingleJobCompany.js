@@ -7,7 +7,7 @@ import {addNewNotification} from "../../../redux/actions/notifications-action";
 import {acceptWork} from "../../../redux/actions/single-job-action-company";
 
 const mapDispatchToProps = dispatch => ({
-  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid)),
+  addNotification: notification => dispatch(addNewNotification(notification)),
   acceptSubmittedWork: (jobId, acceptedApplicant) => dispatch(acceptWork(jobId, acceptedApplicant))
 });
 
@@ -72,8 +72,9 @@ class ProgressSingleJobCompany extends React.Component {
         } has accepted your submitted work for ${jobDescription.title}.`,
       link: `/progress-job/${jobId}`,
       read: false,
-      time: new Date().getTime()
-    }, acceptedApplicant.uid);
+      time: new Date(),
+      recipientUserId: acceptedApplicant.uid
+    });
   };
 
   render() {

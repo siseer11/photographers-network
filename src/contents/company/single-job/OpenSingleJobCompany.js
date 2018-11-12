@@ -9,7 +9,7 @@ import {
 } from "../../../redux/actions/single-job-action-company";
 
 const mapDispatchToProps = dispatch => ({
-  addNotification: (notification, uid) => dispatch(addNewNotification(notification, uid)),
+  addNotification: notification => dispatch(addNewNotification(notification)),
   acceptApplicantForJob: (applicant, jobId) => dispatch(acceptApplicantForJob(applicant, jobId)),
   declineApplicantForJob: (uid, jobId) => dispatch(declineApplicantForJob(uid, jobId)),
   deleteCurrentJob: (jobId, companyId) => dispatch(deleteCurrentJob(jobId, companyId))
@@ -48,9 +48,10 @@ class OpenSingleJobCompany extends React.Component {
         } has declined your application for ${jobDescription.title}.`,
       link: `/open-job/${jobId}`,
       read: false,
-      time: new Date().getTime()
+      time: new Date(),
+      recipientUserId: uid
     };
-    this.props.addNotification(notification, uid);
+    this.props.addNotification(notification);
   };
 
   /**
@@ -77,9 +78,10 @@ class OpenSingleJobCompany extends React.Component {
       title: `${jobDescription.companyName} has accepted you to execute the job request "${jobDescription.title}".`,
       link: `/progress-job/${jobId}`,
       read: false,
-      time: new Date().getTime()
+      time: new Date(),
+      recipientUserId:acceptedApplicant.uid
     };
-    this.props.addNotification(notification, acceptedApplicant.uid);
+    this.props.addNotification(notification);
     this.props.history.replace(`/progress-job/${jobId}`);
   };
 
