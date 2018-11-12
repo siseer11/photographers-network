@@ -1,6 +1,6 @@
 import {
   SIGNUP_USER_START,
-  SIGNUP_USER_SUCCES,
+  SIGNUP_USER_SUCCESS,
   SIGNUP_USER_ERROR
 } from "../actions/signUp-action";
 
@@ -17,7 +17,7 @@ export const signUpReducer = (state = initialState, action) => {
         signUpLoading: true,
         error: false
       };
-    case SIGNUP_USER_SUCCES:
+    case SIGNUP_USER_SUCCESS:
       return state;
     case SIGNUP_USER_ERROR:
       return {

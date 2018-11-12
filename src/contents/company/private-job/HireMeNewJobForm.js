@@ -1,9 +1,9 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
-import { pushPrivateJob } from "../redux/actions/privateJob-action";
+import { pushPrivateJob } from "../../../redux/actions/privateJob-action";
 
-import CreateJobForm from "./CreateJobForm";
+import CreateJobForm from "../create-job/CreateJobForm";
 
 class HireMeNewJobForm extends React.Component {
   static propTypes = {

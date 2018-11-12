@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import fire from "../../config/Fire";
+import fire from "../../../config/Fire";
 import { connect } from "react-redux";
-import { searchPhotographer } from "../../redux/actions/searchPhotographer-action";
-import { resetSearchState } from "../../redux/actions/searchPhotographer-action";
+import { searchPhotographer } from "../../../redux/actions/searchPhotographer-action";
+import { resetSearchState } from "../../../redux/actions/searchPhotographer-action";
 
-import { PhotographersList } from "../../components/PhotographersList";
-import { SearchInput } from "../../components/form/SearchInput";
+import { PhotographersList } from "../../../components/PhotographersList";
+import { SearchInput } from "../../../components/form/SearchInput";
 
 class SearchPhotographers extends Component {
   state = {

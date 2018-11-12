@@ -1,6 +1,6 @@
 import React from "react";
 import WithModal from "../RenderProp/WithModal";
-import HireMeModal from "../contents/HireMeModal";
+import HireMeModal from "../contents/company/private-job/HireMeModal";
 
 export const HireButton = ({ uid, photographerName, siggnedInUser }) => (
   <WithModal closeItemClass="close">

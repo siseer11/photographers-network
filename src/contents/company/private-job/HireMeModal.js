@@ -1,6 +1,6 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { ChoseTypeHireMe } from "../components/ChoseTypeHireMe";
+import { ChoseTypeHireMe } from "../../../components/ChoseTypeHireMe";
 import HireMeNewJobForm from "./HireMeNewJobForm";
 import HireMeExistingJobOffer from "./HireMeExistingJobOffer";
 

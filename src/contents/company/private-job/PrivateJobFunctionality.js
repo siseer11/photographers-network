@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { PrivateJobView } from "../components/PrivateJobView";
+import { PrivateJobView } from "../../../components/PrivateJobView";
 import {
   fetchPrivateJobInfo,
   acceptJobReq,
   rejectJobReq
-} from "../redux/actions/acceptDeclinePrivateJob-action";
+} from "../../../redux/actions/acceptDeclinePrivateJob-action";
 
 class PrivateJobFunctionality extends React.Component {
   componentDidMount() {

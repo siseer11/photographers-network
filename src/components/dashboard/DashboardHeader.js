@@ -7,12 +7,12 @@ import AvatarInput from "../../contents/shared/profile/AvatarInput";
 export const DashboardHeader = ({
   children,
   links,
-  user,
   linkHandler,
   type,
-  updateUserInfo
+  profile,
+  auth
 }) => {
-  let profilePath = `/profile/${user.uid}`;
+  let profilePath = `/profile/${auth.uid}`;
   return (
     <div>
       <div className="gb-card-7-wrapper">
@@ -21,9 +21,8 @@ export const DashboardHeader = ({
           className="gb-card-7-height gb-background-primary"
         >
           <AvatarInput
-            uid={user.uid}
-            userAvatar={user.photoURL}
-            updateUserInfo={updateUserInfo}
+            uid={auth.uid}
+            userAvatar={profile.photoURL}
           />
           <div className="card-7-shadow-overlay" />
           <div className="card-7-content">

@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import {
   fetchCreatedJobs,
   pushNotification
-} from "../redux/actions/privateJob-action";
+} from "../../../redux/actions/privateJob-action";
 
-import { AvailableJobsToSendList } from "../components/AvailableJobsToSendList";
+import { AvailableJobsToSendList } from "../../../components/AvailableJobsToSendList";
 
 class HireMeExistingJobOffer extends React.Component {
   componentDidMount() {

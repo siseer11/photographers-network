@@ -1,6 +1,6 @@
 import React from "react";
 import queryString from "query-string";
-import DeclinedPrivateJobFunctionality from "../contents/company/DeclinedPrivateJobFunctionality";
+import DeclinedPrivateJobFunctionality from "../contents/company/private-job/DeclinedPrivateJobFunctionality";
 
 export const DeclinedPrivateJob = props => {
   const { loading, location, user } = props;

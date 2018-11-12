@@ -2,7 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { PortofolioGallery } from "../PortofolioGallery";
 import WithModal from "../../RenderProp/WithModal";
-import UploadPhotoToPortofolio from "../../contents/UploadPhotoToPortofolio";
+import UploadPhotoToPortofolio from "../../contents/photographer/dashboard/UploadPhotoToPortofolio";
 
 export default class Portofolio extends React.Component {
   static propTypes = {
@@ -13,7 +13,7 @@ export default class Portofolio extends React.Component {
     return (
       <React.Fragment>
         {user.portofolio.length > 0 ? (
-          <h2>Portofolio.</h2>
+          <h2>Portfolio.</h2>
         ) : (
           <h2>You have no photos, add your first one in here.</h2>
         )}
