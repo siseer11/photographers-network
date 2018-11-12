@@ -13,7 +13,7 @@ export default class Portofolio extends React.Component {
     return (
       <React.Fragment>
         {user.portofolio.length > 0 ? (
-          <h2>Portofolio.</h2>
+          <h2>Portfolio.</h2>
         ) : (
           <h2>You have no photos, add your first one in here.</h2>
         )}

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import fire from "../../config/Fire";
-import { DeclinedPrivateJobView } from "../../components/DeclinedPrivateJobView";
+import fire from "../../../config/Fire";
+import { DeclinedPrivateJobView } from "../../../components/DeclinedPrivateJobView";
 
 export default class DeclinedPrivateJobFunctionality extends React.Component {
   state = {

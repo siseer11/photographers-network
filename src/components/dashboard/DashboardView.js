@@ -14,7 +14,8 @@ import Portofolio from "./Portofolio";
 import HireableSwitch from "../../contents/photographer/dashboard/HireableSwtich";
 
 export const DashboardView = ({
-  user,
+  profile,
+  auth,
   type,
   linkHandler,
   activeComponent,
@@ -31,17 +32,17 @@ export const DashboardView = ({
         type === "photographer" ? (
           // user is photographer
           <React.Fragment>
-            {user.premium ? (
+            {profile.premium ? (
               // user is premium
-              <Portofolio user={user} updateUserInfo={updateUserInfo} />
+              <Portofolio user={profile}/>
             ) : (
               // user is not premium
-              <NoPremiumUser updateUserInfo={updateUserInfo} user={user} />
+              <NoPremiumUser user={profile} />
             )}
             <Link to="/jobs" className="gb-btn gb-btn-medium gb-btn-primary">
               Search for jobs
             </Link>
-            <HireableSwitch user={user} updateUserInfo={updateUserInfo} />
+            <HireableSwitch user={profile}/>
           </React.Fragment>
         ) : (
           // user is company
@@ -62,10 +63,10 @@ export const DashboardView = ({
         );
       break;
     case "Applied Jobs":
-      currentComponent = <AppliedJobs user={user} loading={loading} />;
+      currentComponent = <AppliedJobs user={profile} auth={auth} loading={loading} />;
       break;
     case "My Jobs":
-      currentComponent = <MyJobOffers user={user} loading={loading} />;
+      currentComponent = <MyJobOffers user={profile} auth={auth} loading={loading} />;
       break;
     default:
       currentComponent = <div>No fitting component!</div>;
@@ -75,13 +76,13 @@ export const DashboardView = ({
   return (
     <div>
       <DashboardHeader
-        updateUserInfo={updateUserInfo}
         type={type}
         links={headerLinks}
-        user={user}
+        profile={profile}
+        auth={auth}
         linkHandler={linkHandler}
       >
-        Welcome {user.displayName}!
+        Welcome {`${profile.firstName} ${profile.lastName}`}!
       </DashboardHeader>
       {currentComponent}
     </div>
@@ -89,7 +90,6 @@ export const DashboardView = ({
 };
 
 DashboardView.propTypes = {
-  user: PropTypes.object.isRequired,
   type: PropTypes.string.isRequired,
   linkHandler: PropTypes.func,
   activeComponent: PropTypes.string,

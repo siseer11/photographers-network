@@ -48,32 +48,43 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { userData: user, loading, updateUserInfo } = this.props;
+    const { profile, auth } = this.props;
     let activeType = "";
     let activeComponent = "";
+    console.log(profile);
+    if(!profile.isEmpty) {
+      activeType = this.state[profile.type];
+      activeType.headerLinks.map(link => {
+        if (link.active) activeComponent = link.name;
+      });
+    }
 
-    activeType = this.state[user.type];
-    activeType.headerLinks.map(link => {
-      if (link.active) activeComponent = link.name;
-    });
+    console.log(this.props);
+
+    if (!auth.uid || profile.isEmpty) {
+      console.log("data not loaded");
+      return <div>Loading</div>;
+    }
 
     return (
       <DashboardView
-        type={user.type}
-        user={user}
+        type={profile.type}
+        profile={profile}
+        auth={auth}
         {...this.props}
         linkHandler={this.setComponentToShow}
         headerLinks={activeType.headerLinks}
         activeComponent={activeComponent}
         loading={false}
-        updateUserInfo={updateUserInfo}
       />
     );
   }
 }
 
 const mapStateToProps = state => ({
-  userData: state.user.userData
+  userData: state.user.userData,
+  auth: state.firebase.auth,
+  profile: state.firebase.profile
 });
 
 export default connect(mapStateToProps)(Dashboard);

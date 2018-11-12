@@ -12,8 +12,8 @@ const initialState = {
   error: null,
   jobData: {},
   responsePushing: false,
-  repsonsePushingError: null,
-  responsePushingSucces: null
+  responsePushingError: null,
+  responsePushingSuccess: null
 };
 
 export const acceptDeclinePrivateJob = (state = initialState, action) => {
@@ -42,23 +42,23 @@ export const acceptDeclinePrivateJob = (state = initialState, action) => {
       return {
         ...state,
         responsePushing: true,
-        repsonsePushingError: null,
-        responsePushingSucces: null
+        responsePushingError: null,
+        responsePushingSuccess: null
       };
     case PHOTOGRAPHER_RESPONSE_PUSH_TO_DB_ERROR:
       return {
         ...state,
         responsePushing: false,
-        repsonsePushingError: action.error,
-        responsePushingSucces: false
+        responsePushingError: action.error,
+        responsePushingSuccess: false
       };
 
     case PHOTOGRAPHER_RESPONSE_PUSH_TO_DB_SUCCES:
       return {
         ...state,
         responsePushing: false,
-        repsonsePushingError: null,
-        responsePushingSucces: true
+        responsePushingError: null,
+        responsePushingSuccess: true
       };
     default:
       return state;

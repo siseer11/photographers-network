@@ -12,8 +12,7 @@ export default class NoPremiumUser extends React.Component {
     buttonStatus: "Become Premium"
   };
   static propTypes = {
-    user: PropTypes.object.isRequired,
-    updateUserInfo: PropTypes.func.isRequired
+    user: PropTypes.object.isRequired
   };
 
   makeUserPremium = () => {
@@ -78,7 +77,7 @@ export default class NoPremiumUser extends React.Component {
                   <div
                     onClick={this.makeUserPremium}
                     className={`become-premium-button ${
-                      buttonStatus == "Done!" ? "close-modal" : ""
+                      buttonStatus === "Done!" ? "close-modal" : ""
                     }`}
                   >
                     {buttonStatus}

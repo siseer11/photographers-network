@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import {Redirect} from "react-router-dom";
 import { sigUpUser } from "../../../redux/actions/signUp-action";
 
 import { SingUpView } from "../../../components/SignUpView";
 
 class SignUp extends Component {
   state = {
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     password2: "",
@@ -56,7 +58,8 @@ class SignUp extends Component {
 
   render() {
     const {
-      name,
+      firstName,
+      lastName,
       email,
       password,
       password2,
@@ -64,10 +67,13 @@ class SignUp extends Component {
       type,
       showCustomSelect
     } = this.state;
+    const {auth} = this.props;
+    if (auth.uid) return <Redirect to='/dashboard' />;
     return (
       <SingUpView
         signupHandler={this.signup}
-        name={name}
+        firstName={firstName}
+        lastName={lastName}
         changeHandler={this.handleChange}
         email={email}
         password={password}
@@ -83,7 +89,7 @@ class SignUp extends Component {
 }
 
 const mapStateToProps = state => ({
-  userOn: state.user.userOn
+  auth: state.firebase.auth
 });
 
 const mapDispatchToProps = dispatch => ({

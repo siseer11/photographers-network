@@ -135,27 +135,3 @@ export default ({
     </React.Fragment>
   </BrowserRouter>
 );
-
-/*
-      <Route
-        exact
-        path="/open-job/:jobid"
-        render={props => (
-          <OpenSingleJob {...props} />
-        )}
-      />
-      <Route
-        exact
-        path="/progress-job/:jobid"
-        render={props => (
-          <ProgressSingleJob {...props} user={user} loading={loading} />
-        )}
-      />
-      <Route
-        exact
-        path="/submit-work/:jobid"
-        render={props => (
-          <SubmitWork {...props} user={user} loading={loading} />
-        )}
-      />
-      */

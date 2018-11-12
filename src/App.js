@@ -9,16 +9,17 @@ import LoadingPage from "./components/LoadingPage";
 
 class App extends Component {
   componentDidMount() {
-    this.props.authListener();
+    //this.props.authListener();
   }
   render() {
-    const { userDataLoading, userData, userOn } = this.props;
+    const { userData, userOn } = this.props;
+    const userDataLoading = false;
     if (userDataLoading) {
       return <LoadingPage/>;
     } else {
       return (
         <Routes
-          userOn={this.props.userOn}
+          userOn={this.props.auth.uid}
           userType={this.props.userData.type}
           setLoadingTrue={this.setLoadingTrue}
         />
@@ -30,7 +31,8 @@ class App extends Component {
 const mapStateToProps = state => ({
   userDataLoading: state.user.userDataLoading,
   userData: state.user.userData,
-  userOn: state.user.userOn
+  userOn: state.user.userOn,
+  auth: state.firebase.auth
 });
 
 const mapDispatchToProps = dispatch => ({
