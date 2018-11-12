@@ -13,8 +13,14 @@ import { Provider } from "react-redux";
 const store = createStore(
   MainReducer,
   compose(
-    applyMiddleware(thunkMiddleware.withExtraArgument({getFirebase, getFirestore})),
-    reactReduxFirebase(fire, {userProfile: 'users', useFirestoreForProfile: true, attachAuthIsReady: true}),
+    applyMiddleware(
+      thunkMiddleware.withExtraArgument({ getFirebase, getFirestore })
+    ),
+    reactReduxFirebase(fire, {
+      userProfile: "users",
+      useFirestoreForProfile: true,
+      attachAuthIsReady: true
+    }),
     reduxFirestore(fire),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
@@ -23,7 +29,7 @@ const store = createStore(
 store.firebaseAuthIsReady.then(() => {
   ReactDOM.render(
     <Provider store={store}>
-      <App/>
+      <App />
     </Provider>,
     document.getElementById("root")
   );

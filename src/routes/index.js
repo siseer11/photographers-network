@@ -18,14 +18,7 @@ import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
 import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
 import { GbFooter } from "../components/nav-footer/Footer";
 
-export default ({
-  user,
-  loading,
-  setLoadingTrue,
-  updateUserInfo,
-  userOn,
-  userType
-}) => (
+export default ({ user, loading, setLoadingTrue, userOn, userType }) => (
   <BrowserRouter>
     <React.Fragment>
       <GbNavBar />

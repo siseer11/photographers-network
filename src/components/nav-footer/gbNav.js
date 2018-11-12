@@ -5,7 +5,6 @@ import { LinkLists } from "../LinkLists";
 import { Link } from "react-router-dom";
 import { BellSVG } from "../svg/BellSVG";
 import NotificationContainer from "./NotificationContainer";
-import fire from "../../config/Fire";
 import WithModal from "../../RenderProp/WithModal";
 import { connect } from "react-redux";
 import { signOutUser } from "../../redux/actions/user-action";
@@ -124,13 +123,12 @@ class GbNavBar extends React.Component {
 
 const mapStateToProps = state => {
   const not = state.notifications;
-  const user = state.user;
   return {
     newNotifications: not.newNotifications,
     auth: state.firebase.auth,
     fetchedNotifications: not.fetchedNotifications,
-    userOn: user.userOn,
-    userData: user.userData
+    userOn: state.firebase.auth.uid,
+    userData: state.firebase.profile
   };
 };
 
