@@ -46,10 +46,6 @@ class HireMeExistingJobOffer extends React.Component {
   }
 }
 
-/*
-deal with reqSentLoading
-*/
-
 const mapStateToProps = state => {
   const privateReq = state.privateJobRequest;
   return {

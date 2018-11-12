@@ -1,12 +1,11 @@
 import React from "react";
-import {Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import LoadingPage from "../../../components/LoadingPage";
 import OpenSingleJobPhotographer from "../../photographer/single-job/OpenSingleJobPhotographer";
 import OpenSingleJobCompany from "../../company/single-job/OpenSingleJobCompany";
-import {JobDescription} from "../../../components/single-job/JobDescription";
-import NavFooterWrapper from "../NavFooterWrapper";
-import {connect} from "react-redux";
-import {fetchJobInfo} from "../../../redux/actions/single-job-action";
+import { JobDescription } from "../../../components/single-job/JobDescription";
+import { connect } from "react-redux";
+import { fetchJobInfo } from "../../../redux/actions/single-job-action";
 
 const mapStateToProps = state => ({
   user: state.user.userData,
@@ -34,7 +33,7 @@ class OpenSingleJob extends React.Component {
   }
 
   render() {
-    const {downPayment} = this.state;
+    const { downPayment } = this.state;
 
     const {
       jobLoading,
@@ -47,41 +46,45 @@ class OpenSingleJob extends React.Component {
       user
     } = this.props;
 
-    if (jobLoading) return <LoadingPage/>;
-    if (jobDescription.status !== "open") return <Redirect to={`/progress-job/${this.props.match.params.jobid}`}/>;
+    if (jobLoading) return <LoadingPage />;
+    if (jobDescription.status !== "open")
+      return <Redirect to={`/progress-job/${this.props.match.params.jobid}`} />;
 
     const type = user ? user.type : "photographer";
 
     return (
       <div className="single-job-view section-content">
-        {
-          jobExists ?
-            <React.Fragment>
-              <JobDescription {...jobDescription}/>
-              {
-                type === "photographer" ?
-                  <OpenSingleJobPhotographer userApplied={userApplied}
-                                             isDeclinedPhotographer={isDeclinedPhotographer}
-                                             jobId={jobId}
-                                             user={user}
-                                             jobDescription={jobDescription}
-                  />
-                  :
-                  <OpenSingleJobCompany appliedPhotographers={appliedPhotographers}
-                                        jobDescription={jobDescription}
-                                        jobId={jobId}
-                                        acceptedApplicant={jobDescription.phootgrapher}
-                                        downPayment={downPayment}
-                                        {...this.props}
-                  />
-              }
-            </React.Fragment> :
-            <p>Job does not exist!</p>
-        }
+        {jobExists ? (
+          <React.Fragment>
+            <JobDescription {...jobDescription} />
+            {type === "photographer" ? (
+              <OpenSingleJobPhotographer
+                userApplied={userApplied}
+                isDeclinedPhotographer={isDeclinedPhotographer}
+                jobId={jobId}
+                user={user}
+                jobDescription={jobDescription}
+              />
+            ) : (
+              <OpenSingleJobCompany
+                appliedPhotographers={appliedPhotographers}
+                jobDescription={jobDescription}
+                jobId={jobId}
+                acceptedApplicant={jobDescription.phootgrapher}
+                downPayment={downPayment}
+                {...this.props}
+              />
+            )}
+          </React.Fragment>
+        ) : (
+          <p>Job does not exist!</p>
+        )}
       </div>
-
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OpenSingleJob);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OpenSingleJob);

@@ -1,7 +1,5 @@
 import React from "react";
-import fire from "../config/Fire";
 import { PropTypes } from "prop-types";
-
 import { ChoseTypeHireMe } from "../components/ChoseTypeHireMe";
 import HireMeNewJobForm from "./HireMeNewJobForm";
 import HireMeExistingJobOffer from "./HireMeExistingJobOffer";
