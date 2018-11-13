@@ -135,7 +135,7 @@ export default compose(
     return [
       {
         collection: 'notifications',
-        orderBy: ['createdAt', 'desc'],
+        //orderBy: ['createdAt', 'desc'],
         where: [
           ['recipientUserId', '==', props.auth.uid],
           ['read', '==', false]

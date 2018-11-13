@@ -6,19 +6,8 @@ import ProgressSingleJobCompany from "../../company/single-job/ProgressSingleJob
 import ProgressSingleJobPhotographer from "../../photographer/single-job/ProgressSingleJobPhotographer";
 import {connect} from "react-redux";
 import {fetchJobInfo} from "../../../redux/actions/single-job-action";
-
-const mapStateToProps = state => ({
-  jobLoading: state.singleJob.jobLoading,
-  jobExists: state.singleJob.jobExists,
-  jobId: state.singleJob.jobId,
-  jobDescription: state.singleJob.jobDescription,
-  submittedWork: state.singleJob.progressJob.submittedWork,
-  acceptedWork: state.singleJob.progressJob.acceptedWork
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchJobInfo: jobId => dispatch(fetchJobInfo(jobId))
-});
+import {firestoreConnect} from 'react-redux-firebase';
+import {compose} from 'redux';
 
 class ProgressSingleJob extends React.Component {
   componentDidMount() {
@@ -71,4 +60,28 @@ class ProgressSingleJob extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProgressSingleJob);
+const mapStateToProps = state => ({
+  jobLoading: state.singleJob.jobLoading,
+  jobExists: state.singleJob.jobExists,
+  /*
+  jobId: state.singleJob.jobId,
+  jobDescription: state.singleJob.jobDescription,
+  submittedWork: state.singleJob.progressJob.submittedWork,
+  acceptedWork: state.singleJob.progressJob.acceptedWork,*/
+  jobDescription: state.firestore.ordered.openSingleJob
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchJobInfo: jobId => dispatch(fetchJobInfo(jobId))
+});
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect(props => [
+    {
+      collection: 'jobOffers',
+      doc: props.match.params.jobid,
+      storeAs: 'progressSingleJob'
+    }
+  ])
+)(ProgressSingleJob);

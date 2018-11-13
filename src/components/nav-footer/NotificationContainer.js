@@ -43,7 +43,7 @@ const NotificationContainer = ({notifications, markAsRead, showBoxHandler}) => (
 
 const mapStateToProps = state => ({
   auth: state.firebase.auth,
-  notifications: state.firestore.ordered.notifications
+  notifications: state.firestore.ordered.notifications.sort((a, b) => new Date(b.date) - new Date(a.date))
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -53,6 +53,10 @@ const mapDispatchToProps = dispatch => ({
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   firestoreConnect(props => [
-    {collection: 'notifications', createdAt: ['time', 'desc'], where: [['recipientUserId', '==', props.auth.uid]]}
+    {
+      collection: 'notifications',
+      where: ['recipientUserId', '==', props.auth.uid],
+      //orderBy: ['title', 'desc'] bug!!!
+    }
   ])
 )(NotificationContainer);

@@ -64,7 +64,6 @@ export default compose(
   firestoreConnect(props => [
       {
         collection: 'jobOffers',
-        orderBy: ['createdAt', 'desc'],
         where: [
           ['companyId', '==', props.auth.uid]
         ]

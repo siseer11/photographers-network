@@ -6,24 +6,8 @@ import OpenSingleJobCompany from "../../company/single-job/OpenSingleJobCompany"
 import { JobDescription } from "../../../components/single-job/JobDescription";
 import { connect } from "react-redux";
 import { fetchJobInfo } from "../../../redux/actions/single-job-action";
-
-const mapStateToProps = state => ({
-  user: state.user.userData,
-  userOn: state.user.userOn,
-  jobLoading: state.singleJob.jobLoading,
-  jobExists: state.singleJob.jobExists,
-  jobId: state.singleJob.jobId,
-  jobDescription: state.singleJob.jobDescription,
-  userApplied: state.singleJob.openJob.userApplied,
-  appliedPhotographers: state.singleJob.openJob.appliedPhotographers,
-  isDeclinedPhotographer: state.singleJob.openJob.isDeclinedPhotographer,
-  auth: state.firebase.auth,
-  profile: state.firebase.profile
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchJobInfo: jobId => dispatch(fetchJobInfo(jobId))
-});
+import {firestoreConnect} from 'react-redux-firebase';
+import {compose} from 'redux';
 
 class OpenSingleJob extends React.Component {
   state = {
@@ -31,7 +15,7 @@ class OpenSingleJob extends React.Component {
   };
 
   componentDidMount() {
-    this.props.fetchJobInfo(this.props.match.params.jobid, "photographer");
+    //this.props.fetchJobInfo(this.props.match.params.jobid, "photographer");
   }
 
   render() {
@@ -39,7 +23,6 @@ class OpenSingleJob extends React.Component {
 
     const {
       jobLoading,
-      jobExists,
       jobId,
       jobDescription,
       userApplied,
@@ -49,10 +32,13 @@ class OpenSingleJob extends React.Component {
       auth,
       profile
     } = this.props;
+    const jobExists = true;
+    if (!jobDescription) return <LoadingPage />;
 
-    if (jobLoading) return <LoadingPage />;
-    if (jobDescription.status !== "open")
-      return <Redirect to={`/progress-job/${this.props.match.params.jobid}`} />;
+    const jobDesc = jobDescription[0];
+
+    if (jobDesc.status !== "open")
+      return <Redirect to={`/progress-job/${this.props.match.params.jobid}`}/>;
 
     const type = profile.type;
 
@@ -60,22 +46,22 @@ class OpenSingleJob extends React.Component {
       <div className="single-job-view section-content">
         {jobExists ? (
           <React.Fragment>
-            <JobDescription {...jobDescription} />
+            <JobDescription {...jobDesc} />
             {type === "photographer" ? (
               <OpenSingleJobPhotographer
                 userApplied={userApplied}
                 isDeclinedPhotographer={isDeclinedPhotographer}
-                jobId={jobId}
+                jobId={jobDesc.id}
                 auth={auth}
                 profile={profile}
-                jobDescription={jobDescription}
+                jobDescription={jobDesc}
               />
             ) : (
               <OpenSingleJobCompany
                 appliedPhotographers={appliedPhotographers}
-                jobDescription={jobDescription}
-                jobId={jobId}
-                acceptedApplicant={jobDescription.phootgrapher}
+                jobDescription={jobDesc}
+                jobId={jobDesc.id}
+                acceptedApplicant={jobDesc.photographer}
                 downPayment={downPayment}
                 {...this.props}
               />
@@ -89,7 +75,35 @@ class OpenSingleJob extends React.Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+//TODO: functionality for single job in action
+const mapStateToProps = state => ({
+  /*
+  user: state.user.userData,
+  userOn: state.user.userOn,
+  jobLoading: state.singleJob.jobLoading,
+  jobExists: state.singleJob.jobExists,
+  jobId: state.singleJob.jobId,
+  jobDescription: state.singleJob.jobDescription,
+  userApplied: state.singleJob.openJob.userApplied,
+  appliedPhotographers: state.singleJob.openJob.appliedPhotographers,
+  isDeclinedPhotographer: state.singleJob.openJob.isDeclinedPhotographer,*/
+  auth: state.firebase.auth,
+  profile: state.firebase.profile,
+  jobDescription: state.firestore.ordered.openSingleJob,
+  appliedPhotographers: []
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchJobInfo: jobId => dispatch(fetchJobInfo(jobId))
+});
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect(props => [
+    {
+      collection: 'jobOffers',
+      doc: props.match.params.jobid,
+      storeAs: 'openSingleJob'
+    }
+  ])
 )(OpenSingleJob);
