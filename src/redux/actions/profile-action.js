@@ -17,18 +17,6 @@ export const updateUserInfo = (name, location, photoURL, user) => {
         photoURL: photoURL
       })
       .then(() => {
-        if (user.location !== location && location !== "") {
-          database
-            .ref(`locations/${user.location}/${user.type}/${user.uid}`)
-            .remove();
-
-          database.ref(`locations/${location}/${user.type}/${user.uid}`).set({
-            displayName: name,
-            photoURL: photoURL
-          });
-        }
-      })
-      .then(() => {
         database
           .ref("users")
           .child(user.uid)
@@ -36,14 +24,6 @@ export const updateUserInfo = (name, location, photoURL, user) => {
             location: location,
             displayName: name,
             photoURL: photoURL
-          });
-      })
-      .then(() => {
-        database
-          .ref(user.type)
-          .child(user.uid)
-          .update({
-            location: location
           });
       })
       .then(() => {

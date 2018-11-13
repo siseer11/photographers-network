@@ -32,7 +32,6 @@ A thunk is a function that wraps an expression to delay its evaluation.
  -> PrivateJobReq must take care of functionality, also check to see if the person is a company or photographer, i do not think i'm doing that
  -> Clean GbNav
  -> Signin error handlings!
- -> Delete the navFooterWrapper since now we have it everywheer
  -> Hirable button
  -> Profile page still ugly code
  
