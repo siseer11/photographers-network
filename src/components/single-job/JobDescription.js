@@ -8,8 +8,8 @@ export const JobDescription = ({
   location,
   priceAmount,
   requestedSkill,
-  company,
-  companyName
+  companyName,
+  companyId
 }) => (
   <React.Fragment>
     <h2 style={{ marginBottom: 50 }}>Single Job Page</h2>
@@ -26,11 +26,11 @@ export const JobDescription = ({
     <p>Bugdget of : {priceAmount} SEK</p>
     <hr />
     <p>
-      Requested skill: <Link to={`../jobs?type=${requestedSkill}`}>{requestedSkill}</Link>
+      <Link to={`../jobs?type=${requestedSkill}`}>{requestedSkill}</Link>
     </p>
     <hr />
     <p>
-      Posted by: <Link to={`../profile/${company}`}>{companyName}</Link>
+      Posted by: <Link to={`../profile/${companyId}`}>{companyName}</Link>
     </p>
     <hr />
   </React.Fragment>

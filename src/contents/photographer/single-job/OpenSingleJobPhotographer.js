@@ -1,11 +1,12 @@
 import React from "react";
-import {OpenSingleJobViewPhotographer} from "../../../components/single-job/open/OpenSingleJobViewPhotographer";
-import {connect} from "react-redux";
-import {addNewNotification} from "../../../redux/actions/notifications-action";
-import {applyForJob} from "../../../redux/actions/single-job-action-photographer";
+import { OpenSingleJobViewPhotographer } from "../../../components/single-job/open/OpenSingleJobViewPhotographer";
+import { connect } from "react-redux";
+import { addNewNotification } from "../../../redux/actions/notifications-action";
+import { applyForJob } from "../../../redux/actions/single-job-action-photographer";
 
 const mapDispatchToProps = dispatch => ({
-  addNotification: notification => dispatch(addNewNotification(notification)),
+  addNotification: (notification, uid) =>
+    dispatch(addNewNotification(notification, uid)),
   applyForSingleJob: jobId => dispatch(applyForJob(jobId))
 });
 
@@ -14,12 +15,12 @@ class OpenSingleJobPhotographer extends React.Component {
    * User applies for a job.
    */
   applyForJob = () => {
-    const {profile, jobId, jobDescription} = this.props;
+    const { user, jobId, jobDescription } = this.props;
     this.props.applyForSingleJob(jobId);
     const notification = {
       title: `${profile.firstName} ${profile.lastName} applied for your job request "${
         jobDescription.title
-        }".`,
+      }".`,
       link: `/open-job/${jobId}`,
       read: false,
       createdAt: new Date(),
@@ -29,18 +30,19 @@ class OpenSingleJobPhotographer extends React.Component {
   };
 
   render() {
-    const {
-      userApplied,
-      isDeclinedPhotographer
-    } = this.props;
+    const { userApplied, isDeclinedPhotographer } = this.props;
 
     return (
-      <OpenSingleJobViewPhotographer userApplied={userApplied}
-                                     isDeclinedPhotographer={isDeclinedPhotographer}
-                                     applyHandler={this.applyForJob}
+      <OpenSingleJobViewPhotographer
+        userApplied={userApplied}
+        isDeclinedPhotographer={isDeclinedPhotographer}
+        applyHandler={this.applyForJob}
       />
     );
   }
 }
 
-export default connect(null, mapDispatchToProps)(OpenSingleJobPhotographer);
+export default connect(
+  null,
+  mapDispatchToProps
+)(OpenSingleJobPhotographer);

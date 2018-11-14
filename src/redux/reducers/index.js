@@ -3,7 +3,7 @@ import { user } from "./user-reducer";
 import { allJobs } from "./allJobs-reducer";
 import { notificationsReducer } from "./notifications-reducer";
 import { firebaseReducer } from "react-redux-firebase";
-import { firestoreReducer } from 'redux-firestore';
+import { firestoreReducer } from "redux-firestore";
 import { singleJobReducer } from "./singleJob-reducer";
 import { profilesReducer } from "./profilesReducer";
 import { signUpReducer } from "./signUp-reducer";
