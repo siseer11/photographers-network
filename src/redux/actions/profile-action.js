@@ -89,3 +89,15 @@ const updatePhotoURLDB = (downloadURL, userId, dispatch) => {
       }
     );
 };
+
+export const markAsPremium = () => {
+  return (dispatch, getState) => {
+    return database
+      .ref("users")
+      .child(getState().firebase.auth.uid)
+      .update(
+        {
+          premium: true
+        });
+  };
+};

@@ -18,14 +18,15 @@ class OpenSingleJobPhotographer extends React.Component {
     const { user, jobId, jobDescription } = this.props;
     this.props.applyForSingleJob(jobId);
     const notification = {
-      title: `${user.displayName} applied for your job request "${
+      title: `${profile.firstName} ${profile.lastName} applied for your job request "${
         jobDescription.title
       }".`,
       link: `/open-job/${jobId}`,
       read: false,
-      time: new Date().getTime()
+      createdAt: new Date(),
+      recipientUserId: jobDescription.companyId
     };
-    this.props.addNotification(notification, jobDescription.companyId);
+    this.props.addNotification(notification);
   };
 
   render() {

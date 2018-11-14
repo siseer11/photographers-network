@@ -17,7 +17,6 @@ export default class MyJobsCategoryView extends React.Component {
 
   render() {
     const {categoryTitle, jobs} = this.props;
-    console.log(jobs);
     const {closed} = this.state;
 
     return (
@@ -34,14 +33,14 @@ export default class MyJobsCategoryView extends React.Component {
             {
               jobs.map(el => (
                 <GbCard50
-                  key={el.jobbId}
-                  cardLink={`${categoryTitle === "Open" || categoryTitle === "Applied" ? "open" : "progress"}-job/${el.jobbId}`}
+                  key={el.id}
+                  cardLink={`${categoryTitle === "Open" || categoryTitle === "Applied" ? "open" : "progress"}-job/${el.id}`}
                   type='half-left'
                   source={{
                     txt: el.companyName,
                     link: `/profile/${el.companyId}`
                   }}
-                  postedTime={new Date(el.date).toLocaleDateString("en-US")}
+                  postedTime={new Date(el.createdAt).toLocaleDateString("en-US")}
                   category={el.type}
                 >
                   {el.title}

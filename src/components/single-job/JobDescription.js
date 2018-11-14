@@ -26,7 +26,6 @@ export const JobDescription = ({
     <p>Bugdget of : {priceAmount} SEK</p>
     <hr />
     <p>
-      Type of job :{" "}
       <Link to={`../jobs?type=${requestedSkill}`}>{requestedSkill}</Link>
     </p>
     <hr />

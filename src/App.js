@@ -12,19 +12,13 @@ class App extends Component {
     //this.props.authListener();
   }
   render() {
-    const { userData, userOn } = this.props;
-    const userDataLoading = false;
-    if (userDataLoading) {
-      return <LoadingPage/>;
-    } else {
+    const { auth, profile } = this.props;
       return (
         <Routes
-          userOn={this.props.auth.uid}
-          userType={this.props.userData.type}
-          setLoadingTrue={this.setLoadingTrue}
+          userOn={auth.uid}
+          userType={profile.type}
         />
       );
-    }
   }
 }
 
@@ -32,7 +26,8 @@ const mapStateToProps = state => ({
   userDataLoading: state.user.userDataLoading,
   userData: state.user.userData,
   userOn: state.user.userOn,
-  auth: state.firebase.auth
+  auth: state.firebase.auth,
+  profile: state.firebase.profile
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 // components
 import { DashboardView } from "../../../components/dashboard/DashboardView";
+import LoadingPage from "../../../components/LoadingPage";
 
 class Dashboard extends Component {
   state = {
@@ -63,7 +64,7 @@ class Dashboard extends Component {
 
     if (!auth.uid || profile.isEmpty) {
       console.log("data not loaded");
-      return <div>Loading</div>;
+      return <LoadingPage/>;
     }
 
     return (

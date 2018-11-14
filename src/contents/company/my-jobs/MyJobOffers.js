@@ -3,33 +3,12 @@ import { Link } from "react-router-dom";
 import MyJobsCategoryView from "../../../components/my-jobs/MyJobsCategoryView";
 import {connect} from "react-redux";
 import {myJobsFetch} from "../../../redux/actions/jobs-action";
-
-const mapStateToProps = state => {
-  const jobs = state.allJobs;
-  return {
-    jobsLoading: jobs.jobsLoading,
-    fetchedCompanyJobsOnce: jobs.fetchedCompanyJobsOnce,
-    openJobs: jobs.company.openJobs,
-    inProgressJobs: jobs.company.inProgressJobs,
-    closedJobs: jobs.company.closedJobs,
-    allJobs: jobs.company.allJobs
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  fetchJobs: () => dispatch(myJobsFetch())
-});
+import {firestoreConnect} from 'react-redux-firebase';
+import {compose} from 'redux';
 
 class MyJobOffers extends React.Component {
-  componentDidMount() {
-    if(!this.props.fetchedCompanyJobsOnce) {
-      this.props.fetchJobs();
-    }
-  }
-
   render() {
     const {
-      jobsLoading,
       openJobs,
       inProgressJobs,
       closedJobs,
@@ -37,7 +16,7 @@ class MyJobOffers extends React.Component {
     } = this.props;
     return (
       <React.Fragment>
-        {jobsLoading ? (
+        {!allJobs ? (
           <h2>Loading...</h2>
         ) : allJobs.length === 0 ? (
           <h2>
@@ -65,4 +44,29 @@ class MyJobOffers extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyJobOffers);
+const mapStateToProps = state => {
+  const allJobs = state.firestore.ordered.jobOffers || [];
+  return {
+    allJobs,
+    openJobs: allJobs.filter(job => job.status === "open"),
+    inProgressJobs: allJobs.filter(job => job.status === "in progress"),
+    closedJobs: allJobs.filter(job => job.status === "closed"),
+    auth: state.firebase.auth
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  fetchJobs: () => dispatch(myJobsFetch())
+});
+
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect(props => [
+      {
+        collection: 'jobOffers',
+        where: [
+          ['companyId', '==', props.auth.uid]
+        ]
+      }
+    ])
+)(MyJobOffers);

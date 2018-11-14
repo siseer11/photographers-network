@@ -44,10 +44,9 @@ class CreateJob extends React.Component {
       {
         ...this.state,
         date: new Date(this.state.jobDate).getTime()
-      },
-      this.props.user,
-      this.props.history
-    );
+      }
+    )
+      .then(()=> this.props.history.push('/dashboard'));
   };
 
   optionSelectHandler = type => {
@@ -93,7 +92,7 @@ class CreateJob extends React.Component {
 
     return (
       <div className="create-job-page section-content with-padding">
-        <h1>Create Jobsss</h1>
+        <h1>Create Job</h1>
         <form onSubmit={this.submitHandler}>
           <InputField
             svg={
@@ -177,8 +176,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createJob: (jobData, companyData, history) =>
-    dispatch(createJob(jobData, companyData, history))
+  createJob: jobData =>
+    dispatch(createJob(jobData))
 });
 
 export default connect(

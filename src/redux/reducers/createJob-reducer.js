@@ -1,7 +1,7 @@
 import {
   CREATE_JOB_STARTED,
   CREATE_JOB_ERROR,
-  CREATE_JOB_SUCCES
+  CREATE_JOB_SUCCESS
 } from "../actions/createJob-action";
 
 let initialState = {
@@ -24,7 +24,7 @@ export const createJobReducer = (state = initialState, action) => {
         loading: false,
         succes: false
       };
-    case CREATE_JOB_SUCCES:
+    case CREATE_JOB_SUCCESS:
       return {
         error: null,
         loading: false,
