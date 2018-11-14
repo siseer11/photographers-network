@@ -6,11 +6,11 @@ import { firebaseReducer } from "react-redux-firebase";
 import { firestoreReducer } from "redux-firestore";
 import { singleJobReducer } from "./singleJob-reducer";
 import { profilesReducer } from "./profilesReducer";
-import { signUpReducer } from "./signUp-reducer";
 import { createJobReducer } from "./createJob-reducer";
 import { searchPhotographerReducer } from "./searchPhotographer-reducer";
 import { privateJobReducer } from "./privateJob-reducer";
 import { acceptDeclinePrivateJob } from "./acceptDeclinePrivateJob-reducer";
+import { generalLoadingErrorSucces } from "./generalLoadingErrorSucces-reducer";
 
 const MainReducer = combineReducers({
   user,
@@ -20,11 +20,11 @@ const MainReducer = combineReducers({
   firestore: firestoreReducer,
   singleJob: singleJobReducer,
   profiles: profilesReducer,
-  signUp: signUpReducer,
   createJob: createJobReducer,
   photographers: searchPhotographerReducer,
   privateJobRequest: privateJobReducer,
-  acceptDeclinePrivateJob: acceptDeclinePrivateJob
+  acceptDeclinePrivateJob: acceptDeclinePrivateJob,
+  generalLoadingErrorSucces: generalLoadingErrorSucces
 });
 
 export default MainReducer;

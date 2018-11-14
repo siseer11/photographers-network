@@ -5,27 +5,23 @@ import { setAuthListener } from "./redux/actions/user-action";
 import "./style/gb-style.css";
 import "./style/photographer-style.css";
 import Routes from "./routes";
-import LoadingPage from "./components/LoadingPage";
 
 class App extends Component {
-  componentDidMount() {
-    //this.props.authListener();
-  }
   render() {
     const { auth, profile } = this.props;
+    if (profile.isLoaded) {
+      return <Routes userOn={auth.uid} userType={profile.type} />;
+    } else {
       return (
-        <Routes
-          userOn={auth.uid}
-          userType={profile.type}
-        />
+        <h2>
+          STILL LOADING FOR THE PROFILE DATA... HANG ON! (no spinner, i know...)
+        </h2>
       );
+    }
   }
 }
 
 const mapStateToProps = state => ({
-  userDataLoading: state.user.userDataLoading,
-  userData: state.user.userData,
-  userOn: state.user.userOn,
   auth: state.firebase.auth,
   profile: state.firebase.profile
 });
