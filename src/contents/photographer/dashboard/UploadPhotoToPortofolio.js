@@ -1,8 +1,9 @@
 import React from "react";
-import fire from "../../../config/Fire";
+import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
+import { uploadPortofolioPhoto } from "../../../redux/actions/user-action";
 
-export default class UploadPhotoToPortofolio extends React.Component {
+class UploadPhotoToPortofolio extends React.Component {
   static propTypes = {
     closeModalListener: PropTypes.func.isRequired,
     showModal: PropTypes.bool
@@ -11,13 +12,17 @@ export default class UploadPhotoToPortofolio extends React.Component {
   state = {
     imageFile: "",
     imageDescription: "",
-    stage: "Submit"
+    stage: "Submit",
+    imagePreviewLink: ""
   };
 
   fileChanged = e => {
     const file = e.target.files[0];
+    const createImageUrl = URL.createObjectURL(file);
+
     this.setState({
-      imageFiles: file
+      imageFile: file,
+      imagePreviewLink: createImageUrl
     });
   };
 
@@ -27,105 +32,30 @@ export default class UploadPhotoToPortofolio extends React.Component {
     });
   };
 
-  updateUserInDb = (fileId, imageDescription, downloadURL, changeState) => {
-    const { user, updateUserInfo, closeModalListener } = this.props;
-    const userId = user.uid;
-    fire
-      .database()
-      .ref("users")
-      .child(userId)
-      .child("portofolio")
-      .child(fileId)
-      .set(
-        {
-          id: fileId,
-          desc: imageDescription,
-          link: downloadURL
-        },
-        err => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log("succes");
-            changeState({
-              stage: "Complete!"
-            });
-            const portofolio = [
-              ...user.portofolio,
-              {
-                id: fileId,
-                desc: imageDescription,
-                link: downloadURL
-              }
-            ];
-
-            updateUserInfo({ portofolio: portofolio });
-            setTimeout(() => {
-              closeModalListener();
-            }, 500);
-            changeState({
-              imageFiles: "",
-              imageDescription: "",
-              stage: "Submit"
-            });
-          }
-        }
-      );
-  };
-
   formSubmit = e => {
     e.preventDefault();
     const { imageFile, imageDescription } = this.state;
-    const { user } = this.props;
-    const userId = user.uid;
+    const { uid, userData, uploadPhotoToPortfolio } = this.props;
 
-    const fileId = fire
-      .database()
-      .ref("users")
-      .child(userId)
-      .child("portofolio")
-      .push().key;
-
-    //create storage ref
-    let storageRef = fire.storage().ref(`${userId}/portofolio/${fileId}`);
-    //upload file
-    let task = storageRef.put(imageFile);
-
-    const changeState = obj =>
-      this.setState({
-        ...obj
-      });
-
-    changeState({
+    this.setState({
       stage: "Loading..."
     });
 
-    const that = this;
-    task.on(
-      "state_changed",
-      function progress(snap) {
-        console.log(snap);
-      },
-      function error(err) {
-        console.log(err);
-      },
-      function complete() {
-        task.snapshot.ref
-          .getDownloadURL()
-          .then(downloadURL =>
-            that.updateUserInDb(
-              fileId,
-              imageDescription,
-              downloadURL,
-              changeState
-            )
-          );
-      }
-    );
+    uploadPhotoToPortfolio(imageFile, imageDescription, uid, userData)
+      .then(() => {
+        this.setState({
+          stage: "Done!"
+        });
+      })
+      .catch(() => {
+        this.setState({
+          stage: "Error!"
+        });
+      });
   };
 
   render() {
-    const { imageDescription, stage } = this.state;
+    const { imageDescription, stage, imagePreviewLink } = this.state;
     return (
       <React.Fragment>
         <div className="add-image-plus">+</div>
@@ -134,6 +64,18 @@ export default class UploadPhotoToPortofolio extends React.Component {
           className="add-image-modal"
         >
           <form onSubmit={this.formSubmit}>
+            {imagePreviewLink && (
+              <img
+                src={imagePreviewLink}
+                style={{
+                  width: 250,
+                  height: 250,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center"
+                }}
+                alt="your image"
+              />
+            )}
             <input
               className="add-image-input"
               type="file"
@@ -153,3 +95,25 @@ export default class UploadPhotoToPortofolio extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  uid: state.firebase.auth.uid,
+  userData: state.firebase.profile
+});
+
+const mapDispatchToProps = dispatch => ({
+  uploadPhotoToPortfolio: (
+    imageFile,
+    imageDescription,
+    uid,
+    photographerData
+  ) =>
+    dispatch(
+      uploadPortofolioPhoto(imageFile, imageDescription, uid, photographerData)
+    )
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UploadPhotoToPortofolio);

@@ -33,7 +33,7 @@ export default ({ userOn, userType }) => (
           exact
           path="/signIn"
           render={props =>
-            !userOn ? <SignIn {...props} /> : <Redirect to="/dashboard" />
+            userOn ? <Redirect to="/dashboard" /> : <SignIn {...props} />
           }
         />
         <Route

@@ -24,7 +24,7 @@ export const generalLoadingErrorSucces = (state = initialState, action) => {
     case ACTION_ERROR:
       return {
         loading: false,
-        error: action.error,
+        error: action.error || true,
         succes: null,
         succesData: null
       };

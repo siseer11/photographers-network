@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setAuthListener } from "./redux/actions/user-action";
 
 import "./style/gb-style.css";
 import "./style/photographer-style.css";
@@ -26,11 +25,4 @@ const mapStateToProps = state => ({
   profile: state.firebase.profile
 });
 
-const mapDispatchToProps = dispatch => ({
-  authListener: () => dispatch(setAuthListener())
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps)(App);

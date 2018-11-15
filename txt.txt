@@ -45,3 +45,49 @@ A thunk is a function that wraps an expression to delay its evaluation.
   -> The profile page 
   -> CreateJob check the data from the from
   -> The search-photographer is not needed with the new DB structure / totally rebuild
+
+
+
+
+
+
+
+
+  Did/Changed : 
+
+Sign-up {
+ - added the generalLoading
+ - diferent for companies and photographers
+}
+Sign-in {
+ - added the generalLoading
+}
+
+Become Premium 
+Switch Hireable
+
+
+Problems:
+The auth listenr fire before the answear so componentWillUnmount does not triger the reset
+
+Try with dispatch you fuck.. :))
+
+Delete : USER_INFO_UPDATED_SUCCESSFULLY from user-reducer.js
+
+
+
+Working on : 
+ PHOTOGRAPHER : 
+  -> Hireable button *
+  -> Become Premium *
+  -> Portofolio *
+  -> Add photos to portfolio
+  -> Search Jobs
+  -> Change profile photo
+
+
+
+
+MUST REDO :
+ -> THRE HIREABLE SLIDER , HAVE NO ERROR HANDLER
+ -> MAKE THE PAYPAL BUTTON AN RENDER PROP

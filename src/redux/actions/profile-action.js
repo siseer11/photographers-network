@@ -90,14 +90,11 @@ const updatePhotoURLDB = (downloadURL, userId, dispatch) => {
     );
 };
 
-export const markAsPremium = () => {
-  return (dispatch, getState) => {
-    return database
-      .ref("users")
-      .child(getState().firebase.auth.uid)
-      .update(
-        {
-          premium: true
-        });
-  };
-};
+//Make a photographer premium, Returns a Promise
+export const markAsPremium = uid => (dispatch, getState, { getFirestore }) =>
+  getFirestore()
+    .collection("users")
+    .doc(uid)
+    .update({
+      premium: true
+    });

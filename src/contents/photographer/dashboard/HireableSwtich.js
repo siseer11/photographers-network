@@ -1,68 +1,70 @@
 import React from "react";
-import fire from "../../../config/Fire";
+import { switchHireable } from "../../../redux/actions/user-action";
+import { connect } from "react-redux";
 
-export default class HireableSwitch extends React.Component {
+class HireableSwitch extends React.Component {
   state = {
-    hireable: this.props.user ? this.props.user.hireable : false,
-    waiting: false
+    loading: false,
+    error: false
   };
 
-  inputChanged = e => {
-    this.setState(
-      {
-        waiting: true
-      },
-      () => this.updateHirable(!this.state.hireable)
-    );
-  };
+  switchHireableStatus = () => {
+    const { hireable, uid, switchHireable } = this.props;
+    this.setState({ loading: true });
 
-  updateHirable = to => {
-    fire
-      .database()
-      .ref("users")
-      .child(this.props.user.uid)
-      .update(
-        {
-          hireable: to
-        },
-        err => {
-          if (err) {
-            console.log(err);
-            this.setState({
-              waiting: false
-            });
-          } else {
-            console.log("done");
-            this.props.updateUserInfo({
-              hireable: to
-            });
-            this.setState(prevState => ({
-              waiting: false,
-              hireable: !prevState.hireable
-            }));
-          }
-        }
+    //Call the action that lives in user-actions, wait for the promise
+    switchHireable(!hireable, uid)
+      .then(() => {
+        this.setState({
+          loading: false,
+          error: false
+        });
+      })
+      .catch(() =>
+        this.setState({
+          loading: false,
+          error: true
+        })
       );
   };
 
   render() {
-    const { hireable, waiting } = this.state;
+    const { hireable } = this.props;
+    const { loading, error } = this.state;
+
     return (
       <div className="hireable-option-changer">
         <label>
           You are {!hireable && "not"} hireable!
           <input
-            onChange={this.inputChanged}
+            onChange={this.switchHireableStatus}
             type="checkbox"
             checked={hireable}
-            disabled={waiting}
+            disabled={loading}
           />
-          <Slider on={hireable} waiting={waiting} />
+          <Slider on={hireable} waiting={loading} />
         </label>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => {
+  const firebaseData = state.firebase;
+  return {
+    hireable: firebaseData.profile.hireable,
+    uid: firebaseData.auth.uid
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  switchHireable: (to, uid) => dispatch(switchHireable(to, uid))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HireableSwitch);
 
 const Slider = ({ on, waiting }) => (
   <div style={{ opacity: waiting ? 0.5 : 1 }} className="mySlider-track">

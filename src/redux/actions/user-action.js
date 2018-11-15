@@ -1,61 +1,21 @@
 import fire from "../../config/Fire";
-
-const database = fire.database();
+import {
+  actionStarted,
+  actionError,
+  actionSucces,
+  actionReset
+} from "./generalLoadingErrorSucces-actions";
 
 // -------------------- ACTION TYPES -------------------- //
-export const NO_USER_LOGGED_IN = "NO_USER_LOGGED_IN";
-export const USER_LOGGED_IN = "USER_LOGGED_IN";
 export const USER_SIGNED_OUT = "USER_LOGGED_OUT";
-export const SIGN_USER_IN = "SIGN_USER_IN";
 
 // -------------------- ACTION CREATORS -------------------- //
-export const noUserLoggedIn = () => ({
-  type: NO_USER_LOGGED_IN
-});
-
-export const userLoggedIn = userData => ({
-  type: USER_LOGGED_IN,
-  userData
-});
-
 export const userSignedOut = () => ({
   type: USER_SIGNED_OUT
 });
 
-// Just set the loading : true
-export const signUserIn = () => ({
-  type: SIGN_USER_IN
-});
-
 // -------------------- ASYNC ACTIONS THUNK -------------------- //
-export function setAuthListener() {
-  return dispatch => {
-    fire.auth().onAuthStateChanged(user => {
-      if (user) {
-        fetchUserData(user.uid);
-      } else {
-        dispatch(noUserLoggedIn());
-      }
-    });
-
-    function fetchUserData(uid) {
-      database
-        .ref("users")
-        .child(uid)
-        .once("value", snap => {
-          let userInfos = snap.val();
-          userInfos = {
-            ...userInfos,
-            uid: uid,
-            portofolio: Object.values(userInfos.portofolio || {})
-          };
-          dispatch(userLoggedIn(userInfos));
-        })
-        .catch(err => console.log(err));
-    }
-  };
-}
-
+//Signs user out
 export function signOutUser() {
   return dispatch => {
     fire
@@ -72,15 +32,79 @@ export function signOutUser() {
   };
 }
 
+//Signs user in
 export function signUserInAsync(email, password) {
   return dispatch => {
+    //Set loading to true
+    dispatch(actionStarted());
+
+    //Send the request to firebase, and wait for response
     fire
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(data => {
-        console.log(data);
-        dispatch(signUserIn());
+      .then(() => {
+        //If it succed turn succes to true and loading false
+        //Instead of actionSucces we call actionReset since there is a problem , from the redirect
+        dispatch(actionReset());
       })
-      .catch(err => console.log(err));
+      .catch(() => dispatch(actionError()));
+  };
+}
+
+//Switch hireable for photographers , returns Promise
+export function switchHireable(to, photographerId) {
+  return (dispatch, getState, { getFirestore }) => {
+    return getFirestore()
+      .collection("users")
+      .doc(photographerId)
+      .update({ hireable: to });
+  };
+}
+
+//Add photo to portfolio
+export function uploadPortofolioPhoto(
+  imageFile,
+  imageDescription,
+  uid,
+  photographerData
+) {
+  return (dispatch, getState, { getFirestore, getFirebase }) => {
+    const uniqueId = new Date().getTime();
+    const portfolio = photographerData.portfolio || [];
+
+    //create storage ref
+    let storageRef = getFirebase()
+      .storage()
+      .ref(`${uid}/portfolio/${uniqueId}`);
+    //upload file
+    let task = storageRef.put(imageFile);
+
+    task.on(
+      "state_changed",
+      function progress(snap) {
+        console.log(snap);
+      },
+      function error(err) {
+        console.log("EROROROROROR");
+        return err;
+      },
+      function complete() {
+        return task.snapshot.ref.getDownloadURL().then(downloadURL =>
+          getFirestore()
+            .collection("users")
+            .doc(uid)
+            .set(
+              {
+                ...photographerData,
+                portfolio: [
+                  ...portfolio,
+                  { imgLink: downloadURL, imgDescription: imageDescription }
+                ]
+              },
+              { merge: true }
+            )
+        );
+      }
+    );
   };
 }
