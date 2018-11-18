@@ -68,7 +68,7 @@ export function uploadPortofolioPhoto(
   uid,
   photographerData
 ) {
-  return (dispatch, getState, { getFirestore, getFirebase }) => {
+  return async (dispatch, getState, { getFirestore, getFirebase }) => {
     const uniqueId = new Date().getTime();
     const portfolio = photographerData.portfolio || [];
 
@@ -76,35 +76,29 @@ export function uploadPortofolioPhoto(
     let storageRef = getFirebase()
       .storage()
       .ref(`${uid}/portfolio/${uniqueId}`);
-    //upload file
-    let task = storageRef.put(imageFile);
 
-    task.on(
-      "state_changed",
-      function progress(snap) {
-        console.log(snap);
-      },
-      function error(err) {
-        console.log("EROROROROROR");
-        return err;
-      },
-      function complete() {
-        return task.snapshot.ref.getDownloadURL().then(downloadURL =>
-          getFirestore()
-            .collection("users")
-            .doc(uid)
-            .set(
+    //upload file
+    try {
+      const snap = await storageRef.put(imageFile);
+      const downloadUrl = await snap.ref.getDownloadURL();
+      return getFirestore()
+        .collection("users")
+        .doc(uid)
+        .set(
+          {
+            portfolio: [
+              ...portfolio,
               {
-                ...photographerData,
-                portfolio: [
-                  ...portfolio,
-                  { imgLink: downloadURL, imgDescription: imageDescription }
-                ]
-              },
-              { merge: true }
-            )
+                imageUrl: downloadUrl,
+                imageDescription: imageDescription,
+                id: uniqueId
+              }
+            ]
+          },
+          { merge: true }
         );
-      }
-    );
+    } catch (err) {
+      return new Promise((resolve, reject) => reject(err));
+    }
   };
 }

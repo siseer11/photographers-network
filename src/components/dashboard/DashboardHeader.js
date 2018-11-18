@@ -20,7 +20,7 @@ export const DashboardHeader = ({
           style={{ flexDirection: "column" }}
           className="gb-card-7-height gb-background-primary"
         >
-          <AvatarInput uid={auth.uid} userAvatar={profile.photoURL} />
+          <AvatarInput uid={auth.uid} userAvatar={profile.profileImageUrl} />
           <div className="card-7-shadow-overlay" />
           <div className="card-7-content">
             <h1 className="gb-title-xx-large gb-text-white gb-margin-bottom-40 gb-text-align-center">

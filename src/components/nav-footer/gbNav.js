@@ -1,19 +1,19 @@
 import React from "react";
-import {PropTypes} from "prop-types";
-import {SmallLogoSVG} from "../svg/SmallLogoSVG";
-import {LinkLists} from "../LinkLists";
-import {Link} from "react-router-dom";
-import {RightUserOn} from "./RightUserOn";
-import {connect} from "react-redux";
-import {signOutUser} from "../../redux/actions/user-action";
-import {firestoreConnect} from 'react-redux-firebase';
-import {compose} from 'redux';
+import { PropTypes } from "prop-types";
+import { SmallLogoSVG } from "../svg/SmallLogoSVG";
+import { LinkLists } from "../LinkLists";
+import { Link } from "react-router-dom";
+import { RightUserOn } from "./RightUserOn";
+import { connect } from "react-redux";
+import { signOutUser } from "../../redux/actions/user-action";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 
 class GbNavBar extends React.Component {
   state = {
     sticky: false,
     showNotificationBox: false,
-    links: [{txt: "Sign in", link: "signIn"}],
+    links: [{ txt: "Sign in", link: "signIn" }],
     homeLink: "home",
     userLinks: []
   };
@@ -41,9 +41,9 @@ class GbNavBar extends React.Component {
   };
 
   render() {
-    const {userOn, userData: user, signOutUser, auth, profile} = this.props;
+    const { userOn, userData: user, signOutUser, auth, profile } = this.props;
 
-    let righLinks = [{txt: "Sign in", link: "signIn"}];
+    let righLinks = [{ txt: "Sign in", link: "signIn" }];
     let homeLink = "home";
     let userLinks;
 
@@ -81,15 +81,15 @@ class GbNavBar extends React.Component {
           link: "ProfileEdit"
         },
         ...specificLinks,
-        {txt: "Sign out", clickHandler: signOutUser}
+        { txt: "Sign out", clickHandler: signOutUser }
       ];
     }
 
-    const {showNotificationBox} = this.state;
+    const { showNotificationBox } = this.state;
     return (
       <div className={`gb-navbar ${this.state.sticky ? "sticky" : ""}`}>
         <Link to={`/${homeLink}`} className="left-content">
-          <SmallLogoSVG classes="gb-icon-medium gb-icon-fill-white"/>
+          <SmallLogoSVG classes="gb-icon-medium gb-icon-fill-white" />
         </Link>
         <ul className="right-content">
           <LinkLists
@@ -102,7 +102,7 @@ class GbNavBar extends React.Component {
               newNotifications={this.props.newNotifications}
               showNotificationBox={showNotificationBox}
               user={user}
-              userImageUrl={profile.photoURL}
+              userImageUrl={profile.profileImageUrl}
               userLinks={userLinks}
             />
           )}
@@ -129,19 +129,22 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   firestoreConnect(props => {
-    if(!props.auth.uid) return [];
+    if (!props.auth.uid) return [];
     return [
       {
-        collection: 'notifications',
+        collection: "notifications",
         //orderBy: ['createdAt', 'desc'],
         where: [
-          ['recipientUserId', '==', props.auth.uid],
-          ['read', '==', false]
+          ["recipientUserId", "==", props.auth.uid],
+          ["read", "==", false]
         ]
       }
-    ]
+    ];
   })
 )(GbNavBar);
 

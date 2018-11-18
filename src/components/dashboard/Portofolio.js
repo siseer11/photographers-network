@@ -12,7 +12,7 @@ export default class Portofolio extends React.Component {
     const { user } = this.props;
     return (
       <React.Fragment>
-        {user.portofolio && user.portofolio.length > 0 ? (
+        {user.portfolio && user.portfolio.length > 0 ? (
           <h2>Portfolio.</h2>
         ) : (
           <h2>You have no photos, add your first one in here.</h2>
@@ -28,8 +28,8 @@ export default class Portofolio extends React.Component {
             />
           )}
         </WithModal>
-        {user.portofolio && user.portofolio.length > 0 && (
-          <PortofolioGallery photosList={user.portofolio} />
+        {user.portfolio && user.portfolio.length > 0 && (
+          <PortofolioGallery photosList={user.portfolio} />
         )}
       </React.Fragment>
     );

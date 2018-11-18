@@ -42,28 +42,32 @@ export const updateUserInfo = (name, location, photoURL, user) => {
 };
 
 export const updatePhotoURL = (file, userId) => {
-  return dispatch => {
-    //create storage ref
-    let storageRef = fire.storage().ref(`${userId}/avatar`);
-    //upload file
-    let task = storageRef.put(file);
-    return task.on(
-      "state_changed",
-      function progress(snap) {
-        console.log(snap);
-      },
-      function error(err) {
-        console.log(err);
-      },
-      function complete() {
-        task.snapshot.ref
-          .getDownloadURL()
-          .then(downloadURL => updatePhotoURLDB(downloadURL, userId, dispatch));
-      }
-    );
+  return async (dispatch, getState, { getFirestore, getFIrebase }) => {
+    try {
+      const storageRef = await fire.storage().ref(`${userId}/avatar`);
+      const task = await storageRef.put(file);
+      const url = await task.ref.getDownloadURL();
+      const response = await getFirestore()
+        .collection("users")
+        .doc(userId)
+        .set({ profileImageUrl: url }, { merge: true });
+      return response;
+    } catch (err) {
+      return new Promise((resolve, reject) => reject(err));
+    }
   };
 };
 
+//Make a photographer premium, Returns a Promise
+export const markAsPremium = uid => (dispatch, getState, { getFirestore }) =>
+  getFirestore()
+    .collection("users")
+    .doc(uid)
+    .update({
+      premium: true
+    });
+
+/*
 const updatePhotoURLDB = (downloadURL, userId, dispatch) => {
   database
     .ref("users")
@@ -89,12 +93,4 @@ const updatePhotoURLDB = (downloadURL, userId, dispatch) => {
       }
     );
 };
-
-//Make a photographer premium, Returns a Promise
-export const markAsPremium = uid => (dispatch, getState, { getFirestore }) =>
-  getFirestore()
-    .collection("users")
-    .doc(uid)
-    .update({
-      premium: true
-    });
+*/

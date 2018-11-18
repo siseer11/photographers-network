@@ -1,12 +1,62 @@
 // dependencies
-import React, {Component} from "react";
-import {connect} from "react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { isLoaded, isEmpty, firestoreConnect } from "react-redux-firebase";
 
 // components
 import MyJobsCategoryView from "../../../components/my-jobs/MyJobsCategoryView";
-import {appliedJobsFetch, fetchJobs} from "../../../redux/actions/jobs-action";
 
-const mapStateToProps = state => {
+const AppliedJobs = ({ appliedJobsList, uid }) => {
+  if (!isLoaded(appliedJobsList)) {
+    return <h2>Loading....</h2>;
+  }
+  if (isEmpty(appliedJobsList)) {
+    return <h2>You have no apllied jobs!</h2>;
+  }
+
+  const appliedJobsOpen = appliedJobsList.filter(el => el.status == "open");
+  const appliedJobsAccepted = appliedJobsList.filter(
+    el => el.status == "in progress" && el.photographer == uid
+  );
+  const appliedJobsDeclined = appliedJobsList.filter(
+    el => el.status != "open" && el.photographer != uid
+  );
+  const finishedJobs = appliedJobsList.filter(
+    el => el.photographer == uid && el.status == "finished"
+  );
+
+  return (
+    <React.Fragment>
+      <MyJobsCategoryView categoryTitle="Applied" jobs={appliedJobsOpen} />
+      <MyJobsCategoryView categoryTitle="Accepted" jobs={appliedJobsAccepted} />
+      <MyJobsCategoryView categoryTitle="Declined" jobs={appliedJobsDeclined} />
+      <MyJobsCategoryView categoryTitle="Finished" jobs={finishedJobs} />
+    </React.Fragment>
+  );
+};
+
+const mapStateToProps = (state, ownProps) => ({
+  appliedJobsList: state.firestore.ordered.appliedJobs,
+  uid: ownProps.auth.uid
+});
+
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect(({ auth }) => [
+    {
+      collection: "jobOffers",
+      where: ["photographersIds", "array-contains", auth.uid],
+      storeAs: "appliedJobs"
+    }
+  ])
+)(AppliedJobs);
+
+/*
+
+
+
+  const mapStateToProps = state => {
   const jobs = state.allJobs;
   return {
     fetchedAppliedOnce: jobs.fetchedAppliedOnce,
@@ -16,29 +66,4 @@ const mapStateToProps = state => {
     finishedJobs: jobs.photographer.finishedJobs
   };
 };
-
-const mapDispatchToProps = dispatch => ({
-  fetchJobs: () => dispatch(appliedJobsFetch())
-});
-
-class AppliedJobs extends Component {
-  componentDidMount() {
-    if(!this.props.fetchedAppliedOnce) {
-      this.props.fetchJobs();
-    }
-  }
-
-  render() {
-    const {appliedJobs, acceptedJobs, declinedJobs, finishedJobs} = this.props;
-    return (
-      <div className="my-jobs-container">
-        <MyJobsCategoryView categoryTitle="Applied" jobs={appliedJobs}/>
-        <MyJobsCategoryView categoryTitle="Accepted" jobs={acceptedJobs}/>
-        <MyJobsCategoryView categoryTitle="Declined" jobs={declinedJobs}/>
-        <MyJobsCategoryView categoryTitle="Finished" jobs={finishedJobs}/>
-      </div>
-    );
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppliedJobs);
+*/

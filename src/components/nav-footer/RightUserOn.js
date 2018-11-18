@@ -5,20 +5,20 @@ import WithModal from "../../RenderProp/WithModal";
 import { LinkLists } from "../LinkLists";
 
 export const RightUserOn = ({
-                       showNotificationsHandler,
-                       newNotifications,
-                       notifications,
-                       showNotificationBox,
-                       userImageUrl,
-                       userLinks
-                     }) => (
+  showNotificationsHandler,
+  newNotifications,
+  notifications,
+  showNotificationBox,
+  userImageUrl,
+  userLinks
+}) => (
   <React.Fragment>
     <WithModal>
       {({ showModal }) => (
         <React.Fragment>
           <BellSVG
             classes={`gb-icon-medium gb-icon-fill-white ${newNotifications &&
-            "new"}`}
+              "new"}`}
           />
           {showModal && (
             <NotificationContainer showBoxHandler={showNotificationsHandler} />
@@ -31,7 +31,10 @@ export const RightUserOn = ({
         {({ showModal }) => (
           <React.Fragment>
             <div
-              style={{ backgroundImage: `url(${userImageUrl})` }}
+              style={{
+                backgroundImage: `url(${userImageUrl ||
+                  "http://cdn.onlinewebfonts.com/svg/img_74993.png"})`
+              }}
               className="gb-avatar-small gb-avatar nav-user-avatar"
             />
             <ul

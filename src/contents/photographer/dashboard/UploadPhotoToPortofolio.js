@@ -16,6 +16,7 @@ class UploadPhotoToPortofolio extends React.Component {
     imagePreviewLink: ""
   };
 
+  //File input value changing
   fileChanged = e => {
     const file = e.target.files[0];
     const createImageUrl = URL.createObjectURL(file);
@@ -26,16 +27,23 @@ class UploadPhotoToPortofolio extends React.Component {
     });
   };
 
+  //Text input (description) field value changing
   descriptionChange = e => {
     this.setState({
       imageDescription: e.target.value
     });
   };
 
+  //Submit form , upload the photo to the profile
   formSubmit = e => {
     e.preventDefault();
     const { imageFile, imageDescription } = this.state;
-    const { uid, userData, uploadPhotoToPortfolio } = this.props;
+    const {
+      uid,
+      userData,
+      uploadPhotoToPortfolio,
+      closeModalListener
+    } = this.props;
 
     this.setState({
       stage: "Loading..."
@@ -46,8 +54,18 @@ class UploadPhotoToPortofolio extends React.Component {
         this.setState({
           stage: "Done!"
         });
+
+        setTimeout(() => {
+          closeModalListener();
+          this.setState({
+            imageFile: "",
+            imageDescription: "",
+            stage: "Submit",
+            imagePreviewLink: ""
+          });
+        }, 500);
       })
-      .catch(() => {
+      .catch(err => {
         this.setState({
           stage: "Error!"
         });
@@ -81,12 +99,14 @@ class UploadPhotoToPortofolio extends React.Component {
               type="file"
               onChange={this.fileChanged}
               accept=".jpg, .jpeg, .png"
+              disabled={stage !== "Submit"}
             />
             <input
               onChange={this.descriptionChange}
               type="text"
               value={imageDescription}
               placeholder="Image description"
+              disabled={stage !== "Submit"}
             />
             <input type="submit" value={stage} disabled={stage !== "Submit"} />
           </form>

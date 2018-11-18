@@ -53,7 +53,7 @@ A thunk is a function that wraps an expression to delay its evaluation.
 
 
 
-  Did/Changed : 
+Did/Changed : 
 
 Sign-up {
  - added the generalLoading
@@ -62,14 +62,15 @@ Sign-up {
 Sign-in {
  - added the generalLoading
 }
+Погнали
 
 Become Premium 
 Switch Hireable
+Portfolio
 
 
 Problems:
 The auth listenr fire before the answear so componentWillUnmount does not triger the reset
-
 Try with dispatch you fuck.. :))
 
 Delete : USER_INFO_UPDATED_SUCCESSFULLY from user-reducer.js
@@ -81,9 +82,10 @@ Working on :
   -> Hireable button *
   -> Become Premium *
   -> Portofolio *
-  -> Add photos to portfolio
+  -> Add photos to portfolio *
+  -> Change profile photo *
   -> Search Jobs
-  -> Change profile photo
+  -> Applied Jobs
 
 
 
@@ -91,3 +93,4 @@ Working on :
 MUST REDO :
  -> THRE HIREABLE SLIDER , HAVE NO ERROR HANDLER
  -> MAKE THE PAYPAL BUTTON AN RENDER PROP
+ -> IN THE APPLIED JOBS , not sure of the state of the jobs
