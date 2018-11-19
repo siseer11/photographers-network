@@ -66,31 +66,3 @@ export const markAsPremium = uid => (dispatch, getState, { getFirestore }) =>
     .update({
       premium: true
     });
-
-/*
-const updatePhotoURLDB = (downloadURL, userId, dispatch) => {
-  database
-    .ref("users")
-    .child(userId)
-    .update(
-      {
-        photoURL: downloadURL
-      },
-      err => {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log("success");
-          const userData = {
-            photoURL: downloadURL
-          };
-          dispatch({
-            type: PHOTOURL_UPDATED_SUCCESSFULLY,
-            userData,
-            uid: userId
-          });
-        }
-      }
-    );
-};
-*/

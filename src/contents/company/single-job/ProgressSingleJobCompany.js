@@ -1,14 +1,15 @@
 import React from "react";
-import {ProgressSingleJobViewCompany} from "../../../components/single-job/progress/ProgressSingleJobViewCompany";
-import JSZip from 'jszip';
-import FileSaver from 'file-saver';
-import {connect} from "react-redux";
-import {addNewNotification} from "../../../redux/actions/notifications-action";
-import {acceptWork} from "../../../redux/actions/single-job-action-company";
+import { ProgressSingleJobViewCompany } from "../../../components/single-job/progress/ProgressSingleJobViewCompany";
+import JSZip from "jszip";
+import FileSaver from "file-saver";
+import { connect } from "react-redux";
+import { addNewNotification } from "../../../redux/actions/notifications-action";
+import { acceptWork } from "../../../redux/actions/single-job-action-company";
 
 const mapDispatchToProps = dispatch => ({
   addNotification: notification => dispatch(addNewNotification(notification)),
-  acceptSubmittedWork: (jobId, acceptedApplicant) => dispatch(acceptWork(jobId, acceptedApplicant))
+  acceptSubmittedWork: (jobId, acceptedApplicant) =>
+    dispatch(acceptWork(jobId, acceptedApplicant))
 });
 
 class ProgressSingleJobCompany extends React.Component {
@@ -16,7 +17,7 @@ class ProgressSingleJobCompany extends React.Component {
    * Downloads zip file of submitted work.
    */
   downloadWork = () => {
-    const {submittedWork} = this.props;
+    const { submittedWork } = this.props;
     let filesToDownload = [];
     //
     submittedWork.forEach(file => {
@@ -28,10 +29,10 @@ class ProgressSingleJobCompany extends React.Component {
       // create new zip file
       let zip = new JSZip();
       // add every value to the zip
-      for(let i = 0; i < values.length; i++)
+      for (let i = 0; i < values.length; i++)
         zip.file(`submitted-work/${submittedWork[i].id}.jpg`, values[i]);
 
-      zip.generateAsync({type: "blob"}).then(content => {
+      zip.generateAsync({ type: "blob" }).then(content => {
         // provides zip file for download
         FileSaver.saveAs(content, "download.zip");
       });
@@ -47,7 +48,7 @@ class ProgressSingleJobCompany extends React.Component {
   downloadURLAsAPromise = url => {
     return new Promise((resolve, reject) => {
       let xhr = new XMLHttpRequest();
-      xhr.open('GET', url);
+      xhr.open("GET", url);
       xhr.responseType = "blob";
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
@@ -63,13 +64,13 @@ class ProgressSingleJobCompany extends React.Component {
   };
 
   acceptWork = () => {
-    const {jobDescription, jobId, acceptedApplicant} = this.props;
+    const { jobDescription, jobId, acceptedApplicant } = this.props;
     this.props.acceptSubmittedWork(jobId, acceptedApplicant);
     // add notification
     this.props.addNotification({
       title: `${
         jobDescription.companyName
-        } has accepted your submitted work for ${jobDescription.title}.`,
+      } has accepted your submitted work for ${jobDescription.title}.`,
       link: `/progress-job/${jobId}`,
       read: false,
       time: new Date(),
@@ -78,21 +79,21 @@ class ProgressSingleJobCompany extends React.Component {
   };
 
   render() {
-    const {
-      acceptedApplicant,
-      submittedWork,
-      acceptedWork
-    } = this.props;
+    const { acceptedApplicant, submittedWork, acceptedWork } = this.props;
 
     return (
-      <ProgressSingleJobViewCompany acceptedApplicant={acceptedApplicant}
-                                    submittedWork={submittedWork}
-                                    acceptedWork={acceptedWork}
-                                    acceptWorkHandler={this.acceptWork}
-                                    downloadHandler={this.downloadWork}
+      <ProgressSingleJobViewCompany
+        acceptedApplicant={acceptedApplicant}
+        submittedWork={submittedWork}
+        acceptedWork={acceptedWork}
+        acceptWorkHandler={this.acceptWork}
+        downloadHandler={this.downloadWork}
       />
     );
   }
 }
 
-export default connect(null, mapDispatchToProps)(ProgressSingleJobCompany);
+export default connect(
+  null,
+  mapDispatchToProps
+)(ProgressSingleJobCompany);

@@ -14,7 +14,11 @@ import { PhotographerContent } from "../../photographer/dashboard/PhotographerCo
 import CompanyContent from "../../company/profile/CompanyContent";
 
 const Profile = ({ match, profileData, currentUserData, currentUserId }) => {
+  const profileId = match.params.uid;
+
   if (!isLoaded(profileData)) {
+    return <h2>LOading..</h2>;
+  } else if (!isLoaded(profileData[profileId])) {
     return <h2>Loading...</h2>;
   }
 
@@ -22,7 +26,6 @@ const Profile = ({ match, profileData, currentUserData, currentUserId }) => {
     return <h2>No data for this id</h2>;
   }
 
-  const profileId = match.params.uid;
   const otherUser = currentUserId != profileId;
 
   const thisProfileData = profileData[profileId];
@@ -36,7 +39,8 @@ const Profile = ({ match, profileData, currentUserData, currentUserId }) => {
     <div>
       <div className="profile">
         <ProfileCard {...thisProfileData} siggnedInUser={currentUserData}>
-          {thisProfileData.displayName}
+          {thisProfileData.companyName ||
+            `${thisProfileData.firstName} ${thisProfileData.lastName}`}
         </ProfileCard>
         <div className="profile-content">
           <LinkLists

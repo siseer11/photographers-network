@@ -11,17 +11,18 @@ import { JobDescription } from "../../../components/single-job/JobDescription";
 
 class OpenSingleJob extends React.Component {
   render() {
-    let { jobData, user } = this.props;
+    let { jobsData, user } = this.props;
 
     //const { downPayment } = this.state;
 
     const type = user ? user.type : "photographer";
 
-    if (!isLoaded(jobData)) {
+    if (!isLoaded(jobsData)) {
       return <LoadingPage />;
     }
 
-    jobData = jobData[this.props.match.params.jobid];
+    const jobId = this.props.match.params.jobid;
+    const jobData = jobsData[jobId];
 
     if (jobData.status !== "open")
       return <Redirect to={`/progress-job/${this.props.match.params.jobid}`} />;
@@ -35,16 +36,14 @@ class OpenSingleJob extends React.Component {
               <OpenSingleJobPhotographer
                 userApplied={jobData.userApplied}
                 isDeclinedPhotographer={jobData.isDeclinedPhotographer}
-                jobId={jobData.id}
+                jobId={jobId}
                 user={user}
-                jobDescription={jobData.description}
+                jobData={jobData}
               />
             ) : (
               <OpenSingleJobCompany
-                appliedPhotographers={jobData.appliedPhotographers}
-                jobDescription={jobData.description}
-                jobId={jobData.id}
-                acceptedApplicant={jobData.phootgrapher}
+                jobData={jobData}
+                jobId={jobId}
                 downPayment={false}
                 {...this.props}
               />
@@ -60,7 +59,7 @@ class OpenSingleJob extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.firebase.profile,
-  jobData: state.firestore.data.jobOffers
+  jobsData: state.firestore.data.jobOffers
 });
 
 export default compose(

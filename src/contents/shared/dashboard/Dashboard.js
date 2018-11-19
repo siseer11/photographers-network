@@ -73,17 +73,8 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-  userData: state.user.userData,
   auth: state.firebase.auth,
   profile: state.firebase.profile
 });
 
 export default connect(mapStateToProps)(Dashboard);
-
-/*
-
-    if (!auth.uid || profile.isEmpty) {
-      console.log("data not loaded");
-      return <LoadingPage/>;
-    }
-    */

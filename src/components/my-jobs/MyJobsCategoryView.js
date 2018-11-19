@@ -1,6 +1,5 @@
 // dependencies
 import React from "react";
-import WithModal from "../../RenderProp/WithModal";
 
 // components
 import { GbCard50 } from "../gbCard50";

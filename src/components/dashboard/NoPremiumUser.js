@@ -23,7 +23,6 @@ class NoPremiumUser extends React.Component {
     this.setState(() => ({
       buttonStatus: "Loading..."
     }));
-    console.log(this.props.uid);
     this.props
       .markAsPremium(this.props.uid)
       .then(() =>
