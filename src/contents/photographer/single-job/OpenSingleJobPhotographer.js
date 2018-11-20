@@ -23,7 +23,6 @@ class OpenSingleJobPhotographer extends React.Component {
     this.props
       .applyForSingleJob(jobData, user)
       .then(() => {
-        console.log("done , notification added to!");
         this.setState({
           loading: false,
           error: null
@@ -39,17 +38,27 @@ class OpenSingleJobPhotographer extends React.Component {
 
   render() {
     const { jobData, user } = this.props;
-    let photographerAlreadyApplied = false;
+    let status = "not applied";
 
-    if (
-      jobData.photographersWhichApplied &&
-      jobData.photographersWhichApplied.hasOwnProperty(user.uid)
-    ) {
-      photographerAlreadyApplied = true;
+    //Check to see if this photographer has allready applied, and if him was declined
+    if (jobData.photographersWhichApplied) {
+      const photographerAppliedData =
+        jobData.photographersWhichApplied[user.uid];
+      if (photographerAppliedData) {
+        if (!photographerAppliedData.declined) {
+          status = "applied";
+        } else {
+          status = "declined";
+        }
+      }
     }
 
-    if (photographerAlreadyApplied) {
-      return <h2>You have already applied for this job.</h2>; // user applied for this job
+    if (status === "applied") {
+      return <h2>You have already applied for this job.</h2>;
+    }
+
+    if (status === "declined") {
+      return <h2>You are declined for this job.</h2>;
     }
 
     return (

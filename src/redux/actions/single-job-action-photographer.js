@@ -4,7 +4,6 @@ const database = fire.database();
 const storage = fire.storage();
 
 // -------------------- ACTION TYPES -------------------- //
-export const APPLY_TO_JOB = "APPLY_TO_JOB";
 export const REMOVE_IMAGE_ERROR = "REMOVE_IMAGE_ERROR";
 export const SUBMIT_WORK = "SUBMIT_WORK";
 export const SUBMIT_WORK_ERROR = "SUBMIT_WORK_ERROR";

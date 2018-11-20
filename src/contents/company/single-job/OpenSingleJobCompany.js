@@ -31,7 +31,16 @@ class OpenSingleJobCompany extends React.Component {
    * Deletes job from every database node and redirects to dashboard.
    */
   deleteJob = () => {
-    this.props.deleteCurrentJob(this.props.jobId);
+    //get the id of this job
+    const jobId = this.props.match.params.jobid;
+    //dispatch the action to delete the job, wait for the response
+    this.props
+      .deleteCurrentJob(jobId)
+      .then(() => {
+        console.log("job deleted succesfully");
+        setTimeout(() => this.props.history.replace("/dashboard"), 1000);
+      })
+      .catch(err => console.log(err));
   };
 
   /**
@@ -39,10 +48,13 @@ class OpenSingleJobCompany extends React.Component {
    *
    * @param uid
    */
-  declineApplicant = uid => {
+  declineApplicant = photographerId => {
     const { jobData } = this.props;
     // remove applicant from database and state
-    this.props.declineApplicantForJob(jobData, uid);
+    this.props
+      .declineApplicantForJob(jobData, photographerId)
+      .then(() => console.log("Done!"))
+      .catch(err => console.log(err));
   };
 
   /**
@@ -77,7 +89,7 @@ class OpenSingleJobCompany extends React.Component {
 
   render() {
     const { acceptedApplicant } = this.state;
-    const { jobDescription, appliedPhotographers, downPayment } = this.props;
+    const { jobData, appliedPhotographers, downPayment } = this.props;
     return (
       <React.Fragment>
         {this.state.showDeleteModal && (
@@ -91,11 +103,13 @@ class OpenSingleJobCompany extends React.Component {
         <OpenSingleJobViewCompany
           showDeleteModal={this.showDeleteModal}
           acceptedApplicant={acceptedApplicant}
-          appliedPhotographers={appliedPhotographers}
+          appliedPhotographers={Object.values(
+            jobData.photographersWhichApplied || {}
+          )}
           acceptHandler={this.acceptApplicant}
           declineHandler={this.declineApplicant}
           downPayment={downPayment}
-          price={jobDescription.price}
+          price={jobData.priceAmount}
           successfulPaymentHandler={this.successfulPayment}
         />
       </React.Fragment>

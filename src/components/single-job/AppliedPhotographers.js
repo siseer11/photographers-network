@@ -7,9 +7,8 @@ export const AppliedPhotographers = ({
   acceptHandler,
   declineHandler
 }) => {
-  //if there is a list with photographers that applied, return an array of it
-  if (photographers) {
-    photographers = Object.values(photographers);
+  if (photographers.length > 0) {
+    photographers = photographers.filter(el => !el.declined);
   }
   return (
     <div>
@@ -20,7 +19,7 @@ export const AppliedPhotographers = ({
             return (
               <AppliedPhotographerElement
                 key={key}
-                uid={photographer.uid}
+                uid={photographer.id}
                 name={`${photographer.firstName} ${photographer.lastName}`}
                 acceptHandler={acceptHandler}
                 declineHandler={declineHandler}

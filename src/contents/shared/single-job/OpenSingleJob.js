@@ -22,7 +22,7 @@ class OpenSingleJob extends React.Component {
     }
 
     const jobId = this.props.match.params.jobid;
-    const jobData = jobsData[jobId];
+    const jobData = { ...jobsData[jobId], jobId: jobId };
 
     if (jobData.status !== "open")
       return <Redirect to={`/progress-job/${this.props.match.params.jobid}`} />;

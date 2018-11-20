@@ -113,13 +113,11 @@ class GbNavBar extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const user = state.user;
   const notifications = state.firestore.ordered.notifications;
   return {
     newNotifications: notifications ? notifications.length > 0 : false,
     auth: state.firebase.auth,
-    userOn: user.userOn,
-    userData: user.userData,
+    userOn: state.firebase.auth.uid,
     profile: state.firebase.profile
   };
 };

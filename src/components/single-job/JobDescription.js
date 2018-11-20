@@ -8,7 +8,7 @@ export const JobDescription = ({
   location,
   priceAmount,
   requestedSkill,
-  companyName,
+  company,
   companyId
 }) => (
   <React.Fragment>
@@ -30,7 +30,8 @@ export const JobDescription = ({
     </p>
     <hr />
     <p>
-      Posted by: <Link to={`../profile/${companyId}`}>{companyName}</Link>
+      Posted by:{" "}
+      <Link to={`../profile/${companyId}`}>{company.companyName}</Link>
     </p>
     <hr />
   </React.Fragment>

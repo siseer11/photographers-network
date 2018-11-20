@@ -1,6 +1,6 @@
 // ASYNC ACTIONS (THUNK)
 export const markNotificationAsRead = id => {
-  return (dispatch, { getFirestore }) => {
+  return (dispatch, getState, { getFirestore }) => {
     return getFirestore()
       .collection("notifications")
       .doc(id)

@@ -71,17 +71,6 @@ export const deleteCurrentJob = jobId => {
   };
 };
 
-const notification = {
-  title: `${jobDescription.companyName} has declined your application for ${
-    jobDescription.title
-  }.`,
-  link: `/open-job/${jobId}`,
-  read: false,
-  time: new Date(),
-  recipientUserId: uid
-};
-this.props.addNotification(notification);
-
 //Decline an aplicat for the job (Do we really need it?)
 export const declineApplicantForJob = (jobData, photographerId) => {
   return (dispatch, getState, { getFirestore }) => {
@@ -100,6 +89,18 @@ export const declineApplicantForJob = (jobData, photographerId) => {
             declined: true
           }
         }
+      })
+      .then(() => {
+        const notification = {
+          title: `${
+            jobData.company.companyName
+          } has declined your application for ${jobData.title}.`,
+          link: `/open-job/${jobData.jobId}`,
+          read: false,
+          time: new Date().getTime(),
+          recipientUserId: photographerId
+        };
+        return dispatch(addNewNotification(notification));
       });
   };
 };
