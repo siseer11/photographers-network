@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { createJob } from "../../../redux/actions/createJob-action";
+import { createJob } from "../../../redux/actions/company-actions";
 
 import { CustomSelect } from "../../../components/CustomSelect";
 import { InputField } from "../../../components/form/InputField";
@@ -29,7 +29,11 @@ class CreateJob extends React.Component {
     jobType: "nature",
     jobBudget: "",
     jobDate: this.createValidDate(new Date()),
-    jobDescription: ""
+    jobDescription: "",
+    jobAddress: "",
+    loading: false,
+    error: null,
+    finished: null
   };
 
   changeHandler = e => {
@@ -40,13 +44,33 @@ class CreateJob extends React.Component {
 
   submitHandler = e => {
     e.preventDefault();
-    this.props.createJob(
-      {
+
+    this.setState({
+      loading: true
+    });
+
+    this.props
+      .createJob({
         ...this.state,
         date: new Date(this.state.jobDate).getTime()
-      }
-    )
-      .then(()=> this.props.history.push('/dashboard'));
+      })
+      .then(() => {
+        this.setState({
+          loading: false,
+          finished: true
+        });
+
+        setTimeout(() => {
+          this.props.history.push("/dashboard");
+        }, 1000);
+      })
+      .catch(err => {
+        this.setState({
+          loading: false,
+          finished: null,
+          error: err
+        });
+      });
   };
 
   optionSelectHandler = type => {
@@ -78,14 +102,16 @@ class CreateJob extends React.Component {
     const {
       jobTitle,
       jobLocation,
+      jobAddress,
       jobType,
       jobBudget,
       jobDate,
       jobDescription,
-      showCustomSelect
+      showCustomSelect,
+      loading,
+      error,
+      finished
     } = this.state;
-
-    const { loading, error, succes } = this.props;
 
     let today = new Date();
     today = this.createValidDate(today);
@@ -113,6 +139,16 @@ class CreateJob extends React.Component {
             type="text"
             name="Location"
             placeholder="Location"
+          />
+          <InputField
+            svg={
+              <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+            }
+            value={jobAddress}
+            changeHandler={this.changeHandler}
+            type="text"
+            name="Address"
+            placeholder="Address"
           />
           <div
             className="custom-select gb-text-input gb-text-input-trans-background"
@@ -159,8 +195,8 @@ class CreateJob extends React.Component {
           <input
             className="gb-btn gb-btn-large gb-btn-primary"
             type="submit"
-            value={loading ? "Loading..." : succes ? "Done!" : "Create"}
-            disabled={loading || succes}
+            value={loading ? "Loading..." : finished ? "Done!" : "Create"}
+            disabled={loading || finished}
           />
         </form>
       </div>
@@ -169,15 +205,11 @@ class CreateJob extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  loading: state.createJob.loading,
-  error: state.createJob.error,
-  succes: state.createJob.succes,
-  user: state.user.userData
+  user: state.firebase.profile
 });
 
 const mapDispatchToProps = dispatch => ({
-  createJob: jobData =>
-    dispatch(createJob(jobData))
+  createJob: jobData => dispatch(createJob(jobData))
 });
 
 export default connect(

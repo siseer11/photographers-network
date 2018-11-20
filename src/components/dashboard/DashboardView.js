@@ -19,9 +19,7 @@ export const DashboardView = ({
   type,
   linkHandler,
   activeComponent,
-  headerLinks,
-  loading,
-  updateUserInfo
+  headerLinks
 }) => {
   let currentComponent = "";
 
@@ -34,7 +32,7 @@ export const DashboardView = ({
           <React.Fragment>
             {profile.premium ? (
               // user is premium
-              <Portofolio user={profile}/>
+              <Portofolio user={profile} />
             ) : (
               // user is not premium
               <NoPremiumUser user={profile} />
@@ -42,7 +40,7 @@ export const DashboardView = ({
             <Link to="/jobs" className="gb-btn gb-btn-medium gb-btn-primary">
               Search for jobs
             </Link>
-            <HireableSwitch user={profile}/>
+            <HireableSwitch user={profile} />
           </React.Fragment>
         ) : (
           // user is company
@@ -63,10 +61,10 @@ export const DashboardView = ({
         );
       break;
     case "Applied Jobs":
-      currentComponent = <AppliedJobs user={profile} auth={auth} loading={loading} />;
+      currentComponent = <AppliedJobs user={profile} auth={auth} />;
       break;
     case "My Jobs":
-      currentComponent = <MyJobOffers user={profile} auth={auth} loading={loading} />;
+      currentComponent = <MyJobOffers user={profile} auth={auth} />;
       break;
     default:
       currentComponent = <div>No fitting component!</div>;
@@ -82,7 +80,11 @@ export const DashboardView = ({
         auth={auth}
         linkHandler={linkHandler}
       >
-        Welcome {`${profile.firstName} ${profile.lastName}`}!
+        {profile.type === "photographer" ? (
+          <span>Welcome {`${profile.firstName} ${profile.lastName}`}!</span>
+        ) : (
+          <span>Welcome {`${profile.companyName}`}!</span>
+        )}
       </DashboardHeader>
       {currentComponent}
     </div>

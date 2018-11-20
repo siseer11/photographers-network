@@ -4,13 +4,9 @@ import WithModal from "../../RenderProp/WithModal";
 import PaypalButton from "../../contents/shared/PayPalButton";
 import CLIENT from "../../paypal/Client";
 import { connect } from "react-redux";
-import {markAsPremium} from "../../redux/actions/profile-action";
+import { markAsPremium } from "../../redux/actions/profile-action";
 
 const ENV = process.env.NODE_ENV === "production" ? "production" : "sandbox";
-
-const mapDispatchToProps = dispatch => ({
-  markAsPremium: () => dispatch(markAsPremium())
-});
 
 class NoPremiumUser extends React.Component {
   state = {
@@ -27,13 +23,18 @@ class NoPremiumUser extends React.Component {
     this.setState(() => ({
       buttonStatus: "Loading..."
     }));
-    this.props.markAsPremium()
-      .then(()=> this.setState(() => ({
-        buttonStatus: "Done!"
-      })))
-      .catch(err => this.setState(() => ({
-        buttonStatus: "Error"
-      })));
+    this.props
+      .markAsPremium(this.props.uid)
+      .then(() =>
+        this.setState(() => ({
+          buttonStatus: "Done!"
+        }))
+      )
+      .catch(err =>
+        this.setState(() => ({
+          buttonStatus: "Error"
+        }))
+      );
   };
 
   onError = () => {
@@ -43,15 +44,17 @@ class NoPremiumUser extends React.Component {
   onCancel = () => {
     this.setState({ error: "Your cancelled your payment!" });
   };
+
   succesPayment = () => {
     this.makeUserPremium();
   };
+
   render() {
     const { buttonStatus } = this.state;
     const total = 30;
     return (
       <React.Fragment>
-        <p>For a portofolio you have to be premium...</p>
+        <p>For a portofolio you have to be premium.</p>
         <WithModal closeItemClass="close-modal">
           {({ showModal }) => (
             <React.Fragment>
@@ -63,7 +66,7 @@ class NoPremiumUser extends React.Component {
                 <div className="modal-inner-box">
                   <h2>
                     If you become premium it will be awsome trust me, you will
-                    not regret it!..
+                    not regret it!
                   </h2>
                   <div
                     onClick={this.makeUserPremium}
@@ -93,4 +96,15 @@ class NoPremiumUser extends React.Component {
   }
 }
 
-export default connect(null, mapDispatchToProps)(NoPremiumUser);
+const mapStateToProps = state => ({
+  uid: state.firebase.auth.uid
+});
+
+const mapDispatchToProps = dispatch => ({
+  markAsPremium: uid => dispatch(markAsPremium(uid))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NoPremiumUser);

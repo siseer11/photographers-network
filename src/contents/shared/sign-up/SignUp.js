@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {Redirect} from "react-router-dom";
 import { sigUpUser } from "../../../redux/actions/signUp-action";
+import { actionReset } from "../../../redux/actions/generalLoadingErrorSucces-actions";
 
 import { SingUpView } from "../../../components/SignUpView";
 
@@ -9,6 +9,7 @@ class SignUp extends Component {
   state = {
     firstName: "",
     lastName: "",
+    companyName: "",
     email: "",
     password: "",
     password2: "",
@@ -28,7 +29,10 @@ class SignUp extends Component {
 
   optionSelectHandler = type => {
     this.setState({
-      type: type
+      type: type,
+      firstName: "",
+      lastName: "",
+      companyName: ""
     });
   };
 
@@ -56,40 +60,32 @@ class SignUp extends Component {
     this.props.signUserUp(this.state);
   };
 
+  componentWillUnmount() {
+    console.log("Done , reseted!");
+    actionReset();
+  }
+
   render() {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      password2,
-      location,
-      type,
-      showCustomSelect
-    } = this.state;
-    const {auth} = this.props;
-    if (auth.uid) return <Redirect to='/dashboard' />;
     return (
       <SingUpView
         signupHandler={this.signup}
-        firstName={firstName}
-        lastName={lastName}
         changeHandler={this.handleChange}
-        email={email}
-        password={password}
-        password2={password2}
-        location={location}
         showCustomSelectHandler={this.showCustomSelectHandler}
         optionSelectHandler={this.optionSelectHandler}
-        type={type}
-        showCustomSelect={showCustomSelect}
+        {...this.state}
+        loadingDB={this.props.loadingDB}
+        errorDB={this.props.errorDB}
+        succesDB={this.props.succesDB}
       />
     );
   }
 }
 
 const mapStateToProps = state => ({
-  auth: state.firebase.auth
+  auth: state.firebase.auth,
+  loadingDB: state.generalLoadingErrorSucces.loading,
+  errorDB: state.generalLoadingErrorSucces.error,
+  succesDB: state.generalLoadingErrorSucces.succes
 });
 
 const mapDispatchToProps = dispatch => ({

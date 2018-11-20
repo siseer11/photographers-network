@@ -92,11 +92,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(ProfileEdit);
-
-/*
-add also the posibility of changing the links and also the description
-*/
-
-/*
-
-  */

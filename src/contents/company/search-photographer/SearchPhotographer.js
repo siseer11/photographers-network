@@ -1,19 +1,15 @@
 import React, { Component } from "react";
-import fire from "../../../config/Fire";
+import { compose } from "redux";
 import { connect } from "react-redux";
-import { searchPhotographer } from "../../../redux/actions/searchPhotographer-action";
-import { resetSearchState } from "../../../redux/actions/searchPhotographer-action";
+import { isLoaded, isEmpty, firestoreConnect } from "react-redux-firebase";
 
 import { PhotographersList } from "../../../components/PhotographersList";
 import { SearchInput } from "../../../components/form/SearchInput";
 
 class SearchPhotographers extends Component {
   state = {
-    searchValue: "",
-    photographerResults: [],
-    lastSearched: ""
+    searchedValue: ""
   };
-  database = fire.database().ref();
 
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -22,38 +18,39 @@ class SearchPhotographers extends Component {
   search = e => {
     e.preventDefault();
     const location = this.state.searchValue;
-    this.props.searchPhotographer(location);
-    this.setState({
-      lastSearched: location
-    });
   };
 
-  componentWillUnmount() {
-    this.props.resetSearchState();
-  }
-
   render() {
-    const { lastSearched } = this.state;
-    const { photographersData, loading } = this.props;
+    let { photographers } = this.props;
+    const { searchedValue } = this.state;
+
+    if (!isLoaded(photographers)) {
+      return <h2>Loading.... Photographers data!</h2>;
+    }
+
+    if (isEmpty(photographers)) {
+      return <h2>No photographers could be found!</h2>;
+    }
+
+    if (searchedValue) {
+      photographers = photographers.filter(el => {
+        const regExp = new RegExp(`^${searchedValue}`, "i");
+        return regExp.test(el.location);
+      });
+    }
+
     return (
       <React.Fragment>
         <div className="search-photographer section-content normalized">
           <h1 className="gb-title-medium">Search for a photographer in</h1>
           <SearchInput
-            name="searchValue"
-            value={this.state.searchValue}
+            name="searchedValue"
+            value={this.state.searchedValue}
             placeholder="Type in a city/location..."
             changeHandler={this.handleChange}
             searchHandler={this.search}
           />
-
-          {loading ? (
-            <h2>Loading...</h2>
-          ) : loading === false ? (
-            <PhotographersList list={photographersData[lastSearched]} />
-          ) : (
-            <h2>Nothing</h2>
-          )}
+          <PhotographersList list={photographers} />
         </div>
       </React.Fragment>
     );
@@ -61,18 +58,16 @@ class SearchPhotographers extends Component {
 }
 
 const mapStateToProps = state => ({
-  userData: state.user.userData,
-  photographersData: state.photographers.photographersData,
-  loading: state.photographers.loading,
-  error: state.photographers.error
+  photographers: state.firestore.ordered.photographers
 });
 
-const mapDispatchToProps = dispatch => ({
-  searchPhotographer: country => dispatch(searchPhotographer(country)),
-  resetSearchState: () => dispatch(resetSearchState())
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect([
+    {
+      collection: "users",
+      where: [["type", "==", "photographer"]],
+      storeAs: "photographers"
+    }
+  ])
 )(SearchPhotographers);

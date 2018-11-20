@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signUserInAsync } from "../../../redux/actions/user-action";
+
 import { EmailSVG } from "../../../components/svg/EmailSVG";
 import { PasswordSVG } from "../../../components/svg/PasswordSVG";
 import { Error } from "../../../components/Error";
@@ -9,10 +10,7 @@ import { InputField } from "../../../components/form/InputField";
 class SignIn extends Component {
   state = {
     email: "",
-    password: "",
-    type: "photographer",
-    errorMessage: "",
-    error: false
+    password: ""
   };
 
   /**
@@ -29,6 +27,8 @@ class SignIn extends Component {
   };
 
   render() {
+    const { loadingAuth, errorAuth, succesAuth } = this.props;
+
     return (
       <div>
         <div className="section-content with-padding">
@@ -57,13 +57,31 @@ class SignIn extends Component {
               placeholder="Password"
             />
             <div className="btn-container">
-              <input
-                type="submit"
-                className="gb-btn gb-btn-large gb-btn-primary"
-                value="Sign in"
-              />
+              {loadingAuth ? (
+                <input
+                  type="submit"
+                  disabled={true}
+                  style={{ opacity: 0.5 }}
+                  className="gb-btn gb-btn-large gb-btn-primary"
+                  value="Loading..."
+                />
+              ) : succesAuth ? (
+                <input
+                  type="submit"
+                  disabled={true}
+                  style={{ opacity: 1 }}
+                  className="gb-btn gb-btn-large gb-btn-primary"
+                  value="Succes"
+                />
+              ) : (
+                <input
+                  type="submit"
+                  className="gb-btn gb-btn-large gb-btn-primary"
+                  value="Sign in"
+                />
+              )}
             </div>
-            {this.state.error && <Error message={this.state.errorMessage} />}
+            {errorAuth && <Error message="Auth failed!" />}
           </form>
         </div>
       </div>
@@ -75,7 +93,13 @@ const mapDispatchToProps = dispatch => ({
   signInUser: (email, password) => dispatch(signUserInAsync(email, password))
 });
 
+const mapStateToProps = state => ({
+  loadingAuth: state.generalLoadingErrorSucces.loading,
+  errorAuth: state.generalLoadingErrorSucces.error,
+  succesAuth: state.generalLoadingErrorSucces.succes
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SignIn);

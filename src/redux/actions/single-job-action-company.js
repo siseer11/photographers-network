@@ -42,8 +42,9 @@ export const acceptWorkSuccess = () => ({
 
 // -------------------- ASYNC ACTIONS THUNK -------------------- //
 
+/* DONE */
 export const acceptApplicantForJob = (acceptedApplicant, jobId) => {
-  return (dispatch) => {
+  return dispatch => {
     return database
       .ref("requests")
       .child(jobId)
@@ -53,16 +54,23 @@ export const acceptApplicantForJob = (acceptedApplicant, jobId) => {
         status: "in progress"
       })
       .then(() => {
-        database.ref("photographer").child(acceptedApplicant.uid).child("applied-jobs").child(jobId).update({
-          status: "accepted"
-        }).then(() => {
-          dispatch(acceptApplicantSuccess(acceptedApplicant));
-        });
+        database
+          .ref("photographer")
+          .child(acceptedApplicant.uid)
+          .child("applied-jobs")
+          .child(jobId)
+          .update({
+            status: "accepted"
+          })
+          .then(() => {
+            dispatch(acceptApplicantSuccess(acceptedApplicant));
+          });
       })
       .catch(err => dispatch(acceptApplicantError(err)));
   };
 };
 
+/* DONE */
 export const declineApplicantForJob = (uid, jobId) => {
   return dispatch => {
     database
@@ -72,27 +80,48 @@ export const declineApplicantForJob = (uid, jobId) => {
       .child(uid)
       .remove()
       .then(() => {
-        database.ref("photographer").child(uid).child("applied-jobs").child(jobId).update({
-          status: "declined"
-        }).then(()=> {
-          dispatch(declineApplicantSuccess(uid));
-        });
+        database
+          .ref("photographer")
+          .child(uid)
+          .child("applied-jobs")
+          .child(jobId)
+          .update({
+            status: "declined"
+          })
+          .then(() => {
+            dispatch(declineApplicantSuccess(uid));
+          });
       });
-
   };
 };
 
+/* DONE */
 export const deleteCurrentJob = (jobId, companyId) => {
   return dispatch => {
-    return database.ref('requests').child(jobId).remove()
-      .then(()=> {
-        database.ref('company').child(companyId).child('postedJobs').child(jobId).remove()
-          .then(async ()=> {
+    return database
+      .ref("requests")
+      .child(jobId)
+      .remove()
+      .then(() => {
+        database
+          .ref("company")
+          .child(companyId)
+          .child("postedJobs")
+          .child(jobId)
+          .remove()
+          .then(async () => {
             try {
-              let photographers = await ( database.ref('photographer').once('value'));
+              let photographers = await database
+                .ref("photographer")
+                .once("value");
               photographers.forEach(async photographer => {
                 try {
-                  await this.database.ref('photographer').child(photographer.key).child('applied-jobs').child(jobId).remove();
+                  await this.database
+                    .ref("photographer")
+                    .child(photographer.key)
+                    .child("applied-jobs")
+                    .child(jobId)
+                    .remove();
                 } catch (err) {
                   dispatch(deleteJobError(err));
                 }
@@ -101,8 +130,9 @@ export const deleteCurrentJob = (jobId, companyId) => {
             } catch (err) {
               dispatch(deleteJobError(err));
             }
-          })
-      }).catch(err => dispatch(deleteJobError(err)));
+          });
+      })
+      .catch(err => dispatch(deleteJobError(err)));
   };
 };
 
@@ -114,13 +144,18 @@ export const acceptWork = (jobId, acceptedApplicant) => {
       .update({
         status: "closed"
       })
-      .then(()=> {
-        database.ref("photographer").child(acceptedApplicant.uid).child("applied-jobs").child(jobId).update({
-          status: "finished"
-        })
-          .then(()=> {
+      .then(() => {
+        database
+          .ref("photographer")
+          .child(acceptedApplicant.uid)
+          .child("applied-jobs")
+          .child(jobId)
+          .update({
+            status: "finished"
+          })
+          .then(() => {
             dispatch(acceptWorkSuccess());
           });
-      })
+      });
   };
 };

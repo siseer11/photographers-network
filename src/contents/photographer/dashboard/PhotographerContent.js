@@ -5,8 +5,11 @@ import { PropTypes } from "prop-types";
 
 export const PhotographerContent = ({ photographerData, isOtherUser }) => (
   <React.Fragment>
-    {photographerData.portofolio && photographerData.portofolio.length > 0 && (
-      <PortofolioGallery photosList={photographerData.portofolio} />
+    {photographerData.portfolio && photographerData.portfolio.length > 0 && (
+      <React.Fragment>
+        <h2>Portfolio</h2>
+        <PortofolioGallery photosList={photographerData.portfolio} />
+      </React.Fragment>
     )}
     {!isOtherUser && <OwnPhotographerProfile />}
   </React.Fragment>

@@ -1,43 +1,73 @@
 import React from "react";
-import { OpenSingleJobViewPhotographer } from "../../../components/single-job/open/OpenSingleJobViewPhotographer";
 import { connect } from "react-redux";
-import { addNewNotification } from "../../../redux/actions/notifications-action";
-import { applyForJob } from "../../../redux/actions/single-job-action-photographer";
+import { applyForJob } from "../../../redux/actions/photographer-actions";
 
 const mapDispatchToProps = dispatch => ({
-  addNotification: (notification, uid) =>
-    dispatch(addNewNotification(notification, uid)),
-  applyForSingleJob: jobId => dispatch(applyForJob(jobId))
+  applyForSingleJob: (jobData, user) => dispatch(applyForJob(jobData, user))
 });
 
 class OpenSingleJobPhotographer extends React.Component {
+  state = {
+    loading: false,
+    error: null
+  };
   /**
    * User applies for a job.
    */
   applyForJob = () => {
-    const { user, jobId, jobDescription } = this.props;
-    this.props.applyForSingleJob(jobId);
-    const notification = {
-      title: `${profile.firstName} ${profile.lastName} applied for your job request "${
-        jobDescription.title
-      }".`,
-      link: `/open-job/${jobId}`,
-      read: false,
-      createdAt: new Date(),
-      recipientUserId: jobDescription.companyId
-    };
-    this.props.addNotification(notification);
+    let { jobId, jobData, user } = this.props;
+    this.setState({
+      loading: true
+    });
+    jobData = { ...jobData, jobId: jobId };
+    this.props
+      .applyForSingleJob(jobData, user)
+      .then(() => {
+        this.setState({
+          loading: false,
+          error: null
+        });
+      })
+      .catch(err => {
+        this.setState({
+          loading: false,
+          error: err
+        });
+      });
   };
 
   render() {
-    const { userApplied, isDeclinedPhotographer } = this.props;
+    const { jobData, user } = this.props;
+    let status = "not applied";
+
+    //Check to see if this photographer has allready applied, and if him was declined
+    if (jobData.photographersWhichApplied) {
+      const photographerAppliedData =
+        jobData.photographersWhichApplied[user.uid];
+      if (photographerAppliedData) {
+        if (!photographerAppliedData.declined) {
+          status = "applied";
+        } else {
+          status = "declined";
+        }
+      }
+    }
+
+    if (status === "applied") {
+      return <h2>You have already applied for this job.</h2>;
+    }
+
+    if (status === "declined") {
+      return <h2>You are declined for this job.</h2>;
+    }
 
     return (
-      <OpenSingleJobViewPhotographer
-        userApplied={userApplied}
-        isDeclinedPhotographer={isDeclinedPhotographer}
-        applyHandler={this.applyForJob}
-      />
+      <a
+        className="gb-btn gb-btn-medium gb-btn-primary"
+        onClick={this.applyForJob}
+      >
+        Apply
+      </a>
     );
   }
 }

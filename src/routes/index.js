@@ -18,7 +18,7 @@ import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
 import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
 import { GbFooter } from "../components/nav-footer/Footer";
 
-export default ({ user, loading, setLoadingTrue, userOn, userType }) => (
+export default ({ userOn, userType }) => (
   <BrowserRouter>
     <React.Fragment>
       <GbNavBar />
@@ -26,20 +26,14 @@ export default ({ user, loading, setLoadingTrue, userOn, userType }) => (
         <Route
           exact
           path="/declined-private-job/:jobId"
-          render={props => (
-            <DeclinedPrivateJob {...props} user={user} loading={loading} />
-          )}
+          render={props => <DeclinedPrivateJob {...props} />}
         />
         <Route exact path="/home" component={Home} />
         <Route
           exact
           path="/signIn"
           render={props =>
-            !userOn ? (
-              <SignIn {...props} setLoadingTrue={setLoadingTrue} />
-            ) : (
-              <Redirect to="/dashboard" />
-            )
+            userOn ? <Redirect to="/dashboard" /> : <SignIn {...props} />
           }
         />
         <Route
@@ -111,16 +105,12 @@ export default ({ user, loading, setLoadingTrue, userOn, userType }) => (
         <Route
           exact
           path="/progress-job/:jobid"
-          render={props => (
-            <ProgressSingleJob {...props} user={user} loading={loading} />
-          )}
+          render={props => <ProgressSingleJob {...props} />}
         />
         <Route
           exact
           path="/submit-work/:jobid"
-          render={props => (
-            <SubmitWork {...props} user={user} loading={loading} />
-          )}
+          render={props => <SubmitWork {...props} />}
         />
         <Redirect to="/home" />
       </Switch>

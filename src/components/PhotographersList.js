@@ -11,8 +11,8 @@ export const PhotographersList = ({ list }) => {
         <PhotographerCard
           key={el.uid}
           uid={el.uid}
-          userPic={el.photoURL}
-          userName={el.displayName}
+          userPic={el.profileImageUrl}
+          userName={`${el.firstName} ${el.lastName}`}
           userLocation={el.location}
         />
       ))}

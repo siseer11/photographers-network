@@ -26,6 +26,8 @@ const store = createStore(
   )
 );
 
+ReactDOM.render(<h2>Loading..</h2>, document.getElementById("root"));
+
 store.firebaseAuthIsReady.then(() => {
   ReactDOM.render(
     <Provider store={store}>
@@ -33,5 +35,6 @@ store.firebaseAuthIsReady.then(() => {
     </Provider>,
     document.getElementById("root")
   );
+
   registerServiceWorker();
 });

@@ -1,42 +1,74 @@
-import React from 'react';
+import React from "react";
 
-import {EmailSVG} from './svg/EmailSVG';
-import {PasswordSVG} from "./svg/PasswordSVG";
-import {NameInputSVG} from "./svg/NameInputSVG";
-import {InputField} from "./form/InputField";
-import {BusinessCardSVG} from './svg/BusinessCardSVG';
-import {CameraSVG} from './svg/CameraSVG';
-import {LocationSVG} from "./svg/LocationSVG";
-import {CustomSelect} from "./CustomSelect";
-import PropTypes from 'prop-types';
+import { EmailSVG } from "./svg/EmailSVG";
+import { PasswordSVG } from "./svg/PasswordSVG";
+import { NameInputSVG } from "./svg/NameInputSVG";
+import { InputField } from "./form/InputField";
+import { BusinessCardSVG } from "./svg/BusinessCardSVG";
+import { CameraSVG } from "./svg/CameraSVG";
+import { LocationSVG } from "./svg/LocationSVG";
+import { CustomSelect } from "./CustomSelect";
+import PropTypes from "prop-types";
 
-export const SingUpView = ({showCustomSelect, signupHandler, firstName, lastName, changeHandler, password, password2, location, showCustomSelectHandler, optionSelectHandler, type, email}) => (
+export const SingUpView = ({
+  loadingDB,
+  errorDB,
+  succesDB,
+  showCustomSelect,
+  signupHandler,
+  firstName,
+  lastName,
+  changeHandler,
+  password,
+  password2,
+  location,
+  showCustomSelectHandler,
+  optionSelectHandler,
+  type,
+  email,
+  companyName
+}) => (
   <div className="section-content with-padding">
     <form onSubmit={signupHandler}>
       <h1>Sign Up</h1>
+      {type === "photographer" ? (
+        <React.Fragment>
+          <InputField
+            svg={
+              <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+            }
+            value={firstName}
+            changeHandler={changeHandler}
+            type="text"
+            name="firstName"
+            placeholder="First name"
+          />
+          <InputField
+            svg={
+              <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+            }
+            value={lastName}
+            changeHandler={changeHandler}
+            type="text"
+            name="lastName"
+            placeholder="Last name"
+          />
+        </React.Fragment>
+      ) : (
+        <InputField
+          svg={
+            <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+          }
+          value={companyName}
+          changeHandler={changeHandler}
+          type="text"
+          name="companyName"
+          placeholder="Company name"
+        />
+      )}
       <InputField
         svg={
-          <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
-        }
-        value={firstName}
-        changeHandler={changeHandler}
-        type="text"
-        name="firstName"
-        placeholder="Enter your first name"
-      />
-      <InputField
-        svg={
-          <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
-        }
-        value={lastName}
-        changeHandler={changeHandler}
-        type="text"
-        name="lastName"
-        placeholder="Enter your last name"
-      />
-      <InputField
-        svg={
-          <EmailSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+          <EmailSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
         }
         value={email}
         changeHandler={changeHandler}
@@ -46,7 +78,7 @@ export const SingUpView = ({showCustomSelect, signupHandler, firstName, lastName
       />
       <InputField
         svg={
-          <PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+          <PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
         }
         value={password}
         changeHandler={changeHandler}
@@ -56,7 +88,7 @@ export const SingUpView = ({showCustomSelect, signupHandler, firstName, lastName
       />
       <InputField
         svg={
-          <PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+          <PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
         }
         value={password2}
         changeHandler={changeHandler}
@@ -64,18 +96,24 @@ export const SingUpView = ({showCustomSelect, signupHandler, firstName, lastName
         name="password2"
         placeholder="Repeat password"
       />
-      <InputField svg={<LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>}
-                  value={location} changeHandler={changeHandler} type="text"
-                  name="location"
-                  placeholder="Enter your location"/>
+      <InputField
+        svg={
+          <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+        }
+        value={location}
+        changeHandler={changeHandler}
+        type="text"
+        name="location"
+        placeholder="Enter your location"
+      />
       <div
         className="custom-select gb-text-input gb-text-input-trans-background"
         onClick={showCustomSelectHandler}
       >
         {type === "photographer" ? (
-          <CameraSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon"/>
+          <CameraSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
         ) : (
-          <BusinessCardSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon"/>
+          <BusinessCardSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
         )}
         {type}
         <CustomSelect
@@ -85,11 +123,29 @@ export const SingUpView = ({showCustomSelect, signupHandler, firstName, lastName
         />
       </div>
       <div className="btn-container">
-        <input
-          type="submit"
-          value="Sign Up"
-          className="gb-btn gb-btn-large gb-btn-primary"
-        />
+        {loadingDB ? (
+          <input
+            type="submit"
+            style={{ opacity: 0.8 }}
+            disabled={true}
+            value="Loading"
+            className="gb-btn gb-btn-large gb-btn-primary"
+          />
+        ) : succesDB ? (
+          <input
+            type="submit"
+            style={{ opacity: 1, background: "green" }}
+            disabled={true}
+            value="Succes"
+            className="gb-btn gb-btn-large gb-btn-primary"
+          />
+        ) : (
+          <input
+            type="submit"
+            value="Sign up"
+            className="gb-btn gb-btn-large gb-btn-primary"
+          />
+        )}
       </div>
     </form>
   </div>

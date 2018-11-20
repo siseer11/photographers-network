@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 
 // components
 import { DashboardView } from "../../../components/dashboard/DashboardView";
-import LoadingPage from "../../../components/LoadingPage";
 
 class Dashboard extends Component {
   state = {
@@ -52,21 +51,13 @@ class Dashboard extends Component {
     const { profile, auth } = this.props;
     let activeType = "";
     let activeComponent = "";
-    console.log(profile);
-    if(!profile.isEmpty) {
+    if (!profile.isEmpty) {
       activeType = this.state[profile.type];
       activeType.headerLinks.map(link => {
         if (link.active) activeComponent = link.name;
       });
     }
-
-    console.log(this.props);
-
-    if (!auth.uid || profile.isEmpty) {
-      console.log("data not loaded");
-      return <LoadingPage/>;
-    }
-
+    console.log(profile);
     return (
       <DashboardView
         type={profile.type}
@@ -76,14 +67,12 @@ class Dashboard extends Component {
         linkHandler={this.setComponentToShow}
         headerLinks={activeType.headerLinks}
         activeComponent={activeComponent}
-        loading={false}
       />
     );
   }
 }
 
 const mapStateToProps = state => ({
-  userData: state.user.userData,
   auth: state.firebase.auth,
   profile: state.firebase.profile
 });

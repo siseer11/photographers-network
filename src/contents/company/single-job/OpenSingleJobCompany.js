@@ -1,18 +1,20 @@
 import React from "react";
-import {OpenSingleJobViewCompany} from "../../../components/single-job/open/OpenSingleJobViewCompany";
-import {DeleteModal} from "../../../components/single-job/DeleteModal";
-import {connect} from "react-redux";
-import {addNewNotification} from "../../../redux/actions/notifications-action";
+import { OpenSingleJobViewCompany } from "../../../components/single-job/open/OpenSingleJobViewCompany";
+import { DeleteModal } from "../../../components/single-job/DeleteModal";
+import { connect } from "react-redux";
+
 import {
-  acceptApplicantForJob, declineApplicantForJob,
+  declineApplicantForJob,
+  acceptApplicantForJob,
   deleteCurrentJob
-} from "../../../redux/actions/single-job-action-company";
+} from "../../../redux/actions/company-actions";
 
 const mapDispatchToProps = dispatch => ({
-  addNotification: notification => dispatch(addNewNotification(notification)),
-  acceptApplicantForJob: (applicant, jobId) => dispatch(acceptApplicantForJob(applicant, jobId)),
-  declineApplicantForJob: (uid, jobId) => dispatch(declineApplicantForJob(uid, jobId)),
-  deleteCurrentJob: (jobId, companyId) => dispatch(deleteCurrentJob(jobId, companyId))
+  acceptApplicantForJob: (companyData, photographerData, jobData) =>
+    dispatch(acceptApplicantForJob(companyData, photographerData, jobData)),
+  declineApplicantForJob: (jobData, photographerId) =>
+    dispatch(declineApplicantForJob(jobData, photographerId)),
+  deleteCurrentJob: jobId => dispatch(deleteCurrentJob(jobId))
 });
 
 class OpenSingleJobCompany extends React.Component {
@@ -22,15 +24,23 @@ class OpenSingleJobCompany extends React.Component {
   };
 
   showDeleteModal = show => {
-    this.setState({showDeleteModal: show});
+    this.setState({ showDeleteModal: show });
   };
 
   /**
    * Deletes job from every database node and redirects to dashboard.
    */
   deleteJob = () => {
-    this.props.deleteCurrentJob(this.props.jobId, this.props.jobDescription.companyId);
-    this.props.history.replace('/dashboard');
+    //get the id of this job
+    const jobId = this.props.match.params.jobid;
+    //dispatch the action to delete the job, wait for the response
+    this.props
+      .deleteCurrentJob(jobId)
+      .then(() => {
+        console.log("job deleted succesfully");
+        setTimeout(() => this.props.history.replace("/dashboard"), 1000);
+      })
+      .catch(err => console.log(err));
   };
 
   /**
@@ -38,32 +48,22 @@ class OpenSingleJobCompany extends React.Component {
    *
    * @param uid
    */
-  declineApplicant = uid => {
-    const {jobId, jobDescription} = this.props;
+  declineApplicant = photographerId => {
+    const { jobData } = this.props;
     // remove applicant from database and state
-    this.props.declineApplicantForJob(uid, jobId);
-    const notification = {
-      title: `${
-        jobDescription.companyName
-        } has declined your application for ${jobDescription.title}.`,
-      link: `/open-job/${jobId}`,
-      read: false,
-      time: new Date(),
-      recipientUserId: uid
-    };
-    this.props.addNotification(notification);
+    this.props
+      .declineApplicantForJob(jobData, photographerId)
+      .then(() => console.log("Done!"))
+      .catch(err => console.log(err));
   };
 
   /**
    * Handles the accept of an applicant.
    * @param uid
    */
-  acceptApplicant = uid => {
-    const {appliedPhotographers} = this.props;
-    const photographer = appliedPhotographers.filter(
-      user => user.uid === uid
-    )[0];
-    this.setState({acceptedApplicant: photographer});
+  acceptApplicant = (companyData, photographerData, jobData) => {
+    //  DO   THE    THINGY !!
+    this.props.acceptApplicantForJob(companyData, photographerData, jobData);
   };
 
   /**
@@ -71,48 +71,53 @@ class OpenSingleJobCompany extends React.Component {
    * successful payment.
    */
   successfulPayment = () => {
-    const {jobId, jobDescription} = this.props;
-    const {acceptedApplicant} = this.state;
+    const { jobId, jobDescription } = this.props;
+    const { acceptedApplicant } = this.state;
     this.props.acceptApplicantForJob(acceptedApplicant, jobId);
     const notification = {
-      title: `${jobDescription.companyName} has accepted you to execute the job request "${jobDescription.title}".`,
+      title: `${
+        jobDescription.companyName
+      } has accepted you to execute the job request "${jobDescription.title}".`,
       link: `/progress-job/${jobId}`,
       read: false,
       time: new Date(),
-      recipientUserId:acceptedApplicant.uid
+      recipientUserId: acceptedApplicant.uid
     };
     this.props.addNotification(notification);
     this.props.history.replace(`/progress-job/${jobId}`);
   };
 
   render() {
-    const {acceptedApplicant} = this.state;
-    const {
-      jobDescription,
-      appliedPhotographers,
-      downPayment
-    } = this.props;
+    const { acceptedApplicant } = this.state;
+    const { jobData, appliedPhotographers, downPayment } = this.props;
     return (
       <React.Fragment>
-        {this.state.showDeleteModal &&
-        <DeleteModal title="Do you really want to delete this job request?"
-                     description="Warning: you can't recover this job. We won't recommend you to delete a job in progress!"
-                     yesHandler={this.deleteJob}
-                     noHandler={() => this.showDeleteModal(false)}
-        />
-        }
-        <OpenSingleJobViewCompany showDeleteModal={this.showDeleteModal}
-                                  acceptedApplicant={acceptedApplicant}
-                                  appliedPhotographers={appliedPhotographers}
-                                  acceptHandler={this.acceptApplicant}
-                                  declineHandler={this.declineApplicant}
-                                  downPayment={downPayment}
-                                  price={jobDescription.price}
-                                  successfulPaymentHandler={this.successfulPayment}
+        {this.state.showDeleteModal && (
+          <DeleteModal
+            title="Do you really want to delete this job request?"
+            description="Warning: you can't recover this job. We won't recommend you to delete a job in progress!"
+            yesHandler={this.deleteJob}
+            noHandler={() => this.showDeleteModal(false)}
+          />
+        )}
+        <OpenSingleJobViewCompany
+          showDeleteModal={this.showDeleteModal}
+          acceptedApplicant={acceptedApplicant}
+          appliedPhotographers={Object.values(
+            jobData.photographersWhichApplied || {}
+          )}
+          acceptHandler={this.acceptApplicant}
+          declineHandler={this.declineApplicant}
+          downPayment={downPayment}
+          price={jobData.priceAmount}
+          successfulPaymentHandler={this.successfulPayment}
         />
       </React.Fragment>
     );
   }
 }
 
-export default connect(null, mapDispatchToProps)(OpenSingleJobCompany);
+export default connect(
+  null,
+  mapDispatchToProps
+)(OpenSingleJobCompany);
