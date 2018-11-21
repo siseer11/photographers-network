@@ -42,7 +42,7 @@ export const acceptApplicantForJob = (
         photographer: {
           firstName: photographerData.firstName,
           lastName: photographerData.lastName,
-          uid: photographerData.uid,
+          uid: photographerData.id,
           profileImageUrl: photographerData.profileImageUrl
         },
         status: "in progress"
@@ -53,12 +53,16 @@ export const acceptApplicantForJob = (
           link: `/progress-job/${jobData.jobId}`,
           read: false,
           title: `${companyData.companyName} accepted you for ${jobData.title}`,
-          recipientUserId: photographerData.uid
+          recipientUserId: photographerData.id
         };
         return dispatch(addNewNotification(notification));
       });
   };
 };
+
+/*
+
+  */
 
 //Delete a job
 export const deleteCurrentJob = jobId => {

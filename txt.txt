@@ -1,0 +1,170 @@
+REDUX THUNK INFOS :
+
+- Redux Thunk middleware allows you to write action creators that return a function instead of an action. 
+  The thunk can be used to delay the dispatch of an action, or to dispatch only if a certain condition is met. 
+  The inner function receives the store methods dispatch and getState as parameters.
+
+
+
+
+A thunk is a function that wraps an expression to delay its evaluation.
+
+  // calculation of 1 + 2 is immediate
+  // x === 3
+  let x = 1 + 2;
+
+  // calculation of 1 + 2 is delayed
+  // foo can be called later to perform the calculation
+  // foo is a thunk!
+  let foo = () => 1 + 2;
+  The term originated as a humorous past-tense version of "think".
+
+
+
+
+
+
+  TODO : 
+ -> In dashboard not sure about the loading prop that i'm passing down
+ -> In profileEdit must do the logic
+ -> In profile must do the whole logic, a lot..
+ -> take a look at openSingleJob might not work, also i do not think we are checking if there is a user on, just company/photographer 
+ -> PrivateJobReq must take care of functionality, also check to see if the person is a company or photographer, i do not think i'm doing that
+ -> Clean GbNav
+ -> Signin error handlings!
+ -> Hirable button
+ -> Profile page still ugly code
+ 
+ -> CREATING NEW PUBLIC JOB ADD IT TO THE OPEN JOBS
+ -> Finish the private job thingy
+
+
+ TO REDO : 
+  -> SIGNUP, send the data to the profile reducer or the user and set it directly stop the onauth from firing when the suer signs up
+  -> DO SOMETHING ON ERROR
+  -> The profile page 
+  -> CreateJob check the data from the from
+  -> The search-photographer is not needed with the new DB structure / totally rebuild
+
+
+
+
+
+
+
+
+Did/Changed : 
+
+Sign-up {
+ - added the generalLoading
+ - diferent for companies and photographers
+}
+Sign-in {
+ - added the generalLoading
+}
+
+Become Premium 
+Switch Hireable
+Portfolio
+
+
+Problems:
+The auth listenr fire before the answear so componentWillUnmount does not triger the reset
+Try with dispatch you fuck.. :))
+
+Delete : USER_INFO_UPDATED_SUCCESSFULLY from user-reducer.js
+
+
+
+Working on : 
+ PHOTOGRAPHER : 
+  -> Hireable button *
+  -> Become Premium *
+  -> Portofolio *
+  -> Add photos to portfolio *
+  -> Change profile photo *
+  -> Search Jobs
+  -> Applied Jobs
+
+
+
+
+MUST REDO :
+ -> THRE HIREABLE SLIDER , HAVE NO ERROR HANDLER
+ -> MAKE THE PAYPAL BUTTON AN RENDER PROP
+ -> IN THE APPLIED JOBS , not sure of the state of the jobs
+
+
+
+
+
+=> TO DO :
+ - create job *
+ - search photographer *
+ - open jobs photographer *
+ - open single job company
+ - progress single jobs
+ - private job all
+
+-> Applied jobs and so on.. fuuck mate!
+   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-> !! signing out is not redirecting anymore !!
+   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+-> The types of jobs , skilled required
+-> Locations
+
+-> PhotoUrl and imageUrl, i think if the user have no photoUrl , change it form react
+
+
+// LOOK OVER PROFILE EDIT BOTH THE COMPOONENT AND THE ACTIONS
+
+
+
+OPENSINGLEJOBVIEWCOMPANY -> the photographers aplied not working for now :)
+
+IF we logout of the single job , as photographer it sees us as companies , must fix the sign-out redirect
+
+Delete from singleJob-reducer and single-job-action-company
+
+
+!!!! At the decline photographer, where do we save them? should i delte the photographer from the obj, add an prop of declined : true,
+ should we show in hte photographer profile his jobs that him got declined, or not? in my opinion it does not make so much sense to do it
+ Then we will skip also the part wher the photographer goes to the job and sees it , 'You have been rejected for this job' , i think
+ as long as the job is opened until x of this month, then that day one will be chosen so the others will be 'rejected' but they will not get 
+ any notifications or something, just the one taht is taken for the job will recieve the notificaiton
+
+
+!* DO THE ACCEPT WORK IN COMPANY ACTIONS *!
+
+
+Add a notification, each time someone applies to the job?? isn't it to much?
+
+
+Why do we have the reject a photographer? when we can basicly just accept one , so then we don't have to reject no one LeL
+
+Saving data of users that applied : 
+jobOffers : {
+ .
+ .
+ .
+ .,
+ photographersWhichApplied : {
+  photographerId : {
+   id : ...,
+   firstName : ...,
+   lastName : ...,
+   profileImageUrl : ...,
+  }
+ }
+}
+
+
+
+THINGS TO LOOK OVER : 
+
+/** In single-job company, accept photographer not tested 
+/** Accept work as well
+
+
+/** To do update user profile
