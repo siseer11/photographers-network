@@ -1,7 +1,7 @@
 import {
   actionStarted,
   actionError,
-  actionSucces
+  actionSuccess
 } from "./generalLoadingErrorSucces-actions";
 
 // -------------------- ASYNC ACTIONS THUNK -------------------- //
@@ -43,7 +43,7 @@ export const sigUpUser = newUser => {
           .set(userInformations);
       })
       .then(() => {
-        dispatch(actionSucces());
+        dispatch(actionSuccess());
       })
       .catch(err => {
         dispatch(actionError(err));

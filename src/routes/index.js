@@ -94,18 +94,22 @@ export default ({ userOn, userType }) => (
           exact
           path="/private/job/:jobId"
           render={props =>
-            userOn ? <PrivateJobRequest {...props} /> : <Redirect to="signin" />
+            userOn ? <PrivateJobRequest {...props} /> : <Redirect to="/signin" />
           }
         />
         <Route
           exact
           path="/open-job/:jobid"
-          render={props => <OpenSingleJob {...props} />}
+          render={props =>
+            userOn ? <OpenSingleJob {...props} /> : <Redirect to="/signin" />
+          }
         />
         <Route
           exact
           path="/progress-job/:jobid"
-          render={props => <ProgressSingleJob {...props} />}
+          render={props =>
+            userOn ? <ProgressSingleJob {...props} /> : <Redirect to="/signin" />
+          }
         />
         <Route
           exact
