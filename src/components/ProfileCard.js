@@ -10,14 +10,23 @@ export const ProfileCard = ({
   type,
   hireable,
   uid,
-  siggnedInUser
+  siggnedInUser,
+  firstName,
+  lastName
 }) => {
+  const photographerData = {
+    profileImageUrl: profileImageUrl,
+    uid: uid,
+    firstName: firstName,
+    lastName: lastName
+  };
   return (
     <div className="gb-card-10-wrapper">
       {type === "photographer" &&
         hireable &&
         siggnedInUser.type === "company" && (
           <HireButton
+            photographerData={photographerData}
             siggnedInUser={siggnedInUser}
             uid={uid}
             photographerName={children}

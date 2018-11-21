@@ -51,19 +51,3 @@ export default compose(
     }
   ])
 )(AppliedJobs);
-
-/*
-
-
-
-  const mapStateToProps = state => {
-  const jobs = state.allJobs;
-  return {
-    fetchedAppliedOnce: jobs.fetchedAppliedOnce,
-    appliedJobs: jobs.photographer.appliedJobs,
-    acceptedJobs: jobs.photographer.acceptedJobs,
-    declinedJobs: jobs.photographer.declinedJobs,
-    finishedJobs: jobs.photographer.finishedJobs
-  };
-};
-*/

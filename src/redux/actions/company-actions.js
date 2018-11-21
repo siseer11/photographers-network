@@ -1,20 +1,20 @@
 import { addNewNotification } from "./notifications-action";
 
 //Create Job
-export const createJob = jobData => {
+export const createJob = (jobData, sentTo = null) => {
   return (dispatch, getState, { getFirestore }) => {
     const firebase = getState().firebase;
     return getFirestore()
       .collection("jobOffers")
       .add({
-        startDate: jobData.date,
+        startDate: jobData.jobDate,
         title: jobData.jobTitle,
         requestedSkill: jobData.jobType,
         location: jobData.jobLocation,
         address: jobData.jobAddress,
         description: jobData.jobDescription,
         priceAmount: jobData.jobBudget,
-        status: "open",
+        status: sentTo ? "private" : "open",
         downPaymentAmountStatus: "none",
         photographer: "none",
         companyId: firebase.auth.uid,
@@ -22,7 +22,8 @@ export const createJob = jobData => {
           companyName: firebase.profile.companyName,
           profileImageUrl: firebase.profile.profileImageUrl
         },
-        createdAt: new Date().getTime()
+        createdAt: new Date().getTime(),
+        sentTo: sentTo
       });
   };
 };
@@ -59,10 +60,6 @@ export const acceptApplicantForJob = (
       });
   };
 };
-
-/*
-
-  */
 
 //Delete a job
 export const deleteCurrentJob = jobId => {
@@ -105,6 +102,81 @@ export const declineApplicantForJob = (jobData, photographerId) => {
           recipientUserId: photographerId
         };
         return dispatch(addNewNotification(notification));
+      });
+  };
+};
+
+//Create a new private job request,
+//sent to a specific photographer
+export const createPrivateJob = (jobData, company, photographerData) => {
+  return (dispatch, getState, { getFirestore }) => {
+    const sentToData = {
+      uid: photographerData.uid,
+      firstName: photographerData.firstName,
+      lastName: photographerData.lastName,
+      profileImageUrl: photographerData.profileImageUrl
+    };
+    //add the job to the jobOffers
+    return dispatch(createJob(jobData, sentToData)).then(response => {
+      //response is the new created job
+      //add notification to the photographer
+      const notification = {
+        createdAt: new Date().getTime(),
+        link: `/private/job/${response.id}?user=${photographerData.uid}`,
+        read: false,
+        recipientUserId: photographerData.uid,
+        title: `${company.companyName} has sent you a private job request.`
+      };
+      return dispatch(addNewNotification(notification));
+    });
+  };
+};
+
+//Sent an open job request as
+//private request to a photographer
+export const sendPrivateRequestFromExistingJobs = (
+  jobData,
+  company,
+  photographerData
+) => {
+  return (dispatch, getState, { getFirestore }) => {
+    //Update the job data
+    const firestore = getFirestore();
+
+    return firestore
+      .collection("jobOffers")
+      .doc(jobData.id)
+      .update({
+        sentTo: {
+          uid: photographerData.uid,
+          firstName: photographerData.firstName,
+          lastName: photographerData.lastName,
+          profileImageUrl: photographerData.profileImageUrl
+        }
+      })
+      .then(data => {
+        //add notification to the photographer
+        const notification = {
+          createdAt: new Date().getTime(),
+          link: `/private/job/${jobData.id}?user=${photographerData.uid}`,
+          read: false,
+          recipientUserId: photographerData.uid,
+          title: `${company.companyName} has sent you a private job request.`
+        };
+        return dispatch(addNewNotification(notification));
+      });
+  };
+};
+
+//Make private declined job to public
+export const makePrivateJobPublic = jobId => {
+  return (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
+    return firestore
+      .collection("jobOffers")
+      .doc(jobId)
+      .update({
+        status: "open"
       });
   };
 };

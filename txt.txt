@@ -168,3 +168,9 @@ THINGS TO LOOK OVER :
 
 
 /** To do update user profile
+
+
+
+MUST DO 
+
+-> IN THE ProfileCard and hirememodal and so on im passing down photographerData but also photographerId

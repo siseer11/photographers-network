@@ -3,33 +3,47 @@ import { Link } from "react-router-dom";
 
 export const PrivateJobView = ({
   companyId,
-  companyName,
-  date,
+  company,
+  startDate,
   description,
   location,
-  price,
+  address,
+  priceAmount,
   title,
-  type,
+  requestedSkill,
   acceptJobReq,
-  rejectJobReq
-}) => (
-  <div className="job-view-private">
-    <h2>Job title : {title}</h2>
-    <p>Description : {description}</p>
-    <h2>Budget : {price} </h2>
-    <h5>Type of photography : {type} </h5>
-    <p>Location : {location} </p>
-    <p>Date : {new Date(date).toLocaleDateString()} </p>
-    <p>
-      Company : <Link to={`/profile/${companyId}`}>{companyName}</Link>{" "}
-    </p>
-    <div className="accept-reject-buttons">
-      <div className="accpet-button" onClick={acceptJobReq}>
-        Accept Request
-      </div>
-      <div className="reject-button" onClick={rejectJobReq}>
-        Reject Request
+  rejectJobReq,
+  jobId,
+  status
+}) => {
+  return (
+    <div className="job-view-private">
+      <h2>Job title : {title}</h2>
+      <p>Description : {description}</p>
+      <h2>Budget : {priceAmount} </h2>
+      <h5>Type of photography : {requestedSkill} </h5>
+      <p>
+        Location : {location}, {address}
+      </p>
+      <p>Date : {new Date(startDate).toLocaleDateString()} </p>
+      <p>
+        Company :{" "}
+        <Link to={`/profile/${companyId}`}>{company.companyName}</Link>{" "}
+      </p>
+      <div className="accept-reject-buttons">
+        <div
+          className="accpet-button"
+          onClick={() => acceptJobReq(jobId, title, companyId)}
+        >
+          Accept Request
+        </div>
+        <div
+          className="reject-button"
+          onClick={() => rejectJobReq(jobId, title, companyId, status)}
+        >
+          Reject Request
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};

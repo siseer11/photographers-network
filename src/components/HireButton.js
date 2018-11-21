@@ -2,7 +2,12 @@ import React from "react";
 import WithModal from "../RenderProp/WithModal";
 import HireMeModal from "../contents/company/private-job/HireMeModal";
 
-export const HireButton = ({ uid, photographerName, siggnedInUser }) => (
+export const HireButton = ({
+  uid,
+  photographerName,
+  siggnedInUser,
+  photographerData
+}) => (
   <WithModal closeItemClass="close">
     {({ showModal, closeModalListener }) => (
       <React.Fragment>
@@ -15,6 +20,7 @@ export const HireButton = ({ uid, photographerName, siggnedInUser }) => (
             photographerId={uid}
             photographerName={photographerName}
             company={siggnedInUser}
+            photographerData={photographerData}
           />
         )}
       </React.Fragment>

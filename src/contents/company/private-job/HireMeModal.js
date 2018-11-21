@@ -31,7 +31,12 @@ export default class HireMeModal extends React.Component {
 
   render() {
     const { page, reqSentLoading } = this.state;
-    const { company, photographerId, photographerName } = this.props;
+    const {
+      company,
+      photographerId,
+      photographerName,
+      photographerData
+    } = this.props;
     return (
       <div className="hireme-full-overlay">
         <div className="black-overlay close" />
@@ -41,6 +46,7 @@ export default class HireMeModal extends React.Component {
             company={company}
             photographerId={photographerId}
             photographerName={photographerName}
+            photographerData={photographerData}
           />
         ) : page == "existing-job" ? (
           <HireMeExistingJobOffer
@@ -50,6 +56,7 @@ export default class HireMeModal extends React.Component {
             photographerId={photographerId}
             typeHandler={this.typeChangeHandler}
             reqSentLoading={reqSentLoading}
+            photographerData={photographerData}
           />
         ) : (
           <ChoseTypeHireMe typeHandler={this.typeChangeHandler} />
