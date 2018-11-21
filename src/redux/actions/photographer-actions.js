@@ -3,6 +3,8 @@ import { addNewNotification } from "../actions/notifications-action";
 export const applyForJob = (jobInfos, photographerData) => {
   return (dispatch, getState, { getFirestore }) => {
     const photographersWhichApplied = jobInfos.photographersWhichApplied || [];
+    const photographersWhichAppliedIds =
+      jobInfos.photographersWhichAppliedIds || [];
     const firestore = getFirestore();
     return firestore
       .collection("jobOffers")
@@ -17,7 +19,11 @@ export const applyForJob = (jobInfos, photographerData) => {
               lastName: photographerData.lastName,
               profileImageUrl: photographerData.profileImageUrl
             }
-          }
+          },
+          photographersWhichAppliedIds: [
+            ...photographersWhichAppliedIds,
+            photographerData.uid
+          ]
         },
         { merge: true }
       )
