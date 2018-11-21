@@ -1,26 +1,9 @@
 import React from "react";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 
-import { ProfileEditView } from "./ProfileEditView";
-import { updateUserInfo } from "../../../redux/actions/profile-action";
-
-const mapStateToProps = state => {
-  const userData = state.firebase.profile;
-  return {
-    firstName: userData.firstName,
-    lastName: userData.lastName,
-    location: userData.location,
-    photoURL: userData.photoURL,
-    type: userData.type,
-    companyName: userData.companyName,
-    uid: state.firebase.auth.uid
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  updateUserData: (name, location, photoURL, user) =>
-    dispatch(updateUserInfo(name, location, photoURL, user))
-});
+import {ProfileEditView} from "./ProfileEditView";
+import {updateUserInfo} from "../../../redux/actions/profile-action";
+import {actionReset} from "../../../redux/actions/generalLoadingErrorSucces-actions";
 
 class ProfileEdit extends React.Component {
   state = {
@@ -36,7 +19,7 @@ class ProfileEdit extends React.Component {
    * @param e
    */
   handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({[e.target.name]: e.target.value});
   };
 
   /**
@@ -45,17 +28,16 @@ class ProfileEdit extends React.Component {
    */
   updateUser = e => {
     e.preventDefault();
-    let { firstName, lastName, location, photoURL, companyName } = this.state;
-    const { uid, type, updateUserData } = this.props;
+    let {firstName, lastName, location, companyName} = this.state;
+    const {uid, type, updateUserData, history} = this.props;
 
     updateUserData(
       firstName,
       lastName,
       location,
-      photoURL,
       companyName,
       type
-    ).then(() => this.props.history.replace(`/profile/${uid}`));
+    ).then(() => history.replace(`/profile/${uid}`));
   };
 
   componentWillReceiveProps(nextProps) {
@@ -68,9 +50,14 @@ class ProfileEdit extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    this.props.actionReset();
+  }
+
   render() {
-    const { firstName, lastName, location, photoURL, companyName } = this.state;
-    const { type, uid } = this.props;
+    const {firstName, lastName, location, photoURL, companyName} = this.state;
+    const {type, uid} = this.props;
+    console.log(this.state);
 
     return (
       <ProfileEditView
@@ -87,6 +74,25 @@ class ProfileEdit extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  const userData = state.firebase.profile;
+  return {
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    location: userData.location,
+    photoURL: userData.profileImageUrl,
+    type: userData.type,
+    companyName: userData.companyName,
+    uid: state.firebase.auth.uid
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  updateUserData: (firstName, lastName, location, companyName, type) =>
+    dispatch(updateUserInfo(firstName, lastName, location, companyName, type)),
+  actionReset: () => dispatch(actionReset())
+});
 
 export default connect(
   mapStateToProps,

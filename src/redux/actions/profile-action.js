@@ -1,6 +1,5 @@
 import fire from "../../config/Fire";
-
-const database = fire.database();
+import {actionError, actionStarted, actionSuccess} from "./generalLoadingErrorSucces-actions";
 
 // -------------------- ACTION TYPES -------------------- //
 export const USER_INFO_UPDATED_SUCCESSFULLY = "USER_INFO_UPDATED_SUCCESSFULLY";
@@ -8,50 +7,43 @@ export const PHOTOURL_UPDATED_SUCCESSFULLY = "PHOTOURL_UPDATED_SUCCESSFULLY";
 
 // -------------------- ASYNC ACTIONS THUNK -------------------- //
 
-export const updateUserInfo = (name, location, photoURL, user) => {
-  return dispatch => {
-    return fire
-      .auth()
-      .currentUser.updateProfile({
-        displayName: name,
-        photoURL: photoURL
-      })
+export const updateUserInfo = (firstName, lastName, location, companyName, type) => {
+  return (dispatch, getState, { getFirestore }) => {
+    dispatch(actionStarted());
+    const firestore = getFirestore();
+    const userInfo = type === "company" ?
+      {
+        companyName,
+        location
+      } :
+      {
+        firstName,
+        lastName,
+        location
+      };
+    return firestore
+        .collection('users')
+        .doc(getState().firebase.auth.uid)
+        .update({
+          ...userInfo
+        })
       .then(() => {
-        database
-          .ref("users")
-          .child(user.uid)
-          .update({
-            location: location,
-            displayName: name,
-            photoURL: photoURL
-          });
+        dispatch(actionSuccess(userInfo));
       })
-      .then(() => {
-        const userData = {
-          location,
-          displayName: name,
-          photoURL
-        };
-        dispatch({
-          type: USER_INFO_UPDATED_SUCCESSFULLY,
-          userData,
-          uid: user.uid
-        });
-      });
+      .catch(err => dispatch(actionError(err)));
   };
 };
 
 export const updatePhotoURL = (file, userId) => {
-  return async (dispatch, getState, { getFirestore, getFIrebase }) => {
+  return async (dispatch, getState, { getFirestore }) => {
     try {
       const storageRef = await fire.storage().ref(`${userId}/avatar`);
       const task = await storageRef.put(file);
       const url = await task.ref.getDownloadURL();
-      const response = await getFirestore()
+      return await getFirestore()
         .collection("users")
         .doc(userId)
         .set({ profileImageUrl: url }, { merge: true });
-      return response;
     } catch (err) {
       return new Promise((resolve, reject) => reject(err));
     }

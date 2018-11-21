@@ -1,7 +1,7 @@
 // -------------------- ACTION TYPES -------------------- //
 export const ACTION_STARTED = "ACTION_STARTED";
 export const ACTION_ERROR = "ACTION_ERROR";
-export const ACTION_SUCCES = "ACTION_SUCCES";
+export const ACTION_SUCCESS = "ACTION_SUCCESS";
 export const ACTION_RESET = "ACTION_RESET";
 
 // -------------------- ACTION CREATORS -------------------- //
@@ -15,8 +15,8 @@ export const actionError = error => ({
   error
 });
 
-export const actionSucces = (data = null) => ({
-  type: ACTION_SUCCES,
+export const actionSuccess = (data = null) => ({
+  type: ACTION_SUCCESS,
   data
 });
 

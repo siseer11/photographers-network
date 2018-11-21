@@ -62,10 +62,7 @@ class AvatarInput extends React.Component {
           <img
             style={{ cursor: "pointer" }}
             className="gb-avatar gb-avatar-x-large"
-            src={
-              this.props.userAvatar ||
-              "http://cdn.onlinewebfonts.com/svg/img_74993.png"
-            }
+            src={this.props.userAvatar}
             alt="avatar"
           />
           <input

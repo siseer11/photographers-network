@@ -2,7 +2,7 @@ import fire from "../../config/Fire";
 import {
   actionStarted,
   actionError,
-  actionSucces,
+  actionSuccess,
   actionReset
 } from "./generalLoadingErrorSucces-actions";
 
@@ -44,7 +44,7 @@ export function signUserInAsync(email, password) {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         //If it succed turn succes to true and loading false
-        //Instead of actionSucces we call actionReset since there is a problem , from the redirect
+        //Instead of actionSuccess we call actionReset since there is a problem , from the redirect
         dispatch(actionReset());
       })
       .catch(() => dispatch(actionError()));

@@ -1,7 +1,7 @@
 import {
   ACTION_STARTED,
   ACTION_ERROR,
-  ACTION_SUCCES,
+  ACTION_SUCCESS,
   ACTION_RESET
 } from "../actions/generalLoadingErrorSucces-actions";
 
@@ -28,7 +28,7 @@ export const generalLoadingErrorSucces = (state = initialState, action) => {
         succes: null,
         succesData: null
       };
-    case ACTION_SUCCES:
+    case ACTION_SUCCESS:
       return {
         loading: false,
         error: null,

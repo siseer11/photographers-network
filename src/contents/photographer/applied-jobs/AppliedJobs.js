@@ -15,15 +15,15 @@ const AppliedJobs = ({ appliedJobsList, uid }) => {
     return <h2>You have no apllied jobs!</h2>;
   }
 
-  const appliedJobsOpen = appliedJobsList.filter(el => el.status == "open");
+  const appliedJobsOpen = appliedJobsList.filter(el => el.status === "open");
   const appliedJobsAccepted = appliedJobsList.filter(
-    el => el.status == "in progress" && el.photographer == uid
+    el => el.status === "in progress" && el.photographer === uid
   );
   const appliedJobsDeclined = appliedJobsList.filter(
-    el => el.status != "open" && el.photographer != uid
+    el => el.status !== "open" && el.photographer !== uid
   );
   const finishedJobs = appliedJobsList.filter(
-    el => el.photographer == uid && el.status == "finished"
+    el => el.photographer === uid && el.status === "finished"
   );
 
   return (

@@ -27,7 +27,7 @@ export const ProfileEditView = ({
           changeHandler={changeHandler}
           type="text"
           name="companyName"
-          placeholder="Change the compny name"
+          placeholder="Change the company name"
         />
       ) : (
         <React.Fragment>

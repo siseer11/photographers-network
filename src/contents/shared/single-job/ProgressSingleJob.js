@@ -61,16 +61,19 @@ class ProgressSingleJob extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  jobLoading: state.singleJob.jobLoading,
-  jobExists: state.singleJob.jobExists,
-  /*
-  jobId: state.singleJob.jobId,
-  jobDescription: state.singleJob.jobDescription,
-  submittedWork: state.singleJob.progressJob.submittedWork,
-  acceptedWork: state.singleJob.progressJob.acceptedWork,*/
-  jobDescription: state.firestore.ordered.openSingleJob
-});
+const mapStateToProps = state => {
+  const firestore = state.firestore.ordered;
+  return {
+    jobLoading: state.singleJob.jobLoading,
+    jobExists: firestore.hasOwnProperty('progressSingleJob'),
+    /*
+    jobId: state.singleJob.jobId,
+    jobDescription: state.singleJob.jobDescription,
+    submittedWork: state.singleJob.progressJob.submittedWork,
+    acceptedWork: state.singleJob.progressJob.acceptedWork,*/
+    jobDescription: firestore.progressSingleJob
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   fetchJobInfo: jobId => dispatch(fetchJobInfo(jobId))
