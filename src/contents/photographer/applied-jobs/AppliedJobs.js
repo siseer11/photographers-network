@@ -17,10 +17,10 @@ const AppliedJobs = ({ appliedJobsList, uid }) => {
 
   const appliedJobsOpen = appliedJobsList.filter(el => el.status === "open");
   const appliedJobsAccepted = appliedJobsList.filter(
-    el => el.status === "in progress" && el.photographer === uid
+    el => el.status === "in progress" && el.photographer.uid === uid
   );
   const appliedJobsDeclined = appliedJobsList.filter(
-    el => el.status !== "open" && el.photographer !== uid
+    el => el.status !== "open" && el.photographer.uid !== uid
   );
   const finishedJobs = appliedJobsList.filter(
     el => el.photographer === uid && el.status === "finished"
@@ -46,7 +46,7 @@ export default compose(
   firestoreConnect(({ auth }) => [
     {
       collection: "jobOffers",
-      where: ["photographersIds", "array-contains", auth.uid],
+      where: ["photographersWhichAppliedIds", "array-contains", auth.uid],
       storeAs: "appliedJobs"
     }
   ])

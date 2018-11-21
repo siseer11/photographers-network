@@ -23,6 +23,7 @@ export const AppliedPhotographers = ({
                 name={`${photographer.firstName} ${photographer.lastName}`}
                 acceptHandler={acceptHandler}
                 declineHandler={declineHandler}
+                photographer={photographer}
               />
             );
           })}
@@ -38,14 +39,15 @@ const AppliedPhotographerElement = ({
   uid,
   name,
   acceptHandler,
-  declineHandler
+  declineHandler,
+  photographer
 }) => (
   <div className="user-card applied">
     <h3>{name}</h3>
     <Link to={`/profile/${uid}`}>Visit Profile</Link>
     <div>
       <Button
-        clickHandler={() => acceptHandler(uid)}
+        clickHandler={() => acceptHandler(photographer)}
         classes="gb-btn gb-btn-small gb-btn-primary"
       >
         Accept

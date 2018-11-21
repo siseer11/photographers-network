@@ -63,9 +63,10 @@ class OpenSingleJobCompany extends React.Component {
    * @param photographerData
    * @param jobData
    */
-  acceptApplicant = (companyData, photographerData, jobData) => {
-    //  DO   THE    THINGY !!
-    this.props.acceptApplicantForJob(companyData, photographerData, jobData);
+  acceptApplicant = photographerId => {
+    let { jobData, user: companyData } = this.props;
+    const jobId = this.props.match.params.jobid;
+    this.props.acceptApplicantForJob(companyData, photographerId, jobData);
   };
 
   /**
