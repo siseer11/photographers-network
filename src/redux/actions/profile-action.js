@@ -1,10 +1,6 @@
 import fire from "../../config/Fire";
 import {actionError, actionStarted, actionSuccess} from "./generalLoadingErrorSucces-actions";
 
-// -------------------- ACTION TYPES -------------------- //
-export const USER_INFO_UPDATED_SUCCESSFULLY = "USER_INFO_UPDATED_SUCCESSFULLY";
-export const PHOTOURL_UPDATED_SUCCESSFULLY = "PHOTOURL_UPDATED_SUCCESSFULLY";
-
 // -------------------- ASYNC ACTIONS THUNK -------------------- //
 
 export const updateUserInfo = (firstName, lastName, location, companyName, type) => {
