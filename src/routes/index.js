@@ -12,7 +12,7 @@ import Jobs from "../contents/shared/jobs/Jobs";
 import ProfileEdit from "../contents/shared/profile/ProfileEdit";
 import GbNavBar from "../components/nav-footer/gbNav";
 import PrivateJobRequest from "../components/PrivateJobRequests";
-import { DeclinedPrivateJob } from "../components/DeclinedPrivateJob";
+import DeclinedPrivateJob from "../components/DeclinedPrivateJob";
 import SubmitWork from "../contents/photographer/single-job/SubmitWork";
 import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
 import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";

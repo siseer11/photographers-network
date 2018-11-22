@@ -1,15 +1,84 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import fire from "../../../config/Fire";
 import { DeclinedPrivateJobView } from "../../../components/DeclinedPrivateJobView";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import {
+  deleteCurrentJob,
+  makePrivateJobPublic
+} from "../../../redux/actions/company-actions";
+import { PrivateJobView } from "../../../components/PrivateJobView";
+import { isLoaded, isEmpty, firestoreConnect } from "react-redux-firebase";
 
-export default class DeclinedPrivateJobFunctionality extends React.Component {
+class DeclinedPrivateJobFunctionality extends React.Component {
+  render() {
+    const { user, auth, jobId, jobsData, makePublic, deleteJob } = this.props;
+
+    /* If the data from the DB is not ready yet*/
+    if (!isLoaded(jobsData)) {
+      return <h2>Loading data from the DB....</h2>;
+    } else if (jobsData && !isLoaded(jobsData[jobId])) {
+      return <h2>Loading data from the DB....</h2>;
+    }
+
+    /* No job with that id or the job was made public*/
+    const jobData = jobsData[jobId];
+
+    if (isEmpty(jobData) || (jobData && jobData.status !== "private")) {
+      return "The job does not longer exist OR is not longer editable!";
+    }
+
+    /* Check against the DB data if this is the company that owns the job */
+    if (jobData.companyId != auth.uid) {
+      return "Not your job get out of here!";
+    }
+
+    const editDeleteStatus = "";
+
+    return (
+      <DeclinedPrivateJobView
+        {...jobData}
+        jobId={jobId}
+        makePublic={makePublic}
+        deleteJob={deleteJob}
+        editDeleteStatus={editDeleteStatus}
+      />
+    );
+  }
+}
+
+const mapStateToProps = (state, ownProps) => ({
+  auth: state.firebase.auth,
+  user: state.firebase.profile,
+  jobId: ownProps.match.params.jobId,
+  jobsData: state.firestore.data.jobOffers
+});
+
+const mapDispatchToProps = dispatch => ({
+  makePublic: jobId => dispatch(makePrivateJobPublic(jobId)),
+  deleteJob: jobId => dispatch(deleteCurrentJob(jobId))
+});
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => [
+    {
+      collection: "jobOffers",
+      doc: props.jobId
+    }
+  ])
+)(DeclinedPrivateJobFunctionality);
+
+/*
   state = {
     jobInfos: {},
     loadingDb: true,
     editDeleteStatus: false
   };
-  /* Fetch data about the job */
+  /* Fetch data about the job 
   componentDidMount() {
     const jobId = this.props.match.params.jobId;
     fire
@@ -26,14 +95,14 @@ export default class DeclinedPrivateJobFunctionality extends React.Component {
       .catch(err => console.log(err));
   }
 
-  /* Change the state of editDeleteStatus */
+  /* Change the state of editDeleteStatus
   changeEditDeleteStatus = to => {
     this.setState({
       editDeleteStatus: to
     });
   };
 
-  /* Make the job public */
+  /* Make the job public 
   makePublic = () => {
     const { jobInfos } = this.state;
     const { user } = this.props;
@@ -86,7 +155,7 @@ export default class DeclinedPrivateJobFunctionality extends React.Component {
     };
   };
 
-  /* Delete the job */
+  /* Delete the job 
   deleteJob = () => {
     const { jobInfos } = this.state;
     const { user } = this.props;
@@ -118,17 +187,17 @@ export default class DeclinedPrivateJobFunctionality extends React.Component {
     const { loadingDb, jobInfos, editDeleteStatus } = this.state;
     const { user } = this.props;
 
-    /* If the data from the DB is not ready yet */
+    /* If the data from the DB is not ready yet
     if (loadingDb) {
       return <h2>Loading data from the DB....</h2>;
     }
 
-    /* No job with that id or the job was made public */
+    /* No job with that id or the job was made public 
     if (!jobInfos || !jobInfos.photographerDeclinedPrivateReq) {
       return "The job does not longer exist OR is not longer editable!";
     }
 
-    /* Check against the DB data if this is the company that owns the job */
+    /* Check against the DB data if this is the company that owns the job 
     if (jobInfos.companyId != user.uid) {
       return "Not your job get out of here!";
     }
@@ -142,4 +211,4 @@ export default class DeclinedPrivateJobFunctionality extends React.Component {
       />
     );
   }
-}
+  */

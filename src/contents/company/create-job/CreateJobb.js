@@ -52,7 +52,7 @@ class CreateJob extends React.Component {
     this.props
       .createJob({
         ...this.state,
-        date: new Date(this.state.jobDate).getTime()
+        jobDate: new Date(this.state.jobDate).getTime()
       })
       .then(() => {
         this.setState({
