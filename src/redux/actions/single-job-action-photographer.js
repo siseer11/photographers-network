@@ -1,22 +1,11 @@
-import fire from "../../config/Fire";
-
-const database = fire.database();
-const storage = fire.storage();
-
 // -------------------- ACTION TYPES -------------------- //
-export const REMOVE_IMAGE_ERROR = "REMOVE_IMAGE_ERROR";
 export const SUBMIT_WORK = "SUBMIT_WORK";
 export const SUBMIT_WORK_ERROR = "SUBMIT_WORK_ERROR";
 
 // -------------------- ACTION CREATORS -------------------- //
-export const removeImageError = err => ({
-  type: REMOVE_IMAGE_ERROR,
-  message: err.message
-});
 
-export const submitWorkSuccess = images => ({
+export const submitWorkSuccess = () => ({
   type: SUBMIT_WORK,
-  images
 });
 
 export const submitWorkError = err => ({
@@ -25,30 +14,14 @@ export const submitWorkError = err => ({
 });
 
 // -------------------- ASYNC ACTIONS THUNK -------------------- //
-export const removeImgFromDBandStore = (jobId, id) => {
-  return (dispatch, getState) => {
-    const auth = getState().firebase.auth;
-    return database
-      .ref(`photographer/${auth.uid}/applied-jobs/${jobId}/submitted-work/`)
-      .child(id)
-      .remove()
-      .then(() =>
-        storage
-          .ref(`${auth.uid}/submitted-works/${jobId}`)
-          .child(id)
-          .delete()
-      )
-      .catch(err => dispatch(removeImageError(err)));
-  };
-};
-
-export const submitWork = (jobId, images) => {
-  return dispatch => {
-    database
-      .ref("requests")
-      .child(jobId)
-      .update({ "submitted-work": images })
-      .then(() => dispatch(submitWorkSuccess(images)))
+export const submitWork = jobId => {
+  return (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
+    return firestore.collection("jobOffers").doc(jobId).update({
+      deliveryDate: new Date(),
+      deliveryStatus: "delivered"
+    })
+      .then(()=> dispatch(submitWorkSuccess()))
       .catch(err => dispatch(submitWorkError(err)));
   };
 };

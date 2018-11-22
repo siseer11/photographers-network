@@ -4,13 +4,7 @@ import JSZip from "jszip";
 import FileSaver from "file-saver";
 import { connect } from "react-redux";
 import { addNewNotification } from "../../../redux/actions/notifications-action";
-import { acceptWork } from "../../../redux/actions/single-job-action-company";
-
-const mapDispatchToProps = dispatch => ({
-  addNotification: notification => dispatch(addNewNotification(notification)),
-  acceptSubmittedWork: (jobId, acceptedApplicant) =>
-    dispatch(acceptWork(jobId, acceptedApplicant))
-});
+import { acceptWork } from "../../../redux/actions/company-actions";
 
 class ProgressSingleJobCompany extends React.Component {
   /**
@@ -65,7 +59,7 @@ class ProgressSingleJobCompany extends React.Component {
 
   acceptWork = () => {
     const { jobDescription, jobId, acceptedApplicant } = this.props;
-    this.props.acceptSubmittedWork(jobId, acceptedApplicant);
+    this.props.acceptSubmittedWork(jobId);
     // add notification
     this.props.addNotification({
       title: `${
@@ -79,19 +73,26 @@ class ProgressSingleJobCompany extends React.Component {
   };
 
   render() {
-    const { acceptedApplicant, submittedWork, acceptedWork } = this.props;
+    const { acceptedApplicant, submittedWork, jobDescription } = this.props;
 
     return (
       <ProgressSingleJobViewCompany
         acceptedApplicant={acceptedApplicant}
+        deliveryStatus={jobDescription.deliveryStatus}
         submittedWork={submittedWork}
-        acceptedWork={acceptedWork}
+        acceptedWork={jobDescription.status === "closed"}
         acceptWorkHandler={this.acceptWork}
         downloadHandler={this.downloadWork}
       />
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  addNotification: notification => dispatch(addNewNotification(notification)),
+  acceptSubmittedWork: jobId =>
+    dispatch(acceptWork(jobId))
+});
 
 export default connect(
   null,

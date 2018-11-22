@@ -17,16 +17,16 @@ export const JobDescription = ({
     <hr />
     <p>Job Descrition: {description}</p>
     <hr />
-    <p>Job for the date of : {new Date(startDate).toLocaleDateString()}</p>
+    <p>Job for the date of: {new Date(startDate).toLocaleDateString()}</p>
     <hr />
     <p>
-      Job in : <Link to={`../jobs?location=${location}`}>{location}</Link>
+      Job in: <Link to={`../jobs?location=${location}`}>{location}</Link>
     </p>
     <hr />
-    <p>Bugdget of : {priceAmount} SEK</p>
+    <p>Bugdget of: {priceAmount} SEK</p>
     <hr />
     <p>
-      <Link to={`../jobs?type=${requestedSkill}`}>{requestedSkill}</Link>
+      Requested skill: <Link to={`../jobs?type=${requestedSkill}`}>{requestedSkill}</Link>
     </p>
     <hr />
     <p>

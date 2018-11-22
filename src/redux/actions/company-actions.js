@@ -35,12 +35,10 @@ export const createJob = (jobData, sentTo = null, sentToId = null) => {
 };
 
 //Accept an aplicat for an job
-export const acceptApplicantForJob = (
-  companyData,
-  photographerData,
-  jobData
-) => {
-  return (dispatch, getState, { getFirestore }) => {
+export const acceptApplicantForJob = (companyData,
+                                      photographerData,
+                                      jobData) => {
+  return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
     firestore
       .collection("jobOffers")
@@ -52,7 +50,8 @@ export const acceptApplicantForJob = (
           uid: photographerData.id,
           profileImageUrl: photographerData.profileImageUrl
         },
-        status: "in progress"
+        status: "in progress",
+        downPaymentAmountStatus: "done"
       })
       .then(() => {
         const notification = {
@@ -69,7 +68,7 @@ export const acceptApplicantForJob = (
 
 //Delete a job
 export const deleteCurrentJob = jobId => {
-  return (dispatch, getState, { getFirestore }) => {
+  return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
     return firestore
       .collection("jobOffers")
@@ -80,7 +79,7 @@ export const deleteCurrentJob = jobId => {
 
 //Decline an aplicat for the job (Do we really need it?)
 export const declineApplicantForJob = (jobData, photographerId) => {
-  return (dispatch, getState, { getFirestore }) => {
+  return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
 
     let photographersWhichApplied = jobData.photographersWhichApplied;
@@ -101,7 +100,7 @@ export const declineApplicantForJob = (jobData, photographerId) => {
         const notification = {
           title: `${
             jobData.company.companyName
-          } has declined your application for ${jobData.title}.`,
+            } has declined your application for ${jobData.title}.`,
           link: `/open-job/${jobData.jobId}`,
           read: false,
           time: new Date().getTime(),
@@ -197,46 +196,12 @@ export const makePrivateJobPublic = jobId => {
   };
 };
 
-/*
 //Accept the work
-export const acceptWork = (jobId, acceptedApplicant) => {
- return dispatch => {
-   return database
-     .ref("requests")
-     .child(jobId)
-     .update({
-       status: "closed"
-     })
-     .then(()=> {
-       database.ref("photographer").child(acceptedApplicant.uid).child("applied-jobs").child(jobId).update({
-         status: "finished"
-       })
-         .then(()=> {
-           dispatch(acceptWorkSuccess());
-         });
-     })
- };
-};
-*/
-
-/*
-
-
-export const deleteCurrentJob = jobId => {
-  return (dispatch, getState, { getFirestore }) => {
+export const acceptWork = jobId => {
+  return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
-    dispatch(actionStarted());
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        return resolve("halow");
-      }, 2000);
-    })
-      .then(() => {
-        dispatch(actionSuccess());
-      })
-      .catch(err => {
-        dispatch(actionError(err));
-      });
+    return firestore.collection('jobOffers').doc(jobId).update({
+      status: "closed"
+    }).then(() => dispatch(acceptWorkSuccess()));
   };
 };
-*/
