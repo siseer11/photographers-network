@@ -1,5 +1,5 @@
 import React from "react";
-import { switchHireable } from "../../../redux/actions/user-action";
+import { switchHireable } from "../../../redux/actions/photographer-actions";
 import { connect } from "react-redux";
 
 class HireableSwitch extends React.Component {

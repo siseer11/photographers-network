@@ -1,32 +1,38 @@
-import fire from "../../config/Fire";
-import {actionError, actionStarted, actionSuccess} from "./generalLoadingErrorSucces-actions";
-
-// -------------------- ACTION TYPES -------------------- //
-export const USER_INFO_UPDATED_SUCCESSFULLY = "USER_INFO_UPDATED_SUCCESSFULLY";
-export const PHOTOURL_UPDATED_SUCCESSFULLY = "PHOTOURL_UPDATED_SUCCESSFULLY";
+import {
+  actionError,
+  actionStarted,
+  actionSuccess
+} from "./generalLoadingErrorSucces-actions";
 
 // -------------------- ASYNC ACTIONS THUNK -------------------- //
 
-export const updateUserInfo = (firstName, lastName, location, companyName, type) => {
+export const updateUserInfo = (
+  firstName,
+  lastName,
+  location,
+  companyName,
+  type
+) => {
   return (dispatch, getState, { getFirestore }) => {
     dispatch(actionStarted());
     const firestore = getFirestore();
-    const userInfo = type === "company" ?
-      {
-        companyName,
-        location
-      } :
-      {
-        firstName,
-        lastName,
-        location
-      };
+    const userInfo =
+      type === "company"
+        ? {
+            companyName,
+            location
+          }
+        : {
+            firstName,
+            lastName,
+            location
+          };
     return firestore
-        .collection('users')
-        .doc(getState().firebase.auth.uid)
-        .update({
-          ...userInfo
-        })
+      .collection("users")
+      .doc(getState().firebase.auth.uid)
+      .update({
+        ...userInfo
+      })
       .then(() => {
         dispatch(actionSuccess(userInfo));
       })
@@ -37,7 +43,9 @@ export const updateUserInfo = (firstName, lastName, location, companyName, type)
 export const updatePhotoURL = (file, userId) => {
   return async (dispatch, getState, { getFirestore }) => {
     try {
-      const storageRef = await fire.storage().ref(`${userId}/avatar`);
+      const storageRef = await getFirestore()
+        .storage()
+        .ref(`${userId}/avatar`);
       const task = await storageRef.put(file);
       const url = await task.ref.getDownloadURL();
       return await getFirestore()

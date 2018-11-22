@@ -26,7 +26,13 @@ export default ({ userOn, userType }) => (
         <Route
           exact
           path="/declined-private-job/:jobId"
-          render={props => <DeclinedPrivateJob {...props} />}
+          render={props =>
+            userOn ? (
+              <DeclinedPrivateJob {...props} />
+            ) : (
+              <Redirect to="/signIn" />
+            )
+          }
         />
         <Route exact path="/home" component={Home} />
         <Route
@@ -94,7 +100,11 @@ export default ({ userOn, userType }) => (
           exact
           path="/private/job/:jobId"
           render={props =>
-            userOn ? <PrivateJobRequest {...props} /> : <Redirect to="/signin" />
+            userOn ? (
+              <PrivateJobRequest {...props} />
+            ) : (
+              <Redirect to="/signin" />
+            )
           }
         />
         <Route
@@ -108,13 +118,19 @@ export default ({ userOn, userType }) => (
           exact
           path="/progress-job/:jobid"
           render={props =>
-            userOn ? <ProgressSingleJob {...props} /> : <Redirect to="/signin" />
+            userOn ? (
+              <ProgressSingleJob {...props} />
+            ) : (
+              <Redirect to="/signin" />
+            )
           }
         />
         <Route
           exact
           path="/submit-work/:jobid"
-          render={props => <SubmitWork {...props} />}
+          render={props =>
+            userOn ? <SubmitWork {...props} /> : <Redirect to="/signin" />
+          }
         />
         <Redirect to="/home" />
       </Switch>

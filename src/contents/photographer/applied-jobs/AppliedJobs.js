@@ -1,5 +1,5 @@
 // dependencies
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { isLoaded, isEmpty, firestoreConnect } from "react-redux-firebase";

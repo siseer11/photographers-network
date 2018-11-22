@@ -2,8 +2,6 @@ import React from "react";
 import queryString from "query-string";
 import DeclinedPrivateJobFunctionality from "../contents/company/private-job/DeclinedPrivateJobFunctionality";
 import { connect } from "react-redux";
-import { compose } from "redux";
-import { isLoaded, isEmpty, firestoreConnect } from "react-redux-firebase";
 
 const DeclinedPrivateJob = ({ location, user, match }) => {
   /* if the company does not own this job , first check against the queryString */

@@ -54,14 +54,14 @@ class CreateJob extends React.Component {
         ...this.state,
         jobDate: new Date(this.state.jobDate).getTime()
       })
-      .then(() => {
+      .then(data => {
         this.setState({
           loading: false,
           finished: true
         });
 
         setTimeout(() => {
-          this.props.history.push("/dashboard");
+          this.props.history.push(`/open-job/${data.id}`);
         }, 1000);
       })
       .catch(err => {

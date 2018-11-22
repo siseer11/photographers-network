@@ -1,7 +1,12 @@
 import { addNewNotification } from "./notifications-action";
+import {
+  actionStarted,
+  actionError,
+  actionSuccess
+} from "./generalLoadingErrorSucces-actions";
 
 //Create Job
-export const createJob = (jobData, sentTo = null) => {
+export const createJob = (jobData, sentTo = null, sentToId = null) => {
   return (dispatch, getState, { getFirestore }) => {
     const firebase = getState().firebase;
     return getFirestore()
@@ -23,7 +28,8 @@ export const createJob = (jobData, sentTo = null) => {
           profileImageUrl: firebase.profile.profileImageUrl
         },
         createdAt: new Date().getTime(),
-        sentTo: sentTo
+        sentTo: sentTo,
+        sentToId: sentToId
       });
   };
 };
@@ -117,18 +123,20 @@ export const createPrivateJob = (jobData, company, photographerData) => {
       profileImageUrl: photographerData.profileImageUrl
     };
     //add the job to the jobOffers
-    return dispatch(createJob(jobData, sentToData)).then(response => {
-      //response is the new created job
-      //add notification to the photographer
-      const notification = {
-        createdAt: new Date().getTime(),
-        link: `/private/job/${response.id}?user=${photographerData.uid}`,
-        read: false,
-        recipientUserId: photographerData.uid,
-        title: `${company.companyName} has sent you a private job request.`
-      };
-      return dispatch(addNewNotification(notification));
-    });
+    return dispatch(createJob(jobData, sentToData, photographerData.uid)).then(
+      response => {
+        //response is the new created job
+        //add notification to the photographer
+        const notification = {
+          createdAt: new Date().getTime(),
+          link: `/private/job/${response.id}?user=${photographerData.uid}`,
+          read: false,
+          recipientUserId: photographerData.uid,
+          title: `${company.companyName} has sent you a private job request.`
+        };
+        return dispatch(addNewNotification(notification));
+      }
+    );
   };
 };
 
@@ -152,7 +160,8 @@ export const sendPrivateRequestFromExistingJobs = (
           firstName: photographerData.firstName,
           lastName: photographerData.lastName,
           profileImageUrl: photographerData.profileImageUrl
-        }
+        },
+        sentToId: photographerData.uid
       })
       .then(data => {
         //add notification to the photographer
@@ -172,11 +181,18 @@ export const sendPrivateRequestFromExistingJobs = (
 export const makePrivateJobPublic = jobId => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
-    return firestore
+    dispatch(actionStarted());
+    firestore
       .collection("jobOffers")
       .doc(jobId)
       .update({
         status: "open"
+      })
+      .then(() => {
+        dispatch(actionSuccess());
+      })
+      .catch(err => {
+        dispatch(actionError(err));
       });
   };
 };
@@ -200,5 +216,27 @@ export const acceptWork = (jobId, acceptedApplicant) => {
          });
      })
  };
+};
+*/
+
+/*
+
+
+export const deleteCurrentJob = jobId => {
+  return (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore();
+    dispatch(actionStarted());
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        return resolve("halow");
+      }, 2000);
+    })
+      .then(() => {
+        dispatch(actionSuccess());
+      })
+      .catch(err => {
+        dispatch(actionError(err));
+      });
+  };
 };
 */

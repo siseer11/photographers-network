@@ -43,6 +43,58 @@ export const applyForJob = (jobInfos, photographerData) => {
   };
 };
 
+//Add photo to the portfolio , returns Promise
+export function uploadPortofolioPhoto(
+  imageFile,
+  imageDescription,
+  uid,
+  photographerData
+) {
+  return async (dispatch, getState, { getFirestore, getFirebase }) => {
+    const uniqueId = new Date().getTime();
+    const portfolio = photographerData.portfolio || [];
+
+    //create storage ref
+    let storageRef = getFirebase()
+      .storage()
+      .ref(`${uid}/portfolio/${uniqueId}`);
+
+    //upload file
+    try {
+      const snap = await storageRef.put(imageFile);
+      const downloadUrl = await snap.ref.getDownloadURL();
+      return getFirestore()
+        .collection("users")
+        .doc(uid)
+        .set(
+          {
+            portfolio: [
+              ...portfolio,
+              {
+                imageUrl: downloadUrl,
+                imageDescription: imageDescription,
+                id: uniqueId
+              }
+            ]
+          },
+          { merge: true }
+        );
+    } catch (err) {
+      return new Promise((resolve, reject) => reject(err));
+    }
+  };
+}
+
+//Switch hireable for photographers , returns Promise
+export function switchHireable(to, photographerId) {
+  return (dispatch, getState, { getFirestore }) => {
+    return getFirestore()
+      .collection("users")
+      .doc(photographerId)
+      .update({ hireable: to });
+  };
+}
+
 /* PRIVATE JOB FUNCTIONALITY */
 //Accept private request
 export const acceptPrivateJobRequest = (

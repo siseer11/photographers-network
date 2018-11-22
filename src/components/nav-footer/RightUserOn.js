@@ -7,8 +7,6 @@ import { LinkLists } from "../LinkLists";
 export const RightUserOn = ({
   showNotificationsHandler,
   newNotifications,
-  notifications,
-  showNotificationBox,
   userImageUrl,
   userLinks
 }) => (

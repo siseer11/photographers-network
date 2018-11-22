@@ -70,6 +70,7 @@ class Jobs extends React.Component {
 
   render() {
     let { openJobs, locations, types } = this.props;
+    openJobs = openJobs.filter(el => el.status === "open");
     const { searchValue, typesFilter, locationsFilter } = this.state;
 
     if (!isLoaded(openJobs)) {
