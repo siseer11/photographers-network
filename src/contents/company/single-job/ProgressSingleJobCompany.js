@@ -63,7 +63,7 @@ class ProgressSingleJobCompany extends React.Component {
     // add notification
     this.props.addNotification({
       title: `${
-        jobDescription.companyName
+        jobDescription.company.companyName
       } has accepted your submitted work for ${jobDescription.title}.`,
       link: `/progress-job/${jobId}`,
       read: false,

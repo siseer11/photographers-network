@@ -202,6 +202,6 @@ export const acceptWork = jobId => {
     const firestore = getFirestore();
     return firestore.collection('jobOffers').doc(jobId).update({
       status: "closed"
-    }).then(() => dispatch(acceptWorkSuccess()));
+    }).then(() => dispatch({type: "ACCEPT_WORK_SUCCESS"}));
   };
 };
