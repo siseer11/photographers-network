@@ -18,11 +18,7 @@ const PrivateJobRequest = props => {
 };
 
 const mapStateToProps = state => ({
-  user: state.user.userData
+  user: state.firebase.profile
 });
 
 export default connect(mapStateToProps)(PrivateJobRequest);
-
-/*
-<PrivateJobFunctionality {...props} />
-*/

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { sigUpUser } from "../../../redux/actions/signUp-action";
+import { sigUpUser } from "../../../redux/actions/user-action";
 import { actionReset } from "../../../redux/actions/generalLoadingErrorSucces-actions";
 
 import { SingUpView } from "../../../components/SignUpView";
@@ -60,9 +60,9 @@ class SignUp extends Component {
     this.props.signUserUp(this.state);
   };
 
+  //Reset the general loading when unmountin
   componentWillUnmount() {
-    console.log("Done , reseted!");
-    actionReset();
+    this.props.actionReset();
   }
 
   render() {
@@ -89,7 +89,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  signUserUp: userData => dispatch(sigUpUser(userData))
+  signUserUp: userData => dispatch(sigUpUser(userData)),
+  actionReset: () => dispatch(actionReset())
 });
 
 export default connect(

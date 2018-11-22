@@ -19,7 +19,7 @@ class SubmitWork extends Component {
     images: [],
     jobId: this.props.match.params.jobid,
     loading: true,
-    submitted: false,
+    submitted: false
   };
 
   componentWillReceiveProps(nextProps) {
@@ -40,16 +40,16 @@ class SubmitWork extends Component {
     const jobDescription = jobsData[jobId];
     this.props.submitWorkForJob(jobId);
     const notification = {
-      title: `${profile.firstName} ${profile.lastName} submitted his work for "${
-        jobDescription.title
-        }".`,
+      title: `${profile.firstName} ${
+        profile.lastName
+      } submitted his work for "${jobDescription.title}".`,
       link: `/progress-job/${jobId}`,
       read: false,
       time: new Date(),
       recipientUserId: jobDescription.companyId
     };
     this.props.addNotification(notification);
-    this.setState({submitted: true});
+    this.setState({ submitted: true });
   };
 
   render() {

@@ -113,7 +113,7 @@ class GbNavBar extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const notifications = state.firestore.ordered.notifications;
+  const notifications = state.firestore.ordered.unreadNotifications;
   return {
     newNotifications: notifications ? notifications.length > 0 : false,
     auth: state.firebase.auth,
@@ -140,7 +140,8 @@ export default compose(
         where: [
           ["recipientUserId", "==", props.auth.uid],
           ["read", "==", false]
-        ]
+        ],
+        storeAs: "unreadNotifications"
       }
     ];
   })

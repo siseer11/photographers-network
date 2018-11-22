@@ -52,16 +52,16 @@ class CreateJob extends React.Component {
     this.props
       .createJob({
         ...this.state,
-        date: new Date(this.state.jobDate).getTime()
+        jobDate: new Date(this.state.jobDate).getTime()
       })
-      .then(() => {
+      .then(data => {
         this.setState({
           loading: false,
           finished: true
         });
 
         setTimeout(() => {
-          this.props.history.push("/dashboard");
+          this.props.history.push(`/open-job/${data.id}`);
         }, 1000);
       })
       .catch(err => {

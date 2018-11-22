@@ -1,5 +1,5 @@
 // dependencies
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { isLoaded, isEmpty, firestoreConnect } from "react-redux-firebase";
@@ -51,19 +51,3 @@ export default compose(
     }
   ])
 )(AppliedJobs);
-
-/*
-
-
-
-  const mapStateToProps = state => {
-  const jobs = state.allJobs;
-  return {
-    fetchedAppliedOnce: jobs.fetchedAppliedOnce,
-    appliedJobs: jobs.photographer.appliedJobs,
-    acceptedJobs: jobs.photographer.acceptedJobs,
-    declinedJobs: jobs.photographer.declinedJobs,
-    finishedJobs: jobs.photographer.finishedJobs
-  };
-};
-*/

@@ -27,11 +27,12 @@ export const singleJobFetchError = err => ({
 export const fetchJobInfo = (jobId, type) => {
   return (dispatch, getState) => {
     dispatch(singleJobFetchStart());
-    return database.ref("requests")
+    return database
+      .ref("requests")
       .child(jobId)
       .once("value", snap => {
         if (!snap.exists()) {
-          dispatch({type: JOB_EXISTS_ERROR});
+          dispatch({ type: JOB_EXISTS_ERROR });
           return -1;
         }
         const data = snap.val();
@@ -43,7 +44,8 @@ export const fetchJobInfo = (jobId, type) => {
           progressJob: getProgressJobInfo(data)
         };
         dispatch(singleJobFetchSuccess(job));
-      }).catch(err => dispatch(singleJobFetchError(err)));
+      })
+      .catch(err => dispatch(singleJobFetchError(err)));
   };
 };
 //-------------------- HELP FUNCTIONS -------------------- //
@@ -61,11 +63,11 @@ const getOpenJobInfo = (auth, data, type) => {
     ? data["photographers-applied"]
     : [];
   return {
-    userApplied: auth.uid
-      ? photographersObj.hasOwnProperty(auth.uid)
-      : false,
+    userApplied: auth.uid ? photographersObj.hasOwnProperty(auth.uid) : false,
     appliedPhotographers: getAppliedPhotographers(data),
-    userIsDeclinedPhotographer: auth.uid ? userIsDeclinedPhotographer(auth, type) : false
+    userIsDeclinedPhotographer: auth.uid
+      ? userIsDeclinedPhotographer(auth, type)
+      : false
   };
 };
 

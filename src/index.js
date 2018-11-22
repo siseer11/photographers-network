@@ -9,10 +9,11 @@ import MainReducer from "./redux/reducers";
 import { reactReduxFirebase, getFirebase } from "react-redux-firebase";
 import { reduxFirestore, getFirestore } from "redux-firestore";
 import { Provider } from "react-redux";
+import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 
 const store = createStore(
   MainReducer,
-  compose(
+  composeWithDevTools(
     applyMiddleware(
       thunkMiddleware.withExtraArgument({ getFirebase, getFirestore })
     ),
@@ -21,8 +22,7 @@ const store = createStore(
       useFirestoreForProfile: true,
       attachAuthIsReady: true
     }),
-    reduxFirestore(fire),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    reduxFirestore(fire)
   )
 );
 

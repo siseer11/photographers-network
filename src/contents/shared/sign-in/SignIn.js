@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { signUserInAsync } from "../../../redux/actions/user-action";
+import { actionReset } from "../../../redux/actions/generalLoadingErrorSucces-actions";
 
 import { EmailSVG } from "../../../components/svg/EmailSVG";
 import { PasswordSVG } from "../../../components/svg/PasswordSVG";
@@ -21,10 +22,15 @@ class SignIn extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  login = e => {
+  signIn = e => {
     e.preventDefault();
     this.props.signInUser(this.state.email, this.state.password);
   };
+
+  //Reset the general loading/error
+  componentWillUnmount() {
+    this.props.actionReset();
+  }
 
   render() {
     const { loadingAuth, errorAuth, succesAuth } = this.props;
@@ -32,7 +38,7 @@ class SignIn extends Component {
     return (
       <div>
         <div className="section-content with-padding">
-          <form onSubmit={this.login}>
+          <form onSubmit={this.signIn}>
             <h1>Sign in</h1>
             <InputField
               wrapperClass="gb-input-wrapper"
@@ -90,7 +96,8 @@ class SignIn extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  signInUser: (email, password) => dispatch(signUserInAsync(email, password))
+  signInUser: (email, password) => dispatch(signUserInAsync(email, password)),
+  actionReset: () => dispatch(actionReset())
 });
 
 const mapStateToProps = state => ({

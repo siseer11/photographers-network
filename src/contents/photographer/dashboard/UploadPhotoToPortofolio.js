@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
-import { uploadPortofolioPhoto } from "../../../redux/actions/user-action";
+import { uploadPortofolioPhoto } from "../../../redux/actions/photographer-actions";
 
 class UploadPhotoToPortofolio extends React.Component {
   static propTypes = {

@@ -1,15 +1,9 @@
 import React from "react";
 import queryString from "query-string";
 import DeclinedPrivateJobFunctionality from "../contents/company/private-job/DeclinedPrivateJobFunctionality";
+import { connect } from "react-redux";
 
-export const DeclinedPrivateJob = props => {
-  const { loading, location, user } = props;
-
-  /* waiting for the user infos */
-  if (loading != false) {
-    return <h2>Waiting for user data</h2>;
-  }
-
+const DeclinedPrivateJob = ({ location, user, match }) => {
   /* if the company does not own this job , first check against the queryString */
   const companyQueryId = (queryString.parse(location.search) || { company: "" })
     .company;
@@ -19,8 +13,14 @@ export const DeclinedPrivateJob = props => {
 
   return (
     <DeclinedPrivateJobFunctionality
-      {...props}
+      match={match}
       companyQueryId={companyQueryId}
     />
   );
 };
+
+const mapStateToProps = state => ({
+  user: state.firebase.profile
+});
+
+export default connect(mapStateToProps)(DeclinedPrivateJob);

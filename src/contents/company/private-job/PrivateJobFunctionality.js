@@ -1,63 +1,76 @@
 import React from "react";
 import { connect } from "react-redux";
+import { compose } from "redux";
 import { PrivateJobView } from "../../../components/PrivateJobView";
+import { isLoaded, isEmpty, firestoreConnect } from "react-redux-firebase";
 import {
-  fetchPrivateJobInfo,
+  acceptPrivateJobRequest,
+  rejectPrivateJobRequest
+} from "../../../redux/actions/photographer-actions";
+
+const PrivateJobFunctionality = ({
+  ownPrivateJobs,
+  match,
   acceptJobReq,
   rejectJobReq
-} from "../../../redux/actions/acceptDeclinePrivateJob-action";
+}) => {
+  const jobId = match.params.jobId;
 
-class PrivateJobFunctionality extends React.Component {
-  componentDidMount() {
-    const jobId = this.props.match.params.jobId;
-    this.props.fetchJobInfo(jobId);
+  //Still loading for the data to load
+  if (!isLoaded(ownPrivateJobs)) {
+    return <h2>Loading...</h2>;
+  } else if (ownPrivateJobs && !isLoaded(ownPrivateJobs[jobId])) {
+    return <h2>Loading...</h2>;
   }
 
-  render() {
-    const { fetchingJobData, user, jobInfos } = this.props;
-
-    /* Still waiting for the DB response */
-    if (fetchingJobData) {
-      return <h2> Loading... </h2>;
-    }
-
-    /* No job found for this id */
-    if (!jobInfos.jobId) {
-      return <h2>There is not a job present for this id.</h2>;
-    }
-
-    /* Job is no longer Open */
-    if (jobInfos.status !== "open") {
-      return <h2> The job is no longer open.. Find another one! </h2>;
-    }
-    /* Second check for the correctUser , against the DB this time */
-    const correctUser = user.uid === jobInfos.sentTo;
-
-    return correctUser ? (
-      <PrivateJobView
-        {...jobInfos}
-        acceptJobReq={this.props.acceptJobReq}
-        rejectJobReq={this.props.rejectJobReq}
-      />
-    ) : (
-      <h2>You are not the one my dude.</h2>
-    );
+  //After loading check to see if the job for this id exist
+  if (!ownPrivateJobs || !ownPrivateJobs[jobId]) {
+    return <h2>No job for this iD</h2>;
   }
-}
+
+  //No job for this id
+  if (isEmpty(ownPrivateJobs[jobId])) {
+    return <h2>There is not a job present for this id.</h2>;
+  }
+
+  //Show the private job infos
+  const jobInfos = ownPrivateJobs[jobId];
+
+  return (
+    <PrivateJobView
+      {...jobInfos}
+      jobId={jobId}
+      acceptJobReq={acceptJobReq}
+      rejectJobReq={rejectJobReq}
+    />
+  );
+};
 
 const mapStateToProps = state => ({
-  user: state.user.userData,
-  fetchingJobData: state.acceptDeclinePrivateJob.fetchingJob,
-  jobInfos: state.acceptDeclinePrivateJob.jobData
+  user: state.firebase.profile,
+  auth: state.firebase.auth,
+  ownPrivateJobs: state.firestore.data.ownPrivateJobs
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchJobInfo: jobId => dispatch(fetchPrivateJobInfo(jobId)),
-  acceptJobReq: () => dispatch(acceptJobReq()),
-  rejectJobReq: () => dispatch(rejectJobReq())
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  acceptJobReq: (jobId, title, companyId) =>
+    dispatch(acceptPrivateJobRequest(jobId, title, companyId, ownProps.user)),
+  rejectJobReq: (jobId, title, companyId, status) =>
+    dispatch(
+      rejectPrivateJobRequest(jobId, title, companyId, ownProps.user, status)
+    )
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => [
+    {
+      collection: "jobOffers",
+      where: [["sentToId", "==", props.auth.uid]],
+      storeAs: "ownPrivateJobs"
+    }
+  ])
 )(PrivateJobFunctionality);
