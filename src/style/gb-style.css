@@ -901,6 +901,7 @@ svg {
   justify-content: center;
   font-weight: bold;
   cursor: pointer;
+  border: none;
 }
 
 .gb-btn-primary {

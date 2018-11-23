@@ -1,86 +1,104 @@
 import fire from "../../config/Fire";
-
-const database = fire.database();
-
-// -------------------- ACTION TYPES -------------------- //
-export const NO_USER_LOGGED_IN = "NO_USER_LOGGED_IN";
-export const USER_LOGGED_IN = "USER_LOGGED_IN";
-export const USER_SIGNED_OUT = "USER_LOGGED_OUT";
-export const SIGN_USER_IN = "SIGN_USER_IN";
-
-// -------------------- ACTION CREATORS -------------------- //
-export const noUserLoggedIn = () => ({
-  type: NO_USER_LOGGED_IN
-});
-
-export const userLoggedIn = userData => ({
-  type: USER_LOGGED_IN,
-  userData
-});
-
-export const userSignedOut = () => ({
-  type: USER_SIGNED_OUT
-});
-
-// Just set the loading : true
-export const signUserIn = () => ({
-  type: SIGN_USER_IN
-});
+import {
+  actionStarted,
+  actionError,
+  actionSuccess
+} from "./generalLoadingErrorSucces-actions";
 
 // -------------------- ASYNC ACTIONS THUNK -------------------- //
-export function setAuthListener() {
-  return dispatch => {
-    fire.auth().onAuthStateChanged(user => {
-      if (user) {
-        fetchUserData(user.uid);
-      } else {
-        dispatch(noUserLoggedIn());
-      }
-    });
-
-    function fetchUserData(uid) {
-      database
-        .ref("users")
-        .child(uid)
-        .once("value", snap => {
-          let userInfos = snap.val();
-          userInfos = {
-            ...userInfos,
-            uid: uid,
-            portofolio: Object.values(userInfos.portofolio || {})
-          };
-          dispatch(userLoggedIn(userInfos));
-        })
-        .catch(err => console.log(err));
-    }
-  };
-}
-
+/**
+ * Signs user out.
+ *
+ * @returns {function(*)}
+ */
 export function signOutUser() {
   return dispatch => {
     fire
       .auth()
       .signOut()
       .then(() => {
-        console.log("ouuuuuuuuut");
-        dispatch(userSignedOut());
+        console.log("user is out");
       })
       .catch(err => {
         console.log("some error with the signOut, in action");
         console.error(err);
+        dispatch(actionError(err));
       });
   };
 }
 
+/**
+ * Signs user in.
+ *
+ * @param email
+ * @param password
+ * @returns {function(*)}
+ */
 export function signUserInAsync(email, password) {
   return dispatch => {
+    //Set loading to true
+    dispatch(actionStarted());
+
+    //Send the request to firebase, and wait for response
     fire
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(data => {
-        console.log(data);
-        dispatch(signUserIn());
+      .then(() => {
+        //If it succed turn succes to true and loading false
+        dispatch(actionSuccess());
       })
-      .catch(err => console.log(err));
+      .catch(() => dispatch(actionError()));
   };
 }
+
+/**
+ * Signs up a new user
+ *
+ * @param newUser
+ * @returns {function(*, *, {getFirebase: *, getFirestore: *})}
+ */
+export const sigUpUser = newUser => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    dispatch(actionStarted());
+
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(newUser.email, newUser.password)
+      .then(resp => {
+        let userInformations = {
+          type: newUser.type,
+          location: newUser.location,
+          profileImageUrl:
+            "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png",
+          uid: resp.user.uid
+        };
+
+        if (newUser.type === "photographer") {
+          userInformations = {
+            ...userInformations,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName
+          };
+        } else {
+          userInformations = {
+            ...userInformations,
+            companyName: newUser.companyName
+          };
+        }
+
+        return firestore
+          .collection("users")
+          .doc(resp.user.uid)
+          .set(userInformations);
+      })
+      .then(() => {
+        dispatch(actionSuccess());
+      })
+      .catch(err => {
+        dispatch(actionError(err));
+      });
+  };
+};

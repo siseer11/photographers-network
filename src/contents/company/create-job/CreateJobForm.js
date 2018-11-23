@@ -1,14 +1,14 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 
-import { CustomSelect } from "../components/CustomSelect";
-import { InputField } from "../components/form/InputField";
-import { NameInputSVG } from "../components/svg/NameInputSVG";
-import { LocationSVG } from "../components/svg/LocationSVG";
-import { MoneySVG } from "../components/svg/MoneySVG";
-import { CameraSVG } from "../components/svg/CameraSVG";
-import { CalendarSVG } from "../components/svg/CalendarSVG";
-import { TextArea } from "../components/form/TextArea";
+import { CustomSelect } from "../../../components/CustomSelect";
+import { InputField } from "../../../components/form/InputField";
+import { NameInputSVG } from "../../../components/svg/NameInputSVG";
+import { LocationSVG } from "../../../components/svg/LocationSVG";
+import { MoneySVG } from "../../../components/svg/MoneySVG";
+import { CameraSVG } from "../../../components/svg/CameraSVG";
+import { CalendarSVG } from "../../../components/svg/CalendarSVG";
+import { TextArea } from "../../../components/form/TextArea";
 
 const types = ["nature", "portrait", "dogs", "cats"];
 
@@ -27,23 +27,24 @@ export default class CreateJobForm extends React.Component {
   };
 
   state = {
-    jobbTitle: "",
-    jobbLocation: "",
-    jobbType: "nature",
-    jobbBudget: "",
-    jobbDate: this.createValidDate(new Date()),
-    jobbDescription: ""
+    jobTitle: "",
+    jobLocation: "",
+    jobType: "nature",
+    jobBudget: "",
+    jobDate: this.createValidDate(new Date()),
+    jobDescription: "",
+    jobAddress: ""
   };
 
   changeHandler = e => {
     this.setState({
-      [`jobb${e.target.name}`]: e.target.value
+      [`job${e.target.name}`]: e.target.value
     });
   };
 
   optionSelectHandler = type => {
     this.setState({
-      jobbType: type
+      jobType: type
     });
   };
 
@@ -66,64 +67,39 @@ export default class CreateJobForm extends React.Component {
     );
   };
 
-  checkForm = () => {
-    const { jobbTitle, jobbLocation, jobbBudget, jobbDescription } = this.state;
-
-    if (!/^[a-z -]{5,}$/gi.test(jobbTitle)) {
-      return "Job title must have at least 5 chars, letters,spaces and -";
-    } else if (!jobbLocation) {
-      return "The jobb location must be completed.";
-    } else if (!jobbBudget || Number(jobbBudget) < 10) {
-      return "The job budget must filled and higher then 10$";
-    } else if (!/^[a-z -\.]{20,}$/gi.test(jobbDescription)) {
-      return "Job description must have at least 20 chars, containing letters,spaces, - and points";
-    } else {
-      return true;
-    }
-  };
-
   formSubmited = e => {
     e.preventDefault();
-    const passed = true;//this.checkForm();
-    if (passed === true) {
-      const s = this.state;
-      /* send data to the parent */
-      this.props.submitHandler({
-        title: s.jobbTitle,
-        description: s.jobbDescription,
-        price: Number(s.jobbBudget),
-        location: s.jobbLocation,
-        type: s.jobbType,
-        date: new Date(s.jobbDate).getTime()
-      });
-    } else {
-      console.log(passed);
-    }
+    /* send data to the parent */
+    this.props.submitHandler({
+      ...this.state,
+      jobDate: new Date(this.state.jobDate).getTime()
+    });
   };
 
   render() {
     const {
-      jobbTitle,
-      jobbLocation,
-      jobbType,
-      jobbBudget,
-      jobbDate,
-      jobbDescription,
-      showCustomSelect
+      jobTitle,
+      jobLocation,
+      jobType,
+      jobBudget,
+      jobDate,
+      jobDescription,
+      showCustomSelect,
+      jobAddress
     } = this.state;
 
     let today = new Date();
     today = this.createValidDate(today);
 
     return (
-      <div className="create-jobb-page section-content with-padding">
+      <div className="create-job-page section-content with-padding">
         <h1>Create Jobsss</h1>
         <form onSubmit={this.formSubmited}>
           <InputField
             svg={
               <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
             }
-            value={jobbTitle}
+            value={jobTitle}
             changeHandler={this.changeHandler}
             type="text"
             name="Title"
@@ -133,18 +109,28 @@ export default class CreateJobForm extends React.Component {
             svg={
               <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
             }
-            value={jobbLocation}
+            value={jobLocation}
             changeHandler={this.changeHandler}
             type="text"
             name="Location"
             placeholder="Location"
+          />
+          <InputField
+            svg={
+              <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+            }
+            value={jobAddress}
+            changeHandler={this.changeHandler}
+            type="text"
+            name="Address"
+            placeholder="Address"
           />
           <div
             className="custom-select gb-text-input gb-text-input-trans-background"
             onClick={this.showCustomSelectHandler}
           >
             <CameraSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
-            {jobbType}
+            {jobType}
             <CustomSelect
               showCustomSelect={showCustomSelect}
               optionsList={types}
@@ -155,7 +141,7 @@ export default class CreateJobForm extends React.Component {
             svg={
               <MoneySVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
             }
-            value={jobbBudget}
+            value={jobBudget}
             changeHandler={this.changeHandler}
             type="number"
             name="Budget"
@@ -166,7 +152,7 @@ export default class CreateJobForm extends React.Component {
             svg={
               <CalendarSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
             }
-            value={jobbDate || today}
+            value={jobDate || today}
             changeHandler={this.changeHandler}
             type="date"
             name="Date"
@@ -176,7 +162,7 @@ export default class CreateJobForm extends React.Component {
             svg={
               <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
             }
-            value={jobbDescription}
+            value={jobDescription}
             name="Description"
             changeHandler={this.changeHandler}
             placeholder="Job description"

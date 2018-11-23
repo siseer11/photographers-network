@@ -1,44 +1,53 @@
 // dependencies
-import React, {Component} from "react";
-import {connect} from "react-redux";
+import React from "react";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { isLoaded, isEmpty, firestoreConnect } from "react-redux-firebase";
 
 // components
 import MyJobsCategoryView from "../../../components/my-jobs/MyJobsCategoryView";
-import {appliedJobsFetch, fetchJobs} from "../../../redux/actions/jobs-action";
 
-const mapStateToProps = state => {
-  const jobs = state.allJobs;
-  return {
-    fetchedAppliedOnce: jobs.fetchedAppliedOnce,
-    appliedJobs: jobs.photographer.appliedJobs,
-    acceptedJobs: jobs.photographer.acceptedJobs,
-    declinedJobs: jobs.photographer.declinedJobs,
-    finishedJobs: jobs.photographer.finishedJobs
-  };
+const AppliedJobs = ({ appliedJobsList, uid }) => {
+  if (!isLoaded(appliedJobsList)) {
+    return <h2>Loading....</h2>;
+  }
+  if (isEmpty(appliedJobsList)) {
+    return <h2>You have no applied jobs!</h2>;
+  }
+
+  const appliedJobsOpen = appliedJobsList.filter(el => el.status === "open");
+  const appliedJobsAccepted = appliedJobsList.filter(
+    el => el.status === "in progress" && el.photographer.uid === uid
+  );
+  const appliedJobsDeclined = appliedJobsList.filter(
+    el => el.status !== "open" && el.photographer.uid !== uid
+  );
+  const finishedJobs = appliedJobsList.filter(
+    el => el.status === "closed" && el.photographer.uid === uid
+  );
+
+  return (
+    <div className="my-jobs-container">
+      <MyJobsCategoryView categoryTitle="Applied" jobs={appliedJobsOpen} />
+      <MyJobsCategoryView categoryTitle="Accepted" jobs={appliedJobsAccepted} />
+      <MyJobsCategoryView categoryTitle="Declined" jobs={appliedJobsDeclined} />
+      <MyJobsCategoryView categoryTitle="Finished" jobs={finishedJobs} />
+    </div>
+  );
 };
 
-const mapDispatchToProps = dispatch => ({
-  fetchJobs: () => dispatch(appliedJobsFetch())
+const mapStateToProps = (state, ownProps) => ({
+  appliedJobsList: state.firestore.ordered.appliedJobs,
+  uid: ownProps.auth.uid
 });
 
-class AppliedJobs extends Component {
-  componentDidMount() {
-    if(!this.props.fetchedAppliedOnce) {
-      this.props.fetchJobs();
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect(({ auth }) => [
+    {
+      collection: "jobOffers",
+      where: ["photographersWhichAppliedIds", "array-contains", auth.uid],
+      storeAs: "appliedJobs"
     }
-  }
-
-  render() {
-    const {appliedJobs, acceptedJobs, declinedJobs, finishedJobs} = this.props;
-    return (
-      <div className="my-jobs-container">
-        <MyJobsCategoryView categoryTitle="Applied" jobs={appliedJobs}/>
-        <MyJobsCategoryView categoryTitle="Accepted" jobs={acceptedJobs}/>
-        <MyJobsCategoryView categoryTitle="Declined" jobs={declinedJobs}/>
-        <MyJobsCategoryView categoryTitle="Finished" jobs={finishedJobs}/>
-      </div>
-    );
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppliedJobs);
+  ])
+)(AppliedJobs);

@@ -1,19 +1,19 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 import WithModal from "../../RenderProp/WithModal";
-import fire from "../../config/Fire";
 import PaypalButton from "../../contents/shared/PayPalButton";
 import CLIENT from "../../paypal/Client";
+import { connect } from "react-redux";
+import { markAsPremium } from "../../redux/actions/profile-action";
 
 const ENV = process.env.NODE_ENV === "production" ? "production" : "sandbox";
 
-export default class NoPremiumUser extends React.Component {
+class NoPremiumUser extends React.Component {
   state = {
     buttonStatus: "Become Premium"
   };
   static propTypes = {
-    user: PropTypes.object.isRequired,
-    updateUserInfo: PropTypes.func.isRequired
+    user: PropTypes.object.isRequired
   };
 
   makeUserPremium = () => {
@@ -23,26 +23,17 @@ export default class NoPremiumUser extends React.Component {
     this.setState(() => ({
       buttonStatus: "Loading..."
     }));
-    fire
-      .database()
-      .ref("users")
-      .child(this.props.user.uid)
-      .update(
-        {
-          premium: true
-        },
-        err => {
-          if (err) {
-            this.setState(() => ({
-              buttonStatus: "Error"
-            }));
-          } else {
-            this.setState(() => ({
-              buttonStatus: "Done!"
-            }));
-            this.props.updateUserInfo({ premium: true });
-          }
-        }
+    this.props
+      .markAsPremium(this.props.uid)
+      .then(() =>
+        this.setState(() => ({
+          buttonStatus: "Done!"
+        }))
+      )
+      .catch(err =>
+        this.setState(() => ({
+          buttonStatus: "Error"
+        }))
       );
   };
 
@@ -53,15 +44,17 @@ export default class NoPremiumUser extends React.Component {
   onCancel = () => {
     this.setState({ error: "Your cancelled your payment!" });
   };
+
   succesPayment = () => {
     this.makeUserPremium();
   };
+
   render() {
     const { buttonStatus } = this.state;
     const total = 30;
     return (
       <React.Fragment>
-        <p>For a portofolio you have to be premium...</p>
+        <p>For a portofolio you have to be premium.</p>
         <WithModal closeItemClass="close-modal">
           {({ showModal }) => (
             <React.Fragment>
@@ -73,12 +66,12 @@ export default class NoPremiumUser extends React.Component {
                 <div className="modal-inner-box">
                   <h2>
                     If you become premium it will be awsome trust me, you will
-                    not regret it!..
+                    not regret it!
                   </h2>
                   <div
                     onClick={this.makeUserPremium}
                     className={`become-premium-button ${
-                      buttonStatus == "Done!" ? "close-modal" : ""
+                      buttonStatus === "Done!" ? "close-modal" : ""
                     }`}
                   >
                     {buttonStatus}
@@ -102,3 +95,16 @@ export default class NoPremiumUser extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  uid: state.firebase.auth.uid
+});
+
+const mapDispatchToProps = dispatch => ({
+  markAsPremium: uid => dispatch(markAsPremium(uid))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NoPremiumUser);

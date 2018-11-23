@@ -7,12 +7,12 @@ import AvatarInput from "../../contents/shared/profile/AvatarInput";
 export const DashboardHeader = ({
   children,
   links,
-  user,
   linkHandler,
   type,
-  updateUserInfo
+  profile,
+  auth
 }) => {
-  let profilePath = `/profile/${user.uid}`;
+  let profilePath = `/profile/${auth.uid}`;
   return (
     <div>
       <div className="gb-card-7-wrapper">
@@ -20,11 +20,7 @@ export const DashboardHeader = ({
           style={{ flexDirection: "column" }}
           className="gb-card-7-height gb-background-primary"
         >
-          <AvatarInput
-            uid={user.uid}
-            userAvatar={user.photoURL}
-            updateUserInfo={updateUserInfo}
-          />
+          <AvatarInput uid={auth.uid} userAvatar={profile.profileImageUrl} />
           <div className="card-7-shadow-overlay" />
           <div className="card-7-content">
             <h1 className="gb-title-xx-large gb-text-white gb-margin-bottom-40 gb-text-align-center">
@@ -57,7 +53,6 @@ export const DashboardHeader = ({
 };
 
 DashboardHeader.propTypes = {
-  children: PropTypes.array.isRequired,
   links: PropTypes.array,
   uid: PropTypes.string,
   linkHandler: PropTypes.func,

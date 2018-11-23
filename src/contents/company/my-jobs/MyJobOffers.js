@@ -1,68 +1,48 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import MyJobsCategoryView from "../../../components/my-jobs/MyJobsCategoryView";
-import {connect} from "react-redux";
-import {myJobsFetch} from "../../../redux/actions/jobs-action";
+import { connect } from "react-redux";
+import { isLoaded, isEmpty, firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
+
+const MyJobOffers = ({ openJobs, inProgressJobs, closedJobs, allJobs }) => {
+  if (!isLoaded(allJobs)) {
+    return <h2>Loading...</h2>;
+  }
+  if (isEmpty(allJobs)) {
+    return (
+      <h2>
+        You have no jobs posted yet, create your first{" "}
+        <Link to="/createJob">here</Link>
+      </h2>
+    );
+  }
+  return (
+    <div className="my-jobs-container">
+      <MyJobsCategoryView categoryTitle="Open" jobs={openJobs} />
+      <MyJobsCategoryView categoryTitle="In Progress" jobs={inProgressJobs} />
+      <MyJobsCategoryView categoryTitle="Closed" jobs={closedJobs} />
+    </div>
+  );
+};
 
 const mapStateToProps = state => {
-  const jobs = state.allJobs;
+  const allJobs = state.firestore.ordered.jobOffers || [];
   return {
-    jobsLoading: jobs.jobsLoading,
-    fetchedCompanyJobsOnce: jobs.fetchedCompanyJobsOnce,
-    openJobs: jobs.company.openJobs,
-    inProgressJobs: jobs.company.inProgressJobs,
-    closedJobs: jobs.company.closedJobs,
-    allJobs: jobs.company.allJobs
+    allJobs,
+    openJobs: allJobs.filter(job => job.status === "open"),
+    inProgressJobs: allJobs.filter(job => job.status === "in progress"),
+    closedJobs: allJobs.filter(job => job.status === "closed"),
+    auth: state.firebase.auth
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  fetchJobs: () => dispatch(myJobsFetch())
-});
-
-class MyJobOffers extends React.Component {
-  componentDidMount() {
-    if(!this.props.fetchedCompanyJobsOnce) {
-      this.props.fetchJobs();
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect(props => [
+    {
+      collection: "jobOffers",
+      where: [["companyId", "==", props.auth.uid]]
     }
-  }
-
-  render() {
-    const {
-      jobsLoading,
-      openJobs,
-      inProgressJobs,
-      closedJobs,
-      allJobs
-    } = this.props;
-    return (
-      <React.Fragment>
-        {jobsLoading ? (
-          <h2>Loading...</h2>
-        ) : allJobs.length === 0 ? (
-          <h2>
-            You have no jobs posted yet, create your first{" "}
-            <Link to="/createJob">here</Link>
-          </h2>
-        ) : (
-          <div className="my-jobs-container">
-            <MyJobsCategoryView
-              categoryTitle="Open"
-              jobs={openJobs}
-            />
-            <MyJobsCategoryView
-              categoryTitle="In Progress"
-              jobs={inProgressJobs}
-            />
-            <MyJobsCategoryView
-              categoryTitle="Closed"
-              jobs={closedJobs}
-            />
-          </div>
-        )}
-      </React.Fragment>
-    );
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MyJobOffers);
+  ])
+)(MyJobOffers);

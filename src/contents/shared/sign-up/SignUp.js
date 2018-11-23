@@ -1,21 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { sigUpUser } from "../../../redux/actions/user-action";
+import { actionReset } from "../../../redux/actions/generalLoadingErrorSucces-actions";
 
-import fire from "../config/Fire";
-import { SingUpView } from "../components/SignUpView";
-import NavFooterWrapper from "./shared/NavFooterWrapper";
+import { SingUpView } from "../../../components/SignUpView";
 
 class SignUp extends Component {
   state = {
-    name: "",
+    firstName: "",
+    lastName: "",
+    companyName: "",
     email: "",
     password: "",
     password2: "",
     type: this.props.match.params.type || "photographer",
     location: ""
   };
-  database = fire.database().ref();
 
   /**
    * Updates state to the current value of a certain target.
@@ -29,7 +29,10 @@ class SignUp extends Component {
 
   optionSelectHandler = type => {
     this.setState({
-      type: type
+      type: type,
+      firstName: "",
+      lastName: "",
+      companyName: ""
     });
   };
 
@@ -52,38 +55,45 @@ class SignUp extends Component {
     );
   };
 
-  render() {
-    const {
-      name,
-      email,
-      password,
-      password2,
-      location,
-      type,
-      showCustomSelect
-    } = this.state;
-    const { userOn } = this.props;
+  signup = e => {
+    e.preventDefault();
+    this.props.signUserUp(this.state);
+  };
 
+  //Reset the general loading when unmountin
+  componentWillUnmount() {
+    this.props.actionReset();
+  }
+
+  render() {
     return (
       <SingUpView
         signupHandler={this.signup}
-        name={name}
         changeHandler={this.handleChange}
-        email={email}
-        password={password}
-        password2={password2}
-        location={location}
         showCustomSelectHandler={this.showCustomSelectHandler}
         optionSelectHandler={this.optionSelectHandler}
-        type={type}
-        showCustomSelect={showCustomSelect}
+        {...this.state}
+        loadingDB={this.props.loadingDB}
+        errorDB={this.props.errorDB}
+        succesDB={this.props.succesDB}
       />
     );
   }
 }
 
 const mapStateToProps = state => ({
-  userOn: state.user.userOn
+  auth: state.firebase.auth,
+  loadingDB: state.generalLoadingErrorSucces.loading,
+  errorDB: state.generalLoadingErrorSucces.error,
+  succesDB: state.generalLoadingErrorSucces.succes
 });
 
-export default connect(mapStateToProps)(SignUp);
+const mapDispatchToProps = dispatch => ({
+  signUserUp: userData => dispatch(sigUpUser(userData)),
+  actionReset: () => dispatch(actionReset())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignUp);

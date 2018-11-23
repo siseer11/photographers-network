@@ -1,20 +1,12 @@
 import { combineReducers } from "redux";
-import { user } from "./user-reducer";
-import { allJobs } from "./allJobs-reducer";
-import { notificationsReducer } from "./notifications-reducer";
 import { firebaseReducer } from "react-redux-firebase";
-import { singleJobReducer } from "./singleJob-reducer";
-import { profilesReducer } from "./profilesReducer";
-import { signUpReducer } from "./signUp-reducer";
+import { firestoreReducer } from "redux-firestore";
+import { generalLoadingErrorSucces } from "./generalLoadingErrorSucces-reducer";
 
 const MainReducer = combineReducers({
-  user,
-  allJobs,
-  notifications: notificationsReducer,
   firebase: firebaseReducer,
-  singleJob: singleJobReducer,
-  profiles: profilesReducer,
-  signUp: signUpReducer
+  firestore: firestoreReducer,
+  generalLoadingErrorSucces: generalLoadingErrorSucces
 });
 
 export default MainReducer;

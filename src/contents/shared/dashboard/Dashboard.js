@@ -48,32 +48,33 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { userData: user, loading, updateUserInfo } = this.props;
+    const { profile, auth } = this.props;
     let activeType = "";
     let activeComponent = "";
-
-    activeType = this.state[user.type];
-    activeType.headerLinks.map(link => {
-      if (link.active) activeComponent = link.name;
-    });
-
+    if (!profile.isEmpty) {
+      activeType = this.state[profile.type];
+      activeType.headerLinks.map(link => {
+        if (link.active) activeComponent = link.name;
+        return null;
+      });
+    }
     return (
       <DashboardView
-        type={user.type}
-        user={user}
+        type={profile.type}
+        profile={profile}
+        auth={auth}
         {...this.props}
         linkHandler={this.setComponentToShow}
         headerLinks={activeType.headerLinks}
         activeComponent={activeComponent}
-        loading={false}
-        updateUserInfo={updateUserInfo}
       />
     );
   }
 }
 
 const mapStateToProps = state => ({
-  userData: state.user.userData
+  auth: state.firebase.auth,
+  profile: state.firebase.profile
 });
 
 export default connect(mapStateToProps)(Dashboard);

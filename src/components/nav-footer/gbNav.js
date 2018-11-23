@@ -3,17 +3,11 @@ import { PropTypes } from "prop-types";
 import { SmallLogoSVG } from "../svg/SmallLogoSVG";
 import { LinkLists } from "../LinkLists";
 import { Link } from "react-router-dom";
-import { BellSVG } from "../svg/BellSVG";
-import NotificationContainer from "./NotificationContainer";
-import fire from "../../config/Fire";
-import WithModal from "../../RenderProp/WithModal";
+import { RightUserOn } from "./RightUserOn";
 import { connect } from "react-redux";
 import { signOutUser } from "../../redux/actions/user-action";
-
-import {
-  childAddedListener,
-  fetchNotifications
-} from "../../redux/actions/notifications-action";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 
 class GbNavBar extends React.Component {
   state = {
@@ -25,10 +19,6 @@ class GbNavBar extends React.Component {
   };
 
   componentDidMount() {
-    if (!this.props.fetchedNotifications && this.props.userOn) {
-      this.props.fetchNotifications();
-      this.props.childAddedListener();
-    }
     window.addEventListener("scroll", this.stickyNav);
   }
 
@@ -51,17 +41,17 @@ class GbNavBar extends React.Component {
   };
 
   render() {
-    const { userOn, userData: user, signOutUser } = this.props;
+    const { userData: user, signOutUser, auth, profile } = this.props;
 
     let righLinks = [{ txt: "Sign in", link: "signIn" }];
     let homeLink = "home";
     let userLinks;
 
-    if (userOn) {
+    if (auth.uid) {
       righLinks = [];
       homeLink = "dashboard";
 
-      const company = user.type === "company";
+      const company = profile.type === "company";
 
       let specificLinks = [
         {
@@ -80,7 +70,7 @@ class GbNavBar extends React.Component {
       userLinks = [
         {
           txt: "Profile",
-          link: `profile/${user.uid}`
+          link: `profile/${auth.uid}`
         },
         {
           txt: "Dashboard",
@@ -106,13 +96,13 @@ class GbNavBar extends React.Component {
             links={righLinks}
             txtClasses="gb-text-white gb-paragraph-medium"
           />
-          {userOn && (
+          {auth.uid && (
             <RightUserOn
               showNotificationsHandler={this.showNotificationsHandler}
               newNotifications={this.props.newNotifications}
               showNotificationBox={showNotificationBox}
               user={user}
-              userImageUrl={user.photoURL}
+              userImageUrl={profile.profileImageUrl}
               userLinks={userLinks}
             />
           )}
@@ -123,26 +113,38 @@ class GbNavBar extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const not = state.notifications;
-  const user = state.user;
+  const notifications = state.firestore.ordered.unreadNotifications;
   return {
-    newNotifications: not.newNotifications,
+    newNotifications: notifications ? notifications.length > 0 : false,
     auth: state.firebase.auth,
-    fetchedNotifications: not.fetchedNotifications,
-    userOn: user.userOn,
-    userData: user.userData
+    userOn: state.firebase.auth.uid,
+    profile: state.firebase.profile
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  fetchNotifications: () => dispatch(fetchNotifications()),
-  childAddedListener: () => dispatch(childAddedListener()),
   signOutUser: () => dispatch(signOutUser())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
+    if (!props.auth.uid) return [];
+    return [
+      {
+        collection: "notifications",
+        //orderBy: ['createdAt', 'desc'],
+        where: [
+          ["recipientUserId", "==", props.auth.uid],
+          ["read", "==", false]
+        ],
+        storeAs: "unreadNotifications"
+      }
+    ];
+  })
 )(GbNavBar);
 
 GbNavBar.propTypes = {
@@ -150,47 +152,3 @@ GbNavBar.propTypes = {
   userImageUrl: PropTypes.string,
   profileLink: PropTypes.string
 };
-
-const RightUserOn = ({
-  showNotificationsHandler,
-  newNotifications,
-  notifications,
-  showNotificationBox,
-  userImageUrl,
-  userLinks
-}) => (
-  <React.Fragment>
-    <WithModal>
-      {({ showModal }) => (
-        <React.Fragment>
-          <BellSVG
-            classes={`gb-icon-medium gb-icon-fill-white ${newNotifications &&
-              "new"}`}
-          />
-          {showModal && (
-            <NotificationContainer showBoxHandler={showNotificationsHandler} />
-          )}
-        </React.Fragment>
-      )}
-    </WithModal>
-    <li className="nav-user-avatar-wrapper">
-      <WithModal>
-        {({ showModal }) => (
-          <React.Fragment>
-            <div
-              style={{ backgroundImage: `url(${userImageUrl})` }}
-              className="gb-avatar-small gb-avatar nav-user-avatar"
-            />
-            <ul
-              className="dropdown-menu-list"
-              style={{ display: showModal ? "flex" : "none" }}
-            >
-              <li className="nav-user-triangle" />
-              <LinkLists links={userLinks} liClasses="dropdown-menu-item" />
-            </ul>
-          </React.Fragment>
-        )}
-      </WithModal>
-    </li>
-  </React.Fragment>
-);
