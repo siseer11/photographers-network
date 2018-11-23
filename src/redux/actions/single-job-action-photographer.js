@@ -14,6 +14,13 @@ export const submitWorkError = err => ({
 });
 
 // -------------------- ASYNC ACTIONS THUNK -------------------- //
+/**
+ * Updates the delivery date and status of the submitted work.
+ * deliverStatus makes work visible for companies.
+ *
+ * @param jobId
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export const submitWork = jobId => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();

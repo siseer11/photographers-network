@@ -5,7 +5,17 @@ import {
 } from "./generalLoadingErrorSucces-actions";
 
 // -------------------- ASYNC ACTIONS THUNK -------------------- //
-
+/**
+ * Updates concerning user info, depending,
+ * if company or photographer.
+ *
+ * @param firstName
+ * @param lastName
+ * @param location
+ * @param companyName
+ * @param type
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export const updateUserInfo = (
   firstName,
   lastName,
@@ -40,6 +50,13 @@ export const updateUserInfo = (
   };
 };
 
+/**
+ * Updates the profile picture.
+ *
+ * @param file
+ * @param userId
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export const updatePhotoURL = (file, userId) => {
   return async (dispatch, getState, { getFirestore }) => {
     try {
@@ -58,7 +75,10 @@ export const updatePhotoURL = (file, userId) => {
   };
 };
 
-//Make a photographer premium, Returns a Promise
+/**
+ * Make a photographer premium
+ * @param uid
+ */
 export const markAsPremium = uid => (dispatch, getState, { getFirestore }) =>
   getFirestore()
     .collection("users")

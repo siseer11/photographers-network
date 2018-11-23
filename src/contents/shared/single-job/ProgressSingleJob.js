@@ -53,7 +53,6 @@ const mapStateToProps = state => {
   const firestore = state.firestore.data;
   return {
     user: state.firebase.profile,
-    jobLoading: state.singleJob.jobLoading,
     jobExists: true,
     jobsData: firestore.jobOffers
   };

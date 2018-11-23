@@ -1,6 +1,12 @@
 import { addNewNotification } from "../actions/notifications-action";
 
-//Apply to a public/open job
+
+/**
+ * Apply to a job offer (public job).
+ * @param jobInfos
+ * @param photographerData
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export const applyForJob = (jobInfos, photographerData) => {
   return (dispatch, getState, { getFirestore }) => {
     const photographersWhichApplied = jobInfos.photographersWhichApplied || [];
@@ -43,7 +49,14 @@ export const applyForJob = (jobInfos, photographerData) => {
   };
 };
 
-//Add photo to the portfolio , returns Promise
+/**
+ * Adds a new photo to the portfolio.
+ * @param imageFile
+ * @param imageDescription
+ * @param uid
+ * @param photographerData
+ * @returns {function(*, *, {getFirestore: *, getFirebase: *})}
+ */
 export function uploadPortofolioPhoto(
   imageFile,
   imageDescription,
@@ -85,7 +98,13 @@ export function uploadPortofolioPhoto(
   };
 }
 
-//Switch hireable for photographers , returns Promise
+/**
+ * Switches hireable for photographers.
+ *
+ * @param to
+ * @param photographerId
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export function switchHireable(to, photographerId) {
   return (dispatch, getState, { getFirestore }) => {
     return getFirestore()

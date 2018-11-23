@@ -12,7 +12,7 @@ const AppliedJobs = ({ appliedJobsList, uid }) => {
     return <h2>Loading....</h2>;
   }
   if (isEmpty(appliedJobsList)) {
-    return <h2>You have no apllied jobs!</h2>;
+    return <h2>You have no applied jobs!</h2>;
   }
 
   const appliedJobsOpen = appliedJobsList.filter(el => el.status === "open");
@@ -23,16 +23,16 @@ const AppliedJobs = ({ appliedJobsList, uid }) => {
     el => el.status !== "open" && el.photographer.uid !== uid
   );
   const finishedJobs = appliedJobsList.filter(
-    el => el.photographer === uid && el.status === "finished"
+    el => el.status === "closed" && el.photographer.uid === uid
   );
 
   return (
-    <React.Fragment>
+    <div className="my-jobs-container">
       <MyJobsCategoryView categoryTitle="Applied" jobs={appliedJobsOpen} />
       <MyJobsCategoryView categoryTitle="Accepted" jobs={appliedJobsAccepted} />
       <MyJobsCategoryView categoryTitle="Declined" jobs={appliedJobsDeclined} />
       <MyJobsCategoryView categoryTitle="Finished" jobs={finishedJobs} />
-    </React.Fragment>
+    </div>
   );
 };
 

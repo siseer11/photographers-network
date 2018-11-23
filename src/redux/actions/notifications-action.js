@@ -10,7 +10,6 @@ export const markNotificationAsRead = id => {
 
 export const addNewNotification = notification => {
   return (dispatch, getState, { getFirestore }) => {
-    console.log(notification);
     const firestore = getFirestore();
     return firestore.collection("notifications").add({
       ...notification,
