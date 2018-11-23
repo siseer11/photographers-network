@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export const Button = ({clickHandler, classes, children}) => {
     return (
-        <a onClick={clickHandler} className={classes}>{children}</a>
+        <p onClick={clickHandler} className={classes}>{children}</p>
     );
 };
 

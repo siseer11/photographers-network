@@ -80,7 +80,7 @@ class SubmitWork extends Component {
                 {
                   images.map((img, key) =>
                     <div className="single-image-container" key={img.id}>
-                      <img src={img.url}/>
+                      <img src={img.url} alt={img.id}/>
                       <div className="img-hover" onClick={() => this.removeImage(img.id)}>REMOVE</div>
                     </div>
                   )

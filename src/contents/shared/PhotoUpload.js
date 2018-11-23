@@ -1,6 +1,5 @@
 // dependencies
 import React, {Component} from 'react';
-import {PropTypes} from "prop-types";
 import { connect } from "react-redux";
 import {addToDatabase, addToStorage} from "../../redux/actions/photo-upload-action";
 
@@ -11,13 +10,6 @@ class PhotoUpload extends Component {
     stage: "Submit",
     images: [],
   };
-
-  /*
-  static propTypes = {
-    closeModalListener: PropTypes.func.isRequired,
-    updateUserInfo: PropTypes.func.isRequired,
-    showModal: PropTypes.bool
-  };*/
 
   fileChanged = e => {
     this.setState({

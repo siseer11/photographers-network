@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { LinkLists } from "../LinkLists";
 import { InstagramSVG } from "../../components/svg/InstagramSVG";
 import { TwitterSVG } from "../../components/svg/TwitterSVG";

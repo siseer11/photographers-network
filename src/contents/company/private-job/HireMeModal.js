@@ -40,7 +40,7 @@ export default class HireMeModal extends React.Component {
     return (
       <div className="hireme-full-overlay">
         <div className="black-overlay close" />
-        {page == "new-job" ? (
+        {page === "new-job" ? (
           <HireMeNewJobForm
             backHandler={this.backToChose}
             company={company}
@@ -48,7 +48,7 @@ export default class HireMeModal extends React.Component {
             photographerName={photographerName}
             photographerData={photographerData}
           />
-        ) : page == "existing-job" ? (
+        ) : page === "existing-job" ? (
           <HireMeExistingJobOffer
             backHandler={this.backToChose}
             photographerName={photographerName}

@@ -18,6 +18,7 @@ export function signOutUser() {
       .catch(err => {
         console.log("some error with the signOut, in action");
         console.error(err);
+        dispatch(actionError(err));
       });
   };
 }
@@ -60,7 +61,7 @@ export const sigUpUser = newUser => {
           uid: resp.user.uid
         };
 
-        if (newUser.type == "photographer") {
+        if (newUser.type === "photographer") {
           userInformations = {
             ...userInformations,
             firstName: newUser.firstName,

@@ -30,7 +30,7 @@ class HireableSwitch extends React.Component {
 
   render() {
     const { hireable } = this.props;
-    const { loading, error } = this.state;
+    const { loading } = this.state;
 
     return (
       <div className="hireable-option-changer">

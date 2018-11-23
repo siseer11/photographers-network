@@ -7,7 +7,7 @@ const DeclinedPrivateJob = ({ location, user, match }) => {
   /* if the company does not own this job , first check against the queryString */
   const companyQueryId = (queryString.parse(location.search) || { company: "" })
     .company;
-  if (companyQueryId != user.uid) {
+  if (companyQueryId !== user.uid) {
     return <h2>Not your job go away...</h2>;
   }
 

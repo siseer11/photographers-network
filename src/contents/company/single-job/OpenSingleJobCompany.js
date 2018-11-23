@@ -68,7 +68,7 @@ class OpenSingleJobCompany extends React.Component {
 
   render() {
     const { acceptedApplicant } = this.state;
-    const { jobData, appliedPhotographers, downPayment } = this.props;
+    const { jobData, downPayment } = this.props;
     return (
       <React.Fragment>
         {this.state.showDeleteModal && (

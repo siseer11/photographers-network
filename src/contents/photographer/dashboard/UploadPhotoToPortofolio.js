@@ -91,7 +91,7 @@ class UploadPhotoToPortofolio extends React.Component {
                   backgroundSize: "cover",
                   backgroundPosition: "center"
                 }}
-                alt="your image"
+                alt={imageDescription}
               />
             )}
             <input

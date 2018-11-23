@@ -12,7 +12,7 @@ export const SubmittedWork = ({pictures, acceptWorkHandler, downloadHandler}) =>
       {
         pictures.map(picture => (
           <div className="single-image-container" key={picture.id}>
-            <img src={picture.url}/>
+            <img src={picture.url} alt={picture.id}/>
           </div>
         ))
       }

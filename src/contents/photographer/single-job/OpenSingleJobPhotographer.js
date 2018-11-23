@@ -62,12 +62,12 @@ class OpenSingleJobPhotographer extends React.Component {
     }
 
     return (
-      <a
+      <button
         className="gb-btn gb-btn-medium gb-btn-primary"
         onClick={this.applyForJob}
       >
         Apply
-      </a>
+      </button>
     );
   }
 }

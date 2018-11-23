@@ -109,7 +109,6 @@ class CreateJob extends React.Component {
       jobDescription,
       showCustomSelect,
       loading,
-      error,
       finished
     } = this.state;
 

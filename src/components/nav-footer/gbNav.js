@@ -41,7 +41,7 @@ class GbNavBar extends React.Component {
   };
 
   render() {
-    const { userOn, userData: user, signOutUser, auth, profile } = this.props;
+    const { userData: user, signOutUser, auth, profile } = this.props;
 
     let righLinks = [{ txt: "Sign in", link: "signIn" }];
     let homeLink = "home";
