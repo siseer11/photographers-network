@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 export const JobDescription = ({
   title,
   description,
-  date,
+  startDate,
   location,
-  price,
-  type,
+  priceAmount,
+  requestedSkill,
   company,
-  companyName
+  companyId
 }) => (
   <React.Fragment>
     <h2 style={{ marginBottom: 50 }}>Single Job Page</h2>
@@ -17,20 +17,21 @@ export const JobDescription = ({
     <hr />
     <p>Job Descrition: {description}</p>
     <hr />
-    <p>Job for the date of : {new Date(date).toLocaleDateString()}</p>
+    <p>Job for the date of: {new Date(startDate).toLocaleDateString()}</p>
     <hr />
     <p>
-      Job in : <Link to={`../jobs?location=${location}`}>{location}</Link>
+      Job in: <Link to={`../jobs?location=${location}`}>{location}</Link>
     </p>
     <hr />
-    <p>Bugdget of : {price} SEK</p>
+    <p>Bugdget of: {priceAmount} SEK</p>
     <hr />
     <p>
-      Type of job : <Link to={`../jobs?type=${type}`}>{type}</Link>
+      Requested skill: <Link to={`../jobs?type=${requestedSkill}`}>{requestedSkill}</Link>
     </p>
     <hr />
     <p>
-      Posted by: <Link to={`../profile/${company}`}>{companyName}</Link>
+      Posted by:{" "}
+      <Link to={`../profile/${companyId}`}>{company.companyName}</Link>
     </p>
     <hr />
   </React.Fragment>

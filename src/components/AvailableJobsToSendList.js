@@ -13,24 +13,21 @@ export const AvailableJobsToSendList = ({
         BACK
       </h2>
     )}
-    {existingJobs.length == 0 ? (
+    {existingJobs.length === 0 ? (
       <h2>There are no jobs, at least no open jobs</h2>
     ) : reqSentLoading ? (
       <h2>Sending....</h2>
     ) : (
       <ul className="openjobslist">
         {existingJobs.map(el => (
-          <li className="openjobitem" key={el.jobbId}>
+          <li className="openjobitem" key={el.id}>
             <div className="job-infos">
               <h2 className="openjobtitle">{el.title}</h2>
               <p className="openjobtitle">{el.descrition}</p>
               <p className="openjoblocation">{el.location}</p>
-              <p className="openjobprice">{el.price}£</p>
+              <p className="openjobprice">{el.priceAmount}£</p>
             </div>
-            <div
-              onClick={() => sendRequestHandler(el.jobbId)}
-              className="sendoffer"
-            >
+            <div onClick={() => sendRequestHandler(el)} className="sendoffer">
               Send
             </div>
           </li>

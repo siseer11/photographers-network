@@ -5,7 +5,7 @@ export const PortofolioGallery = ({ photosList }) => (
   <ul className="portofolio-list">
     {photosList.map(el => (
       <li key={el.id} className="portofolio-image">
-        <img src={el.link} alt={el.desc} />
+        <img src={el.imageUrl} alt={el.imageDescription} />
       </li>
     ))}
   </ul>

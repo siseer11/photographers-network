@@ -1,171 +1,68 @@
 import React from "react";
-import fire from "../../../config/Fire";
+import {Redirect} from "react-router-dom";
+import {compose} from "redux";
+import {isLoaded, firestoreConnect} from "react-redux-firebase";
+import {connect} from "react-redux";
 import LoadingPage from "../../../components/LoadingPage";
 import OpenSingleJobPhotographer from "../../photographer/single-job/OpenSingleJobPhotographer";
 import OpenSingleJobCompany from "../../company/single-job/OpenSingleJobCompany";
 import {JobDescription} from "../../../components/single-job/JobDescription";
-import NavFooterWrapper from "../NavFooterWrapper";
 
-export default class OpenSingleJob extends React.Component {
+class OpenSingleJob extends React.Component {
   render() {
+    let {jobsData, user} = this.props;
+    const jobId = this.props.match.params.jobid;
+
+    // job data is not loaded
+    if (!isLoaded(jobsData))
+      return <LoadingPage/>;
+    // job does not exist
+    if (!jobsData[jobId])
+      return <div className="single-job-view section-content">Job does not seem to exist anymore.</div>;
+
+    const jobData = {...jobsData[jobId], jobId: jobId};
+
+    if (jobData.status !== "open")
+      return <Redirect to={`/progress-job/${this.props.match.params.jobid}`}/>;
+
     return (
-      <div>
-        {this.props.loading === false ? (
-          <OpenSingleJobFetchWithNav {...this.props} />
+      <div className="single-job-view section-content">
+        <JobDescription {...jobData} />
+        {user.type === "photographer" ? (
+          <OpenSingleJobPhotographer
+            userApplied={jobData.userApplied}
+            isDeclinedPhotographer={jobData.isDeclinedPhotographer}
+            jobId={jobId}
+            user={user}
+            jobData={jobData}
+          />
         ) : (
-          <LoadingPage/>
+          <OpenSingleJobCompany
+            jobData={jobData}
+            jobId={jobId}
+            downPayment={false}
+            {...this.props}
+          />
         )}
       </div>
     );
   }
 }
 
-class OpenSingleJobFetch extends React.Component {
-  state = {
-    jobId: this.props.match.params.jobid,
-    jobDescription: null,
-    loadingData: true,
-    userApplied: false,
-    appliedPhotographers: [],
-    acceptedApplicant: "",
-    downPayment: false,
-    isDeclinedPhotographer: false,
-    jobExists: true
-  };
-  database = fire.database();
+const mapStateToProps = state => ({
+  user: state.firebase.profile,
+  jobsData: state.firestore.data.jobOffers
+});
 
-  componentDidMount() {
-    this.fetchDatabaseInfo(this.props.match.params.jobid);
-    this.setEventListensers();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.fetchDatabaseInfo(nextProps.match.params.jobid);
-  }
-
-  /**
-   * Fetches information about the job from the database.
-   */
-  fetchDatabaseInfo = jobId => {
-    const {user} = this.props;
-    this.database
-      .ref("requests")
-      .child(jobId)
-      .once("value", async snap => {
-        // checks, if job exists
-        if (!snap.exists()) {
-          await this.setState({jobExists: false, loadingData: false,});
-          return -1;
-        }
-        const response = snap.val();
-        const photographersObj = response["photographers-applied"]
-          ? response["photographers-applied"]
-          : [];
-        let appliedPhotographers = Object.keys(photographersObj).map(key => {
-          let photographer = photographersObj[key];
-          return {
-            uid: key,
-            ...photographer
-          };
-        });
-        this.setState(
-          () => ({
-            jobId: jobId,
-            jobDescription: response,
-            userApplied: user
-              ? photographersObj.hasOwnProperty(user.uid)
-              : false,
-            loadingData: false,
-            appliedPhotographers: appliedPhotographers,
-            acceptedApplicant: response.phootgrapher
-          }),
-          () => this.userIsDeclinedPhotographer()
-        );
-      })
-      .catch(err => console.log(err));
-  };
-
-  /**
-   * Checks, if user has already applied to the job and has been declined.
-   */
-  userIsDeclinedPhotographer() {
-    const {user} = this.props;
-    if (user.type === "photographer") {
-      this.database
-        .ref("photographer")
-        .child(user.uid)
-        .child("applied-jobs")
-        .child(this.state.jobId)
-        .once("value", snap => {
-          // if job id does not exist, the photographer has been declined
-          this.setState({isDeclinedPhotographer: snap.exists()});
-        });
-    }
-  }
-
-  /**
-   * Sets event listeners for changes in the database.
-   */
-  setEventListensers = () => {
-    const {jobId, appliedPhotographers} = this.state;
-    let appliedPhotographersCopy = [...appliedPhotographers];
-
-    // Event listener if applicant was added
-    this.database
-      .ref("requests")
-      .child(jobId)
-      .child("photographers-applied")
-      .on("child_added", snap => {
-        let data = snap.val();
-        appliedPhotographersCopy.push({
-          uid: snap.key,
-          displayName: data.displayName,
-          email: data.email
-        });
-        this.setState({appliedPhotographers: appliedPhotographersCopy});
-      });
-  };
-
-  render() {
-    const {
-      loadingData,
-      jobDescription,
-      userApplied,
-      appliedPhotographers,
-      jobId,
-      isDeclinedPhotographer,
-      acceptedApplicant,
-      downPayment
-    } = this.state;
-
-    if (loadingData) return <LoadingPage/>;
-
-    const {user} = this.props;
-
-    return (
-      <div className="single-job-view section-content">
-        <JobDescription {...jobDescription}/>
-        {
-          user.type === "photographer" ?
-            <OpenSingleJobPhotographer userApplied={userApplied}
-                                       isDeclinedPhotographer={isDeclinedPhotographer}
-                                       jobDescription={jobDescription}
-                                       jobId={jobId}
-                                       user={user}
-            />
-            :
-            <OpenSingleJobCompany appliedPhotographers={appliedPhotographers}
-                                  jobDescription={jobDescription}
-                                  jobId={jobId}
-                                  acceptedApplicant={acceptedApplicant}
-                                  downPayment={downPayment}
-                                  {...this.props}
-            />
-        }
-      </div>
-
-    );
-  }
-}
-
-const OpenSingleJobFetchWithNav = NavFooterWrapper(OpenSingleJobFetch);
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect(ownProps => {
+    const id = ownProps.match.params.jobid;
+    return [
+      {
+        collection: "jobOffers",
+        doc: id
+      }
+    ];
+  })
+)(OpenSingleJob);

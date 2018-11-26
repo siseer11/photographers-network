@@ -27,7 +27,7 @@ export default class WithModal extends React.Component {
       window.removeEventListener("click", closeModalRemoveListener);
     };
 
-    if (lastState == false) {
+    if (lastState === false) {
       this.showModal();
       if (!closeItemClass) {
         //if the item is closing whenever a user press somewhere on the window
@@ -44,7 +44,7 @@ export default class WithModal extends React.Component {
   render() {
     return (
       <div className={this.props.className} onClick={this.modalHandler}>
-        {this.props.children(this.state)}
+        {this.props.children({ ...this.state, ...this.props })}
       </div>
     );
   }

@@ -1,14 +1,7 @@
 import React from "react";
-import fire from "../../../config/Fire";
 import {Link} from 'react-router-dom';
 
 export default class ProgressSingleJobPhotographer extends React.Component {
-  state = {
-    userApplied: false,
-    isDeclinedPhotographer: false
-  };
-  database = fire.database();
-
   render() {
     const {
       submittedWork,
@@ -16,7 +9,6 @@ export default class ProgressSingleJobPhotographer extends React.Component {
       jobId
     } = this.props;
 
-    console.log(this.props.submittedWork);
     return (
       submittedWork.length > 0 ?
         (
