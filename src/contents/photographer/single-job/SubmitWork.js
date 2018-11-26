@@ -29,11 +29,19 @@ class SubmitWork extends Component {
       });
   }
 
+  /**
+   * Removes image from database and storage.
+   *
+   * @param id
+   */
   removeImage = id => {
     this.props.removeFromDB("jobOffers", this.state.jobId, `submittedWork.${id}`);
     this.props.removeFromStorage(`${this.props.auth.uid}/submitted-works/${this.state.jobId}/${id}`);
   };
 
+  /**
+   * Submits the uploaded work to company.
+   */
   submit = () => {
     const {profile, jobsData} = this.props;
     const {jobId} = this.state;
@@ -56,7 +64,7 @@ class SubmitWork extends Component {
     const {jobId} = this.state;
     const {auth, jobsData} = this.props;
     if(!jobsData) return <LoadingPage/>;
-    const images = Object.values(jobsData[jobId].submittedWork);
+    const images = Object.values(jobsData[jobId].submittedWork || {});
     return (
         <div className="section-content with-padding">
           {!this.state.submitted ?
@@ -100,7 +108,6 @@ class SubmitWork extends Component {
 }
 
 const mapStateToProps = state => ({
-  jobDescription: state.singleJob.jobDescription,
   auth: state.firebase.auth,
   profile: state.firebase.profile,
   jobsData: state.firestore.data.jobOffers

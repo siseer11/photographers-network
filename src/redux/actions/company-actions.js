@@ -25,7 +25,7 @@ export const createJob = (jobData, sentTo = null, sentToId = null) => {
         location: jobData.jobLocation,
         address: jobData.jobAddress,
         description: jobData.jobDescription,
-        priceAmount: jobData.jobBudget,
+        priceAmount: jobData.jobTotalBudget,
         status: sentTo ? "private" : "open",
         downPaymentAmountStatus: "none",
         photographer: "none",
@@ -36,7 +36,11 @@ export const createJob = (jobData, sentTo = null, sentToId = null) => {
         },
         createdAt: new Date().getTime(),
         sentTo: sentTo,
-        sentToId: sentToId
+        sentToId: sentToId,
+        insurance: jobData.jobInsurance,
+        insuranceAmount: jobData.jobInsuranceAmount,
+        insuranceDue: jobData.jobInsuranceDue,
+        insurancePaymentStatus: "none"
       });
   };
 };
