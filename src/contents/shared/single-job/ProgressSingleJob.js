@@ -24,7 +24,7 @@ class ProgressSingleJob extends React.Component {
     if (jobDescription.status === "open")
       return <Redirect to={`/open-job/${jobId}`}/>;
 
-    const submittedWork = Object.values(jobDescription.submittedWork);
+    const submittedWork = Object.values(jobDescription.submittedWork || {});
 
     return (
       <div className="single-job-view section-content">
@@ -34,6 +34,7 @@ class ProgressSingleJob extends React.Component {
               submittedWork={submittedWork}
               acceptedWork={jobDescription.status === "closed"}
               jobId={jobId}
+              jobDescription={jobDescription}
             />
           ) : (
             <ProgressSingleJobCompany
@@ -53,7 +54,6 @@ const mapStateToProps = state => {
   const firestore = state.firestore.data;
   return {
     user: state.firebase.profile,
-    jobLoading: state.singleJob.jobLoading,
     jobExists: true,
     jobsData: firestore.jobOffers
   };

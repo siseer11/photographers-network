@@ -67,7 +67,7 @@ class ProgressSingleJobCompany extends React.Component {
       } has accepted your submitted work for ${jobDescription.title}.`,
       link: `/progress-job/${jobId}`,
       read: false,
-      time: new Date(),
+      createdAt: new Date().getTime(),
       recipientUserId: acceptedApplicant.uid
     });
   };

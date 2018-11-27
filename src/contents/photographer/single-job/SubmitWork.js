@@ -10,7 +10,8 @@ import {connect} from "react-redux";
 import {addNewNotification} from "../../../redux/actions/notifications-action";
 import {submitWork} from "../../../redux/actions/single-job-action-photographer";
 import { compose } from "redux";
-import { firestoreConnect } from "react-redux-firebase";
+//import { compose, lifecycle } from 'recompose';
+import { isLoaded, firestoreConnect, withFirestore, populate } from "react-redux-firebase";
 import LoadingPage from "../../../components/LoadingPage";
 import {removeFromDatabase, removeFromStorage} from "../../../redux/actions/photo-upload-action";
 
@@ -29,11 +30,19 @@ class SubmitWork extends Component {
       });
   }
 
+  /**
+   * Removes image from database and storage.
+   *
+   * @param id
+   */
   removeImage = id => {
     this.props.removeFromDB("jobOffers", this.state.jobId, `submittedWork.${id}`);
     this.props.removeFromStorage(`${this.props.auth.uid}/submitted-works/${this.state.jobId}/${id}`);
   };
 
+  /**
+   * Submits the uploaded work to company.
+   */
   submit = () => {
     const {profile, jobsData} = this.props;
     const {jobId} = this.state;
@@ -54,9 +63,11 @@ class SubmitWork extends Component {
 
   render() {
     const {jobId} = this.state;
+    console.log(jobId);
     const {auth, jobsData} = this.props;
-    if(!jobsData) return <LoadingPage/>;
-    const images = Object.values(jobsData[jobId].submittedWork);
+    if(!isLoaded(jobsData)) return <LoadingPage/>;
+    const images = Object.values(jobsData.submittedWork || {});
+    console.log(images);
     return (
         <div className="section-content with-padding">
           {!this.state.submitted ?
@@ -72,6 +83,7 @@ class SubmitWork extends Component {
                     closeModalListener={closeModalListener}
                     showModal={showModal}
                     descriptionField={false}
+                    callback={this.forceUpdate.bind(this)}
                   />
                 )}
               </WithModal>
@@ -80,7 +92,7 @@ class SubmitWork extends Component {
                 {
                   images.map((img, key) =>
                     <div className="single-image-container" key={img.id}>
-                      <img src={img.url}/>
+                      <img src={img.url} alt={img.id}/>
                       <div className="img-hover" onClick={() => this.removeImage(img.id)}>REMOVE</div>
                     </div>
                   )
@@ -100,10 +112,9 @@ class SubmitWork extends Component {
 }
 
 const mapStateToProps = state => ({
-  jobDescription: state.singleJob.jobDescription,
   auth: state.firebase.auth,
   profile: state.firebase.profile,
-  jobsData: state.firestore.data.jobOffers
+  jobsData: state.firestore.data.submitWork
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -114,11 +125,22 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
-  firestoreConnect(props => [
-    {
-      collection: "jobOffers",
-      doc: props.match.params.jobid
+  /*
+  withFirestore,
+  lifecycle({
+    componentDidMount() {
+      this.props.store.firestore.get({ collection: "jobOffers", doc: this.props.match.params.jobid })
     }
-  ]),
+  }),*/
+  firestoreConnect(props => {
+    console.log("in here!");
+    return [
+      {
+        collection: "jobOffers",
+        doc: props.match.params.jobid,
+        storeAs: "submitWork"
+      }
+    ]
+  }),
   connect(mapStateToProps, mapDispatchToProps)
 )(SubmitWork);

@@ -26,7 +26,7 @@ const Profile = ({ match, profileData, currentUserData, currentUserId }) => {
     return <h2>No data for this id</h2>;
   }
 
-  const otherUser = currentUserId != profileId;
+  const otherUser = currentUserId !== profileId;
 
   const thisProfileData = profileData[profileId];
 

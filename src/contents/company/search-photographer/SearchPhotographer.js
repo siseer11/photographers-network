@@ -17,7 +17,6 @@ class SearchPhotographers extends Component {
 
   search = e => {
     e.preventDefault();
-    const location = this.state.searchValue;
   };
 
   render() {

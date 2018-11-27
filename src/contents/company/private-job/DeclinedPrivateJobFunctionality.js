@@ -16,14 +16,12 @@ class DeclinedPrivateJobFunctionality extends React.Component {
   }
   render() {
     const {
-      user,
       auth,
       jobId,
       jobsData,
       makePublic,
       deleteJob,
       generalLoadingDb,
-      generalErrorDb,
       generalSuccesDb
     } = this.props;
 
@@ -42,7 +40,7 @@ class DeclinedPrivateJobFunctionality extends React.Component {
     }
 
     // Check against the DB data if this is the company that owns the job
-    if (jobData.companyId != auth.uid) {
+    if (jobData.companyId !== auth.uid) {
       return "Not your job get out of here!";
     }
 

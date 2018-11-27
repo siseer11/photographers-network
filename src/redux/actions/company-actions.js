@@ -5,7 +5,14 @@ import {
   actionSuccess
 } from "./generalLoadingErrorSucces-actions";
 
-//Create Job
+/**
+ * Create Job
+ *
+ * @param jobData
+ * @param sentTo
+ * @param sentToId
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export const createJob = (jobData, sentTo = null, sentToId = null) => {
   return (dispatch, getState, { getFirestore }) => {
     const firebase = getState().firebase;
@@ -18,7 +25,7 @@ export const createJob = (jobData, sentTo = null, sentToId = null) => {
         location: jobData.jobLocation,
         address: jobData.jobAddress,
         description: jobData.jobDescription,
-        priceAmount: jobData.jobBudget,
+        priceAmount: jobData.jobTotalBudget,
         status: sentTo ? "private" : "open",
         downPaymentAmountStatus: "none",
         photographer: "none",
@@ -29,12 +36,23 @@ export const createJob = (jobData, sentTo = null, sentToId = null) => {
         },
         createdAt: new Date().getTime(),
         sentTo: sentTo,
-        sentToId: sentToId
+        sentToId: sentToId,
+        insurance: jobData.jobInsurance,
+        insuranceAmount: jobData.jobInsuranceAmount,
+        insuranceDue: jobData.jobInsuranceDue,
+        insurancePaymentStatus: "none"
       });
   };
 };
 
-//Accept an aplicat for an job
+/**
+ * Accept an aplicat for an job
+ *
+ * @param companyData
+ * @param photographerData
+ * @param jobData
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export const acceptApplicantForJob = (companyData,
                                       photographerData,
                                       jobData) => {
@@ -66,7 +84,12 @@ export const acceptApplicantForJob = (companyData,
   };
 };
 
-//Delete a job
+/**
+ * Delete a job
+ *
+ * @param jobId
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export const deleteCurrentJob = jobId => {
   return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
@@ -77,7 +100,13 @@ export const deleteCurrentJob = jobId => {
   };
 };
 
-//Decline an aplicat for the job (Do we really need it?)
+/**
+ * Decline an aplicat for the job (Do we really need it?)
+ *
+ * @param jobData
+ * @param photographerId
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export const declineApplicantForJob = (jobData, photographerId) => {
   return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
@@ -111,8 +140,15 @@ export const declineApplicantForJob = (jobData, photographerId) => {
   };
 };
 
-//Create a new private job request,
-//sent to a specific photographer
+/**
+ * Create a new private job request,
+ * sent to a specific photographer
+ *
+ * @param jobData
+ * @param company
+ * @param photographerData
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export const createPrivateJob = (jobData, company, photographerData) => {
   return (dispatch, getState, { getFirestore }) => {
     const sentToData = {
@@ -139,8 +175,15 @@ export const createPrivateJob = (jobData, company, photographerData) => {
   };
 };
 
-//Sent an open job request as
-//private request to a photographer
+/**
+ * Sent an open job request as
+ * private request to a photographer
+ *
+ * @param jobData
+ * @param company
+ * @param photographerData
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export const sendPrivateRequestFromExistingJobs = (
   jobData,
   company,
@@ -176,7 +219,12 @@ export const sendPrivateRequestFromExistingJobs = (
   };
 };
 
-//Make private declined job to public
+/**
+ * Make private declined job to public
+ *
+ * @param jobId
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export const makePrivateJobPublic = jobId => {
   return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
@@ -196,7 +244,12 @@ export const makePrivateJobPublic = jobId => {
   };
 };
 
-//Accept the work
+/**
+ * Accept the work
+ *
+ * @param jobId
+ * @returns {function(*, *, {getFirestore: *})}
+ */
 export const acceptWork = jobId => {
   return (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();

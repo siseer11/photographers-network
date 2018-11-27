@@ -13,7 +13,7 @@ export const AvailableJobsToSendList = ({
         BACK
       </h2>
     )}
-    {existingJobs.length == 0 ? (
+    {existingJobs.length === 0 ? (
       <h2>There are no jobs, at least no open jobs</h2>
     ) : reqSentLoading ? (
       <h2>Sending....</h2>

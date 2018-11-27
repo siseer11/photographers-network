@@ -6,7 +6,11 @@ import {
 } from "./generalLoadingErrorSucces-actions";
 
 // -------------------- ASYNC ACTIONS THUNK -------------------- //
-//Signs user out
+/**
+ * Signs user out.
+ *
+ * @returns {function(*)}
+ */
 export function signOutUser() {
   return dispatch => {
     fire
@@ -18,11 +22,18 @@ export function signOutUser() {
       .catch(err => {
         console.log("some error with the signOut, in action");
         console.error(err);
+        dispatch(actionError(err));
       });
   };
 }
 
-//Signs user in
+/**
+ * Signs user in.
+ *
+ * @param email
+ * @param password
+ * @returns {function(*)}
+ */
 export function signUserInAsync(email, password) {
   return dispatch => {
     //Set loading to true
@@ -40,7 +51,12 @@ export function signUserInAsync(email, password) {
   };
 }
 
-//Signs user up
+/**
+ * Signs up a new user
+ *
+ * @param newUser
+ * @returns {function(*, *, {getFirebase: *, getFirestore: *})}
+ */
 export const sigUpUser = newUser => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     dispatch(actionStarted());
@@ -65,7 +81,7 @@ export const sigUpUser = newUser => {
           }
         };
 
-        if (newUser.type == "photographer") {
+        if (newUser.type === "photographer") {
           userInformations = {
             ...userInformations,
             firstName: newUser.firstName,

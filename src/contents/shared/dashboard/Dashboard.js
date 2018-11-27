@@ -55,6 +55,7 @@ class Dashboard extends Component {
       activeType = this.state[profile.type];
       activeType.headerLinks.map(link => {
         if (link.active) activeComponent = link.name;
+        return null;
       });
     }
     return (

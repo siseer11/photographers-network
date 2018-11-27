@@ -15,7 +15,7 @@ export const JobDescription = ({
     <h2 style={{ marginBottom: 50 }}>Single Job Page</h2>
     <p>Job Title: {title}</p>
     <hr />
-    <p>Job Descrition: {description}</p>
+    <p>Job Description: {description}</p>
     <hr />
     <p>Job for the date of: {new Date(startDate).toLocaleDateString()}</p>
     <hr />
@@ -23,7 +23,7 @@ export const JobDescription = ({
       Job in: <Link to={`../jobs?location=${location}`}>{location}</Link>
     </p>
     <hr />
-    <p>Bugdget of: {priceAmount} SEK</p>
+    <p>Budget of: {priceAmount} €</p>
     <hr />
     <p>
       Requested skill: <Link to={`../jobs?type=${requestedSkill}`}>{requestedSkill}</Link>
