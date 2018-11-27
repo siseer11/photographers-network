@@ -9,14 +9,6 @@ import {
   deleteCurrentJob
 } from "../../../redux/actions/company-actions";
 
-const mapDispatchToProps = dispatch => ({
-  acceptApplicantForJob: (companyData, photographerData, jobData) =>
-    dispatch(acceptApplicantForJob(companyData, photographerData, jobData)),
-  declineApplicantForJob: (jobData, photographerId) =>
-    dispatch(declineApplicantForJob(jobData, photographerId)),
-  deleteCurrentJob: jobId => dispatch(deleteCurrentJob(jobId))
-});
-
 class OpenSingleJobCompany extends React.Component {
   state = {
     acceptedApplicant: this.props.acceptedApplicant,
@@ -46,7 +38,7 @@ class OpenSingleJobCompany extends React.Component {
   /**
    * Removes applicant from the current job.
    *
-   * @param uid
+   * @param photographerId
    */
   declineApplicant = photographerId => {
     const { jobData } = this.props;
@@ -59,14 +51,10 @@ class OpenSingleJobCompany extends React.Component {
 
   /**
    * Handles the accept of an applicant.
-   * @param companyData
-   * @param photographerData
-   * @param jobData
+   * @param photographer
    */
-  acceptApplicant = photographerId => {
-    let { jobData, user: companyData } = this.props;
-    const jobId = this.props.match.params.jobid;
-    this.props.acceptApplicantForJob(companyData, photographerId, jobData);
+  acceptApplicant = photographer => {
+    this.setState({acceptedApplicant: photographer});
   };
 
   /**
@@ -74,20 +62,8 @@ class OpenSingleJobCompany extends React.Component {
    * successful payment.
    */
   successfulPayment = () => {
-    const { jobId, jobDescription } = this.props;
-    const { acceptedApplicant } = this.state;
-    this.props.acceptApplicantForJob(acceptedApplicant, jobId);
-    const notification = {
-      title: `${
-        jobDescription.companyName
-      } has accepted you to execute the job request "${jobDescription.title}".`,
-      link: `/progress-job/${jobId}`,
-      read: false,
-      time: new Date(),
-      recipientUserId: acceptedApplicant.uid
-    };
-    this.props.addNotification(notification);
-    this.props.history.replace(`/progress-job/${jobId}`);
+    let { jobData, user: companyData } = this.props;
+    this.props.acceptApplicantForJob(companyData, this.state.acceptedApplicant, jobData);
   };
 
   render() {
@@ -119,6 +95,14 @@ class OpenSingleJobCompany extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  acceptApplicantForJob: (companyData, photographerData, jobData) =>
+    dispatch(acceptApplicantForJob(companyData, photographerData, jobData)),
+  declineApplicantForJob: (jobData, photographerId) =>
+    dispatch(declineApplicantForJob(jobData, photographerId)),
+  deleteCurrentJob: jobId => dispatch(deleteCurrentJob(jobId))
+});
 
 export default connect(
   null,

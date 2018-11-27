@@ -57,7 +57,6 @@ class Dashboard extends Component {
         if (link.active) activeComponent = link.name;
       });
     }
-    console.log(profile);
     return (
       <DashboardView
         type={profile.type}

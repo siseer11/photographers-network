@@ -1,7 +1,8 @@
 // dependencies
 import React, {Component} from 'react';
-import fire from "../../config/Fire";
 import {PropTypes} from "prop-types";
+import { connect } from "react-redux";
+import {addToDatabase, addToStorage} from "../../redux/actions/photo-upload-action";
 
 class PhotoUpload extends Component {
   state = {
@@ -10,8 +11,6 @@ class PhotoUpload extends Component {
     stage: "Submit",
     images: [],
   };
-  storage = fire.storage();
-  database = fire.database();
 
   /*
   static propTypes = {
@@ -32,78 +31,50 @@ class PhotoUpload extends Component {
     });
   };
 
-  addToStorage = (file, storageRef, databaseRef, resolve) => {
-    // generate a random file id
-    const fileId = this.database.ref(databaseRef).push().key;
-    console.log("fileid:" + fileId);
-    //create storage ref
-    let storageReference = this.storage.ref(`${storageRef}/${fileId}`);
-    //upload file
-    let task = storageReference.put(file);
-
+  /**
+   * Adds file to storage and db.
+   *
+   * @param file
+   * @param storageRef
+   * @param collection
+   * @param doc
+   * @param resolve
+   * @param reject
+   */
+  addToStorageAndDB = (file, storageRef, collection, doc, resolve, reject) => {
+    const fileId = new Date().getTime(); // generate random id
     this.setState({
       stage: "Loading..."
     });
-
-    const that = this;
-    task.on("state_changed",
-      function progress(snap) {
-        console.log(snap);
-      },
-      function error(err) {
-        console.log(err);
-      },
-      function complete() {
-        task.snapshot.ref
-          .getDownloadURL()
-          .then(downloadURL => {
-              that.setState(prevState => (
-                  {
-                    images: [...prevState.images, {url: downloadURL, id: fileId}],
-                  }),
-                () => that.addToDatabase(databaseRef, fileId, downloadURL, resolve));
-            }
-          );
-      }
-    );
+    this.props.addToStorage(storageRef, file, fileId)
+      .then(downloadURL => {
+        this.props.addToDatabase(collection, doc, {url: downloadURL, id: fileId}, `submittedWork.${fileId}`)
+          .then(()=> this.setState({imageFiles: "", imageDescription: ""}, () => resolve()))
+          .catch(err => reject(err));
+      })
+      .catch(err => reject(err));
   };
 
-  addToDatabase = (databaseRef, fileId, downloadURL, resolve) => {
-
-    this.database.ref(databaseRef).child(fileId).set(
-      {
-        id: fileId,
-        link: downloadURL
-      },
-      err => {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log("success");
-
-          this.setState({
-            imageFiles: "",
-            imageDescription: ""
-          }, () => resolve());
-        }
-      }
-    );
-  };
-
+  /**
+   * Handles the form submit.
+   *
+   * @param e
+   */
   formSubmit = e => {
     e.preventDefault();
     const {imageFiles} = this.state;
-    const {databaseRef, storageRef, closeModalListener, callBackFunction} = this.props;
+    const {collection, doc, storageRef, closeModalListener} = this.props;
     let promises = [];
     for (let i = 0; i < imageFiles.length; i++) {
       const file = imageFiles[i];
-      promises.push(new Promise((resolve, reject) => this.addToStorage(file, storageRef, databaseRef, resolve)));
+      promises.push(new Promise((resolve, reject) =>
+        this.addToStorageAndDB(file, storageRef, collection, doc, resolve, reject)
+      ));
     }
     Promise.all(promises).then(() => {
       setTimeout(() => {
         closeModalListener();
-        console.log("hello");
-        callBackFunction(this.state.images);
+        console.log("promises resolved");
         this.setState({stage: "Submit", images: []});
       }, 500);
     });
@@ -148,4 +119,12 @@ class PhotoUpload extends Component {
   }
 }
 
-export default PhotoUpload;
+const mapStateToProps = state => ({
+});
+
+const mapDispatchToProps = dispatch => ({
+  addToStorage: (storageRef, file, fileId) => dispatch(addToStorage(storageRef, file, fileId)),
+  addToDatabase: (collection, doc, data, fileId) => dispatch(addToDatabase(collection, doc, data, fileId))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PhotoUpload);
