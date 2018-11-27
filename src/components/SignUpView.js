@@ -8,11 +8,11 @@ import { BusinessCardSVG } from "./svg/BusinessCardSVG";
 import { CameraSVG } from "./svg/CameraSVG";
 import { LocationSVG } from "./svg/LocationSVG";
 import { CustomSelect } from "./CustomSelect";
+import LocationSearchInput from "../routes/auto";
 import PropTypes from "prop-types";
 
 export const SingUpView = ({
   loadingDB,
-  errorDB,
   succesDB,
   showCustomSelect,
   signupHandler,
@@ -21,7 +21,7 @@ export const SingUpView = ({
   changeHandler,
   password,
   password2,
-  location,
+  locationPlaceholder,
   showCustomSelectHandler,
   optionSelectHandler,
   type,
@@ -96,15 +96,9 @@ export const SingUpView = ({
         name="password2"
         placeholder="Repeat password"
       />
-      <InputField
-        svg={
-          <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-        }
-        value={location}
+      <LocationSearchInput
+        locationPlaceholder={locationPlaceholder}
         changeHandler={changeHandler}
-        type="text"
-        name="location"
-        placeholder="Enter your location"
       />
       <div
         className="custom-select gb-text-input gb-text-input-trans-background"

@@ -39,6 +39,7 @@ class AvatarInput extends React.Component {
             this.setState({ disabled: false });
           })
           .catch(err => {
+            console.log(err);
             console.log("error while changing profile photo!");
           });
       }
