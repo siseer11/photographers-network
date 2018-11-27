@@ -11,11 +11,11 @@ export const JobsList = ({ jobsList }) => (
           cardLink={`open-job/${el.id}`}
           type="half-left"
           source={{
-            txt: el.companyName,
+            txt: el.company.companyName,
             link: `/profile/${el.companyId}`
           }}
           postedTime={new Date(el.startDate).toLocaleDateString("en-US")}
-          category={el.type}
+          category={el.requestedSkill}
         >
           {el.title}
         </GbCard50>

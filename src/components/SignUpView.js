@@ -8,7 +8,7 @@ import { BusinessCardSVG } from "./svg/BusinessCardSVG";
 import { CameraSVG } from "./svg/CameraSVG";
 import { LocationSVG } from "./svg/LocationSVG";
 import { CustomSelect } from "./CustomSelect";
-import LocationSearchInput from "../routes/auto";
+import LocationSearchInput from "../contents/shared/MapsAutocomplete";
 import PropTypes from "prop-types";
 
 export const SingUpView = ({
@@ -153,7 +153,6 @@ SingUpView.propTypes = {
   changeHandler: PropTypes.func.isRequired,
   password: PropTypes.string.isRequired,
   password2: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired,
   showCustomSelectHandler: PropTypes.func.isRequired,
   optionSelectHandler: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
