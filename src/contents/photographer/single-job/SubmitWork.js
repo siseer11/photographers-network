@@ -10,8 +10,7 @@ import {connect} from "react-redux";
 import {addNewNotification} from "../../../redux/actions/notifications-action";
 import {submitWork} from "../../../redux/actions/single-job-action-photographer";
 import { compose } from "redux";
-//import { compose, lifecycle } from 'recompose';
-import { isLoaded, firestoreConnect, withFirestore, populate } from "react-redux-firebase";
+import { isLoaded, firestoreConnect } from "react-redux-firebase";
 import LoadingPage from "../../../components/LoadingPage";
 import {removeFromDatabase, removeFromStorage} from "../../../redux/actions/photo-upload-action";
 
@@ -28,6 +27,14 @@ class SubmitWork extends Component {
       this.setState({
         jobId: nextProps.match.params.jobid
       });
+  }
+
+  componentDidMount() {
+    // sets listener
+    this.props.firestore.setListener({
+      collection: "jobOffers",
+      doc: this.props.match.params.jobid
+    });
   }
 
   /**
@@ -66,7 +73,7 @@ class SubmitWork extends Component {
     console.log(jobId);
     const {auth, jobsData} = this.props;
     if(!isLoaded(jobsData)) return <LoadingPage/>;
-    const images = Object.values(jobsData.submittedWork || {});
+    const images = Object.values(jobsData[jobId].submittedWork || {});
     console.log(images);
     return (
         <div className="section-content with-padding">
@@ -114,7 +121,7 @@ class SubmitWork extends Component {
 const mapStateToProps = state => ({
   auth: state.firebase.auth,
   profile: state.firebase.profile,
-  jobsData: state.firestore.data.submitWork
+  jobsData: state.firestore.data.jobOffers
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -137,8 +144,7 @@ export default compose(
     return [
       {
         collection: "jobOffers",
-        doc: props.match.params.jobid,
-        storeAs: "submitWork"
+        doc: props.match.params.jobid
       }
     ]
   }),

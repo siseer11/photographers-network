@@ -40,7 +40,10 @@ export const createJob = (jobData, sentTo = null, sentToId = null) => {
         insurance: jobData.jobInsurance,
         insuranceAmount: jobData.jobInsuranceAmount,
         insuranceDue: jobData.jobInsuranceDue,
-        insurancePaymentStatus: "none"
+        insurancePaymentStatus: "none",
+        tax: {
+          percentage: jobData.jobTaxation
+        }
       });
   };
 };
