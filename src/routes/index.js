@@ -16,6 +16,7 @@ import DeclinedPrivateJob from "../components/DeclinedPrivateJob";
 import SubmitWork from "../contents/photographer/single-job/SubmitWork";
 import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
 import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
+import LocationSearchInput from "./auto";
 import { GbFooter } from "../components/nav-footer/Footer";
 
 export default ({ userOn, userType }) => (
@@ -23,6 +24,11 @@ export default ({ userOn, userType }) => (
     <React.Fragment>
       <GbNavBar />
       <Switch>
+        <Route
+          exact
+          path="/autocomplete"
+          render={() => <LocationSearchInput />}
+        />
         <Route
           exact
           path="/declined-private-job/:jobId"

@@ -70,10 +70,15 @@ export const sigUpUser = newUser => {
       .then(resp => {
         let userInformations = {
           type: newUser.type,
-          location: newUser.location,
           profileImageUrl:
             "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png",
-          uid: resp.user.uid
+          uid: resp.user.uid,
+          locations: {
+            [new Date().getTime()]: {
+              ...newUser.locations,
+              streetNumber: newUser.locations.streetNumber || null
+            }
+          }
         };
 
         if (newUser.type === "photographer") {
@@ -88,6 +93,8 @@ export const sigUpUser = newUser => {
             companyName: newUser.companyName
           };
         }
+        console.log(userInformations);
+        console.log("here");
 
         return firestore
           .collection("users")
@@ -95,6 +102,7 @@ export const sigUpUser = newUser => {
           .set(userInformations);
       })
       .then(() => {
+        console.log("succes?");
         dispatch(actionSuccess());
       })
       .catch(err => {
