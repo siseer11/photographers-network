@@ -14,7 +14,7 @@ class ProgressSingleJobPhotographer extends React.Component {
     } = this.props;
 
     return (
-      submittedWork.length > 0 ?
+      submittedWork.length > 0 && jobDescription.deliveryStatus ?
         (
           acceptedWork ?
             <h2>Your submitted work has been approved. You will receive the payment asap.</h2> :

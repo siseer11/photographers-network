@@ -98,6 +98,7 @@ export const sigUpUser = newUser => {
         dispatch(actionSuccess());
       })
       .catch(err => {
+        console.log(err);
         dispatch(actionError(err));
       });
   };

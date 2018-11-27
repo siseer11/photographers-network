@@ -58,9 +58,9 @@ export const updateUserInfo = (
  * @returns {function(*, *, {getFirestore: *})}
  */
 export const updatePhotoURL = (file, userId) => {
-  return async (dispatch, getState, { getFirestore }) => {
+  return async (dispatch, getState, { getFirebase, getFirestore }) => {
     try {
-      const storageRef = await getFirestore()
+      const storageRef = await getFirebase()
         .storage()
         .ref(`${userId}/avatar`);
       const task = await storageRef.put(file);
