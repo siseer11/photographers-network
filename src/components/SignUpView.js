@@ -6,7 +6,6 @@ import { NameInputSVG } from "./svg/NameInputSVG";
 import { InputField } from "./form/InputField";
 import { BusinessCardSVG } from "./svg/BusinessCardSVG";
 import { CameraSVG } from "./svg/CameraSVG";
-import { LocationSVG } from "./svg/LocationSVG";
 import { CustomSelect } from "./CustomSelect";
 import LocationSearchInput from "../routes/auto";
 import PropTypes from "prop-types";
