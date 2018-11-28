@@ -136,22 +136,13 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
-  /*
-  withFirestore,
-  lifecycle({
-    componentDidMount() {
-      this.props.store.firestore.get({ collection: "jobOffers", doc: this.props.match.params.jobid })
-    }
-  }),*/
-  firestoreConnect(props => {
-    console.log(props.match.params.jobid);
-    return [
+  firestoreConnect(props => [
       {
         collection: "jobOffers",
         doc: props.match.params.jobid
       }
-    ];
-  }),
+    ]
+  ),
   connect(
     mapStateToProps,
     mapDispatchToProps

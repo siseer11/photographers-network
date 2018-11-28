@@ -1,7 +1,6 @@
 import React from "react";
 import { NameInputSVG } from "../../../components/svg/NameInputSVG";
 import { InputField } from "../../../components/form/InputField";
-import { LocationSVG } from "../../../components/svg/LocationSVG";
 import AvatarInput from "./AvatarInput";
 import LocationSearchInput from "../MapsAutocomplete";
 

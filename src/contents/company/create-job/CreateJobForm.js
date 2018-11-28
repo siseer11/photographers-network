@@ -4,7 +4,6 @@ import { PropTypes } from "prop-types";
 import { CustomSelect } from "../../../components/CustomSelect";
 import { InputField } from "../../../components/form/InputField";
 import { NameInputSVG } from "../../../components/svg/NameInputSVG";
-import { LocationSVG } from "../../../components/svg/LocationSVG";
 import { MoneySVG } from "../../../components/svg/MoneySVG";
 import { CameraSVG } from "../../../components/svg/CameraSVG";
 import { CalendarSVG } from "../../../components/svg/CalendarSVG";
@@ -95,7 +94,7 @@ export default class CreateJobForm extends React.Component {
 
     return (
       <div className="create-job-page section-content with-padding">
-        <h1>Create Jobsss</h1>
+        <h1>Create Job</h1>
         <form onSubmit={this.formSubmited}>
           <InputField
             svg={

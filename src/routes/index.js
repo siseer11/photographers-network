@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import Dashboard from "../contents/shared/dashboard/Dashboard";
 import SignIn from "../contents/shared/sign-in/SignIn";
 import Home from "../contents/shared/home/Home";
@@ -16,12 +16,14 @@ import DeclinedPrivateJob from "../components/DeclinedPrivateJob";
 import SubmitWork from "../contents/photographer/single-job/SubmitWork";
 import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
 import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
-import { GbFooter } from "../components/nav-footer/Footer";
+import AdminDashboard from "../contents/admin/AdminDashboard";
+import Payouts from "../contents/admin/Payouts";
+import {GbFooter} from "../components/nav-footer/Footer";
 
-export default ({ userOn, userType }) => (
+export default ({userOn, userType}) => (
   <BrowserRouter>
     <React.Fragment>
-      <GbNavBar />
+      <GbNavBar/>
       <Switch>
         <Route
           exact
@@ -30,37 +32,46 @@ export default ({ userOn, userType }) => (
             userOn ? (
               <DeclinedPrivateJob {...props} />
             ) : (
-              <Redirect to="/signIn" />
+              <Redirect to="/signIn"/>
             )
           }
         />
-        <Route exact path="/home" component={Home} />
+        <Route exact path="/home" component={Home}/>
         <Route
           exact
           path="/signIn"
           render={props =>
-            userOn ? <Redirect to="/dashboard" /> : <SignIn {...props} />
+            userOn ? <Redirect to="/dashboard"/> : <SignIn {...props} />
           }
         />
         <Route
           exact
           path="/signUp/:type"
           render={props =>
-            !userOn ? <SignUp {...props} /> : <Redirect to="/dashboard" />
+            !userOn ? <SignUp {...props} /> : <Redirect to="/dashboard"/>
           }
         />
         <Route
           exact
           path="/dashboard"
+          render={props => {
+            if (userType === "admin") return <AdminDashboard {...props}/>;
+            return userOn ? <Dashboard {...props} /> : <Redirect to="/signin"/>
+          }
+          }
+        />
+        <Route
+          exact
+          path="/payouts/:type(company|photographer)"
           render={props =>
-            userOn ? <Dashboard {...props} /> : <Redirect to="/signin" />
+            userType === "admin" ? <Payouts {...props}/> : <Redirect to="/signin"/>
           }
         />
         <Route
           exact
           path="/ProfileEdit"
           render={props =>
-            userOn ? <ProfileEdit {...props} /> : <Redirect to="/signin" />
+            userOn ? <ProfileEdit {...props} /> : <Redirect to="/signin"/>
           }
         />
         <Route
@@ -80,7 +91,7 @@ export default ({ userOn, userType }) => (
             userType === "company" ? (
               <CreateJobb {...props} />
             ) : (
-              <Redirect to="/dashboard" />
+              <Redirect to="/dashboard"/>
             )
           }
         />
@@ -91,11 +102,11 @@ export default ({ userOn, userType }) => (
             userType === "company" ? (
               <MyJobOffers {...props} />
             ) : (
-              <Redirect to="/dashboard" />
+              <Redirect to="/dashboard"/>
             )
           }
         />
-        <Route exact path="/jobs" render={props => <Jobs {...props} />} />
+        <Route exact path="/jobs" render={props => <Jobs {...props} />}/>
         <Route
           exact
           path="/private/job/:jobId"
@@ -103,7 +114,7 @@ export default ({ userOn, userType }) => (
             userOn ? (
               <PrivateJobRequest {...props} />
             ) : (
-              <Redirect to="/signin" />
+              <Redirect to="/signin"/>
             )
           }
         />
@@ -111,7 +122,7 @@ export default ({ userOn, userType }) => (
           exact
           path="/open-job/:jobid"
           render={props =>
-            userOn ? <OpenSingleJob {...props} /> : <Redirect to="/signin" />
+            userOn ? <OpenSingleJob {...props} /> : <Redirect to="/signin"/>
           }
         />
         <Route
@@ -121,7 +132,7 @@ export default ({ userOn, userType }) => (
             userOn ? (
               <ProgressSingleJob {...props} />
             ) : (
-              <Redirect to="/signin" />
+              <Redirect to="/signin"/>
             )
           }
         />
@@ -129,12 +140,12 @@ export default ({ userOn, userType }) => (
           exact
           path="/submit-work/:jobid"
           render={props =>
-            userOn ? <SubmitWork {...props} /> : <Redirect to="/signin" />
+            userOn ? <SubmitWork {...props} /> : <Redirect to="/signin"/>
           }
         />
-        <Redirect to="/home" />
+        <Redirect to="/home"/>
       </Switch>
-      <GbFooter />
+      <GbFooter/>
     </React.Fragment>
   </BrowserRouter>
 );

@@ -31,7 +31,6 @@ class ProfileEdit extends React.Component {
     e.preventDefault();
     let { firstName, lastName, detailedAddress, companyName } = this.state;
     const {
-      uid,
       type,
       updateUserData,
       history,
