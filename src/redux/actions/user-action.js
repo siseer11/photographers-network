@@ -64,6 +64,7 @@ export const sigUpUser = newUser => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
+    const detailedAddress = newUser.detailedAddress;
     firebase
       .auth()
       .createUserWithEmailAndPassword(newUser.email, newUser.password)
@@ -75,8 +76,15 @@ export const sigUpUser = newUser => {
           uid: resp.user.uid,
           locations: {
             [new Date().getTime()]: {
-              ...newUser.locations,
-              streetNumber: newUser.locations.streetNumber || null
+              city: detailedAddress.city,
+              streetName: detailedAddress.streetName,
+              country: detailedAddress.country,
+              geolocation: new firebase.firestore.GeoPoint(
+                detailedAddress.lat,
+                detailedAddress.long
+              ),
+              home: true,
+              streetNumber: detailedAddress.streetNumber || null
             }
           }
         };
@@ -111,3 +119,8 @@ export const sigUpUser = newUser => {
       });
   };
 };
+
+/*
+
+    
+      */

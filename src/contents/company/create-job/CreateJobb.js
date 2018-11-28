@@ -1,16 +1,17 @@
 import React from "react";
-import {connect} from "react-redux";
-import {createJob} from "../../../redux/actions/company-actions";
+import { connect } from "react-redux";
+import { createJob } from "../../../redux/actions/company-actions";
 
-import {CustomSelect} from "../../../components/CustomSelect";
-import {InputField} from "../../../components/form/InputField";
-import {NameInputSVG} from "../../../components/svg/NameInputSVG";
-import {LocationSVG} from "../../../components/svg/LocationSVG";
-import {MoneySVG} from "../../../components/svg/MoneySVG";
-import {CameraSVG} from "../../../components/svg/CameraSVG";
-import {CalendarSVG} from "../../../components/svg/CalendarSVG";
-import {TextArea} from "../../../components/form/TextArea";
-import {Select} from "../../../components/form/Select";
+import LocationSearchInput from "../../shared/MapsAutocomplete";
+import { CustomSelect } from "../../../components/CustomSelect";
+import { InputField } from "../../../components/form/InputField";
+import { NameInputSVG } from "../../../components/svg/NameInputSVG";
+import { LocationSVG } from "../../../components/svg/LocationSVG";
+import { MoneySVG } from "../../../components/svg/MoneySVG";
+import { CameraSVG } from "../../../components/svg/CameraSVG";
+import { CalendarSVG } from "../../../components/svg/CalendarSVG";
+import { TextArea } from "../../../components/form/TextArea";
+import { Select } from "../../../components/form/Select";
 
 const types = ["nature", "portrait", "dogs", "cats"];
 
@@ -21,7 +22,7 @@ class CreateJob extends React.Component {
     const month = date.getMonth() + 1;
     return `${year}-${month >= 10 ? month : `0${month}`}-${
       day >= 10 ? day : `0${day}`
-      }`;
+    }`;
   };
 
   state = {
@@ -42,7 +43,9 @@ class CreateJob extends React.Component {
     jobTaxation: 25,
     jobTotalBudget: 0,
     countries: [],
-    serviceFee: 10
+    serviceFee: 10,
+    joblocationPlaceholder: "",
+    jobdetailedAddress: {}
   };
 
   componentDidMount() {
@@ -67,45 +70,55 @@ class CreateJob extends React.Component {
    */
   changeHandler = e => {
     const target = e.target.name;
-    this.setState({
-      [`job${target}`]: e.target.value
-    }, () => {
-      if(target === "Budget" || target === "Country") this.calculateAmount();
-    });
+    this.setState(
+      {
+        [`job${target}`]: e.target.value
+      },
+      () => {
+        if (target === "Budget" || target === "Country") this.calculateAmount();
+      }
+    );
   };
 
   /**
    * Fetches countries + tax rates.
    */
   fetchCountries = () => {
-    fetch('./tax_rates.json').then(response => {
-      return response.json();
-    }).then(data => {
-      // Work with JSON data here
-      const res = Object.entries(data).map(([name, value]) => ({name,value}));
-      this.setState({countries: res});
-    })
+    fetch("./tax_rates.json")
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        // Work with JSON data here
+        const res = Object.entries(data).map(([name, value]) => ({
+          name,
+          value
+        }));
+        this.setState({ countries: res });
+      });
   };
 
   /**
    * Calculates total amount of the job offer.
    */
   calculateAmount = () => {
-    let {jobBudget, jobCountry, serviceFee, countries} = this.state;
+    let { jobBudget, jobCountry, serviceFee, countries } = this.state;
     // converts budget into a number
     jobBudget = Number(jobBudget);
     // calculates the fee
-    const calcFee = jobBudget/100 * serviceFee;
+    const calcFee = (jobBudget / 100) * serviceFee;
     // adds the fee to the budget
-    let totalBudget = jobBudget+calcFee;
+    let totalBudget = jobBudget + calcFee;
     // looks for correct taxation and converts it into number
-    const jobTaxation = Number(countries.filter(country => country.name === jobCountry)[0].value);
+    const jobTaxation = Number(
+      countries.filter(country => country.name === jobCountry)[0].value
+    );
     // calculates the tax
-    const calcTax =totalBudget/100 * jobTaxation;
+    const calcTax = (totalBudget / 100) * jobTaxation;
     // adds taxation to the budget and formats number
-    totalBudget = this.formatNum(totalBudget+calcTax);
+    totalBudget = this.formatNum(totalBudget + calcTax);
     this.setState({
-      jobTotalBudget:totalBudget,
+      jobTotalBudget: totalBudget,
       jobTaxation
     });
   };
@@ -117,7 +130,7 @@ class CreateJob extends React.Component {
    * @returns {string}
    */
   formatNum = number => {
-    return ((Math.round(number*100))/100).toFixed(2);
+    return (Math.round(number * 100) / 100).toFixed(2);
   };
 
   /**
@@ -193,8 +206,7 @@ class CreateJob extends React.Component {
   render() {
     const {
       jobTitle,
-      jobLocation,
-      jobAddress,
+      joblocationPlaceholder,
       jobType,
       jobBudget,
       jobDate,
@@ -220,7 +232,7 @@ class CreateJob extends React.Component {
         <form onSubmit={this.submitHandler}>
           <InputField
             svg={
-              <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+              <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
             }
             value={jobTitle}
             changeHandler={this.changeHandler}
@@ -228,31 +240,17 @@ class CreateJob extends React.Component {
             name="Title"
             placeholder="Name/Title"
           />
-          <InputField
-            svg={
-              <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
-            }
-            value={jobLocation}
+          <LocationSearchInput
+            locationPlaceholder={joblocationPlaceholder}
             changeHandler={this.changeHandler}
-            type="text"
-            name="Location"
-            placeholder="Location"
-          />
-          <InputField
-            svg={
-              <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
-            }
-            value={jobAddress}
-            changeHandler={this.changeHandler}
-            type="text"
-            name="Address"
-            placeholder="Address"
           />
           <Select
             value={jobCountry}
             name="Country"
             defaultText={"Choose your country"}
-            svg={<LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>}
+            svg={
+              <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+            }
             changeHandler={this.changeHandler}
             options={this.state.countries}
           />
@@ -260,7 +258,7 @@ class CreateJob extends React.Component {
             className="custom-select gb-text-input gb-text-input-trans-background"
             onClick={this.showCustomSelectHandler}
           >
-            <CameraSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon"/>
+            <CameraSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
             {jobType}
             <CustomSelect
               showCustomSelect={showCustomSelect}
@@ -270,7 +268,7 @@ class CreateJob extends React.Component {
           </div>
           <InputField
             svg={
-              <MoneySVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon"/>
+              <MoneySVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
             }
             value={jobBudget}
             changeHandler={this.changeHandler}
@@ -279,19 +277,18 @@ class CreateJob extends React.Component {
             placeholder="Budget"
             min="10"
           />
-          {
-            jobBudget !== "" &&
-              <ul>
-                <li>Netto amount: {this.formatNum(jobBudget)} €</li>
-                <li>+ Taxes {jobTaxation}%</li>
-                <li>+ Service fee {serviceFee}%</li>
-                <hr/>
-                <li>Total amount: {jobTotalBudget} €</li>
-              </ul>
-          }
+          {jobBudget !== "" && (
+            <ul>
+              <li>Netto amount: {this.formatNum(jobBudget)} €</li>
+              <li>+ Taxes {jobTaxation}%</li>
+              <li>+ Service fee {serviceFee}%</li>
+              <hr />
+              <li>Total amount: {jobTotalBudget} €</li>
+            </ul>
+          )}
           <InputField
             svg={
-              <CalendarSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon"/>
+              <CalendarSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
             }
             value={jobDate || today}
             changeHandler={this.changeHandler}
@@ -299,38 +296,43 @@ class CreateJob extends React.Component {
             name="Date"
             min={today}
           />
-          <label>Insurance payment:
-            <input type="checkbox" name="Insurance" onChange={this.checkBoxChangeHandler} checked={jobInsurance}/>
+          <label>
+            Insurance payment:
+            <input
+              type="checkbox"
+              name="Insurance"
+              onChange={this.checkBoxChangeHandler}
+              checked={jobInsurance}
+            />
           </label>
-          {
-            jobInsurance &&
-              <React.Fragment>
-                <InputField
-                  svg={
-                    <MoneySVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon"/>
-                  }
-                  value={jobInsuranceAmount}
-                  changeHandler={this.changeHandler}
-                  type="number"
-                  name="InsuranceAmount"
-                  placeholder="Amount of insurance"
-                  min="10"
-                />
-                <InputField
-                  svg={
-                    <CalendarSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon"/>
-                  }
-                  value={jobInsuranceDue || today}
-                  changeHandler={this.changeHandler}
-                  type="date"
-                  name="InsuranceDue"
-                  min={today}
-                />
-              </React.Fragment>
-          }
+          {jobInsurance && (
+            <React.Fragment>
+              <InputField
+                svg={
+                  <MoneySVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
+                }
+                value={jobInsuranceAmount}
+                changeHandler={this.changeHandler}
+                type="number"
+                name="InsuranceAmount"
+                placeholder="Amount of insurance"
+                min="10"
+              />
+              <InputField
+                svg={
+                  <CalendarSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
+                }
+                value={jobInsuranceDue || today}
+                changeHandler={this.changeHandler}
+                type="date"
+                name="InsuranceDue"
+                min={today}
+              />
+            </React.Fragment>
+          )}
           <TextArea
             svg={
-              <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+              <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
             }
             value={jobDescription}
             name="Description"
@@ -361,3 +363,26 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(CreateJob);
+
+/*
+<InputField
+  svg={
+    <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+  }
+  value={jobLocation}
+  changeHandler={this.changeHandler}
+  type="text"
+  name="Location"
+  placeholder="Location"
+/>
+<InputField
+  svg={
+    <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+  }
+  value={jobAddress}
+  changeHandler={this.changeHandler}
+  type="text"
+  name="Address"
+  placeholder="Address"
+/>
+*/

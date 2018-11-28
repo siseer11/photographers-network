@@ -19,32 +19,62 @@ import {
 export const updateUserInfo = (
   firstName,
   lastName,
-  location,
+  detailedAddress,
   companyName,
-  type
+  type,
+  homeAddressId,
+  userLocations
 ) => {
-  return (dispatch, getState, { getFirestore }) => {
+  return (dispatch, getState, { getFirestore, getFirebase }) => {
     dispatch(actionStarted());
     const firestore = getFirestore();
-    const userInfo =
-      type === "company"
-        ? {
-            companyName,
-            location
+    const firebase = getFirebase();
+
+    let infoToUpdate = {};
+
+    //if it is company add
+    if (type === "company") {
+      infoToUpdate = {
+        ...infoToUpdate,
+        companyName
+      };
+    }
+    //if it is photographer add
+    else {
+      infoToUpdate = {
+        ...infoToUpdate,
+        firstName,
+        lastName
+      };
+    }
+
+    //if the home adress was change, update it
+    if (detailedAddress) {
+      //extract the lat and long, in order to
+      const { lat, long, ...restAdressData } = detailedAddress;
+
+      infoToUpdate = {
+        ...infoToUpdate,
+        locations: {
+          ...userLocations,
+          [String(homeAddressId)]: {
+            ...restAdressData,
+            streetNumber: detailedAddress.streetNumber || null,
+            home: true,
+            geolocation: new firebase.firestore.GeoPoint(lat, long)
           }
-        : {
-            firstName,
-            lastName,
-            location
-          };
+        }
+      };
+    }
+
     return firestore
       .collection("users")
       .doc(getState().firebase.auth.uid)
       .update({
-        ...userInfo
+        ...infoToUpdate
       })
       .then(() => {
-        dispatch(actionSuccess(userInfo));
+        dispatch(actionSuccess(infoToUpdate));
       })
       .catch(err => dispatch(actionError(err)));
   };

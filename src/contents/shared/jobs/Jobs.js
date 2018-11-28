@@ -118,7 +118,7 @@ const mapStateToProps = state => {
   filter list with them */
   if (openJobs.length > 0) {
     openJobs.forEach(el => {
-      const [type, location] = [el.requestedSkill, el.location];
+      const [type, location] = [el.requestedSkill, el.location.city];
       if (types.indexOf(type) < 0) {
         types.push(type);
       }
