@@ -1,0 +1,3 @@
+1. Create Job : 
+ -> to long of a file
+ -> we have 2 of them one directyl with the functionality, one stateles component that we use for the private ones

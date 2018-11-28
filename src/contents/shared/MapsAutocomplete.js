@@ -60,14 +60,14 @@ export default class LocationSearchInput extends React.Component {
           !addressData.streetName
         ) {
           //reset the old adressData from the state
-          this.handleChange({}, "locations");
+          this.handleChange({}, "detailedAddress");
           console.log(
             "WRONG TYPE OF DATA, the adress must contain city/street/country!"
           );
           return;
         }
         //update it on the state, make it ready to be stored in the firestore
-        this.handleChange(addressData, "locations");
+        this.handleChange(addressData, "detailedAddress");
       })
       .catch(error => console.error("Error", error));
   };

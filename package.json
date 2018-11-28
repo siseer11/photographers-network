@@ -13,6 +13,7 @@
     "react": "^16.6.3",
     "react-async-script-loader": "^0.3.0",
     "react-dom": "^16.6.3",
+    "react-google-maps": "^9.4.5",
     "react-places-autocomplete": "^7.2.0",
     "react-redux": "^5.1.1",
     "react-redux-firebase": "^2.2.4",

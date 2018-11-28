@@ -15,7 +15,7 @@ class SignUp extends Component {
     password2: "",
     type: this.props.match.params.type || "photographer",
     locationPlaceholder: "",
-    locations: {}
+    detailedAddress: {}
   };
 
   /**

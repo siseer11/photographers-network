@@ -3,6 +3,7 @@ import { NameInputSVG } from "../../../components/svg/NameInputSVG";
 import { InputField } from "../../../components/form/InputField";
 import { LocationSVG } from "../../../components/svg/LocationSVG";
 import AvatarInput from "./AvatarInput";
+import LocationSearchInput from "../MapsAutocomplete";
 
 export const ProfileEditView = ({
   updateUserHandler,
@@ -12,7 +13,7 @@ export const ProfileEditView = ({
   lastName,
   companyName,
   changeHandler,
-  location,
+  locationPlaceholder,
   photoURL
 }) => (
   <div className="section-content with-padding">
@@ -53,15 +54,9 @@ export const ProfileEditView = ({
           />
         </React.Fragment>
       )}
-      <InputField
-        svg={
-          <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-        }
-        value={location}
+      <LocationSearchInput
+        locationPlaceholder={locationPlaceholder}
         changeHandler={changeHandler}
-        type="text"
-        name="location"
-        placeholder="change your location"
       />
       <p>change photo:</p>
       <AvatarInput uid={uid} userAvatar={photoURL} name="avatar" />
@@ -75,3 +70,15 @@ export const ProfileEditView = ({
     </form>
   </div>
 );
+/*
+      <InputField
+        svg={
+          <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+        }
+        value={location}
+        changeHandler={changeHandler}
+        type="text"
+        name="location"
+        placeholder="change your location"
+      />
+      */
