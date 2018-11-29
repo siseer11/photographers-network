@@ -1011,3 +1011,13 @@ li.openjobitem {
     height: auto;
     transition: 0.2s linear all;
 }
+
+.paymentList li {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.paymentList li a {
+    color: red;
+}

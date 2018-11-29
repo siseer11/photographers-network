@@ -1,10 +1,9 @@
 import React from "react";
-import {Redirect} from "react-router-dom";
+import {Redirect, Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {compose} from "redux";
 import {isLoaded, firestoreConnect} from "react-redux-firebase";
 import LoadingPage from "../../../components/LoadingPage";
-import WithModal from "../../../RenderProp/WithModal";
 import CredentialsInput from "./CredentialsInput";
 
 class Payouts extends React.Component {
@@ -50,12 +49,12 @@ class Payouts extends React.Component {
           match.params.type === "photographer" ?
             <React.Fragment>
               <h1>Your payouts</h1>
-              <ul>
+              <ul className="paymentList">
                 {
                   jobs.map(job =>
                     <li key={job.id}>
-                      <span>{job.title} </span>
-                      <span>{job.priceAmount} €</span>
+                      <Link to={`/progress-job/${job.id}`}>{job.title} </Link>
+                      <span>{Number(job.priceAmount) + Number(job.insuranceAmount || 0)} €</span>
                     </li>
                   )
                 }
@@ -70,6 +69,7 @@ class Payouts extends React.Component {
                 this.state.showModal &&
                   <CredentialsInput closeHandler={() => this.showModal(false)}/>
               }
+              <p><b>Note: </b>Insurance amount included.</p>
               {this.state.error !== "" && <p className="error-message">{this.state.error}</p>}
             </React.Fragment> :
             <h1>Company payouts</h1>
