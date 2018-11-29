@@ -52,7 +52,7 @@ export const updateUserInfo = (
     if (detailedAddress) {
       //extract the lat and long, in order to
       const { lat, long, ...restAdressData } = detailedAddress;
-
+      console.log(detailedAddress);
       infoToUpdate = {
         ...infoToUpdate,
         locations: {
