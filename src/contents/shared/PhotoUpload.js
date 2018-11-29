@@ -105,7 +105,10 @@ class PhotoUpload extends Component {
               }
               <input type="submit" value={stage} disabled={stage !== "Submit"}/>
             </form>
-            <button onClick={this.props.closeModalListener}>Cancel</button>
+            <button onClick={() => {
+              this.props.closeModalListener();
+              this.props.afterClose();
+            }}>Cancel</button>
           </div>
         </div>
       </React.Fragment>

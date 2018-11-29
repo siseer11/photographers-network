@@ -119,8 +119,3 @@ export const sigUpUser = newUser => {
       });
   };
 };
-
-/*
-
-    
-      */
