@@ -64,16 +64,29 @@ export const sigUpUser = newUser => {
     const firebase = getFirebase();
     const firestore = getFirestore();
 
+    const detailedAddress = newUser.detailedAddress;
     firebase
       .auth()
       .createUserWithEmailAndPassword(newUser.email, newUser.password)
       .then(resp => {
         let userInformations = {
           type: newUser.type,
-          location: newUser.location,
           profileImageUrl:
             "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png",
-          uid: resp.user.uid
+          uid: resp.user.uid,
+          locations: {
+            [new Date().getTime()]: {
+              city: detailedAddress.city,
+              streetName: detailedAddress.streetName,
+              country: detailedAddress.country,
+              geolocation: new firebase.firestore.GeoPoint(
+                detailedAddress.lat,
+                detailedAddress.long
+              ),
+              home: true,
+              streetNumber: detailedAddress.streetNumber || null
+            }
+          }
         };
 
         if (newUser.type === "photographer") {
@@ -88,6 +101,8 @@ export const sigUpUser = newUser => {
             companyName: newUser.companyName
           };
         }
+        console.log(userInformations);
+        console.log("here");
 
         return firestore
           .collection("users")
@@ -95,9 +110,11 @@ export const sigUpUser = newUser => {
           .set(userInformations);
       })
       .then(() => {
+        console.log("succes?");
         dispatch(actionSuccess());
       })
       .catch(err => {
+        console.log(err);
         dispatch(actionError(err));
       });
   };

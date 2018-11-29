@@ -4,11 +4,11 @@ import { PropTypes } from "prop-types";
 import { CustomSelect } from "../../../components/CustomSelect";
 import { InputField } from "../../../components/form/InputField";
 import { NameInputSVG } from "../../../components/svg/NameInputSVG";
-import { LocationSVG } from "../../../components/svg/LocationSVG";
 import { MoneySVG } from "../../../components/svg/MoneySVG";
 import { CameraSVG } from "../../../components/svg/CameraSVG";
 import { CalendarSVG } from "../../../components/svg/CalendarSVG";
 import { TextArea } from "../../../components/form/TextArea";
+import LocationSearchInput from "../../shared/MapsAutocomplete";
 
 const types = ["nature", "portrait", "dogs", "cats"];
 
@@ -33,7 +33,9 @@ export default class CreateJobForm extends React.Component {
     jobBudget: "",
     jobDate: this.createValidDate(new Date()),
     jobDescription: "",
-    jobAddress: ""
+    jobAddress: "",
+    joblocationPlaceholder: "",
+    jobdetailedAddress: {}
   };
 
   changeHandler = e => {
@@ -79,13 +81,12 @@ export default class CreateJobForm extends React.Component {
   render() {
     const {
       jobTitle,
-      jobLocation,
       jobType,
       jobBudget,
       jobDate,
       jobDescription,
       showCustomSelect,
-      jobAddress
+      joblocationPlaceholder
     } = this.state;
 
     let today = new Date();
@@ -93,7 +94,7 @@ export default class CreateJobForm extends React.Component {
 
     return (
       <div className="create-job-page section-content with-padding">
-        <h1>Create Jobsss</h1>
+        <h1>Create Job</h1>
         <form onSubmit={this.formSubmited}>
           <InputField
             svg={
@@ -105,25 +106,9 @@ export default class CreateJobForm extends React.Component {
             name="Title"
             placeholder="Name/Title"
           />
-          <InputField
-            svg={
-              <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-            }
-            value={jobLocation}
+          <LocationSearchInput
+            locationPlaceholder={joblocationPlaceholder}
             changeHandler={this.changeHandler}
-            type="text"
-            name="Location"
-            placeholder="Location"
-          />
-          <InputField
-            svg={
-              <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-            }
-            value={jobAddress}
-            changeHandler={this.changeHandler}
-            type="text"
-            name="Address"
-            placeholder="Address"
           />
           <div
             className="custom-select gb-text-input gb-text-input-trans-background"
@@ -177,3 +162,26 @@ export default class CreateJobForm extends React.Component {
     );
   }
 }
+
+/*
+<InputField
+  svg={
+    <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+  }
+  value={jobLocation}
+  changeHandler={this.changeHandler}
+  type="text"
+  name="Location"
+  placeholder="Location"
+/>
+<InputField
+  svg={
+    <LocationSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+  }
+  value={jobAddress}
+  changeHandler={this.changeHandler}
+  type="text"
+  name="Address"
+  placeholder="Address"
+/>
+*/

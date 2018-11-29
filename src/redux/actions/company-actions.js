@@ -14,29 +14,46 @@ import {
  * @returns {function(*, *, {getFirestore: *})}
  */
 export const createJob = (jobData, sentTo = null, sentToId = null) => {
-  return (dispatch, getState, { getFirestore }) => {
-    const firebase = getState().firebase;
+  return (dispatch, getState, { getFirestore, getFirebase }) => {
+    const firebaseStoreData = getState().firebase;
+    const firebase = getFirebase();
+
+    //take out the lat and long, to make them geoPoints
+    const { lat, long, ...jobAdress } = jobData.jobdetailedAddress;
+
     return getFirestore()
       .collection("jobOffers")
       .add({
         startDate: jobData.jobDate,
         title: jobData.jobTitle,
         requestedSkill: jobData.jobType,
-        location: jobData.jobLocation,
-        address: jobData.jobAddress,
+        location: {
+          ...jobAdress,
+          streetNumber: jobData.jobdetailedAddress.streetNumber || null,
+          geolocation: new firebase.firestore.GeoPoint(lat, long)
+        },
         description: jobData.jobDescription,
-        priceAmount: jobData.jobBudget,
+        nettoAmouont: jobData.jobBudget,
+        payout: false,
+        priceAmount: jobData.jobTotalBudget,
         status: sentTo ? "private" : "open",
         downPaymentAmountStatus: "none",
         photographer: "none",
-        companyId: firebase.auth.uid,
+        companyId: firebaseStoreData.auth.uid,
         company: {
-          companyName: firebase.profile.companyName,
-          profileImageUrl: firebase.profile.profileImageUrl
+          companyName: firebaseStoreData.profile.companyName,
+          profileImageUrl: firebaseStoreData.profile.profileImageUrl
         },
         createdAt: new Date().getTime(),
         sentTo: sentTo,
-        sentToId: sentToId
+        sentToId: sentToId,
+        insurance: jobData.jobInsurance,
+        insuranceAmount: jobData.jobInsuranceAmount,
+        insuranceDue: jobData.jobInsuranceDue,
+        insurancePaymentStatus: "none",
+        tax: {
+          percentage: jobData.jobTaxation
+        }
       });
   };
 };
@@ -49,10 +66,12 @@ export const createJob = (jobData, sentTo = null, sentToId = null) => {
  * @param jobData
  * @returns {function(*, *, {getFirestore: *})}
  */
-export const acceptApplicantForJob = (companyData,
-                                      photographerData,
-                                      jobData) => {
-  return (dispatch, getState, {getFirestore}) => {
+export const acceptApplicantForJob = (
+  companyData,
+  photographerData,
+  jobData
+) => {
+  return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
     firestore
       .collection("jobOffers")
@@ -87,7 +106,7 @@ export const acceptApplicantForJob = (companyData,
  * @returns {function(*, *, {getFirestore: *})}
  */
 export const deleteCurrentJob = jobId => {
-  return (dispatch, getState, {getFirestore}) => {
+  return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
     return firestore
       .collection("jobOffers")
@@ -104,7 +123,7 @@ export const deleteCurrentJob = jobId => {
  * @returns {function(*, *, {getFirestore: *})}
  */
 export const declineApplicantForJob = (jobData, photographerId) => {
-  return (dispatch, getState, {getFirestore}) => {
+  return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
 
     let photographersWhichApplied = jobData.photographersWhichApplied;
@@ -125,7 +144,7 @@ export const declineApplicantForJob = (jobData, photographerId) => {
         const notification = {
           title: `${
             jobData.company.companyName
-            } has declined your application for ${jobData.title}.`,
+          } has declined your application for ${jobData.title}.`,
           link: `/open-job/${jobData.jobId}`,
           read: false,
           time: new Date().getTime(),
@@ -247,10 +266,14 @@ export const makePrivateJobPublic = jobId => {
  * @returns {function(*, *, {getFirestore: *})}
  */
 export const acceptWork = jobId => {
-  return (dispatch, getState, {getFirestore}) => {
+  return (dispatch, getState, { getFirestore }) => {
     const firestore = getFirestore();
-    return firestore.collection('jobOffers').doc(jobId).update({
-      status: "closed"
-    }).then(() => dispatch({type: "ACCEPT_WORK_SUCCESS"}));
+    return firestore
+      .collection("jobOffers")
+      .doc(jobId)
+      .update({
+        status: "closed"
+      })
+      .then(() => dispatch({ type: "ACCEPT_WORK_SUCCESS" }));
   };
 };

@@ -1,17 +1,20 @@
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
-import {ProfileEditView} from "./ProfileEditView";
-import {updateUserInfo} from "../../../redux/actions/profile-action";
-import {actionReset} from "../../../redux/actions/generalLoadingErrorSucces-actions";
+import { ProfileEditView } from "./ProfileEditView";
+import { updateUserInfo } from "../../../redux/actions/profile-action";
+import { actionReset } from "../../../redux/actions/generalLoadingErrorSucces-actions";
 
 class ProfileEdit extends React.Component {
   state = {
     firstName: this.props.firstName,
     lastName: this.props.lastName,
-    location: this.props.location,
+    locationPlaceholder: this.props.locationString,
+    detailedAddress: null,
     photoURL: this.props.photoURL,
-    companyName: this.props.companyName
+    companyName: this.props.companyName,
+    iban: this.props.iban,
+    bic: this.props.bic
   };
 
   /**
@@ -19,7 +22,7 @@ class ProfileEdit extends React.Component {
    * @param e
    */
   handleChange = e => {
-    this.setState({[e.target.name]: e.target.value});
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   /**
@@ -28,48 +31,51 @@ class ProfileEdit extends React.Component {
    */
   updateUser = e => {
     e.preventDefault();
-    let {firstName, lastName, location, companyName} = this.state;
-    const {uid, type, updateUserData, history} = this.props;
+    let { firstName, lastName, detailedAddress, companyName, iban, bic } = this.state;
+    const {
+      type,
+      updateUserData,
+      history,
+      homeAddressId,
+      allLocations
+    } = this.props;
 
     updateUserData(
       firstName,
       lastName,
-      location,
+      detailedAddress,
       companyName,
-      type
-    ).then(() => history.replace(`/profile/${uid}`));
+      type,
+      homeAddressId,
+      allLocations,
+      iban,
+      bic
+    ).then(() => history.push("/dashboard"));
   };
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      firstName: nextProps.firstName,
-      lastName: nextProps.lastName,
-      companyName: nextProps.companyName,
-      photoURL: nextProps.photoURL,
-      location: nextProps.location
-    });
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({
+  //     firstName: nextProps.firstName,
+  //     lastName: nextProps.lastName,
+  //     companyName: nextProps.companyName,
+  //     photoURL: nextProps.photoURL,
+  //     location: nextProps.location
+  //   });
+  // }
 
   componentWillUnmount() {
     this.props.actionReset();
   }
 
   render() {
-    const {firstName, lastName, location, photoURL, companyName} = this.state;
-    const {type, uid} = this.props;
-    console.log(this.state);
-
+    const { type, uid } = this.props;
     return (
       <ProfileEditView
         updateUserHandler={this.updateUser}
+        changeHandler={this.handleChange}
         type={type}
         uid={uid}
-        firstName={firstName}
-        lastName={lastName}
-        companyName={companyName}
-        changeHandler={this.handleChange}
-        location={location}
-        photoURL={photoURL}
+        {...this.state}
       />
     );
   }
@@ -77,20 +83,63 @@ class ProfileEdit extends React.Component {
 
 const mapStateToProps = state => {
   const userData = state.firebase.profile;
+  // get the home location
+  const allLocations = userData.locations;
+  let locationString = "";
+  let homeAddressId = "";
+  for (let key in allLocations) {
+    // when found, break the loop
+    const thisAdress = allLocations[key];
+    if (thisAdress.home) {
+      locationString = `${thisAdress.streetName} ${
+        thisAdress.streetNumber ? thisAdress.streetNumber : ""
+      }, ${thisAdress.city}, ${thisAdress.country}`;
+      homeAddressId = key;
+      break;
+    }
+  }
+
   return {
+    allLocations: allLocations,
     firstName: userData.firstName,
     lastName: userData.lastName,
     location: userData.location,
+    homeAddressId: homeAddressId,
+    locationString: locationString,
     photoURL: userData.profileImageUrl,
     type: userData.type,
     companyName: userData.companyName,
+    iban: userData.bankCredentials.iban,
+    bic: userData.bankCredentials.bic,
     uid: state.firebase.auth.uid
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  updateUserData: (firstName, lastName, location, companyName, type) =>
-    dispatch(updateUserInfo(firstName, lastName, location, companyName, type)),
+  updateUserData: (
+    firstName,
+    lastName,
+    detailedAddress,
+    companyName,
+    type,
+    homeAddressId,
+    allLocations,
+    iban,
+    bic
+  ) =>
+    dispatch(
+      updateUserInfo(
+        firstName,
+        lastName,
+        detailedAddress,
+        companyName,
+        type,
+        homeAddressId,
+        allLocations,
+        iban,
+        bic
+      )
+    ),
   actionReset: () => dispatch(actionReset())
 });
 

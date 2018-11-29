@@ -1,17 +1,18 @@
 import React from "react";
-import { ProgressSingleJobViewCompany } from "../../../components/single-job/progress/ProgressSingleJobViewCompany";
+import {ProgressSingleJobViewCompany} from "../../../components/single-job/progress/ProgressSingleJobViewCompany";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
-import { connect } from "react-redux";
-import { addNewNotification } from "../../../redux/actions/notifications-action";
-import { acceptWork } from "../../../redux/actions/company-actions";
+import {connect} from "react-redux";
+import {addNewNotification} from "../../../redux/actions/notifications-action";
+import {acceptWork} from "../../../redux/actions/company-actions";
+import jsPDF from "jspdf";
 
 class ProgressSingleJobCompany extends React.Component {
   /**
    * Downloads zip file of submitted work.
    */
   downloadWork = () => {
-    const { submittedWork } = this.props;
+    const {submittedWork} = this.props;
     let filesToDownload = [];
     //
     submittedWork.forEach(file => {
@@ -26,7 +27,7 @@ class ProgressSingleJobCompany extends React.Component {
       for (let i = 0; i < values.length; i++)
         zip.file(`submitted-work/${submittedWork[i].id}.jpg`, values[i]);
 
-      zip.generateAsync({ type: "blob" }).then(content => {
+      zip.generateAsync({type: "blob"}).then(content => {
         // provides zip file for download
         FileSaver.saveAs(content, "download.zip");
       });
@@ -57,14 +58,34 @@ class ProgressSingleJobCompany extends React.Component {
     });
   };
 
+  /**
+   * Generates invoice to download.
+   */
+  generatePDF = () => {
+    const {jobDescription, jobId} = this.props;
+    let doc = new jsPDF();
+    doc.setFontType("bold");
+    doc.text(`Invoice for your job "${jobDescription.title}"`, 10, 10);
+    doc.setFontType("normal");
+    doc.text(`Netto amount: ${jobDescription.nettoAmount} EUR`, 10, 20);
+    doc.text(`+ ${jobDescription.tax.percentage}% tax`, 10, 30);
+    doc.text(`+ 10% fee`, 10, 40);
+    doc.line(10, 43, 200, 43);
+    doc.text(`Total amount: ${jobDescription.priceAmount} EUR`, 10, 50);
+    doc.save(`invoice-${jobId}.pdf`);
+  };
+
+  /**
+   * Accept the submitted work of the photographer.
+   */
   acceptWork = () => {
-    const { jobDescription, jobId, acceptedApplicant } = this.props;
+    const {jobDescription, jobId, acceptedApplicant} = this.props;
     this.props.acceptSubmittedWork(jobId);
     // add notification
     this.props.addNotification({
       title: `${
         jobDescription.company.companyName
-      } has accepted your submitted work for ${jobDescription.title}.`,
+        } has accepted your submitted work for ${jobDescription.title}.`,
       link: `/progress-job/${jobId}`,
       read: false,
       createdAt: new Date().getTime(),
@@ -73,17 +94,21 @@ class ProgressSingleJobCompany extends React.Component {
   };
 
   render() {
-    const { acceptedApplicant, submittedWork, jobDescription } = this.props;
+    const {acceptedApplicant, submittedWork, jobDescription} = this.props;
 
     return (
-      <ProgressSingleJobViewCompany
-        acceptedApplicant={acceptedApplicant}
-        deliveryStatus={jobDescription.deliveryStatus}
-        submittedWork={submittedWork}
-        acceptedWork={jobDescription.status === "closed"}
-        acceptWorkHandler={this.acceptWork}
-        downloadHandler={this.downloadWork}
-      />
+      <React.Fragment>
+        <ProgressSingleJobViewCompany
+          acceptedApplicant={acceptedApplicant}
+          deliveryStatus={jobDescription.deliveryStatus}
+          submittedWork={submittedWork}
+          acceptedWork={jobDescription.status === "closed"}
+          acceptWorkHandler={this.acceptWork}
+          downloadHandler={this.downloadWork}
+        />
+        <button className="gb-btn gb-btn-medium gb-btn-primary" onClick={this.generatePDF}>Download invoice</button>
+      </React.Fragment>
+
     );
   }
 }

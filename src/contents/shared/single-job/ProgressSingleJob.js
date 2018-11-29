@@ -9,6 +9,14 @@ import {isLoaded, firestoreConnect} from "react-redux-firebase";
 import {compose} from "redux";
 
 class ProgressSingleJob extends React.Component {
+  componentDidMount() {
+    // sets listener
+    this.props.firestore.setListener({
+      collection: "jobOffers",
+      doc: this.props.match.params.jobid
+    });
+  }
+
   render() {
     const {jobsData, user} = this.props;
     const jobId = this.props.match.params.jobid;
@@ -24,7 +32,7 @@ class ProgressSingleJob extends React.Component {
     if (jobDescription.status === "open")
       return <Redirect to={`/open-job/${jobId}`}/>;
 
-    const submittedWork = Object.values(jobDescription.submittedWork);
+    const submittedWork = Object.values(jobDescription.submittedWork || {});
 
     return (
       <div className="single-job-view section-content">
@@ -34,6 +42,7 @@ class ProgressSingleJob extends React.Component {
               submittedWork={submittedWork}
               acceptedWork={jobDescription.status === "closed"}
               jobId={jobId}
+              jobDescription={jobDescription}
             />
           ) : (
             <ProgressSingleJobCompany

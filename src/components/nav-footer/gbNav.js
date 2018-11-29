@@ -80,6 +80,10 @@ class GbNavBar extends React.Component {
           txt: "Edit profile",
           link: "ProfileEdit"
         },
+        {
+          txt: "Payouts",
+          link: `payouts/${profile.type}`
+        },
         ...specificLinks,
         { txt: "Sign out", clickHandler: signOutUser }
       ];
@@ -96,7 +100,12 @@ class GbNavBar extends React.Component {
             links={righLinks}
             txtClasses="gb-text-white gb-paragraph-medium"
           />
-          {auth.uid && (
+          {profile.type === "admin" &&
+          <LinkLists
+            links={[{ txt: "Sign out", clickHandler: signOutUser}]}
+            txtClasses="gb-text-white gb-paragraph-medium"
+          />}
+          {auth.uid && profile.type !== "admin" && (
             <RightUserOn
               showNotificationsHandler={this.showNotificationsHandler}
               newNotifications={this.props.newNotifications}

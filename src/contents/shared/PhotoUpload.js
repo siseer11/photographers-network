@@ -54,6 +54,7 @@ class PhotoUpload extends Component {
    */
   formSubmit = e => {
     e.preventDefault();
+    console.log("hey there!");
     const {imageFiles} = this.state;
     const {collection, doc, storageRef, closeModalListener} = this.props;
     let promises = [];
@@ -67,6 +68,7 @@ class PhotoUpload extends Component {
       setTimeout(() => {
         closeModalListener();
         console.log("promises resolved");
+        this.props.callback();
         this.setState({stage: "Submit", images: []});
       }, 500);
     });
@@ -103,7 +105,10 @@ class PhotoUpload extends Component {
               }
               <input type="submit" value={stage} disabled={stage !== "Submit"}/>
             </form>
-            <button onClick={this.props.closeModalListener}>Cancel</button>
+            <button onClick={() => {
+              this.props.closeModalListener();
+              this.props.afterClose();
+            }}>Cancel</button>
           </div>
         </div>
       </React.Fragment>
