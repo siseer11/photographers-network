@@ -18,7 +18,9 @@ const MyMapComp = withGoogleMap(props => (
       rotateControl: false,
       fullscreenControl: false
     }}
-  />
+  >
+    {<Marker position={{ lat: props.lat, lng: props.lng }} />}
+  </GoogleMap>
 ));
 
 export const MyFancyMap = ({ lat, long }) => (
