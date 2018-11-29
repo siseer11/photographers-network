@@ -1,35 +1,56 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { LinkLists } from "../LinkLists";
+import { InstagramSVG } from "../../components/svg/InstagramSVG";
+import { TwitterSVG } from "../../components/svg/TwitterSVG";
+import { FacebookSVG } from "../../components/svg/FacebookSVG";
 
-/* links = [{'txt' : 'About us' , 'link' : '#'}] socialMedias=[{icon: <InstagramSVG className=''/>,href:'#'}]*/
-export const GbFooter = ({ links, socialMedias }) => (
-  <div className="gb-footer gb-background-black-opacity-5">
-    <div className="footer-wrapper">
-      <ul className="footer-nav">
-        {
-          links &&
-          <LinkLists
-            links={links}
-            txtClasses="gb-text-black-opacity-30 gb-subtitle-medium"
-            liClasses="footer-nav-item"
-          />
-        }
-      </ul>
-      <ul className="footer-social-media-list">
-        {
-          socialMedias && <LinkLists links={socialMedias} liClasses="footer-social-media-item" />
-        }
-      </ul>
-      <div className="footer-rights-reserved">
-        <p className="gb-label gb-text-black-opacity-30">
-          © 2018 All rights reserved.
-        </p>
+export const GbFooter = ({ links }) => {
+  const socialMedias = [
+    {
+      icon: (
+        <InstagramSVG classes="gb-icon-fill-black-opacity-30 gb-icon-small" />
+      ),
+      link: "#"
+    },
+    {
+      icon: (
+        <TwitterSVG classes="gb-icon-fill-black-opacity-30 gb-icon-small" />
+      ),
+      link: "#"
+    },
+    {
+      icon: (
+        <FacebookSVG classes="gb-icon-fill-black-opacity-30 gb-icon-small" />
+      ),
+      link: "#"
+    }
+  ];
+  return (
+    <div className="gb-footer gb-background-black-opacity-5">
+      <div className="footer-wrapper">
+        <ul className="footer-nav">
+          {links && (
+            <LinkLists
+              links={links}
+              txtClasses="gb-text-black-opacity-30 gb-subtitle-medium"
+              liClasses="footer-nav-item"
+            />
+          )}
+        </ul>
+        <ul className="footer-social-media-list">
+          {socialMedias && (
+            <LinkLists
+              links={socialMedias}
+              liClasses="footer-social-media-item"
+            />
+          )}
+        </ul>
+        <div className="footer-rights-reserved">
+          <p className="gb-label gb-text-black-opacity-30">
+            © 2018 All rights reserved.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-);
-
-GbFooter.propTypes = {
-  links: PropTypes.arrayOf(PropTypes.object)
+  );
 };

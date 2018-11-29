@@ -1,72 +1,78 @@
 import React from "react";
-import fire from "../../../config/Fire";
-import {OpenSingleJobViewPhotographer} from "../../../components/single-job/open/OpenSingleJobViewPhotographer";
+import { connect } from "react-redux";
+import { applyForJob } from "../../../redux/actions/photographer-actions";
 
+const mapDispatchToProps = dispatch => ({
+  applyForSingleJob: (jobData, user) => dispatch(applyForJob(jobData, user))
+});
 
-export default class OpenSingleJobPhotographer extends React.Component {
+class OpenSingleJobPhotographer extends React.Component {
   state = {
-    userApplied: this.props.userApplied,
-    isDeclinedPhotographer: this.props.isDeclinedPhotographer
+    loading: false,
+    error: null
   };
-  database = fire.database();
-
-// ---------- PHOTOGRAPHERS METHODS ----------:
-
   /**
    * User applies for a job.
    */
   applyForJob = () => {
-    const {user, jobId, jobDescription} = this.props;
-    this.database
-      .ref("requests")
-      .child(jobId)
-      .child("photographers-applied")
-      .child(user.uid)
-      .set({
-        email: user.email,
-        displayName: user.displayName
-      })
+    let { jobId, jobData, user } = this.props;
+    this.setState({
+      loading: true
+    });
+    jobData = { ...jobData, jobId: jobId };
+    this.props
+      .applyForSingleJob(jobData, user)
       .then(() => {
-        this.database
-          .ref("photographer")
-          .child(user.uid)
-          .child("applied-jobs")
-          .child(jobId)
-          .set({
-            jobbId: jobId,
-            status: "applied"
-          });
+        this.setState({
+          loading: false,
+          error: null
+        });
       })
-      .then(() => {
-        this.setState({userApplied: true});
-        // creates notification for company
-        this.database
-          .ref("users")
-          .child(jobDescription.companyId)
-          .child("notifications")
-          .push()
-          .set({
-            title: `${user.displayName} applied for your job request "${
-              jobDescription.title
-              }".`,
-            link: `/open-job/${jobId}`,
-            read: false,
-            time: new Date().getTime()
-          });
+      .catch(err => {
+        this.setState({
+          loading: false,
+          error: err
+        });
       });
   };
 
   render() {
-    const {
-      userApplied,
-      isDeclinedPhotographer
-    } = this.state;
+    const { jobData, user } = this.props;
+    let status = "not applied";
+
+    //Check to see if this photographer has allready applied, and if him was declined
+    if (jobData.photographersWhichApplied) {
+      const photographerAppliedData =
+        jobData.photographersWhichApplied[user.uid];
+      if (photographerAppliedData) {
+        if (!photographerAppliedData.declined) {
+          status = "applied";
+        } else {
+          status = "declined";
+        }
+      }
+    }
+
+    if (status === "applied") {
+      return <h2>You have already applied for this job.</h2>;
+    }
+
+    if (status === "declined") {
+      return <h2>You are declined for this job.</h2>;
+    }
 
     return (
-      <OpenSingleJobViewPhotographer userApplied={userApplied}
-                                     isDeclinedPhotographer={isDeclinedPhotographer}
-                                     applyHandler={this.applyForJob}
-      />
+      <button
+        className="gb-btn gb-btn-medium gb-btn-primary"
+        onClick={this.applyForJob}
+      >
+        Apply
+      </button>
     );
   }
 }
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(OpenSingleJobPhotographer);

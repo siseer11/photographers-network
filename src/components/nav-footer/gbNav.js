@@ -3,59 +3,23 @@ import { PropTypes } from "prop-types";
 import { SmallLogoSVG } from "../svg/SmallLogoSVG";
 import { LinkLists } from "../LinkLists";
 import { Link } from "react-router-dom";
-import { BellSVG } from "../svg/BellSVG";
-import { NotificationContainer } from "./NotificationContainer";
-import fire from "../../config/Fire";
-import WithModal from "../../RenderProp/WithModal";
+import { RightUserOn } from "./RightUserOn";
+import { connect } from "react-redux";
+import { signOutUser } from "../../redux/actions/user-action";
+import { firestoreConnect } from "react-redux-firebase";
+import { compose } from "redux";
 
-export default class GbNavBar extends React.Component {
+class GbNavBar extends React.Component {
   state = {
     sticky: false,
     showNotificationBox: false,
-    notifications: [],
-    newNotifications: false,
-    user: null
+    links: [{ txt: "Sign in", link: "signIn" }],
+    homeLink: "home",
+    userLinks: []
   };
-  database = fire.database();
 
   componentDidMount() {
     window.addEventListener("scroll", this.stickyNav);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.fetchNotifications(nextProps.user);
-  }
-
-  /**
-   * Fetches notifications of current users of the database.
-   *
-   * @param user
-   */
-  fetchNotifications(user) {
-    if (user) {
-      this.database
-        .ref("users")
-        .child(user.uid)
-        .child("notifications")
-        .once("value", snap => {
-          let noteObj = snap.val() || {};
-          let notifications = Object.keys(noteObj).map(key => {
-            let notification = noteObj[key];
-            return {
-              id: key,
-              ...notification
-            };
-          });
-          notifications.reverse();
-          this.setState({ notifications: notifications, user: user }, () => {
-            let unreadNotifications = this.state.notifications.filter(
-              note => !note.read
-            );
-            // checks the length of the unread notifications, to see if there are ones
-            this.setState({ newNotifications: unreadNotifications.length > 0 });
-          });
-        });
-    }
   }
 
   componentWillUnmount() {
@@ -71,39 +35,61 @@ export default class GbNavBar extends React.Component {
   showNotificationsHandler = () => {
     this.setState(prev => {
       return {
-        showNotificationBox: !prev.showNotificationBox,
-        newNotifications: false
+        showNotificationBox: !prev.showNotificationBox
       };
     });
   };
 
-  handleReadNotification = id => {
-    let notificationsCopy = [...this.state.notifications];
-    let index = notificationsCopy.findIndex(note => note.id === id);
-    notificationsCopy[index].read = true;
-    this.database
-      .ref("users")
-      .child(this.state.user.uid)
-      .child("notifications")
-      .child(id)
-      .update(
-        {
-          read: true
-        },
-        () => this.setState({ notifications: notificationsCopy })
-      );
-  };
-
   render() {
-    const {
-      righLinks,
-      userImageUrl,
-      homeLink,
-      userOn,
-      user,
-      userLinks
-    } = this.props;
-    const { showNotificationBox, notifications, newNotifications } = this.state;
+    const { userData: user, signOutUser, auth, profile } = this.props;
+
+    let righLinks = [{ txt: "Sign in", link: "signIn" }];
+    let homeLink = "home";
+    let userLinks;
+
+    if (auth.uid) {
+      righLinks = [];
+      homeLink = "dashboard";
+
+      const company = profile.type === "company";
+
+      let specificLinks = [
+        {
+          txt: company ? "Create job" : "Jobs",
+          link: company ? "createJob" : "jobs"
+        }
+      ];
+
+      if (company) {
+        specificLinks.push({
+          txt: "Search for photographers",
+          link: "search-photographers"
+        });
+      }
+
+      userLinks = [
+        {
+          txt: "Profile",
+          link: `profile/${auth.uid}`
+        },
+        {
+          txt: "Dashboard",
+          link: "dashboard"
+        },
+        {
+          txt: "Edit profile",
+          link: "ProfileEdit"
+        },
+        {
+          txt: "Payouts",
+          link: `payouts/${profile.type}`
+        },
+        ...specificLinks,
+        { txt: "Sign out", clickHandler: signOutUser }
+      ];
+    }
+
+    const { showNotificationBox } = this.state;
     return (
       <div className={`gb-navbar ${this.state.sticky ? "sticky" : ""}`}>
         <Link to={`/${homeLink}`} className="left-content">
@@ -114,16 +100,18 @@ export default class GbNavBar extends React.Component {
             links={righLinks}
             txtClasses="gb-text-white gb-paragraph-medium"
           />
-          {userOn && (
+          {profile.type === "admin" &&
+          <LinkLists
+            links={[{ txt: "Sign out", clickHandler: signOutUser}]}
+            txtClasses="gb-text-white gb-paragraph-medium"
+          />}
+          {auth.uid && profile.type !== "admin" && (
             <RightUserOn
               showNotificationsHandler={this.showNotificationsHandler}
-              newNotifications={newNotifications}
-              notifications={notifications}
-              handleReadNotification={this.handleReadNotification}
+              newNotifications={this.props.newNotifications}
               showNotificationBox={showNotificationBox}
               user={user}
-              righLinks={righLinks}
-              userImageUrl={userImageUrl}
+              userImageUrl={profile.profileImageUrl}
               userLinks={userLinks}
             />
           )}
@@ -133,54 +121,40 @@ export default class GbNavBar extends React.Component {
   }
 }
 
-const RightUserOn = ({
-  showNotificationsHandler,
-  newNotifications,
-  notifications,
-  handleReadNotification,
-  showNotificationBox,
-  userImageUrl,
-  userLinks
-}) => (
-  <React.Fragment>
-    <WithModal>
-      {({ showModal }) => (
-        <React.Fragment>
-          <BellSVG
-            classes={`gb-icon-medium gb-icon-fill-white ${newNotifications &&
-              "new"}`}
-          />
-          {showModal && (
-            <NotificationContainer
-              notifications={notifications}
-              showBoxHandler={showNotificationsHandler}
-              readHandler={handleReadNotification}
-            />
-          )}
-        </React.Fragment>
-      )}
-    </WithModal>
-    <li className="nav-user-avatar-wrapper">
-      <WithModal>
-        {({ showModal }) => (
-          <React.Fragment>
-            <div
-              style={{ backgroundImage: `url(${userImageUrl})` }}
-              className="gb-avatar-small gb-avatar nav-user-avatar"
-            />
-            <ul
-              className="dropdown-menu-list"
-              style={{ display: showModal ? "flex" : "none" }}
-            >
-              <li className="nav-user-triangle" />
-              <LinkLists links={userLinks} liClasses="dropdown-menu-item" />
-            </ul>
-          </React.Fragment>
-        )}
-      </WithModal>
-    </li>
-  </React.Fragment>
-);
+const mapStateToProps = state => {
+  const notifications = state.firestore.ordered.unreadNotifications;
+  return {
+    newNotifications: notifications ? notifications.length > 0 : false,
+    auth: state.firebase.auth,
+    userOn: state.firebase.auth.uid,
+    profile: state.firebase.profile
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  signOutUser: () => dispatch(signOutUser())
+});
+
+export default compose(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
+  firestoreConnect(props => {
+    if (!props.auth.uid) return [];
+    return [
+      {
+        collection: "notifications",
+        //orderBy: ['createdAt', 'desc'],
+        where: [
+          ["recipientUserId", "==", props.auth.uid],
+          ["read", "==", false]
+        ],
+        storeAs: "unreadNotifications"
+      }
+    ];
+  })
+)(GbNavBar);
 
 GbNavBar.propTypes = {
   righLinks: PropTypes.arrayOf(PropTypes.object),

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {JobsList} from './JobsList';
-import {Filters} from '../contents/shared/JobsFilters';
+import {Filters} from '../contents/shared/jobs/JobsFilters';
 
 export const JobsView = ({ jobsList, searchValue, changeHandler, locations, types, checkboxChangeHandler }) => (
 	<div className='job-page-inner'>

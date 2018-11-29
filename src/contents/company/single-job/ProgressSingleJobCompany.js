@@ -1,13 +1,13 @@
 import React from "react";
-import fire from "../../../config/Fire";
 import {ProgressSingleJobViewCompany} from "../../../components/single-job/progress/ProgressSingleJobViewCompany";
-import JSZip from 'jszip';
-import FileSaver from 'file-saver';
+import JSZip from "jszip";
+import FileSaver from "file-saver";
+import {connect} from "react-redux";
+import {addNewNotification} from "../../../redux/actions/notifications-action";
+import {acceptWork} from "../../../redux/actions/company-actions";
+import jsPDF from "jspdf";
 
-export default class ProgressSingleJobCompany extends React.Component {
-  database = fire.database();
-
-  // ---------- COMPANY METHODS ----------:
+class ProgressSingleJobCompany extends React.Component {
   /**
    * Downloads zip file of submitted work.
    */
@@ -24,7 +24,7 @@ export default class ProgressSingleJobCompany extends React.Component {
       // create new zip file
       let zip = new JSZip();
       // add every value to the zip
-      for(let i = 0; i < values.length; i++)
+      for (let i = 0; i < values.length; i++)
         zip.file(`submitted-work/${submittedWork[i].id}.jpg`, values[i]);
 
       zip.generateAsync({type: "blob"}).then(content => {
@@ -43,7 +43,7 @@ export default class ProgressSingleJobCompany extends React.Component {
   downloadURLAsAPromise = url => {
     return new Promise((resolve, reject) => {
       let xhr = new XMLHttpRequest();
-      xhr.open('GET', url);
+      xhr.open("GET", url);
       xhr.responseType = "blob";
       xhr.onreadystatechange = () => {
         if (xhr.readyState === 4) {
@@ -58,48 +58,68 @@ export default class ProgressSingleJobCompany extends React.Component {
     });
   };
 
+  /**
+   * Generates invoice to download.
+   */
+  generatePDF = () => {
+    const {jobDescription, jobId} = this.props;
+    let doc = new jsPDF();
+    doc.setFontType("bold");
+    doc.text(`Invoice for your job "${jobDescription.title}"`, 10, 10);
+    doc.setFontType("normal");
+    doc.text(`Netto amount: ${jobDescription.nettoAmount} EUR`, 10, 20);
+    doc.text(`+ ${jobDescription.tax.percentage}% tax`, 10, 30);
+    doc.text(`+ 10% fee`, 10, 40);
+    doc.line(10, 43, 200, 43);
+    doc.text(`Total amount: ${jobDescription.priceAmount} EUR`, 10, 50);
+    doc.save(`invoice-${jobId}.pdf`);
+  };
+
+  /**
+   * Accept the submitted work of the photographer.
+   */
   acceptWork = () => {
     const {jobDescription, jobId, acceptedApplicant} = this.props;
-    this.database
-      .ref("requests")
-      .child(jobId)
-      .update({
-        status: "closed"
-      });
-    this.database.ref("photographer").child(acceptedApplicant.uid).child("applied-jobs").child(jobId).update({
-      status: "finished"
-    });
+    this.props.acceptSubmittedWork(jobId);
     // add notification
-    this.database
-      .ref("users")
-      .child(acceptedApplicant.uid)
-      .child("notifications")
-      .push()
-      .set({
-        title: `${
-          jobDescription.companyName
-          } has accepted your submitted work for ${jobDescription.title}.`,
-        link: `/progress-job/${jobId}`,
-        read: false,
-        time: new Date().getTime()
-      });
-    this.props.setAcceptedWork();
+    this.props.addNotification({
+      title: `${
+        jobDescription.company.companyName
+        } has accepted your submitted work for ${jobDescription.title}.`,
+      link: `/progress-job/${jobId}`,
+      read: false,
+      createdAt: new Date().getTime(),
+      recipientUserId: acceptedApplicant.uid
+    });
   };
 
   render() {
-    const {
-      acceptedApplicant,
-      submittedWork,
-      acceptedWork
-    } = this.props;
+    const {acceptedApplicant, submittedWork, jobDescription} = this.props;
 
     return (
-      <ProgressSingleJobViewCompany acceptedApplicant={acceptedApplicant}
-                                    submittedWork={submittedWork}
-                                    acceptedWork={acceptedWork}
-                                    acceptWorkHandler={this.acceptWork}
-                                    downloadHandler={this.downloadWork}
-      />
+      <React.Fragment>
+        <ProgressSingleJobViewCompany
+          acceptedApplicant={acceptedApplicant}
+          deliveryStatus={jobDescription.deliveryStatus}
+          submittedWork={submittedWork}
+          acceptedWork={jobDescription.status === "closed"}
+          acceptWorkHandler={this.acceptWork}
+          downloadHandler={this.downloadWork}
+        />
+        <button className="gb-btn gb-btn-medium gb-btn-primary" onClick={this.generatePDF}>Download invoice</button>
+      </React.Fragment>
+
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  addNotification: notification => dispatch(addNewNotification(notification)),
+  acceptSubmittedWork: jobId =>
+    dispatch(acceptWork(jobId))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(ProgressSingleJobCompany);

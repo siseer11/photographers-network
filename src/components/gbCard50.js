@@ -43,7 +43,6 @@ GbCard50.propTypes = {
   background: PropTypes.string,
   type: PropTypes.string.isRequired,
   postedTime: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
   children: PropTypes.string.isRequired,
 };
 
