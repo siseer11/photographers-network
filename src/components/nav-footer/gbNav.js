@@ -80,6 +80,10 @@ class GbNavBar extends React.Component {
           txt: "Edit profile",
           link: "ProfileEdit"
         },
+        {
+          txt: "Payouts",
+          link: `payouts/${profile.type}`
+        },
         ...specificLinks,
         { txt: "Sign out", clickHandler: signOutUser }
       ];

@@ -33,6 +33,8 @@ export const createJob = (jobData, sentTo = null, sentToId = null) => {
           geolocation: new firebase.firestore.GeoPoint(lat, long)
         },
         description: jobData.jobDescription,
+        nettoAmouont: jobData.jobBudget,
+        payout: false,
         priceAmount: jobData.jobTotalBudget,
         status: sentTo ? "private" : "open",
         downPaymentAmountStatus: "none",

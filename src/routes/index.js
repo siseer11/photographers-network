@@ -17,7 +17,7 @@ import SubmitWork from "../contents/photographer/single-job/SubmitWork";
 import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
 import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
 import AdminDashboard from "../contents/admin/AdminDashboard";
-import Payouts from "../contents/admin/Payouts";
+import Payouts from "../contents/shared/payouts/Payouts";
 import {GbFooter} from "../components/nav-footer/Footer";
 
 export default ({userOn, userType}) => (
@@ -64,7 +64,7 @@ export default ({userOn, userType}) => (
           exact
           path="/payouts/:type(company|photographer)"
           render={props =>
-            userType === "admin" ? <Payouts {...props}/> : <Redirect to="/signin"/>
+            userOn ? <Payouts {...props}/> : <Redirect to="/signin"/>
           }
         />
         <Route
