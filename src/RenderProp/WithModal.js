@@ -42,7 +42,6 @@ export default class WithModal extends React.Component {
   };
 
   render() {
-    console.log(this.state.showModal + " from withModal");
     return (
       <div className={this.props.className} onClick={this.modalHandler}>
         {this.props.children({ ...this.state, ...this.props })}
