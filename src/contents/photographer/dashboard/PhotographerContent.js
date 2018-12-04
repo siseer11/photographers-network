@@ -5,7 +5,7 @@ import {HireButton} from "../../../components/HireButton";
 import {Link} from "react-router-dom";
 import {ReviewBox} from "../../../components/profile/ReviewBox";
 
-export const PhotographerContent = ({ photographerData, isOtherUser, siggnedInUser, uid, finishedJobs, hireable }) => (
+export const PhotographerContent = ({ photographerData, isOtherUser, siggnedInUser: signedInUser, uid, finishedJobs, hireable }) => (
   <React.Fragment>
     <div className="flex-container-space">
       <div>
@@ -32,7 +32,7 @@ export const PhotographerContent = ({ photographerData, isOtherUser, siggnedInUs
         <HireButton
           classes="hire-button"
           photographerData={photographerData}
-          siggnedInUser={siggnedInUser}
+          siggnedInUser={signedInUser}
           uid={uid}
           photographerName={`${photographerData.firstName} ${photographerData.lastName}`}
         />
