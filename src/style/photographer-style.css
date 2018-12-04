@@ -1122,6 +1122,8 @@ li.openjobitem {
 }
 
 .pink-box {
+    width: 100%;
+    box-sizing: border-box;
     padding: 40px;
     background-color: #ff103d;
     text-align: center;
@@ -1139,6 +1141,8 @@ li.openjobitem {
 }
 
 .review-box {
+    width: 100%;
+    box-sizing: border-box;
     padding: 60px;
     display: flex;
     justify-content: center;
@@ -1178,4 +1182,27 @@ li.openjobitem {
 
 .gb-navbar.sticky.dark-blue {
     background-color: #002b41;
+}
+
+.logo-container {
+    width: 72px;
+    margin: 20px;
+}
+
+.logo-container p {
+    text-transform: uppercase;
+    color: white;
+    font-size: 10px;
+}
+
+.logo-container img {
+    max-width: 100%;
+}
+
+.logo-container svg {
+    height: 30px;
+}
+
+.gb-background-grey {
+    background-color: #969696;
 }
