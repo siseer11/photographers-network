@@ -126,96 +126,95 @@
 }
 
 .profile-card .profile-link {
-    position: relative;
-    left: 0;
-    right: 0;
-    top: 78px;
+  position: relative;
+  left: 0;
+  right: 0;
+  top: 78px;
 }
 
 .profile-content {
-    color: #002b41;
-    font-size: 13px;
-    padding-top: 62px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  color: #002b41;
+  font-size: 13px;
+  padding-top: 62px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .profile-content .gb-btn-white {
-    font-size: 12px;
-    width: 138px;
-    margin: 10px;
-    text-transform: uppercase;
-    border: 1.5px solid rgb(252, 13, 28);
+  font-size: 12px;
+  width: 138px;
+  margin: 10px;
+  text-transform: uppercase;
+  border: 1.5px solid rgb(252, 13, 28);
 }
 
 .profile-content .gb-btn-white .gb-icon-medium {
-    fill: rgb(252, 13, 28);
-    width: 15px;
-    height: 15px;
-    margin-left: 5px;
+  fill: rgb(252, 13, 28);
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
 }
 
 .profile-content .gb-btn-white.hire {
-    font-size: 13px;
-    width: 90px;
-    height: 35px;
+  font-size: 13px;
+  width: 90px;
+  height: 35px;
 }
 
 .profile-content .flex-container-space {
-    display: flex;
-    width: calc(100vw - 120px);
-    justify-content: space-between;
+  display: flex;
+  width: calc(100vw - 120px);
+  justify-content: space-between;
 }
 
 .profile-content .flex-container-space .gb-btn-white {
-    width: 120px;
-    height: 30px;
-    text-transform: none;
-    font-size: 11px;
+  width: 120px;
+  height: 30px;
+  text-transform: none;
+  font-size: 11px;
 }
 
 .profile-content .black {
-    color: black;
+  color: black;
 }
 
 .profile-content .big-num {
-    font-size: 40px;
-    font-weight: 700;
-    margin-right: 5px;
+  font-size: 40px;
+  font-weight: 700;
+  margin-right: 5px;
 }
 
 .profile-content .light-blue {
-    display: inline-block;
-    color: #b2bfc6;
-    font-weight: 500;
+  display: inline-block;
+  color: #b2bfc6;
+  font-weight: 500;
 }
 
 div.black {
-    margin: 20px 60px;
-    font-size: 12px;
+  margin: 20px 60px;
+  font-size: 12px;
 }
 
 div.black h3 {
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 12px;
-    border-bottom: 1px solid #cecbcb;
-    margin-bottom: 5px;
-    padding-bottom: 5px;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 12px;
+  border-bottom: 1px solid #cecbcb;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 p.profile-desc {
-    font-size: 12px;
-    font-weight: 400;
+  font-size: 12px;
+  font-weight: 400;
 }
 
 .profile-desc {
-
 }
 
 .profile-desc.bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .profile-card .gb-title-small {
@@ -223,10 +222,10 @@ p.profile-desc {
 }
 
 .profile-avatar {
-    margin: auto;
-    height: 120px;
-    width: 120px;
-    object-fit: cover;
+  margin: auto;
+  height: 120px;
+  width: 120px;
+  object-fit: cover;
 }
 
 .section-content .sign-in-up-form {
@@ -784,15 +783,15 @@ p.filter-by:hover {
 }
 
 .black-header-portfolio {
-    text-align: center;
-    font-weight: 700;
-    margin-top: 50px;
-    font-size: 30px;
+  text-align: center;
+  font-weight: 700;
+  margin-top: 50px;
+  font-size: 30px;
 }
 
 li.portofolio-image {
-    flex-basis: 50%;
-    height: 170px;
+  flex-basis: 50%;
+  height: 170px;
 }
 
 li.portofolio-image img {
@@ -802,11 +801,11 @@ li.portofolio-image img {
 }
 
 ul.portofolio-list {
-    display: flex;
-    width: 100%;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 20px;
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
 .gb-card-10-wrapper {
@@ -814,11 +813,11 @@ ul.portofolio-list {
 }
 
 .hire-button {
-    border: 1px solid white;
-    border-radius: 5px;
-    padding: 5px 10px;
-    font-size: 13px;
-    cursor: pointer;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 13px;
+  cursor: pointer;
 }
 
 /* Portofolio ends */
@@ -1100,25 +1099,25 @@ li.openjobitem {
 }
 
 .paymentList li a {
-    color: red;
+  color: red;
 }
 
 .premium-flag {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #2fad0d;
-    height: 40px;
-    width: 40px;
-    border-radius: 50%;
-    position: absolute;
-    right: -10px;
-    z-index: 9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2fad0d;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  position: absolute;
+  right: -10px;
+  z-index: 9;
 }
 
 .premium-flag .gb-icon-medium {
-    height: 15px;
-    width: 15px;
+  height: 15px;
+  width: 15px;
 }
 
 .pink-box {
@@ -1132,12 +1131,12 @@ li.openjobitem {
 }
 
 .pink-box .hire-button {
-    position: inherit;
-    width: 70px;
-    border-radius: 50px;
-    margin: 20px auto 0 auto;
-    text-transform: uppercase;
-    padding: 10px 10px;
+  position: inherit;
+  width: 70px;
+  border-radius: 50px;
+  margin: 20px auto 0 auto;
+  text-transform: uppercase;
+  padding: 10px 10px;
 }
 
 .review-box {
@@ -1152,36 +1151,36 @@ li.openjobitem {
 }
 
 .review-box h2 {
-    color: grey;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 1px;
-    margin-bottom: 25px;
+  color: grey;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 25px;
 }
 
 .review-box .gb-avatar-medium {
-    width: 70px;
-    height: 70px;
+  width: 70px;
+  height: 70px;
 }
 
 .review-box h3 {
-    color: #002b41;
+  color: #002b41;
 }
 
 .review-box img {
-    height: 25px;
+  height: 25px;
 }
 
 .review-box p {
-    text-align: center;
-    font-style: italic;
-    font-size: 12px;
-    font-weight: 500;
-    margin: 20px 10px;
+  text-align: center;
+  font-style: italic;
+  font-size: 12px;
+  font-weight: 500;
+  margin: 20px 10px;
 }
 
 .gb-navbar.sticky.dark-blue {
-    background-color: #002b41;
+  background-color: #002b41;
 }
 
 /* Home50hCard start */
