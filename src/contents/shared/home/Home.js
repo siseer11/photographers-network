@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { HowItWorksHome } from "../../../components/home/HowItWorksHome";
 import { OurParteners } from "../../../components/home/OurParteners";
+import { ReviewBox } from "../../../components/profile/ReviewBox";
 
 const mapStateToProps = state => ({
   auth: state.firebase.auth
@@ -38,6 +39,12 @@ class Home extends Component {
         </div>
         <HowItWorksHome />
         <OurParteners />
+        <ReviewBox
+          title="LAST REVIEW"
+          userImageURL="https://images.unsplash.com/photo-1535930749574-1399327ce78f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ"
+          quote="New battery for smartphones can
+         be charged in a minute"
+        />
       </div>
     );
   }
