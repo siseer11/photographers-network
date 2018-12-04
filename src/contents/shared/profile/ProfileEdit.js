@@ -99,6 +99,8 @@ const mapStateToProps = state => {
     }
   }
 
+  const bank = userData.bankCredentials;
+
   return {
     allLocations: allLocations,
     firstName: userData.firstName,
@@ -109,8 +111,8 @@ const mapStateToProps = state => {
     photoURL: userData.profileImageUrl,
     type: userData.type,
     companyName: userData.companyName,
-    iban: userData.bankCredentials.iban,
-    bic: userData.bankCredentials.bic,
+    iban: bank ? bank.iban : "",
+    bic: bank ? bank.bic : "",
     uid: state.firebase.auth.uid
   };
 };
