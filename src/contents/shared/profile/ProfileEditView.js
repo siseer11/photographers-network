@@ -1,7 +1,6 @@
 import React from "react";
 import { NameInputSVG } from "../../../components/svg/NameInputSVG";
 import { InputField } from "../../../components/form/InputField";
-import { LocationSVG } from "../../../components/svg/LocationSVG";
 import AvatarInput from "./AvatarInput";
 import LocationSearchInput from "../MapsAutocomplete";
 
@@ -14,7 +13,9 @@ export const ProfileEditView = ({
   companyName,
   changeHandler,
   locationPlaceholder,
-  photoURL
+  photoURL,
+  iban,
+  bic
 }) => (
   <div className="section-content with-padding">
     <h2>Edit your profile</h2>
@@ -57,6 +58,26 @@ export const ProfileEditView = ({
       <LocationSearchInput
         locationPlaceholder={locationPlaceholder}
         changeHandler={changeHandler}
+      />
+      <InputField
+        svg={
+          <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+        }
+        value={iban}
+        changeHandler={changeHandler}
+        type="text"
+        name="iban"
+        placeholder="Change your IBAN"
+      />
+      <InputField
+        svg={
+          <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
+        }
+        value={bic}
+        changeHandler={changeHandler}
+        type="text"
+        name="bic"
+        placeholder="Change your BIC"
       />
       <p>change photo:</p>
       <AvatarInput uid={uid} userAvatar={photoURL} name="avatar" />

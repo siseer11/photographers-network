@@ -9,6 +9,14 @@ import {isLoaded, firestoreConnect} from "react-redux-firebase";
 import {compose} from "redux";
 
 class ProgressSingleJob extends React.Component {
+  componentDidMount() {
+    // sets listener
+    this.props.firestore.setListener({
+      collection: "jobOffers",
+      doc: this.props.match.params.jobid
+    });
+  }
+
   render() {
     const {jobsData, user} = this.props;
     const jobId = this.props.match.params.jobid;

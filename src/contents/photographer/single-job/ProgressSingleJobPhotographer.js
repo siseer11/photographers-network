@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {setInsurancePaymentStatus} from "../../../redux/actions/single-job-action-photographer";
 
 class ProgressSingleJobPhotographer extends React.Component {
-  render() {
+    render() {
     const {
       submittedWork,
       acceptedWork,
@@ -17,7 +17,7 @@ class ProgressSingleJobPhotographer extends React.Component {
       submittedWork.length > 0 && jobDescription.deliveryStatus ?
         (
           acceptedWork ?
-            <h2>Your submitted work has been approved. You will receive the payment asap.</h2> :
+            <h2>Your submitted work has been approved. Go to <Link to="/payouts/photographer">payouts</Link> to get your money.</h2> :
             <h2>Waiting for company to approve your submitted work.</h2>
         ) :
         (

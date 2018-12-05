@@ -64,7 +64,7 @@ class SubmitWork extends Component {
       } submitted his work for "${jobDescription.title}".`,
       link: `/progress-job/${jobId}`,
       read: false,
-      time: new Date(),
+      createdAt: new Date().getTime(),
       recipientUserId: jobDescription.companyId
     };
     this.props.addNotification(notification);
@@ -73,11 +73,9 @@ class SubmitWork extends Component {
 
   render() {
     const {jobId} = this.state;
-    console.log(jobId);
     const {auth, jobsData} = this.props;
     if(!isLoaded(jobsData)) return <LoadingPage/>;
     const images = Object.values(jobsData[jobId].submittedWork || {});
-    console.log(images);
     return (
         <div className="section-content with-padding">
           {!this.state.submitted ?
@@ -136,22 +134,13 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default compose(
-  /*
-  withFirestore,
-  lifecycle({
-    componentDidMount() {
-      this.props.store.firestore.get({ collection: "jobOffers", doc: this.props.match.params.jobid })
-    }
-  }),*/
-  firestoreConnect(props => {
-    console.log(props.match.params.jobid);
-    return [
+  firestoreConnect(props => [
       {
         collection: "jobOffers",
         doc: props.match.params.jobid
       }
-    ];
-  }),
+    ]
+  ),
   connect(
     mapStateToProps,
     mapDispatchToProps

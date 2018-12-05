@@ -13,7 +13,7 @@ export default class WithModal extends React.Component {
   showModal = () => this.setState({ showModal: true });
 
   state = {
-    showModal: false,
+    showModal: !!this.props.showThisModal,
     closeModalListener: this.closeModal,
     showModalListener: this.showModal
   };
