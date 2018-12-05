@@ -128,7 +128,6 @@ export const setBankCredentials = bankCredentials => {
         dispatch(actionSuccess(bankCredentials));
       })
       .catch(err => dispatch(actionError(err)));
-    ;
   };
 };
 

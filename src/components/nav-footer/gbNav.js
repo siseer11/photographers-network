@@ -1,6 +1,5 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { SmallLogoSVG } from "../svg/SmallLogoSVG";
 import { LinkLists } from "../LinkLists";
 import { Link } from "react-router-dom";
 import { RightUserOn } from "./RightUserOn";
@@ -8,6 +7,7 @@ import { connect } from "react-redux";
 import { signOutUser } from "../../redux/actions/user-action";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
+import mainLogo from '../../logo.png';
 
 class GbNavBar extends React.Component {
   state = {
@@ -91,9 +91,9 @@ class GbNavBar extends React.Component {
 
     const { showNotificationBox } = this.state;
     return (
-      <div className={`gb-navbar ${this.state.sticky ? "sticky" : ""}`}>
+      <div className={`gb-navbar ${this.state.sticky ? "sticky dark-blue" : ""}`}>
         <Link to={`/${homeLink}`} className="left-content">
-          <SmallLogoSVG classes="gb-icon-medium gb-icon-fill-white" />
+          <img src={mainLogo} alt="logo" className="gb-icon-medium gb-icon-fill-white"/>
         </Link>
         <ul className="right-content">
           <LinkLists
