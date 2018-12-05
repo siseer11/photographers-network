@@ -26,7 +26,7 @@ export const PhotographerContent = ({ photographerData, isOtherUser, siggnedInUs
       </React.Fragment>
     )}
     {
-      hireable &&
+      (hireable && signedInUser.type === "company") &&
       <div className="pink-box">
         <p>There, between rolling hills and the Apennine mountains in the Mugello valley.</p>
         <HireButton

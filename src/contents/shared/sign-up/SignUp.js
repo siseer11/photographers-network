@@ -1,12 +1,17 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { sigUpUser } from "../../../redux/actions/user-action";
-import { actionReset } from "../../../redux/actions/generalLoadingErrorSucces-actions";
+import React, {Component} from "react";
+import {connect} from "react-redux";
+import {Link} from 'react-router-dom';
+import {sigUpUser} from "../../../redux/actions/user-action";
+import {actionReset} from "../../../redux/actions/generalLoadingErrorSucces-actions";
 
-import { SingUpView } from "../../../components/SignUpView";
+import {SingUpView} from "../../../components/SignUpView";
+import {Breadcrumbs} from "./BreadCrumbs";
+import {PhotographerDescription} from "./PhotographerDescription";
+import {OptionalStep} from "./OptionalStep";
 
 class SignUp extends Component {
   state = {
+    currentStep: 0,
     firstName: "",
     lastName: "",
     companyName: "",
@@ -15,7 +20,9 @@ class SignUp extends Component {
     password2: "",
     type: this.props.match.params.type || "photographer",
     locationPlaceholder: "",
-    detailedAddress: {}
+    detailedAddress: {},
+    photographerType: "",
+    showCustomSelect: false
   };
 
   /**
@@ -28,12 +35,13 @@ class SignUp extends Component {
     });
   };
 
+  changeStep = step => {
+    this.setState({currentStep: step});
+  };
+
   optionSelectHandler = type => {
     this.setState({
-      type: type,
-      firstName: "",
-      lastName: "",
-      companyName: ""
+      photographerType: type
     });
   };
 
@@ -67,17 +75,59 @@ class SignUp extends Component {
   }
 
   render() {
+    const {currentStep, type, locationPlaceholder, showCustomSelect, photographerType} = this.state;
+    const {loadingDB, successDB, errorDB} = this.props;
+
+    let component = <div/>;
+    switch (currentStep) {
+      case 0:
+        component = (
+          type === "photographer" ?
+            <PhotographerDescription changeHandler={this.changeStep}/> :
+            <p>Company Description</p>
+        );
+        break;
+      case 1:
+        component = (
+          <SingUpView stepHandler={this.changeStep}
+                      changeHandler={this.handleChange}
+                      {...this.state}
+          />
+        );
+        break;
+      case 2:
+        component = (
+          <OptionalStep locationPlaceholder={locationPlaceholder}
+                        type={type}
+                        photographerType={photographerType}
+                        showCustomSelect={showCustomSelect}
+                        showCustomSelectHandler={this.showCustomSelectHandler}
+                        optionSelectHandler={this.optionSelectHandler}
+                        loadingDB={loadingDB}
+                        successDB={successDB}
+                        handleChange={this.handleChange}
+          />
+        );
+        break;
+    }
     return (
-      <SingUpView
-        signupHandler={this.signup}
-        changeHandler={this.handleChange}
-        showCustomSelectHandler={this.showCustomSelectHandler}
-        optionSelectHandler={this.optionSelectHandler}
-        {...this.state}
-        loadingDB={this.props.loadingDB}
-        errorDB={this.props.errorDB}
-        succesDB={this.props.succesDB}
-      />
+      <React.Fragment>
+        <div className={`image-header ${type}`}>
+          <div className="black-overlay"/>
+          <h1>{type.charAt(0).toUpperCase() + type.substr(1)}</h1>
+        </div>
+        <div className="black-content-section">
+          <Breadcrumbs crumbsAmount={3} activeCrumb={currentStep} clickHandler={this.changeStep}/>
+          <div className="selected-content">
+            <form onSubmit={this.signup}>
+              {component}
+            </form>
+            <p className="terms">Terms & Conditions</p>
+            {errorDB && <div className="error-message">{errorDB.message}</div>}
+          </div>
+          <Link to="/home" className="round-close-btn">+</Link>
+        </div>
+      </React.Fragment>
     );
   }
 }
@@ -86,7 +136,7 @@ const mapStateToProps = state => ({
   auth: state.firebase.auth,
   loadingDB: state.generalLoadingErrorSucces.loading,
   errorDB: state.generalLoadingErrorSucces.error,
-  succesDB: state.generalLoadingErrorSucces.succes
+  successDB: state.generalLoadingErrorSucces.succes
 });
 
 const mapDispatchToProps = dispatch => ({

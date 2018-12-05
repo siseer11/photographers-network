@@ -93,7 +93,8 @@ export const sigUpUser = newUser => {
           userInformations = {
             ...userInformations,
             firstName: newUser.firstName,
-            lastName: newUser.lastName
+            lastName: newUser.lastName,
+            photographerType: newUser.photographerType
           };
         } else {
           userInformations = {
