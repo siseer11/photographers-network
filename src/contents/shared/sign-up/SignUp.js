@@ -109,6 +109,9 @@ class SignUp extends Component {
           />
         );
         break;
+      default:
+        component = <p>No fitting component!</p>;
+        break;
     }
     return (
       <React.Fragment>

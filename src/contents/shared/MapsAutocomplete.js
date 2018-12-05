@@ -136,6 +136,7 @@ export default class LocationSearchInput extends React.Component {
                 <div>
                   <img
                     src='https://github.com/hibiken/react-places-autocomplete/blob/master/demo/images/powered_by_google_default.png?raw=true'
+                    alt="Google Logo"
                     className="dropdown-footer-image"
                   />
                 </div>

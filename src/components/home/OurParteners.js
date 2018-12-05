@@ -1,7 +1,7 @@
 import React from "react";
 import { PartenersList } from "../PartenersList";
 
-export const OurParteners = ({}) => (
+export const OurParteners = () => (
   <div className="text-top-gallery-bottom-section">
     <div className="section-text">
       <h2 className="section-header">How to section</h2>

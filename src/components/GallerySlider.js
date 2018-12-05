@@ -55,7 +55,7 @@ export default class GallerySlider extends React.Component {
         >
           {fakeSlidesData.map((el, idx) => (
             <li
-              className={`gallery-slide ${idx == 0 ? "active" : ""}`}
+              className={`gallery-slide ${idx === 0 ? "active" : ""}`}
               key={idx}
               ref={node => {
                 this.listOfSlides
@@ -89,7 +89,7 @@ export default class GallerySlider extends React.Component {
               this.carousel1Author = node;
             }}
             className="carousel-1-slide-author gb-text-black-opacity-50 gb-paragraph-small"
-            href="#"
+            href="/"
           >
             {fakeSlidesData[0]["slide-author"]}
           </a>
@@ -99,7 +99,7 @@ export default class GallerySlider extends React.Component {
             <li
               key={idx}
               className={`carousel-1-pagination-buble ${
-                idx == 0 ? "active" : ""
+                idx === 0 ? "active" : ""
               }`}
               ref={node => {
                 this.listOfBubbles
