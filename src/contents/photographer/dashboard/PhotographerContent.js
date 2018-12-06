@@ -1,32 +1,49 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { PortofolioGallery } from "../../../components/PortofolioGallery";
 import { PropTypes } from "prop-types";
+import {HireButton} from "../../../components/HireButton";
+import {Link} from "react-router-dom";
+import {ReviewBox} from "../../../components/profile/ReviewBox";
 
-export const PhotographerContent = ({ photographerData, isOtherUser }) => (
+export const PhotographerContent = ({ photographerData, isOtherUser, siggnedInUser: signedInUser, uid, finishedJobs, hireable }) => (
   <React.Fragment>
+    <div className="flex-container-space">
+      <div>
+        <span className="big-num">{finishedJobs}</span>
+        <span className="light-blue">Jobs <br/>done</span>
+      </div>
+      <Link
+        to="/dashboard"
+        className="gb-btn gb-btn-small gb-btn-primary gb-btn-white"
+      >
+        See the projects
+      </Link>
+    </div>
     {photographerData.portfolio && photographerData.portfolio.length > 0 && (
       <React.Fragment>
-        <h2>Portfolio</h2>
+        <h2 className="black-header-portfolio">Portfolio</h2>
         <PortofolioGallery photosList={photographerData.portfolio} />
       </React.Fragment>
     )}
-    {!isOtherUser && <OwnPhotographerProfile />}
+    {
+      (hireable && signedInUser.type === "company") &&
+      <div className="pink-box">
+        <p>There, between rolling hills and the Apennine mountains in the Mugello valley.</p>
+        <HireButton
+          classes="hire-button"
+          photographerData={photographerData}
+          siggnedInUser={signedInUser}
+          uid={uid}
+          photographerName={`${photographerData.firstName} ${photographerData.lastName}`}
+        />
+      </div>
+    }
+    <ReviewBox title="Last review"
+               userImageURL="https://images.askmen.com/1080x540/2016/01/25-021526-facebook_profile_picture_affects_chances_of_getting_hired.jpg"
+               name="John Doe"
+               quote="New battery for smartphones can be charged in a minute"
+    />
   </React.Fragment>
-);
-
-const OwnPhotographerProfile = () => (
-  <div className="section-content normalized">
-    <h3>Job Offers</h3>
-    <Link to="/" className="gb-btn gb-btn-medium gb-btn-primary">
-      See all job offers...
-    </Link>
-    <h3>My Jobs</h3>
-    <p>Here are my jobs</p>
-    <Link to="/my-jobs" className="gb-btn gb-btn-medium gb-btn-primary">
-      View all of my jobs
-    </Link>
-  </div>
 );
 
 PhotographerContent.propTypes = {
