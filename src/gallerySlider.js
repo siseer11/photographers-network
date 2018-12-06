@@ -39,7 +39,7 @@ export const initSlider = (
       lastActiveSlide.classList.remove("active");
 
       activeSlide = Number(el.dataset.index);
-      if (activeSlide == 0) {
+      if (activeSlide === 0) {
         sliderHolder.style.transform = `translateX(15%)`;
       } else {
         sliderHolder.style.transform = `translateX(-${55 +
@@ -53,7 +53,7 @@ export const initSlider = (
 
   //when the image is done sliding, let the user click again, show next text info
   sliderHolder.addEventListener("transitionend", e => {
-    if (e.srcElement != sliderHolder || e.propertyName != "transform") return;
+    if (e.srcElement !== sliderHolder || e.propertyName !== "transform") return;
     slides[activeSlide].classList.add("active");
     clickable = true;
 
@@ -85,7 +85,7 @@ export const initSlider = (
     const elIdx = slides.indexOf(parent);
     const cover = el;
     el.addEventListener("click", e => {
-      if (parent.classList.contains("active") || parent == lastActiveSlide) {
+      if (parent.classList.contains("active") || parent === lastActiveSlide) {
         return;
       }
 
@@ -155,7 +155,7 @@ export const initSlider = (
   let debouncedMouseMoveListener = debounce(mouseMoveListener); // listener debounced
 
   const getFirstTouchPosition = e => {
-    if (firstTouchAt == undefined) {
+    if (firstTouchAt === undefined) {
       //if we have not seted the firstTouch do it, just once perTouch
       if (e.changedTouches) {
         firstTouchAt = e.changedTouches[0].clientX;
@@ -193,45 +193,3 @@ export const initSlider = (
     });
   });
 };
-
-// const createVideo = (parent , link , id , cover) => {
-// 	let d = document.createElement('video');
-// 	d.id = `video-${id}`;
-// 	d.classList.add('my-videos' , 'video-js' , 'vjs-default-skin');
-// 	parent.appendChild(d);
-
-// 	let player = videojs(`video-${id}` , {
-// 		controls : true,
-// 		techOrder : ['youtube'] ,
-// 		sources : [{ "type": "video/youtube", "src": link}],
-// 		youtube : { "iv_load_policy": 1 }
-// 	  }, function onPlayerReady() {
-
-// 		//autoplay video on load just if the parent is still active
-// 		if(parent.classList.contains('active'))this.play();
-
-// 		// When the video is paused show the cover
-// 		this.on('pause', function() {
-// 			cover.classList.remove('hidden');
-// 		});
-
-// 		// When the video is played hide the cover
-// 		this.on('play', function() {
-// 			if(!parent.classList.contains('active')){
-// 				this.pause();
-// 			}else{
-// 				cover.classList.add('hidden');
-// 			}
-
-// 			parent.classList.remove('loading');
-
-// 		});
-// 	});
-
-// 	videosHolder[`video-${id}`] = {
-// 		videoPlayer: player,
-// 		parent : parent
-
-// 	}
-
-// }
