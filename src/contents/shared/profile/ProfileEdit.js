@@ -11,9 +11,7 @@ class ProfileEdit extends React.Component {
     lastName: this.props.lastName,
     locationPlaceholder: this.props.locationString,
     detailedAddress: null,
-    companyName: this.props.companyName,
-    iban: this.props.iban,
-    bic: this.props.bic
+    companyName: this.props.companyName
   };
 
   /**
@@ -30,7 +28,7 @@ class ProfileEdit extends React.Component {
    */
   updateUser = e => {
     e.preventDefault();
-    let { firstName, lastName, detailedAddress, companyName, iban, bic } = this.state;
+    let { firstName, lastName, detailedAddress, companyName } = this.state;
     const {
       type,
       updateUserData,
@@ -46,9 +44,7 @@ class ProfileEdit extends React.Component {
       companyName,
       type,
       homeAddressId,
-      allLocations,
-      iban,
-      bic
+      allLocations
     ).then(() => history.push("/dashboard"));
   };
 
@@ -99,8 +95,6 @@ const mapStateToProps = state => {
     }
   }
 
-  const bank = userData.bankCredentials;
-
   return {
     allLocations: allLocations,
     firstName: userData.firstName,
@@ -111,8 +105,6 @@ const mapStateToProps = state => {
     photoURL: userData.profileImageUrl,
     type: userData.type,
     companyName: userData.companyName,
-    iban: bank ? bank.iban : "",
-    bic: bank ? bank.bic : "",
     uid: state.firebase.auth.uid
   };
 };
@@ -125,9 +117,7 @@ const mapDispatchToProps = dispatch => ({
     companyName,
     type,
     homeAddressId,
-    allLocations,
-    iban,
-    bic
+    allLocations
   ) =>
     dispatch(
       updateUserInfo(
@@ -137,9 +127,7 @@ const mapDispatchToProps = dispatch => ({
         companyName,
         type,
         homeAddressId,
-        allLocations,
-        iban,
-        bic
+        allLocations
       )
     ),
   actionReset: () => dispatch(actionReset())
