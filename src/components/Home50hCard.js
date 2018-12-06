@@ -1,5 +1,6 @@
 import React from "react";
 import { RoundExpandButton } from "./svg/RoundExpandButton";
+import PropTypes from "prop-types";
 
 export const Home50hCard = ({
   backgroundUrl,
@@ -25,12 +26,8 @@ export const Home50hCard = ({
   </div>
 );
 
-/*
-	type,
-	aboutType,
-	modalHandler,
-	showModal,
-	modalLink,
-	modalButtonValue,
- modalList
- */
+Home50hCard.propTypes = {
+  backgroundUrl: PropTypes.string,
+  titleContent: PropTypes.string,
+  paragraphContent: PropTypes.string
+};
