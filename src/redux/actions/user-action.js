@@ -2,7 +2,7 @@ import fire from "../../config/Fire";
 import {
   actionStarted,
   actionError,
-  actionSuccess
+  actionSuccess,
 } from "./generalLoadingErrorSucces-actions";
 
 // -------------------- ASYNC ACTIONS THUNK -------------------- //
@@ -58,7 +58,7 @@ export function signUserInAsync(email, password) {
  * @returns {function(*, *, {getFirebase: *, getFirestore: *})}
  */
 export const sigUpUser = newUser => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
+  return (dispatch, getState, {getFirebase, getFirestore}) => {
     dispatch(actionStarted());
 
     const firebase = getFirebase();

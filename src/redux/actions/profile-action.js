@@ -131,6 +131,20 @@ export const setBankCredentials = bankCredentials => {
   };
 };
 
+export const setDescription = description => {
+  return (dispatch, getState, {getFirestore}) => {
+    const firestore = getFirestore();
+    return firestore
+      .collection("users")
+      .doc(getState().firebase.auth.uid)
+      .update({description})
+      .then(() => {
+        dispatch(actionSuccess(description));
+      })
+      .catch(err => dispatch(actionError(err)));
+  }
+};
+
 /**
  * Make a photographer premium
  * @param uid

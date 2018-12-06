@@ -11,7 +11,6 @@ class ProfileEdit extends React.Component {
     lastName: this.props.lastName,
     locationPlaceholder: this.props.locationString,
     detailedAddress: null,
-    photoURL: this.props.photoURL,
     companyName: this.props.companyName,
     iban: this.props.iban,
     bic: this.props.bic
@@ -68,13 +67,14 @@ class ProfileEdit extends React.Component {
   }
 
   render() {
-    const { type, uid } = this.props;
+    const { type, uid, photoURL } = this.props;
     return (
       <ProfileEditView
         updateUserHandler={this.updateUser}
         changeHandler={this.handleChange}
         type={type}
         uid={uid}
+        photoURL={photoURL}
         {...this.state}
       />
     );
