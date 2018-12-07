@@ -1,11 +1,11 @@
 import React from "react";
-import {PhotographerContent} from "../../photographer/dashboard/PhotographerContent";
+import {PhotographerContent} from "../../photographer/profile/PhotographerContent";
 import {HireButton} from "../../../components/HireButton";
 import {Link} from "react-router-dom";
 import {PencilSVG} from "../../../components/svg/PencilSVG";
 import ProfileDescription from "./ProfileDescription";
 
-export const ProfileContent = ({thisProfileData, currentUserData, currentUserId, otherUser, finishedJobs}) => (
+export const ProfileContent = ({reviews, thisProfileData, currentUserData, currentUserId, otherUser, finishedJobs}) => (
   <div className="profile-content">
     <h1>{thisProfileData.companyName ||
     `${thisProfileData.firstName} ${thisProfileData.lastName}`}</h1>
@@ -46,6 +46,7 @@ export const ProfileContent = ({thisProfileData, currentUserData, currentUserId,
         uid={currentUserId}
         finishedJobs={finishedJobs}
         hireable={thisProfileData.hireable}
+        reviews={reviews}
       />
     ) : (
       <div>Rest of the company content</div>

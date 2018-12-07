@@ -1,7 +1,7 @@
 import React from "react";
 import { PropTypes } from "prop-types";
 
-import { CustomSelect } from "../../../components/CustomSelect";
+import { CustomSelect } from "../../../components/form/CustomSelect";
 import { InputField } from "../../../components/form/InputField";
 import { NameInputSVG } from "../../../components/svg/NameInputSVG";
 import { MoneySVG } from "../../../components/svg/MoneySVG";

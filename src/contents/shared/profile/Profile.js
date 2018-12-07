@@ -8,10 +8,10 @@ import {firestoreConnect, isLoaded, isEmpty} from "react-redux-firebase";
 import {ProfileCard} from "../../../components/ProfileCard";
 import {ProfileContent} from "./ProfileContent";
 
-const Profile = ({match, profileData, currentUserData, currentUserId, finishedJobs}) => {
+const Profile = ({match, profileData, reviews, currentUserData, currentUserId, finishedJobs}) => {
   const profileId = match.params.uid;
 
-  if (!isLoaded(profileData)) {
+  if (!isLoaded(profileData) || !isLoaded(reviews)) {
     return <h2>Loading..</h2>;
   } else if (!isLoaded(profileData[profileId])) {
     return <h2>Loading...</h2>;
@@ -32,6 +32,7 @@ const Profile = ({match, profileData, currentUserData, currentUserId, finishedJo
                       currentUserId={currentUserId}
                       otherUser={otherUser}
                       finishedJobs={finishedJobs}
+                      reviews={reviews}
       />
     </div>
   );
@@ -43,7 +44,8 @@ const mapStateToProps = state => {
     profileData: state.firestore.data.users,
     currentUserData: state.firebase.profile,
     currentUserId: state.firebase.auth.uid,
-    finishedJobs: jobOffers ? jobOffers.length : 0
+    finishedJobs: jobOffers ? jobOffers.length : 0,
+    reviews: state.firestore.ordered.reviews
   };
 };
 
@@ -58,6 +60,10 @@ export default compose(
       {
         collection: "jobOffers",
         where: [["photographer.uid", "==", props.match.params.uid], ["status", "==", "closed"]],
+      },
+      {
+        collection: "reviews",
+        where: ["receiverData.uid", "==", props.match.params.uid]
       }
     ];
   })

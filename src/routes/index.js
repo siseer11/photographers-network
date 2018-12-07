@@ -19,6 +19,9 @@ import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
 import AdminDashboard from "../contents/admin/AdminDashboard";
 import Payouts from "../contents/shared/payouts/Payouts";
 import {GbFooter} from "../components/nav-footer/Footer";
+import Review from "../contents/shared/single-job/Review";
+import AllReviews from "../contents/shared/reviews/AllReviews";
+import FinishedJobs from "../contents/photographer/finished-jobs/FinishedJobs";
 
 export default ({userOn, userType}) => (
   <BrowserRouter>
@@ -141,6 +144,27 @@ export default ({userOn, userType}) => (
           path="/submit-work/:jobid"
           render={props =>
             userOn ? <SubmitWork {...props} /> : <Redirect to="/signin"/>
+          }
+        />
+        <Route
+          exact
+          path="/review/:jobid"
+          render={props =>
+            userOn ? <Review {...props}/> : <Redirect to="/signin"/>
+          }
+        />
+        <Route
+          exact
+          path="/reviews/:uid"
+          render={props =>
+            userOn ? <AllReviews {...props}/> : <Redirect to="/signin"/>
+          }
+        />
+        <Route
+          exact
+          path="/finished-jobs/:uid"
+          render={props =>
+            userOn ? <FinishedJobs {...props}/> : <Redirect to="/signin"/>
           }
         />
         <Redirect to="/home"/>
