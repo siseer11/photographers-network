@@ -101,9 +101,7 @@
   color: white;
 }
 
-.section-content.search-photographer,
-.section-content.single-job-view,
-.section-content.with-padding {
+.section-content.search-photographer, .section-content.single-job-view, .section-content.with-padding {
   padding-top: 80px;
   min-height: calc(100vh - 150px);
 }
@@ -192,7 +190,8 @@
 }
 
 div.black {
-  margin: 20px 60px;
+  width: 225px;
+  margin: 20px 0;
   font-size: 12px;
 }
 
@@ -270,13 +269,12 @@ p.profile-desc {
 }
 
 .error-message {
-  border: 1px solid darkred;
-  background-color: rgba(255, 125, 102, 0.94);
-  color: darkred;
+  color: #ea0a0a;
   padding: 10px;
   margin: 10px auto;
   width: 150px;
-  font-size: 12px;
+  font-size: 10px;
+  text-align: center;
 }
 
 /**
@@ -293,8 +291,7 @@ Notifications
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.notification-container:after,
-.notification-container:before {
+.notification-container:after, .notification-container:before {
   bottom: 100%;
   right: 55px;
   border: solid transparent;
@@ -464,10 +461,7 @@ Notifications
 }
 
 @keyframes lds-default {
-  0%,
-  20%,
-  80%,
-  100% {
+  0%, 20%, 80%, 100% {
     transform: scale(1);
   }
   50% {
@@ -752,11 +746,11 @@ p.filter-by:hover {
   justify-content: center;
 }
 
-.add-image-modal > div > button {
+.add-image-modal>div>button {
   height: 30px;
 }
 
-.add-image-modal > div {
+.add-image-modal>div {
   height: 200px;
   display: flex;
   flex-direction: column;
@@ -1078,7 +1072,7 @@ li.openjobitem {
   cursor: pointer;
 }
 
-.gb-navbar .right-content > * {
+.gb-navbar .right-content>* {
   cursor: pointer;
 }
 
@@ -1119,6 +1113,29 @@ li.openjobitem {
 .premium-flag .gb-icon-medium {
   height: 15px;
   width: 15px;
+}
+
+.black .btn {
+  margin: 5px auto;
+  background-color: #dedbdb;
+  border: none;
+  padding: 3px;
+  width: 120px;
+  font-size: 12px;
+  display: block;
+}
+
+.profile-desc-area {
+  resize: both;
+  font-size: 12px;
+  border: 1px solid #c7c7c7;
+  width: 225px;
+  min-height: 50px;
+  padding: 5px;
+}
+
+.profile-desc-area:focus {
+  outline-color: white;
 }
 
 .pink-box {
@@ -1185,6 +1202,7 @@ li.openjobitem {
 }
 
 /* Home50hCard start */
+
 .gb-home-50h-card {
   height: 50vh;
   background-position: center;
@@ -1284,3 +1302,228 @@ li.openjobitem {
 .gb-background-grey {
   background-color: #969696;
 }
+
+.bread-crumb-container {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+  margin: auto;
+}
+
+/* bread crumbs start */
+
+.bread-crumb {
+  width: 5px;
+  height: 5px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.bread-crumb:hover {
+  cursor: pointer;
+}
+
+.bread-crumb.active {
+  position: relative;
+}
+
+.bread-crumb.active:after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 50%;
+  border: #ffffff30 1px solid;
+}
+
+.space-line {
+  height: 1px;
+  width: 55px;
+  background-color: #ffffff30;
+}
+
+/* bread crumbs end */
+
+/* sign up area */
+
+.image-header {
+  position: relative;
+  height: 150px;
+  background-size: cover;
+  color: white;
+}
+
+.image-header .black-overlay {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: #000000bd;
+}
+
+.image-header h1 {
+  position: absolute;
+  text-align: center;
+  z-index: 2;
+  font-size: 22px;
+  left: 0;
+  right: 0;
+  bottom: 25px;
+}
+
+.image-header.photographer {
+  background-image: url('https://image.shutterstock.com/z/stock-photo-nature-photography-concepts-professional-photographer-1095016859.jpg');
+}
+
+.black-content-section {
+  position: relative;
+  background-color: black;
+  color: white;
+  min-height: calc(100vh - 150px);
+  padding: 30px 30px 65px 30px;
+  box-sizing: border-box;
+}
+
+.black-content-section .selected-content {
+  margin-top: 50px;
+}
+
+.round-close-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  padding: 10px;
+  border: 3px solid white;
+  font-weight: 800;
+  border-radius: 50%;
+  height: 12px;
+  width: 12px;
+  -webkit-transform: rotate(136deg);
+  transform: rotate(136deg);
+  transition: ease .5s;
+}
+
+.round-close-btn:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.27);
+}
+
+.black-content-section .selected-content p {
+  font-weight: 500;
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.black-content-section .selected-content p.small {
+  font-size: 10px;
+  margin-bottom: 25px;
+}
+
+.black-content-section .selected-content .highlight {
+  color: #fffab3;
+  font-style: italic;
+}
+
+.black-content-section .selected-content .terms {
+  font-size: 8px;
+  font-weight: 400;
+  color: grey;
+}
+
+.black-content-section .selected-content .gb-text-input-trans-background {
+  font-size: 11px;
+  max-width: 220px;
+  height: 40px;
+}
+
+.black-content-section .selected-content .inputLabel {
+  max-width: 220px;
+}
+
+.black-content-section .selected-content .inputIcon.dropdown-arrow {
+  right: 15px;
+  left: unset;
+  pointer-events: none;
+}
+
+.black-content-section .selected-content .inputIcon {
+  left: 25px;
+  height: 20px;
+  width: 20px;
+}
+
+.gb-btn-black {
+  width: 220px;
+  height: 40px;
+  margin: 20px auto;
+  background-color: black;
+  color: white;
+  border: 1px solid grey;
+  font-size: 10px;
+}
+
+.white-text-link {
+  display: block;
+  padding-top: 11px;
+  font-size: 8px;
+  font-weight: 500;
+  font-style: italic;
+  margin: auto;
+  border: none;
+  background: none;
+  color: white;
+}
+
+.white-text-link:hover {
+  cursor: pointer;
+}
+
+/* sign up area end */
+
+/*Google autocomplete */
+
+.autocomplete-dropdown-container {
+  font-size: 12px;
+  border-bottom: honeydew;
+  border-left: honeydew;
+  border-right: honeydew;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 0 0 2px 2px;
+  max-height: 300px;
+}
+
+.suggestion-item, .suggestion-item--active {
+  padding: 8px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.suggestion-item {
+  background-color: #fff;
+}
+
+.suggestion-item--active {
+  background-color: #fafafa;
+}
+
+.dropdown-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px;
+  background-color: white;
+}
+
+.dropdown-footer-image {
+  display: inline-block;
+  width: 100px;
+}
+
+/*Google autocomplete end */
