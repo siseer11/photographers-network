@@ -1,14 +1,20 @@
 // dependencies
 import React from "react";
-import {connect} from "react-redux";
-import {compose} from "redux";
-import {firestoreConnect, isLoaded, isEmpty} from "react-redux-firebase";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { firestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
 
 // components
-import {ProfileCard} from "../../../components/ProfileCard";
-import {ProfileContent} from "./ProfileContent";
+import { ProfileCard } from "../../../components/ProfileCard";
+import { ProfileContent } from "./ProfileContent";
 
-const Profile = ({match, profileData, currentUserData, currentUserId, finishedJobs}) => {
+const Profile = ({
+  match,
+  profileData,
+  currentUserData,
+  currentUserId,
+  finishedJobs
+}) => {
   const profileId = match.params.uid;
 
   if (!isLoaded(profileData)) {
@@ -26,12 +32,13 @@ const Profile = ({match, profileData, currentUserData, currentUserId, finishedJo
 
   return (
     <div className="profile">
-      <ProfileCard {...thisProfileData} siggnedInUser={currentUserData}/>
-      <ProfileContent thisProfileData={thisProfileData}
-                      currentUserData={currentUserData}
-                      currentUserId={currentUserId}
-                      otherUser={otherUser}
-                      finishedJobs={finishedJobs}
+      <ProfileCard {...thisProfileData} siggnedInUser={currentUserData} />
+      <ProfileContent
+        thisProfileData={thisProfileData}
+        currentUserData={currentUserData}
+        currentUserId={currentUserId}
+        otherUser={otherUser}
+        finishedJobs={finishedJobs}
       />
     </div>
   );
@@ -57,7 +64,10 @@ export default compose(
       },
       {
         collection: "jobOffers",
-        where: [["photographer.uid", "==", props.match.params.uid], ["status", "==", "closed"]],
+        where: [
+          ["photographer.uid", "==", props.match.params.uid],
+          ["status", "==", "closed"]
+        ]
       }
     ];
   })
