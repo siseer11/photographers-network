@@ -1,16 +1,25 @@
 import React from "react";
 import { PortofolioGallery } from "../../../components/PortofolioGallery";
 import { PropTypes } from "prop-types";
-import {HireButton} from "../../../components/HireButton";
-import {Link} from "react-router-dom";
-import {ReviewBox} from "../../../components/profile/ReviewBox";
+import { HireButton } from "../../../components/HireButton";
+import { Link } from "react-router-dom";
+import { ReviewBox } from "../../../components/profile/ReviewBox";
 
-export const PhotographerContent = ({ photographerData, isOtherUser, siggnedInUser: signedInUser, uid, finishedJobs, hireable }) => (
+export const PhotographerContent = ({
+  photographerData,
+  siggnedInUser: signedInUser,
+  uid,
+  finishedJobs,
+  hireable
+}) => (
   <React.Fragment>
     <div className="flex-container-space">
       <div>
         <span className="big-num">{finishedJobs}</span>
-        <span className="light-blue">Jobs <br/>done</span>
+        <span className="light-blue">
+          Jobs <br />
+          done
+        </span>
       </div>
       <Link
         to="/dashboard"
@@ -25,23 +34,28 @@ export const PhotographerContent = ({ photographerData, isOtherUser, siggnedInUs
         <PortofolioGallery photosList={photographerData.portfolio} />
       </React.Fragment>
     )}
-    {
-      hireable &&
+    {hireable && signedInUser.type === "company" && (
       <div className="pink-box">
-        <p>There, between rolling hills and the Apennine mountains in the Mugello valley.</p>
+        <p>
+          There, between rolling hills and the Apennine mountains in the Mugello
+          valley.
+        </p>
         <HireButton
           classes="hire-button"
           photographerData={photographerData}
           siggnedInUser={signedInUser}
           uid={uid}
-          photographerName={`${photographerData.firstName} ${photographerData.lastName}`}
+          photographerName={`${photographerData.firstName} ${
+            photographerData.lastName
+          }`}
         />
       </div>
-    }
-    <ReviewBox title="Last review"
-               userImageURL="https://images.askmen.com/1080x540/2016/01/25-021526-facebook_profile_picture_affects_chances_of_getting_hired.jpg"
-               name="John Doe"
-               quote="New battery for smartphones can be charged in a minute"
+    )}
+    <ReviewBox
+      title="Last review"
+      userImageURL="https://images.askmen.com/1080x540/2016/01/25-021526-facebook_profile_picture_affects_chances_of_getting_hired.jpg"
+      name="John Doe"
+      quote="New battery for smartphones can be charged in a minute"
     />
   </React.Fragment>
 );

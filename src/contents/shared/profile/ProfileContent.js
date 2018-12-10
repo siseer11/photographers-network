@@ -13,7 +13,7 @@ export const ProfileContent = ({
   finishedJobs
 }) => (
   <div className="profile-content">
-    <h1>
+    <h1 className="profile-name">
       {thisProfileData.companyName ||
         `${thisProfileData.firstName} ${thisProfileData.lastName}`}
     </h1>
@@ -41,6 +41,7 @@ export const ProfileContent = ({
       <Link
         to="/ProfileEdit"
         className="gb-btn gb-btn-small gb-btn-primary gb-btn-white"
+        id="edit-profile-link"
       >
         Edit Profile <PencilSVG classes="gb-icon-medium gb-icon-fill-white" />
       </Link>
@@ -66,7 +67,7 @@ export const ProfileContent = ({
         hireable={thisProfileData.hireable}
       />
     ) : (
-      <div>Rest of the company content</div>
+      <div className="company-details">Rest of the company content</div>
     )}
   </div>
 );
