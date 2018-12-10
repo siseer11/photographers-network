@@ -17,13 +17,7 @@ class Payouts extends React.Component {
   };
 
   cashOut = total => {
-    if (total < 200)
-      this.setState({error: "You must have an amount of at least 200€ to cash out!"});
-    else {
-      if (!this.props.profile.bankCredentials) {
-        this.setState({showModal: true});
-      }
-    }
+    this.setState({showModal: true});
   };
 
   afterClose = () => {
@@ -32,6 +26,7 @@ class Payouts extends React.Component {
 
   render() {
     const {match, jobOffers, profile, auth} = this.props;
+    const bank = profile.bankCredentials;
 
     if (profile.type !== match.params.type) return <Redirect to={`payouts/${profile.type}`}/>;
     if (!isLoaded(jobOffers)) return <LoadingPage/>;
@@ -60,16 +55,25 @@ class Payouts extends React.Component {
                 }
               </ul>
               <hr/>
-              <p><b>Total: </b>{total} €</p>
-              <button onClick={() => this.cashOut(total)}
-                      className="gb-btn gb-btn-medium gb-btn-primary">
-                Cash out
-              </button>
+              <p>
+                <b>Total: </b>{total} € <br/>
+                <span>(Insurance amount included.)</span>
+              </p>
+              <p>We do our payouts monthly. If your total amount is below 200€, we won't pay you.</p>
+              {
+                (!bank || bank.iban === "" || bank.bic === "") &&
+                <React.Fragment>
+                  <p>You didn't add your bank credentials yet. Please press the button to add your details.</p>
+                  <button onClick={() => this.cashOut(total)}
+                          className="gb-btn gb-btn-medium gb-btn-primary">
+                    Add
+                  </button>
+                </React.Fragment>
+              }
               {
                 this.state.showModal &&
-                  <CredentialsInput closeHandler={() => this.showModal(false)}/>
+                <CredentialsInput closeHandler={() => this.showModal(false)}/>
               }
-              <p><b>Note: </b>Insurance amount included.</p>
               {this.state.error !== "" && <p className="error-message">{this.state.error}</p>}
             </React.Fragment> :
             <h1>Company payouts</h1>
@@ -93,3 +97,7 @@ export default compose(
   ),
   connect(mapStateToProps)
 )(Payouts);
+
+/*
+
+ */

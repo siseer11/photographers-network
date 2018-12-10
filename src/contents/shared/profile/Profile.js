@@ -8,7 +8,11 @@ import { firestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
 import { ProfileCard } from "../../../components/ProfileCard";
 import { ProfileContent } from "./ProfileContent";
 
-const Profile = ({
+const s = {
+  "7bKYHXSV9AWtLuVc8bK9VFV900S2": null
+};
+
+export const Profile = ({
   match,
   profileData,
   currentUserData,
@@ -16,15 +20,14 @@ const Profile = ({
   finishedJobs
 }) => {
   const profileId = match.params.uid;
-
   if (!isLoaded(profileData)) {
-    return <h2>Loading..</h2>;
-  } else if (!isLoaded(profileData[profileId])) {
-    return <h2>Loading...</h2>;
+    return <h2 className="loading">Loading..</h2>;
+  } else if (profileData && !isLoaded(profileData[profileId])) {
+    return <h2 className="loading person-data-not-loaded">Loading...</h2>;
   }
 
-  if (isEmpty(profileData)) {
-    return <h2>No data for this id</h2>;
+  if (isEmpty(profileData[profileId])) {
+    return <h2 className="no-data">No data for this id.</h2>;
   }
 
   const otherUser = currentUserId !== profileId;

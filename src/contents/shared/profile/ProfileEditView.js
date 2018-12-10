@@ -59,26 +59,6 @@ export const ProfileEditView = ({
         locationPlaceholder={locationPlaceholder}
         changeHandler={changeHandler}
       />
-      <InputField
-        svg={
-          <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-        }
-        value={iban}
-        changeHandler={changeHandler}
-        type="text"
-        name="iban"
-        placeholder="Change your IBAN"
-      />
-      <InputField
-        svg={
-          <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
-        }
-        value={bic}
-        changeHandler={changeHandler}
-        type="text"
-        name="bic"
-        placeholder="Change your BIC"
-      />
       <p>change photo:</p>
       <AvatarInput uid={uid} userAvatar={photoURL} name="avatar" />
       <div className="btn-container">
