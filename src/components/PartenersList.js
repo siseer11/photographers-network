@@ -32,16 +32,8 @@ export const PartenersList = () => (
   <React.Fragment>
     <div className="gb-images-inline-container gb-margin-bottom-40">
       {parteners.map((el, idx) => (
-<<<<<<< HEAD
         <div key={idx} className="gb-images-inline">
           <a target="_blank" href={el.link}>
-||||||| merged common ancestors
-        <div class="gb-images-inline">
-          <a target="_blank" href={el.link}>
-=======
-        <div key={idx} className="gb-images-inline">
-          <a target="_blank" rel="noopener noreferrer" href={el.link}>
->>>>>>> 8b7e1d7e5a1086319a93916481ed42541ae1280f
             <img src={el.img} alt={el.alt} />
           </a>
         </div>
@@ -49,28 +41,3 @@ export const PartenersList = () => (
     </div>
   </React.Fragment>
 );
-
-/*
-
-     
-    </div>
-    <div class="gb-images-inline">
-      <a target="_blank" href="https://www.kth.se/">
-        <img src="images/KTH-partner.png" alt="KTH logo">
-      </a>
-    </div>
-    <div class="gb-images-inline">
-      <a target="_blank" href="http://www.friidesigns.com">
-        <img src="images/Frii-Designs-partner.png" alt="Frii design logo">
-      </a>
-    </div>
-    <div class="gb-images-inline">
-      <a target="_blank" href="https://www.vikingline.fi/">
-        <img src="images/viking-line-partner.png" alt="Vikingline logo">
-      </a>
-    </div>
-    <div class="gb-images-inline">
-      <a target="_blank" href="https://mightynetworks.com/">
-        <img src="images/mighty-network-partner.png" alt="Mighty network logo">
-      </a>
-      */

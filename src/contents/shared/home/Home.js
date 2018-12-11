@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Home50hCard } from "../../../components/Home50hCard";
+import Home50hCard from "../../../components/Home50hCard";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { TextTopGalleryBottomSection } from "../../../components/home/TextTopGalleryBottomSection";
