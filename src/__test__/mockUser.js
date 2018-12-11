@@ -7,7 +7,9 @@ export default function makeUser({
   hireable = true,
   premium = true,
   companyName = "S.co",
-  home = true
+  home = true,
+  finishedJobs = 0,
+  portfolio = []
 }) {
   class User {
     constructor() {
@@ -38,7 +40,8 @@ export default function makeUser({
         this.type = "photographer";
         this.hireable = hireable;
         this.premium = premium;
-        this.finishedJobs = 0;
+        this.portfolio = portfolio;
+        this.finishedJobs = finishedJobs;
       }
     }
     return new Photographer();

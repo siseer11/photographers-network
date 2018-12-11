@@ -28,9 +28,12 @@ export default class WithModal extends React.Component {
     };
 
     if (lastState === false) {
+      //Show modal, by setting showModal : true
       this.showModal();
+
+      //If closeItemClass was not specified, we want to close the modal wherever the user clicks
+      // for this we have to add an eventListener on the window
       if (!closeItemClass) {
-        //if the item is closing whenever a user press somewhere on the window
         window.setTimeout(
           () => window.addEventListener("click", closeModalRemoveListener),
           0
