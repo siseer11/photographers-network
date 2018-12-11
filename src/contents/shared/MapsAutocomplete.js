@@ -2,6 +2,7 @@ import React from "react";
 import PlacesAutocomplete, {
   geocodeByAddress
 } from "react-places-autocomplete";
+import {LocationSVG} from "../../components/svg/LocationSVG";
 
 const searchOptions = {
   types: ["address"]
@@ -92,13 +93,15 @@ export default class LocationSearchInput extends React.Component {
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <label className="inputLabel">
+            <LocationSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon"/>
             <input
               name="location"
               {...getInputProps({
-                placeholder: "Search Places ...",
+                placeholder: "Enter your locaction",
                 className: "gb-text-input gb-text-input-trans-background"
               })}
             />
+            {suggestions.length > 0 && (
             <div
               style={{
                 color: "black",
@@ -116,22 +119,30 @@ export default class LocationSearchInput extends React.Component {
                 const className = suggestion.active
                   ? "suggestion-item--active"
                   : "suggestion-item";
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: "#fafafa", cursor: "pointer" }
-                  : { backgroundColor: "#ffffff", cursor: "pointer" };
                 return (
                   <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style
-                    })}
+                    {...getSuggestionItemProps(suggestion, { className })}
                   >
-                    <span>{suggestion.description}</span>
+                    <strong>
+                      {suggestion.formattedSuggestion.mainText}
+                    </strong>{' '}
+                    <small>
+                      {suggestion.formattedSuggestion.secondaryText}
+                    </small>
                   </div>
                 );
               })}
+              <div className="dropdown-footer">
+                <div>
+                  <img
+                    src='https://github.com/hibiken/react-places-autocomplete/blob/master/demo/images/powered_by_google_default.png?raw=true'
+                    alt="Google Logo"
+                    className="dropdown-footer-image"
+                  />
+                </div>
+              </div>
             </div>
+            )}
           </label>
         )}
       </PlacesAutocomplete>

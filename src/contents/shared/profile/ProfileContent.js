@@ -3,7 +3,7 @@ import { PhotographerContent } from "../../photographer/dashboard/PhotographerCo
 import { HireButton } from "../../../components/HireButton";
 import { Link } from "react-router-dom";
 import { PencilSVG } from "../../../components/svg/PencilSVG";
-import PropTypes from "prop-types";
+import ProfileDescription from "./ProfileDescription";
 
 export const ProfileContent = ({
   thisProfileData,
@@ -46,16 +46,10 @@ export const ProfileContent = ({
         Edit Profile <PencilSVG classes="gb-icon-medium gb-icon-fill-white" />
       </Link>
     )}
-    <div className="black">
-      <h3>Description</h3>
-      <p className="profile-desc">
-        There, between rolling hills and the Apennine mountains in the Mugello
-        valley (home to the famous race track) lies Lake Bilancino. There,
-        between rolling hills and the Apennine mountains in the Mugello valley.
-        There, between rolling hills and the Apennine mountains in the Mugello
-        valley (home to the famous race track) lies Lake Bilancino.
-      </p>
-    </div>
+    <ProfileDescription
+      description={thisProfileData.description}
+      otherUser={otherUser}
+    />
 
     {thisProfileData.type === "photographer" ? (
       <PhotographerContent

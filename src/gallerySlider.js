@@ -83,8 +83,7 @@ export const initSlider = (
   document.querySelectorAll(".carousel-1-image-item").forEach(el => {
     let parent = el.parentElement;
     const elIdx = slides.indexOf(parent);
-    const cover = el;
-    el.addEventListener("click", e => {
+    el.addEventListener("click", () => {
       if (parent.classList.contains("active") || parent === lastActiveSlide) {
         return;
       }

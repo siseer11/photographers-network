@@ -28,12 +28,20 @@ const parteners = [
   }
 ];
 
-export const PartenersList = ({}) => (
+export const PartenersList = () => (
   <React.Fragment>
     <div className="gb-images-inline-container gb-margin-bottom-40">
       {parteners.map((el, idx) => (
+<<<<<<< HEAD
         <div key={idx} className="gb-images-inline">
           <a target="_blank" href={el.link}>
+||||||| merged common ancestors
+        <div class="gb-images-inline">
+          <a target="_blank" href={el.link}>
+=======
+        <div key={idx} className="gb-images-inline">
+          <a target="_blank" rel="noopener noreferrer" href={el.link}>
+>>>>>>> 8b7e1d7e5a1086319a93916481ed42541ae1280f
             <img src={el.img} alt={el.alt} />
           </a>
         </div>
