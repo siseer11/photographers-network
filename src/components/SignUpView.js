@@ -1,38 +1,38 @@
 import React from "react";
-import {Spring} from 'react-spring'
+import { Spring } from "react-spring";
 
-import {EmailSVG} from "./svg/EmailSVG";
-import {PasswordSVG} from "./svg/PasswordSVG";
-import {NameInputSVG} from "./svg/NameInputSVG";
-import {InputField} from "./form/InputField";
+import { EmailSVG } from "./svg/EmailSVG";
+import { PasswordSVG } from "./svg/PasswordSVG";
+import { NameInputSVG } from "./svg/NameInputSVG";
+import { InputField } from "./form/InputField";
 import PropTypes from "prop-types";
 
 export const SingUpView = ({
-                             stepHandler,
-                             loadingDB,
-                             succesDB,
-                             showCustomSelect,
-                             signupHandler,
-                             firstName,
-                             lastName,
-                             changeHandler,
-                             password,
-                             password2,
-                             locationPlaceholder,
-                             showCustomSelectHandler,
-                             optionSelectHandler,
-                             type,
-                             email,
-                             companyName
-                           }) => (
-  <Spring delay={100} from={{opacity: 0}} to={{opacity: 1}}>
-    {props =>
+  stepHandler,
+  loadingDB,
+  succesDB,
+  showCustomSelect,
+  signupHandler,
+  firstName,
+  lastName,
+  changeHandler,
+  password,
+  password2,
+  locationPlaceholder,
+  showCustomSelectHandler,
+  optionSelectHandler,
+  type,
+  email,
+  companyName
+}) => (
+  <Spring delay={100} from={{ opacity: 0 }} to={{ opacity: 1 }}>
+    {props => (
       <div style={props}>
         {type === "photographer" ? (
           <div>
             <InputField
               svg={
-                <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+                <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
               }
               value={firstName}
               changeHandler={changeHandler}
@@ -42,7 +42,7 @@ export const SingUpView = ({
             />
             <InputField
               svg={
-                <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+                <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
               }
               value={lastName}
               changeHandler={changeHandler}
@@ -54,7 +54,7 @@ export const SingUpView = ({
         ) : (
           <InputField
             svg={
-              <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+              <NameInputSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
             }
             value={companyName}
             changeHandler={changeHandler}
@@ -65,7 +65,7 @@ export const SingUpView = ({
         )}
         <InputField
           svg={
-            <EmailSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+            <EmailSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
           }
           value={email}
           changeHandler={changeHandler}
@@ -75,7 +75,7 @@ export const SingUpView = ({
         />
         <InputField
           svg={
-            <PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+            <PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
           }
           value={password}
           changeHandler={changeHandler}
@@ -85,7 +85,7 @@ export const SingUpView = ({
         />
         <InputField
           svg={
-            <PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon"/>
+            <PasswordSVG classes="gb-icon gb-icon-medium gb-icon-white inputIcon" />
           }
           value={password2}
           changeHandler={changeHandler}
@@ -93,9 +93,14 @@ export const SingUpView = ({
           name="password2"
           placeholder="Repeat password"
         />
-        <button className="gb-btn gb-btn-black" onClick={() => stepHandler(2)}>Next</button>
+        <button
+          className="gb-btn gb-btn-transparent"
+          onClick={() => stepHandler(2)}
+        >
+          Next
+        </button>
       </div>
-    }
+    )}
   </Spring>
 );
 
