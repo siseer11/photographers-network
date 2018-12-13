@@ -69,7 +69,10 @@ export default compose(
       },
       {
         collection: "jobOffers",
-        where: [["photographer.uid", "==", props.match.params.uid], ["status", "==", "closed"]],
+        where: [
+          ["photographer.uid", "==", props.match.params.uid],
+          ["status", "==", "closed"]
+        ]
       },
       {
         collection: "reviews",
