@@ -1172,6 +1172,7 @@ li.openjobitem {
   flex-direction: column;
   align-items: center;
   background-color: #f2f2f2;
+  color: black;
 }
 
 .review-box h2 {
@@ -1205,6 +1206,17 @@ li.openjobitem {
 
 .gb-navbar.sticky.dark-blue {
   background-color: #002b41;
+}
+
+.relative-container {
+  width: 100%;
+  position: relative;
+}
+
+.absolute-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 /* Home50hCard start */
@@ -1590,3 +1602,19 @@ li.openjobitem {
 }
 
 /*Google autocomplete end */
+
+.grey-textarea {
+  width: 250px;
+  height: 170px;
+  background-color: #ffffff36;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.grey-textarea:focus {
+  outline: none;
+}
+

@@ -6,13 +6,7 @@ import { PencilSVG } from "../../../components/svg/PencilSVG";
 import ProfileDescription from "./ProfileDescription";
 import PropTypes from "prop-types";
 
-export const ProfileContent = ({
-  thisProfileData,
-  currentUserData,
-  currentUserId,
-  otherUser,
-  finishedJobs
-}) => (
+export const ProfileContent = ({reviews, thisProfileData, currentUserData, currentUserId, otherUser, finishedJobs}) => (
   <div className="profile-content">
     <h1>
       {thisProfileData.companyName ||
@@ -59,6 +53,7 @@ export const ProfileContent = ({
         uid={currentUserId}
         finishedJobs={finishedJobs}
         hireable={thisProfileData.hireable}
+        reviews={reviews}
       />
     ) : (
       <div>Rest of the company content</div>

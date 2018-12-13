@@ -8,10 +8,6 @@ import { firestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
 import { ProfileCard } from "../../../components/ProfileCard";
 import { ProfileContent } from "./ProfileContent";
 
-const s = {
-  "7bKYHXSV9AWtLuVc8bK9VFV900S2": null
-};
-
 export const Profile = ({
   match,
   profileData,
@@ -53,7 +49,8 @@ const mapStateToProps = state => {
     profileData: state.firestore.data.users,
     currentUserData: state.firebase.profile,
     currentUserId: state.firebase.auth.uid,
-    finishedJobs: jobOffers ? jobOffers.length : 0
+    finishedJobs: jobOffers ? jobOffers.length : 0,
+    reviews: state.firestore.ordered.reviews
   };
 };
 
@@ -67,10 +64,11 @@ export default compose(
       },
       {
         collection: "jobOffers",
-        where: [
-          ["photographer.uid", "==", props.match.params.uid],
-          ["status", "==", "closed"]
-        ]
+        where: [["photographer.uid", "==", props.match.params.uid], ["status", "==", "closed"]],
+      },
+      {
+        collection: "reviews",
+        where: ["receiverData.uid", "==", props.match.params.uid]
       }
     ];
   })

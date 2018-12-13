@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { createJob } from "../../../redux/actions/company-actions";
 
 import LocationSearchInput from "../../shared/MapsAutocomplete";
-import { CustomSelect } from "../../../components/CustomSelect";
+import { CustomSelect } from "../../../components/form/CustomSelect";
 import { InputField } from "../../../components/form/InputField";
 import { NameInputSVG } from "../../../components/svg/NameInputSVG";
 import { LocationSVG } from "../../../components/svg/LocationSVG";

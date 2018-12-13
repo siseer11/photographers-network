@@ -5,7 +5,7 @@ import {actionReset} from "../../../redux/actions/generalLoadingErrorSucces-acti
 
 class ProfileDescription extends React.Component {
   state = {
-    description: this.props.description,
+    description: this.props.description || '',
     edit: false,
     registeredHandler: false
   };
