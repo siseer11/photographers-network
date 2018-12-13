@@ -55,19 +55,11 @@ export default ({userOn, userType}) => (
           }
         />
         <Route
-          exact
           path="/dashboard"
           render={props => {
             if (userType === "admin") return <AdminDashboard {...props}/>;
             return userOn ? <Dashboard {...props} /> : <Redirect to="/signin"/>
           }
-          }
-        />
-        <Route
-          exact
-          path="/payouts/:type(company|photographer)"
-          render={props =>
-            userOn ? <Payouts {...props}/> : <Redirect to="/signin"/>
           }
         />
         <Route

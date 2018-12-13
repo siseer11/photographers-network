@@ -10,12 +10,20 @@ class Dashboard extends Component {
     photographer: {
       headerLinks: [
         {
-          name: "Home",
-          active: true
+          name: "Upcoming Jobs",
+          link: "/dashboard/upcoming-jobs"
         },
         {
-          name: "Applied Jobs",
-          active: false
+          name: "Payout",
+          link: "/dashboard/payout/photographer"
+        },
+        {
+          name: "Billing information",
+          link: "/dashboard/billing-information"
+        },
+        {
+          name: "Recent jobs",
+          link: "/dashboard/recent-jobs"
         }
       ]
     },
