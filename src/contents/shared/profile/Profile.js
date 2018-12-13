@@ -7,6 +7,7 @@ import { firestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
 // components
 import { ProfileCard } from "../../../components/ProfileCard";
 import { ProfileContent } from "./ProfileContent";
+import LoadingPage from "../../../components/LoadingPage";
 
 export const Profile = ({
   match,
@@ -29,6 +30,8 @@ export const Profile = ({
 
   const otherUser = currentUserId !== profileId;
   const thisProfileData = profileData[profileId];
+
+  console.log(reviews);
 
   return (
     <div className="profile">
