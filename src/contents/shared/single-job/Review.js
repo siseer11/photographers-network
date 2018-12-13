@@ -85,7 +85,8 @@ class Review extends React.Component {
 
 const mapStateToProps = state => ({
   jobsData: state.firestore.data.jobOffers,
-  user: state.firebase.profile
+  user: state.firebase.profile,
+  auth: state.firebase.auth
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -103,6 +104,13 @@ export default compose(
     {
       collection: "jobOffers",
       doc: props.match.params.jobid
+    },
+    {
+      collection: "reviews",
+      where: [
+        ["jobId", "==", props.match.params.jobid],
+        ["authorData.uid", "==", props.auth.uid]
+      ]
     }
   ])
 )(Review);
