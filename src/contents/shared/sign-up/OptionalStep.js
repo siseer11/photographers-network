@@ -1,7 +1,7 @@
 import React from "react";
 import { Spring } from "react-spring";
 import LocationSearchInput from "../../../contents/shared/MapsAutocomplete";
-import { CustomSelect } from "../../../components/CustomSelect";
+import { CustomSelect } from "../../../components/form/CustomSelect";
 import { NameInputSVG } from "../../../components/svg/NameInputSVG";
 import { ArrowDown } from "../../../components/svg/ArrowDown";
 
