@@ -83,7 +83,8 @@ export const initSlider = (
   document.querySelectorAll(".carousel-1-image-item").forEach(el => {
     let parent = el.parentElement;
     const elIdx = slides.indexOf(parent);
-    el.addEventListener("click", () => {
+    const cover = el;
+    el.addEventListener("click", e => {
       if (parent.classList.contains("active") || parent === lastActiveSlide) {
         return;
       }
@@ -192,45 +193,3 @@ export const initSlider = (
     });
   });
 };
-
-// const createVideo = (parent , link , id , cover) => {
-// 	let d = document.createElement('video');
-// 	d.id = `video-${id}`;
-// 	d.classList.add('my-videos' , 'video-js' , 'vjs-default-skin');
-// 	parent.appendChild(d);
-
-// 	let player = videojs(`video-${id}` , {
-// 		controls : true,
-// 		techOrder : ['youtube'] ,
-// 		sources : [{ "type": "video/youtube", "src": link}],
-// 		youtube : { "iv_load_policy": 1 }
-// 	  }, function onPlayerReady() {
-
-// 		//autoplay video on load just if the parent is still active
-// 		if(parent.classList.contains('active'))this.play();
-
-// 		// When the video is paused show the cover
-// 		this.on('pause', function() {
-// 			cover.classList.remove('hidden');
-// 		});
-
-// 		// When the video is played hide the cover
-// 		this.on('play', function() {
-// 			if(!parent.classList.contains('active')){
-// 				this.pause();
-// 			}else{
-// 				cover.classList.add('hidden');
-// 			}
-
-// 			parent.classList.remove('loading');
-
-// 		});
-// 	});
-
-// 	videosHolder[`video-${id}`] = {
-// 		videoPlayer: player,
-// 		parent : parent
-
-// 	}
-
-// }

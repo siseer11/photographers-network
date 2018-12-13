@@ -1,24 +1,29 @@
 // dependencies
 import React from "react";
-import {connect} from "react-redux";
-import {compose} from "redux";
-import {firestoreConnect, isLoaded, isEmpty} from "react-redux-firebase";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { firestoreConnect, isLoaded, isEmpty } from "react-redux-firebase";
 
 // components
-import {ProfileCard} from "../../../components/ProfileCard";
-import {ProfileContent} from "./ProfileContent";
+import { ProfileCard } from "../../../components/ProfileCard";
+import { ProfileContent } from "./ProfileContent";
 
-const Profile = ({match, profileData, reviews, currentUserData, currentUserId, finishedJobs}) => {
+export const Profile = ({
+  match,
+  profileData,
+  currentUserData,
+  currentUserId,
+  finishedJobs
+}) => {
   const profileId = match.params.uid;
-
-  if (!isLoaded(profileData) || !isLoaded(reviews)) {
-    return <h2>Loading..</h2>;
-  } else if (!isLoaded(profileData[profileId])) {
-    return <h2>Loading...</h2>;
+  if (!isLoaded(profileData)) {
+    return <h2 className="loading">Loading..</h2>;
+  } else if (profileData && !isLoaded(profileData[profileId])) {
+    return <h2 className="loading person-data-not-loaded">Loading...</h2>;
   }
 
-  if (isEmpty(profileData)) {
-    return <h2>No data for this id</h2>;
+  if (isEmpty(profileData[profileId])) {
+    return <h2 className="no-data">No data for this id.</h2>;
   }
 
   const otherUser = currentUserId !== profileId;
@@ -26,13 +31,13 @@ const Profile = ({match, profileData, reviews, currentUserData, currentUserId, f
 
   return (
     <div className="profile">
-      <ProfileCard {...thisProfileData} siggnedInUser={currentUserData}/>
-      <ProfileContent thisProfileData={thisProfileData}
-                      currentUserData={currentUserData}
-                      currentUserId={currentUserId}
-                      otherUser={otherUser}
-                      finishedJobs={finishedJobs}
-                      reviews={reviews}
+      <ProfileCard {...thisProfileData} siggnedInUser={currentUserData} />
+      <ProfileContent
+        thisProfileData={thisProfileData}
+        currentUserData={currentUserData}
+        currentUserId={currentUserId}
+        otherUser={otherUser}
+        finishedJobs={finishedJobs}
       />
     </div>
   );

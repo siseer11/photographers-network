@@ -1,13 +1,14 @@
-import React, {Component} from "react";
-import {connect} from "react-redux";
-import {Link} from 'react-router-dom';
-import {sigUpUser} from "../../../redux/actions/user-action";
-import {actionReset} from "../../../redux/actions/generalLoadingErrorSucces-actions";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { sigUpUser } from "../../../redux/actions/user-action";
+import { actionReset } from "../../../redux/actions/generalLoadingErrorSucces-actions";
+import { Transition } from "react-spring";
 
-import {SingUpView} from "../../../components/SignUpView";
-import {Breadcrumbs} from "./BreadCrumbs";
-import {PhotographerDescription} from "./PhotographerDescription";
-import {OptionalStep} from "./OptionalStep";
+import { SingUpView } from "../../../components/SignUpView";
+import { Breadcrumbs } from "./BreadCrumbs";
+import { PhotographerDescription } from "./PhotographerDescription";
+import { OptionalStep } from "./OptionalStep";
 
 class SignUp extends Component {
   state = {
@@ -36,7 +37,7 @@ class SignUp extends Component {
   };
 
   changeStep = step => {
-    this.setState({currentStep: step});
+    this.setState({ currentStep: step });
   };
 
   optionSelectHandler = type => {
@@ -75,37 +76,46 @@ class SignUp extends Component {
   }
 
   render() {
-    const {currentStep, type, locationPlaceholder, showCustomSelect, photographerType} = this.state;
-    const {loadingDB, successDB, errorDB} = this.props;
+    const {
+      currentStep,
+      type,
+      locationPlaceholder,
+      showCustomSelect,
+      photographerType
+    } = this.state;
+    const { loadingDB, successDB, errorDB, closeHandler } = this.props;
 
-    let component = <div/>;
+    let component = <div />;
     switch (currentStep) {
       case 0:
-        component = (
-          type === "photographer" ?
-            <PhotographerDescription changeHandler={this.changeStep}/> :
+        component =
+          type === "photographer" ? (
+            <PhotographerDescription changeHandler={this.changeStep} />
+          ) : (
             <p>Company Description</p>
-        );
+          );
         break;
       case 1:
         component = (
-          <SingUpView stepHandler={this.changeStep}
-                      changeHandler={this.handleChange}
-                      {...this.state}
+          <SingUpView
+            stepHandler={this.changeStep}
+            changeHandler={this.handleChange}
+            {...this.state}
           />
         );
         break;
       case 2:
         component = (
-          <OptionalStep locationPlaceholder={locationPlaceholder}
-                        type={type}
-                        photographerType={photographerType}
-                        showCustomSelect={showCustomSelect}
-                        showCustomSelectHandler={this.showCustomSelectHandler}
-                        optionSelectHandler={this.optionSelectHandler}
-                        loadingDB={loadingDB}
-                        successDB={successDB}
-                        handleChange={this.handleChange}
+          <OptionalStep
+            locationPlaceholder={locationPlaceholder}
+            type={type}
+            photographerType={photographerType}
+            showCustomSelect={showCustomSelect}
+            showCustomSelectHandler={this.showCustomSelectHandler}
+            optionSelectHandler={this.optionSelectHandler}
+            loadingDB={loadingDB}
+            successDB={successDB}
+            handleChange={this.handleChange}
           />
         );
         break;
@@ -115,20 +125,20 @@ class SignUp extends Component {
     }
     return (
       <React.Fragment>
-        <div className={`image-header ${type}`}>
-          <div className="black-overlay"/>
-          <h1>{type.charAt(0).toUpperCase() + type.substr(1)}</h1>
-        </div>
         <div className="black-content-section">
-          <Breadcrumbs crumbsAmount={3} activeCrumb={currentStep} clickHandler={this.changeStep}/>
+          <Breadcrumbs
+            crumbsAmount={3}
+            activeCrumb={currentStep}
+            clickHandler={this.changeStep}
+          />
           <div className="selected-content">
-            <form onSubmit={this.signup}>
-              {component}
-            </form>
+            <form onSubmit={this.signup}>{component}</form>
             <p className="terms">Terms & Conditions</p>
             {errorDB && <div className="error-message">{errorDB.message}</div>}
           </div>
-          <Link to="/home" className="round-close-btn">+</Link>
+          <div onClick={closeHandler} className="round-close-btn">
+            +
+          </div>
         </div>
       </React.Fragment>
     );

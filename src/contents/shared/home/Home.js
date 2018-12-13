@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Home50hCard } from "../../../components/Home50hCard";
+import Home50hCard from "../../../components/Home50hCard";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { HowItWorksHome } from "../../../components/home/HowItWorksHome";
-import { OurParteners } from "../../../components/home/OurParteners";
+import { TextTopGalleryBottomSection } from "../../../components/home/TextTopGalleryBottomSection";
+import { PartenersList } from "../../../components/PartenersList";
 import { ReviewBox } from "../../../components/profile/ReviewBox";
+import GallerySlider from "../../../components/GallerySlider";
 
 const mapStateToProps = state => ({
   auth: state.firebase.auth
@@ -37,13 +38,23 @@ class Home extends Component {
             titleContent="Company"
           />
         </div>
-        <HowItWorksHome />
-        <OurParteners />
+        <TextTopGalleryBottomSection
+          header="How to section"
+          paragraph="Explanations on how to hire a photographer, and better selectionmethods : define the needs"
+        >
+          <GallerySlider />
+        </TextTopGalleryBottomSection>
+        <TextTopGalleryBottomSection
+          header="Our parteners"
+          paragraph="Together with our parteners, Globuzzer caters to the needs of travelers, students and expats needs"
+        >
+          <PartenersList />
+        </TextTopGalleryBottomSection>
         <ReviewBox
           title="LAST REVIEW"
           userImageURL="https://images.unsplash.com/photo-1535930749574-1399327ce78f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ"
-          quote="New battery for smartphones can
-         be charged in a minute"
+          quote="New battery for smartphones can be charged in a minute"
+          name="John Doe"
         />
       </div>
     );

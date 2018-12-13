@@ -1,11 +1,12 @@
 import React from "react";
 
-export const RoundExpandButton = ({ classes }) => (
+export const RoundExpandButton = ({ classes, clickHandler }) => (
   <svg
     id="round-expand-button"
     viewBox="0 0 72 72"
     width="100%"
     height="100%"
+    onClick={clickHandler}
     className={classes}
   >
     <title>expand button</title>
