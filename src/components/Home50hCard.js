@@ -2,6 +2,7 @@ import React from "react";
 import { RoundExpandButton } from "./svg/RoundExpandButton";
 import PropTypes from "prop-types";
 import SignUp from "../contents/shared/sign-up/SignUp";
+import ReactGA from "react-ga";
 
 export default class Home50hCard extends React.Component {
   state = {
@@ -12,6 +13,10 @@ export default class Home50hCard extends React.Component {
     this.setState(prevState => ({
       expanded: !prevState.expanded
     }));
+    ReactGA.event({
+      category: "User expanded div",
+      action: "Click"
+    });
   };
 
   render() {

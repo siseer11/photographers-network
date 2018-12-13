@@ -1,12 +1,19 @@
 import React from "react";
-import { PhotographerContent } from "../../photographer/dashboard/PhotographerContent";
+import { PhotographerContent } from "../../photographer/profile/PhotographerContent";
 import { HireButton } from "../../../components/HireButton";
 import { Link } from "react-router-dom";
 import { PencilSVG } from "../../../components/svg/PencilSVG";
 import ProfileDescription from "./ProfileDescription";
 import PropTypes from "prop-types";
 
-export const ProfileContent = ({reviews, thisProfileData, currentUserData, currentUserId, otherUser, finishedJobs}) => (
+export const ProfileContent = ({
+  reviews,
+  thisProfileData,
+  currentUserData,
+  currentUserId,
+  otherUser,
+  finishedJobs
+}) => (
   <div className="profile-content">
     <h1>
       {thisProfileData.companyName ||

@@ -13,10 +13,11 @@ export const Profile = ({
   profileData,
   currentUserData,
   currentUserId,
-  finishedJobs
+  finishedJobs,
+  reviews
 }) => {
   const profileId = match.params.uid;
-  if (!isLoaded(profileData)) {
+  if (!isLoaded(profileData) || !isLoaded(reviews)) {
     return <h2 className="loading">Loading..</h2>;
   } else if (profileData && !isLoaded(profileData[profileId])) {
     return <h2 className="loading person-data-not-loaded">Loading...</h2>;
@@ -38,6 +39,7 @@ export const Profile = ({
         currentUserId={currentUserId}
         otherUser={otherUser}
         finishedJobs={finishedJobs}
+        reviews={reviews}
       />
     </div>
   );
@@ -64,7 +66,10 @@ export default compose(
       },
       {
         collection: "jobOffers",
-        where: [["photographer.uid", "==", props.match.params.uid], ["status", "==", "closed"]],
+        where: [
+          ["photographer.uid", "==", props.match.params.uid],
+          ["status", "==", "closed"]
+        ]
       },
       {
         collection: "reviews",
