@@ -1741,3 +1741,31 @@ li.openjobitem {
   margin: 5px auto;
   width: 90%;
 }
+
+.user-li-card {
+  padding: 20px 60px 20px 20px;
+}
+
+.user-li-card .gb-avatar-medium {
+  height: 60px;
+  width: 60px;
+  margin-right: 20px;
+}
+
+.user-li-card .uppercase {
+  font-size: 20px;
+}
+
+.user-li-card .small-heading {
+  font-size: 15px;
+}
+
+.user-li-card .description {
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.user-li-card .gb-btn-white.pink-border {
+  margin-left: 0;
+}
