@@ -30,12 +30,20 @@ class Dashboard extends Component {
     company: {
       headerLinks: [
         {
-          name: "Home",
-          active: true
+          name: "Upcoming Jobs",
+          link: "/dashboard/upcoming-jobs"
         },
         {
-          name: "My Jobs",
-          active: false
+          name: "Payout",
+          link: "/dashboard/payout/company"
+        },
+        {
+          name: "Billing information",
+          link: "/dashboard/billing-information"
+        },
+        {
+          name: "Photographer",
+          link: "/dashboard/photographer"
         }
       ]
     }
