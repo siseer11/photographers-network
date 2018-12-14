@@ -17,7 +17,7 @@ import SubmitWork from "../contents/photographer/single-job/SubmitWork";
 import ProgressSingleJob from "../contents/shared/single-job/ProgressSingleJob";
 import OpenSingleJob from "../contents/shared/single-job/OpenSingleJob";
 import AdminDashboard from "../contents/admin/AdminDashboard";
-import Payouts from "../contents/shared/payouts/Payouts";
+import Payouts from "../contents/photographer/dashboard/Payouts";
 import { GbFooter } from "../components/nav-footer/Footer";
 import Review from "../contents/shared/single-job/Review";
 import AllReviews from "../contents/shared/reviews/AllReviews";

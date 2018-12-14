@@ -1,0 +1,22 @@
+import React from "react";
+import {Link} from "react-router-dom";
+import {Avatar} from "../../../components/label/Avatar";
+
+export const Photographer = ({profileImageUrl, firstName, lastName, locations, description, uid}) => (
+  <li className="user-li-card">
+    <div className="gb-display-flex">
+      <Avatar userImageUrl={profileImageUrl}/>
+      <div>
+        <h1 className="uppercase">{firstName} {lastName}</h1>
+        <h4 className="small-heading">{Object.values(locations)[0].city}</h4>
+      </div>
+    </div>
+    <p className="description">
+      {description}
+    </p>
+    <Link className="gb-btn gb-btn-small gb-btn-primary gb-btn-white pink-border"
+          to={`/profile/${uid}`}>
+      Profile
+    </Link>
+  </li>
+);
