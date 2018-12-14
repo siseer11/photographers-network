@@ -1149,6 +1149,19 @@ li.openjobitem {
   display: block;
 }
 
+.social-media-container {
+  margin: 5px 0;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-media-container .icon {
+  height: 20px;
+  margin: 8px;
+}
+
 .profile-desc-area {
   resize: both;
   font-size: 12px;

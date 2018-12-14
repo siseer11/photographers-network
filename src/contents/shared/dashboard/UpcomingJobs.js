@@ -18,8 +18,8 @@ const UpcomingJobs = ({match, upcomingJobsCompany, upcomingJobsPhotographer}) =>
   if (!isLoaded(upcomingJobsCompany) || !isLoaded(upcomingJobsPhotographer))
     return <div className="dashboard-container">Loading...</div>;
 
-  if (isCompany && isEmpty(upcomingJobsCompany) ||
-    !isCompany && isEmpty(upcomingJobsPhotographer))
+  if ((isCompany && isEmpty(upcomingJobsCompany)) ||
+    (!isCompany && isEmpty(upcomingJobsPhotographer)))
     return <div className="dashboard-container">No upcoming jobs.</div>;
 
   const upcomingJobs = !isCompany ?
