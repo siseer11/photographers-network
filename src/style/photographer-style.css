@@ -1108,6 +1108,10 @@ li.openjobitem {
   border-bottom: 1px solid lightgrey;
 }
 
+.paymentList .information-container {
+  width: 70%;
+}
+
 .paymentList .uppercase {
   font-size: 20px;
   margin-bottom: 8px;
@@ -1143,6 +1147,19 @@ li.openjobitem {
   width: 120px;
   font-size: 12px;
   display: block;
+}
+
+.social-media-container {
+  margin: 5px 0;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-media-container .icon {
+  height: 20px;
+  margin: 8px;
 }
 
 .profile-desc-area {
@@ -1709,6 +1726,8 @@ li.openjobitem {
   width: 50px;
   height: 50px;
   background-color: white;
+  background-size: cover;
+  background-position: center;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -1717,6 +1736,10 @@ li.openjobitem {
   -webkit-box-shadow: 3px 4px 16px 0px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 3px 4px 16px 0px rgba(0, 0, 0, 0.1);
   box-shadow: 3px 4px 16px 0px rgba(0, 0, 0, 0.1);
+}
+
+.white-circle .icon {
+  width: 40%;
 }
 
 .black-yellow-box {

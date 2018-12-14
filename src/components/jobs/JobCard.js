@@ -5,7 +5,7 @@ const options = {year: 'numeric', month: 'long', day: 'numeric'};
 
 export const JobCard = ({id, title, location, startDate, description, priceAmount, insuranceAmount, moreLink}) => (
   <li key={id}>
-    <div>
+    <div className="information-container">
       <Link to={`/progress-job/${id}`}>
         <h2 className="uppercase">{title}</h2>
       </Link>
