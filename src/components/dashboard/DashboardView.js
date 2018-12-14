@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 
 // components
 import {DashboardHeader} from "./DashboardHeader";
-import Payouts from "../../contents/shared/payouts/Payouts";
+import Payouts from "../../contents/photographer/dashboard/Payouts";
+import RecentJobs from "../../contents/photographer/dashboard/RecentJobs";
 
 // contents
 import {UpcomingJobs} from "../../contents/photographer/dashboard/UpcomingJobs";
@@ -33,7 +34,7 @@ export const DashboardView = ({auth, type, linkHandler, headerLinks}) => {
       <Route exact path="/dashboard/upcoming-jobs" render={props => <UpcomingJobs/>}/>
       <Route exact path="/dashboard/payout/:type" render={props => <Payouts {...props}/>}/>
       <Route exact path="/dashboard/billing-information" render={props => <BillingInformation/>}/>
-      <Route exact path="/dashboard/recent-jobs" render={props => <h2>Recent Jobs</h2>}/>
+      <Route exact path="/dashboard/recent-jobs" render={props => <RecentJobs/>}/>
     </React.Fragment>
   );
 };

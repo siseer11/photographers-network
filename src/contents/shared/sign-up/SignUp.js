@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { sigUpUser } from "../../../redux/actions/user-action";
 import { actionReset } from "../../../redux/actions/generalLoadingErrorSucces-actions";
-import { Transition } from "react-spring";
 
 import { SingUpView } from "../../../components/SignUpView";
 import { Breadcrumbs } from "./BreadCrumbs";

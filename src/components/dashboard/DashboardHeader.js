@@ -1,14 +1,10 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 
 export const DashboardHeader = ({
-  links,
-  linkHandler,
-  type,
-  auth
+  links
 }) => {
-  let profilePath = `/profile/${auth.uid}`;
   return (
     <div>
       <div className="gb-card-7-wrapper">

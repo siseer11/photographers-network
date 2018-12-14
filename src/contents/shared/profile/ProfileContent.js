@@ -4,7 +4,6 @@ import { HireButton } from "../../../components/HireButton";
 import { Link } from "react-router-dom";
 import { PencilSVG } from "../../../components/svg/PencilSVG";
 import ProfileDescription from "./ProfileDescription";
-import PropTypes from "prop-types";
 
 export const ProfileContent = ({
   reviews,

@@ -141,12 +141,21 @@
   align-items: center;
 }
 
-.profile-content .gb-btn-white {
+.profile-content .gb-btn-white, .gb-btn-white.pink-border {
   font-size: 12px;
   width: 138px;
   margin: 10px;
   text-transform: uppercase;
   border: 1.5px solid rgb(252, 13, 28);
+  color: rgb(252, 13, 28);
+}
+
+.gb-btn-white.pink-border {
+  box-shadow: none;
+  width: 90px;
+  height: 30px;
+  text-transform: none;
+  border-width: 1px;
 }
 
 .profile-content .gb-btn-white .gb-icon-medium {
@@ -1683,7 +1692,7 @@ li.openjobitem {
 
 .light-grey-box .description, .paymentList .description {
   font-size: 13px;
-  margin-bottom: 30px;
+  margin-bottom: 13px;
   margin-top: 10px;
   font-weight: 500;
 }
