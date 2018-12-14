@@ -17,7 +17,6 @@ class SignUp extends Component {
     email: "",
     password: "",
     password2: "",
-    type: this.props.match.params.type || "photographer",
     locationPlaceholder: "",
     detailedAddress: {},
     photographerType: "",
@@ -76,12 +75,11 @@ class SignUp extends Component {
   render() {
     const {
       currentStep,
-      type,
       locationPlaceholder,
       showCustomSelect,
       photographerType
     } = this.state;
-    const { loadingDB, successDB, errorDB, closeHandler } = this.props;
+    const { loadingDB, type, successDB, errorDB, closeHandler } = this.props;
 
     let component = <div />;
     switch (currentStep) {
@@ -98,6 +96,7 @@ class SignUp extends Component {
           <SingUpView
             stepHandler={this.changeStep}
             changeHandler={this.handleChange}
+            type={type}
             {...this.state}
           />
         );

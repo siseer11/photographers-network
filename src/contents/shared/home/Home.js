@@ -31,11 +31,13 @@ class Home extends Component {
             backgroundUrl="https://images.unsplash.com/photo-1516807947649-1054add6bc97?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=11be05062d1f7ba80ca7d217e0aa241f&auto=format&fit=crop&w=1049&q=80"
             paragraphContent="Find the job that suits you and get the job done."
             titleContent="Photographer"
+            type="photographer"
           />
           <Home50hCard
             backgroundUrl="https://images.unsplash.com/photo-1523871762770-87bda6d9ab58?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=651c083bb21d6ff0ef6eaa4136cbef56&auto=format&fit=crop&w=1185&q=80"
             paragraphContent="Find the Photographer that suits you and get the job done."
             titleContent="Company"
+            type="company"
           />
         </div>
         <TextTopGalleryBottomSection

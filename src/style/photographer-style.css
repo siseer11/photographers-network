@@ -1248,17 +1248,22 @@ li.openjobitem {
 }
 
 .gb-home-50h-card-wrapper {
-  transition: 0.5s linear all;
-  height: 50vh;
+  max-height: 50vh;
+  height: 100vh;
   position: relative;
   background-size: cover;
   background-position: center;
-  transition: 0.5s cubic-bezier(0.51, 0.93, 1, 1) all;
+  -webkit-transition: 0.5s cubic-bezier(0.51, 0.93, 1, 1) all;
+  transition: 0.5s cubic-bezier(0.51, 0.93, 1, 1) max-height;
+}
+
+.gb-home-50h-card-wrapper:nth-child(1) {
+  padding-top: 30px;
 }
 
 .gb-home-50h-card-wrapper.expanded {
-  height: 100vh;
-  max-height: 700px;
+  height: auto;
+  max-height: 120vh;
 }
 
 .gb-home-50h-card-wrapper.expanded .gb-background-black-opacity-80 {
@@ -1271,7 +1276,7 @@ li.openjobitem {
 }
 
 .gb-home-50h-card-wrapper.expanded .gb-home-50h-card {
-  height: 25%;
+  height: 140px;
 }
 
 .gb-home-50h-card-wrapper .black-content-section {
@@ -1466,7 +1471,7 @@ li.openjobitem {
   position: relative;
   color: white;
   min-height: calc(100vh - 150px);
-  padding: 30px 30px 65px 30px;
+  padding: 30px 30px 40px;
   box-sizing: border-box;
 }
 
@@ -1475,11 +1480,7 @@ li.openjobitem {
 }
 
 .round-close-btn {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  margin: auto;
+  margin: 35px auto 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1492,6 +1493,7 @@ li.openjobitem {
   width: 12px;
   -webkit-transform: rotate(136deg);
   transform: rotate(136deg);
+  -webkit-transition: ease 0.5s;
   transition: ease 0.5s;
 }
 
@@ -1534,9 +1536,13 @@ li.openjobitem {
 }
 
 .black-content-section .selected-content .inputIcon.dropdown-arrow {
+  height: 100%;
+  display: flex;
+  align-items: center;
   right: 15px;
   left: unset;
   pointer-events: none;
+  justify-content: center;
 }
 
 .black-content-section .selected-content .inputIcon {

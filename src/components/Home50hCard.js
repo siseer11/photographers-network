@@ -20,7 +20,7 @@ export default class Home50hCard extends React.Component {
   };
 
   render() {
-    const { backgroundUrl, titleContent, paragraphContent } = this.props;
+    const { backgroundUrl, titleContent, paragraphContent, type } = this.props;
     const { expanded } = this.state;
     return (
       <div
@@ -46,6 +46,7 @@ export default class Home50hCard extends React.Component {
         </div>
         {expanded && (
           <SignUp
+            type={type}
             closeHandler={this.expandHandler}
             match={{ params: { type: "photographer" } }}
           />

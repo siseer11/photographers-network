@@ -6,7 +6,7 @@ export const GbNavRight = ({ user }) => (
     {user.uid ? (
       <Link
         style={{ backgroundImage: `url(${user.profileImageUrl})` }}
-        to="profile"
+        to={`/profile/${user.uid}`}
         className="gb-avatar-small gb-avatar nav-user-avatar"
       />
     ) : (

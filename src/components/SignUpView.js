@@ -9,18 +9,11 @@ import PropTypes from "prop-types";
 
 export const SingUpView = ({
   stepHandler,
-  loadingDB,
-  succesDB,
-  showCustomSelect,
-  signupHandler,
   firstName,
   lastName,
   changeHandler,
   password,
   password2,
-  locationPlaceholder,
-  showCustomSelectHandler,
-  optionSelectHandler,
   type,
   email,
   companyName
@@ -113,47 +106,3 @@ SingUpView.propTypes = {
   type: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired
 };
-
-/*
-<div
-        className="custom-select gb-text-input gb-text-input-trans-background"
-        onClick={showCustomSelectHandler}
-      >
-        {type === "photographer" ? (
-          <CameraSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
-        ) : (
-          <BusinessCardSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
-        )}
-        {type}
-        <CustomSelect
-          showCustomSelect={showCustomSelect}
-          optionsList={["photographer", "company"]}
-          optionSelectHandler={optionSelectHandler}
-        />
-      </div>
-      <div className="btn-container">
-        {loadingDB ? (
-          <input
-            type="submit"
-            style={{ opacity: 0.8 }}
-            disabled={true}
-            value="Loading"
-            className="gb-btn gb-btn-large gb-btn-primary"
-          />
-        ) : successDB ? (
-          <input
-            type="submit"
-            style={{ opacity: 1, background: "green" }}
-            disabled={true}
-            value="Succes"
-            className="gb-btn gb-btn-large gb-btn-primary"
-          />
-        ) : (
-          <input
-            type="submit"
-            value="Sign up"
-            className="gb-btn gb-btn-large gb-btn-primary"
-          />
-        )}
-      </div>
- */
