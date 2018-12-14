@@ -1,22 +1,19 @@
 import React from "react";
 import { PropTypes } from "prop-types";
-import { LinkLists } from "../LinkLists";
 import { Link } from "react-router-dom";
-import { RightUserOn } from "./RightUserOn";
 import { connect } from "react-redux";
 import { signOutUser } from "../../redux/actions/user-action";
 import { firestoreConnect } from "react-redux-firebase";
 import { compose } from "redux";
 import mainLogo from "../../logo.png";
 import { BurgerMenuSVG } from "../../components/svg/BurgerMenuSVG";
+import { GbNavRight } from "./gbNavRight";
+import { GbNavAside } from "./GbNavAside";
 
 class GbNavBar extends React.Component {
   state = {
     sticky: false,
     showNotificationBox: false,
-    links: [{ txt: "Sign in", link: "signIn" }],
-    homeLink: "home",
-    userLinks: [],
     navExpanded: false
   };
 
@@ -31,14 +28,6 @@ class GbNavBar extends React.Component {
   stickyNav = e => {
     this.setState({
       sticky: window.pageYOffset > 0
-    });
-  };
-
-  showNotificationsHandler = () => {
-    this.setState(prev => {
-      return {
-        showNotificationBox: !prev.showNotificationBox
-      };
     });
   };
 
@@ -63,30 +52,25 @@ class GbNavBar extends React.Component {
   };
 
   render() {
-    const { userData: user, signOutUser, auth, profile } = this.props;
+    const { profile, signOutUser } = this.props;
     const { navExpanded } = this.state;
-
-    let righLinks = [{ txt: "Sign in", link: "signIn" }];
     let homeLink = "home";
-    let userLinks;
-
-    const { showNotificationBox } = this.state;
     return (
       <React.Fragment>
-        <div
-          className={`gb-nav-aside gb-background-black ${
-            navExpanded ? "translated" : ""
-          }`}
+        <GbNavAside
+          expanded={navExpanded}
+          user={profile}
+          signOutUser={signOutUser}
         />
         {navExpanded && (
-          <div onClick={this.someClick} className="gb-app-black-overlay" />
+          <div onClick={this.expandHandler} className="gb-app-black-overlay" />
         )}
         <div
           className={`gb-navbar ${navExpanded ? "translated" : ""} ${
             this.state.sticky ? "sticky dark-blue" : ""
           }`}
         >
-          <div onClick={this.someClick} style={{ zIndex: 10 }}>
+          <div onClick={this.expandHandler} style={{ zIndex: 10 }}>
             <BurgerMenuSVG classes="gb-icon gb-icon-white gb-icon-medium" />
           </div>
           <Link to={`/${homeLink}`} className="center-content">
@@ -96,6 +80,7 @@ class GbNavBar extends React.Component {
               className="gb-icon-medium gb-icon-fill-white"
             />
           </Link>
+          <GbNavRight user={profile} />
         </div>
       </React.Fragment>
     );
@@ -136,13 +121,14 @@ export default compose(
   })
 )(GbNavBar);
 
-GbNavBar.propTypes = {
-  righLinks: PropTypes.arrayOf(PropTypes.object),
-  userImageUrl: PropTypes.string,
-  profileLink: PropTypes.string
-};
-
 /*
+  showNotificationsHandler = () => {
+    this.setState(prev => {
+      return {
+        showNotificationBox: !prev.showNotificationBox
+      };
+    });
+  };
  <ul className="right-content">
    <LinkLists
      links={righLinks}
