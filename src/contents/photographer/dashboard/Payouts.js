@@ -36,7 +36,7 @@ class Payouts extends React.Component {
                 <span className="uppercase light">Total</span>
                 <b>{total} € </b>
               </div>
-            </React.Fragment> : <h2>Company!</h2>
+            </React.Fragment> : <div className="dashboard-container">Company!</div>
         }
       </div>
     );
@@ -50,7 +50,8 @@ const mapStateToProps = state => ({
 });
 
 export default compose(
-  firestoreConnect(props => [{
+  firestoreConnect(props => [
+    {
       collection: "jobOffers",
       where: [["payout", "==", false], ["status", "==", "closed"]]
     }]

@@ -11,7 +11,7 @@ class Dashboard extends Component {
       headerLinks: [
         {
           name: "Upcoming Jobs",
-          link: "/dashboard/upcoming-jobs"
+          link: "/dashboard/upcoming-jobs/photographer"
         },
         {
           name: "Payout",
@@ -31,7 +31,7 @@ class Dashboard extends Component {
       headerLinks: [
         {
           name: "Upcoming Jobs",
-          link: "/dashboard/upcoming-jobs"
+          link: "/dashboard/upcoming-jobs/company"
         },
         {
           name: "Payout",
@@ -47,20 +47,6 @@ class Dashboard extends Component {
         }
       ]
     }
-  };
-
-  /**
-   * Sets the clicked element to active.
-   * @param name
-   * @param type
-   */
-  setComponentToShow = (name, type) => {
-    const activeType = this.state[type];
-    let headerLinks = [...activeType.headerLinks];
-    headerLinks.forEach(link => {
-      link.active = link.name === name;
-    });
-    this.setState({ [type]: { headerLinks } });
   };
 
   render() {
@@ -80,7 +66,6 @@ class Dashboard extends Component {
         profile={profile}
         auth={auth}
         {...this.props}
-        linkHandler={this.setComponentToShow}
         headerLinks={activeType.headerLinks}
         activeComponent={activeComponent}
       />

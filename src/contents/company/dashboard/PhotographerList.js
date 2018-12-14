@@ -1,11 +1,14 @@
 import React from "react";
 import {connect} from "react-redux";
 import {compose} from "redux";
-import {isLoaded, firestoreConnect} from "react-redux-firebase";
+import {isLoaded, isEmpty, firestoreConnect} from "react-redux-firebase";
 import {Photographer} from "./Photographer";
 
 const PhotographerList = ({photographers}) => {
-  if (!isLoaded(photographers)) return <p>Loading...</p>;
+  if (!isLoaded(photographers))
+    return <p className="dashboard-container">Loading...</p>;
+  if (isEmpty(photographers))
+    return <p className="dashboard-container">No photographers</p>;
   return (
     <ul>
       {
