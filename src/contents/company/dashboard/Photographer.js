@@ -1,5 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import PropTypes from 'prop-types';
 import {Avatar} from "../../../components/label/Avatar";
 
 export const Photographer = ({profileImageUrl, firstName, lastName, locations, description, uid}) => (
@@ -20,3 +21,12 @@ export const Photographer = ({profileImageUrl, firstName, lastName, locations, d
     </Link>
   </li>
 );
+
+Photographer.propTypes = {
+  profileImageUrl: PropTypes.string.isRequired,
+  firstName: PropTypes.string.isRequired,
+  lastName: PropTypes.string.isRequired,
+  description: PropTypes.string,
+  locations: PropTypes.object.isRequired,
+  uid: PropTypes.string.isRequired
+};

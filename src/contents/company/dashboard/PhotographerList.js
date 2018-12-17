@@ -6,7 +6,7 @@ import {Photographer} from "./Photographer";
 
 const PhotographerList = ({photographers}) => {
   if (!isLoaded(photographers))
-    return <p className="dashboard-container">Loading...</p>;
+    return <p className="dashboard-container loading">Loading...</p>;
   if (isEmpty(photographers))
     return <p className="dashboard-container">No photographers</p>;
   return (
