@@ -33,6 +33,7 @@ class GbNavBar extends React.Component {
 
   //Handle the transition of the navAside
   expandHandler = () => {
+    console.log("handler boy");
     const translated = this.state.navExpanded;
     const toBeTranslated = document.querySelector(".gb-app-wrapper");
     const body = document.querySelector("body");
@@ -61,6 +62,7 @@ class GbNavBar extends React.Component {
           expanded={navExpanded}
           user={profile}
           signOutUser={signOutUser}
+          expandHandler={this.expandHandler}
         />
         {navExpanded && (
           <div onClick={this.expandHandler} className="gb-app-black-overlay" />

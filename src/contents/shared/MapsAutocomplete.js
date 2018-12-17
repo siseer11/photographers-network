@@ -2,7 +2,7 @@ import React from "react";
 import PlacesAutocomplete, {
   geocodeByAddress
 } from "react-places-autocomplete";
-import {LocationSVG} from "../../components/svg/LocationSVG";
+import { LocationSVG } from "../../components/svg/LocationSVG";
 
 const searchOptions = {
   types: ["address"]
@@ -20,10 +20,11 @@ export default class LocationSearchInput extends React.Component {
     // For Sweden and UK postal_town = city
     // In Japan, the component differs across prefectures
     // Brooklyn and other parts of New York City do not include the city as part of the address. They use sublocality_level_1 instea
-    let country, city, streetNumber, streetName;
+    let country, city, streetNumber, streetName, postalCode;
 
     data[0].address_components.forEach(el => {
       const types = el.types;
+
       if (types.includes("country")) {
         //set country
         country = el.long_name;
@@ -36,6 +37,9 @@ export default class LocationSearchInput extends React.Component {
       } else if (types.includes("route")) {
         //set the street
         streetName = el.long_name;
+      } else if (types.includes("postal_code")) {
+        //set the postal code
+        postalCode = el.long_name;
       }
     });
 
@@ -43,7 +47,7 @@ export default class LocationSearchInput extends React.Component {
     const lat = data[0].geometry.location.lat();
     const long = data[0].geometry.location.lng();
 
-    return { country, city, streetNumber, streetName, lat, long };
+    return { country, city, streetNumber, streetName, lat, long, postalCode };
   };
 
   handleSelect = address => {
@@ -58,7 +62,8 @@ export default class LocationSearchInput extends React.Component {
         if (
           !addressData.country ||
           !addressData.city ||
-          !addressData.streetName
+          !addressData.streetName ||
+          !addressData.postalCode
         ) {
           //reset the old adressData from the state
           this.handleChange({}, "detailedAddress");
@@ -68,6 +73,7 @@ export default class LocationSearchInput extends React.Component {
           return;
         }
         //update it on the state, make it ready to be stored in the firestore
+
         this.handleChange(addressData, "detailedAddress");
       })
       .catch(error => console.error("Error", error));
@@ -93,7 +99,7 @@ export default class LocationSearchInput extends React.Component {
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <label className="inputLabel">
-            <LocationSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon"/>
+            <LocationSVG classes="gb-icon gb-icon-medium gb-icon-fill-white inputIcon" />
             <input
               name="location"
               {...getInputProps({
@@ -102,46 +108,42 @@ export default class LocationSearchInput extends React.Component {
               })}
             />
             {suggestions.length > 0 && (
-            <div
-              style={{
-                color: "black",
-                position: "absolute",
-                top: "100%",
-                zIndex: "10",
-                textAlign: "left",
-                left: "0",
-                width: "100%"
-              }}
-              className="autocomplete-dropdown-container"
-            >
-              {loading && <div>Loading...</div>}
-              {suggestions.map(suggestion => {
-                const className = suggestion.active
-                  ? "suggestion-item--active"
-                  : "suggestion-item";
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, { className })}
-                  >
-                    <strong>
-                      {suggestion.formattedSuggestion.mainText}
-                    </strong>{' '}
-                    <small>
-                      {suggestion.formattedSuggestion.secondaryText}
-                    </small>
+              <div
+                style={{
+                  color: "black",
+                  position: "absolute",
+                  top: "100%",
+                  zIndex: "10",
+                  textAlign: "left",
+                  left: "0",
+                  width: "100%"
+                }}
+                className="autocomplete-dropdown-container"
+              >
+                {loading && <div>Loading...</div>}
+                {suggestions.map(suggestion => {
+                  const className = suggestion.active
+                    ? "suggestion-item--active"
+                    : "suggestion-item";
+                  return (
+                    <div {...getSuggestionItemProps(suggestion, { className })}>
+                      <strong>{suggestion.formattedSuggestion.mainText}</strong>{" "}
+                      <small>
+                        {suggestion.formattedSuggestion.secondaryText}
+                      </small>
+                    </div>
+                  );
+                })}
+                <div className="dropdown-footer">
+                  <div>
+                    <img
+                      src="https://github.com/hibiken/react-places-autocomplete/blob/master/demo/images/powered_by_google_default.png?raw=true"
+                      alt="Google Logo"
+                      className="dropdown-footer-image"
+                    />
                   </div>
-                );
-              })}
-              <div className="dropdown-footer">
-                <div>
-                  <img
-                    src='https://github.com/hibiken/react-places-autocomplete/blob/master/demo/images/powered_by_google_default.png?raw=true'
-                    alt="Google Logo"
-                    className="dropdown-footer-image"
-                  />
                 </div>
               </div>
-            </div>
             )}
           </label>
         )}

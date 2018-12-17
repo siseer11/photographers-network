@@ -57,7 +57,7 @@ const links = {
   ]
 };
 
-export const GbNavAside = ({ expanded, user, signOutUser }) => (
+export const GbNavAside = ({ expanded, user, signOutUser, expandHandler }) => (
   <div
     className={`gb-nav-aside gb-background-black ${
       expanded ? "translated" : ""
@@ -66,13 +66,13 @@ export const GbNavAside = ({ expanded, user, signOutUser }) => (
     <div className="nav-aside-content">
       {user.uid ? (
         <GbNavAsideUserOn
-          expanded={expanded}
+          expandHandler={expandHandler}
           user={user}
           signOutUser={signOutUser}
         />
       ) : (
         <ul className="nav-aside-content-top">
-          <li className="nav-aside-top-list-item">
+          <li onClick={expandHandler} className="nav-aside-top-list-item">
             <Link to="/signIn" className="nav-aside-link gb-text-white">
               <StarSVG classes="nav-aside-icon gb-icon-medium gb-icon-white-opacity-50" />
               <h5 className="gb-text-uppercase gb-text-white gb-title-tiny gb-text-uppercase">
@@ -86,13 +86,14 @@ export const GbNavAside = ({ expanded, user, signOutUser }) => (
   </div>
 );
 
-const GbNavAsideUserOn = ({ expanded, user, signOutUser }) => (
+const GbNavAsideUserOn = ({ expandHandler, user, signOutUser }) => (
   <React.Fragment>
     <ul className="nav-aside-content-top">
       {links[user.type].map((el, idx) => (
         <li
           key={new Date().getTime() + idx}
           className="nav-aside-top-list-item"
+          onClick={expandHandler}
         >
           <Link to={`/${el.to}`} className="nav-aside-link gb-text-white">
             <StarSVG classes="nav-aside-icon gb-icon-medium gb-icon-white-opacity-50" />
@@ -105,7 +106,7 @@ const GbNavAsideUserOn = ({ expanded, user, signOutUser }) => (
     </ul>
 
     <div className="nav-aside-content-bottom line-top">
-      <div className="content-left">
+      <div onClick={expandHandler} className="content-left">
         <h2
           onClick={signOutUser}
           className="left-link gb-text-uppercase gb-text-white gb-title-tiny"
@@ -118,7 +119,7 @@ const GbNavAsideUserOn = ({ expanded, user, signOutUser }) => (
             : user.companyName}
         </p>
       </div>
-      <div className="content-right">
+      <div onClick={expandHandler} className="content-right">
         <Link to={`/profile/${user.uid}`} className="profile-link">
           <img
             className="gb-avatar gb-avatar-medium"
