@@ -17,7 +17,7 @@ export const ProfileContent = ({
   finishedJobs
 }) => (
   <div className="profile-content">
-    <h1>
+    <h1 className="profile-name">
       {thisProfileData.companyName ||
         `${thisProfileData.firstName} ${thisProfileData.lastName}`}
     </h1>
@@ -29,9 +29,9 @@ export const ProfileContent = ({
       <span className="profile-desc user-type">{thisProfileData.type}</span>
     </p>
     <div className="social-media-container">
-      <img src={InstagramURL} className="icon" alt="instagram"/>
-      <img src={LinkedInURL} className="icon" alt="linkedin"/>
-      <img src={FacebookURL} className="icon" alt="facebook"/>
+      <img src={InstagramURL} className="icon" alt="instagram" />
+      <img src={LinkedInURL} className="icon" alt="linkedin" />
+      <img src={FacebookURL} className="icon" alt="facebook" />
     </div>
     {thisProfileData.type === "photographer" &&
       currentUserData.type === "company" &&
@@ -50,6 +50,7 @@ export const ProfileContent = ({
       <Link
         to="/ProfileEdit"
         className="gb-btn gb-btn-small gb-btn-primary gb-btn-white"
+        id="edit-profile-link"
       >
         Edit Profile <PencilSVG classes="gb-icon-medium gb-icon-fill-white" />
       </Link>
@@ -70,7 +71,7 @@ export const ProfileContent = ({
         reviews={reviews}
       />
     ) : (
-      <div>Rest of the company content</div>
+      <div className="company-details">Rest of the company content</div>
     )}
   </div>
 );

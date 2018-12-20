@@ -13,10 +13,11 @@ export default class Home50hCard extends React.Component {
     this.setState(prevState => ({
       expanded: !prevState.expanded
     }));
-    ReactGA.event({
-      category: "User expanded div",
-      action: "Click"
-    });
+    // The way we set up a click event which will be registered in the google analythics
+    // ReactGA.event({
+    //   category: "User expanded div",
+    //   action: "Click"
+    // });
   };
 
   render() {
