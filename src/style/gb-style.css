@@ -53,6 +53,10 @@ svg {
 
 /* Gb-resets end */
 
+.gb-pointer {
+  cursor: pointer;
+}
+
 /* Gb-colors start */
 
 .gb-background-primary {
@@ -749,6 +753,11 @@ svg {
 /* Devices end */
 
 /* Icons start */
+
+.gb-icon-30 {
+  width: 30px;
+  height: 30px;
+}
 
 .gb-icon-large {
   width: 75px;

@@ -10,7 +10,7 @@ import { BurgerMenuSVG } from "../../components/svg/BurgerMenuSVG";
 import { GbNavRight } from "./gbNavRight";
 import { GbNavAside } from "./GbNavAside";
 
-class GbNavBar extends React.Component {
+export class GbNavBar extends React.Component {
   state = {
     sticky: false,
     showNotificationBox: false,
@@ -33,7 +33,6 @@ class GbNavBar extends React.Component {
 
   //Handle the transition of the navAside
   expandHandler = () => {
-    console.log("handler boy");
     const translated = this.state.navExpanded;
     const toBeTranslated = document.querySelector(".gb-app-wrapper");
     const body = document.querySelector("body");
@@ -73,13 +72,13 @@ class GbNavBar extends React.Component {
           }`}
         >
           <div onClick={this.expandHandler} style={{ zIndex: 10 }}>
-            <BurgerMenuSVG classes="gb-icon gb-icon-white gb-icon-medium" />
+            <BurgerMenuSVG classes="gb-pointer gb-icon gb-icon-white gb-icon-medium" />
           </div>
           <Link to={`/${homeLink}`} className="center-content">
             <img
               src={mainLogo}
               alt="logo"
-              className="gb-icon-medium gb-icon-fill-white"
+              className="gb-icon-30 gb-icon-fill-white"
             />
           </Link>
           <GbNavRight user={profile} />
