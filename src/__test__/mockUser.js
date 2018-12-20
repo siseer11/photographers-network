@@ -1,33 +1,35 @@
 export default function makeUser({
-  type = "photographer",
-  profileImageUrl = "e.jpg",
-  uid = "zzz",
-  firstName = "S",
-  lastName = "S",
-  hireable = true,
-  premium = true,
-  companyName = "S.co",
-  home = true,
-  finishedJobs = 0,
-  portfolio = []
-}) {
+                                   type = "photographer",
+                                   profileImageUrl = "e.jpg",
+                                   uid = "zzz",
+                                   firstName = "S",
+                                   lastName = "S",
+                                   description = "abc",
+                                   hireable = true,
+                                   premium = true,
+                                   companyName = "S.co",
+                                   home = true,
+                                   finishedJobs = 0,
+                                   portfolio = []
+                                 }) {
   class User {
     constructor() {
-      (this.profileImageUrl = profileImageUrl),
-        (this.uid = uid),
-        (this.locations = {
-          a1a: {
-            city: "S",
-            country: "S",
-            home: home,
-            streetName: "S",
-            streetNumber: 85,
-            geolocation: {
-              _lat: 31,
-              _long: -60
-            }
+      (this.profileImageUrl = profileImageUrl);
+      (this.uid = uid);
+      (this.locations = {
+        a1a: {
+          city: "S",
+          country: "S",
+          home: home,
+          streetName: "S",
+          streetNumber: 85,
+          geolocation: {
+            _lat: 31,
+            _long: -60
           }
-        });
+        }
+      });
+      (this.descripion = description);
     }
   }
 
@@ -44,6 +46,7 @@ export default function makeUser({
         this.finishedJobs = finishedJobs;
       }
     }
+
     return new Photographer();
   } else {
     class Company extends User {
@@ -53,6 +56,7 @@ export default function makeUser({
         this.type = "company";
       }
     }
+
     return new Company();
   }
 }
